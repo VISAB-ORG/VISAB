@@ -1,10 +1,8 @@
-package api;
+package eventbus;
 
 import java.util.UUID;
 
 public interface IEvent {
-
-	public String getGame();
 	
 	public UUID getSessionId();
 }
