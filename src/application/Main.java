@@ -3,6 +3,8 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
+import api.Constant;
+import api.WebApi;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +29,22 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+		startApiServer();
 		mainWindow();
+	}
+	
+	private void startApiServer() {
+		new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+		        try {
+					new WebApi(Constant.API_PORT).start();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		}).start();
 	}
 
 	public void mainWindow() {
