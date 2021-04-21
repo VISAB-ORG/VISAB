@@ -1,6 +1,9 @@
 package eventbus;
 
 public interface ISubscriber<TEvent> {
-	
-	public void invoke(TEvent event);
+
+    public String getSubscribedEventType();
+
+    public void invoke(TEvent event);
+
 }

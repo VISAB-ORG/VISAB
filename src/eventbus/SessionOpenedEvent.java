@@ -2,22 +2,16 @@ package eventbus;
 
 import java.util.UUID;
 
-public class SessionOpenedEvent implements IEvent {
+public class SessionOpenedEvent extends EventBase {
 
-	public UUID getSessionId() {
-		return sessionId;
-	}
+    private String game;
 
-	public String getGame() {
-		return game;
-	}
+    public SessionOpenedEvent(UUID sessionId, String game) {
+	super(sessionId);
+	this.game = game;
+    }
 
-	private UUID sessionId;
-	
-	private String game;
-
-	public SessionOpenedEvent(UUID sessionId, String game) {
-		this.sessionId = sessionId;
-		this.game = game;
-	}
+    public String getGame() {
+	return game;
+    }
 }

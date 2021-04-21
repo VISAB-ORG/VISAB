@@ -2,27 +2,24 @@ package eventbus;
 
 import java.util.UUID;
 
-public class StatisticsReceivedEvent<T> implements IEvent {
+import processing.IStatistics;
 
-	private String game;
-	private UUID sessionId;
-	private T statistics;
-	
-	public StatisticsReceivedEvent(String game, UUID sessionId, T statistics) {
-		this.game = game;
-		this.sessionId = sessionId;
-		this.statistics = statistics;
-	}
+public class StatisticsReceivedEvent extends EventBase {
 
-	public String getGame() {
-		return game;
-	}
+    private String game;
+    private IStatistics statistics;
 
-	public UUID getSessionId() {
-		return sessionId;
-	}
+    public StatisticsReceivedEvent(String game, UUID sessionId, IStatistics statistics) {
+	super(sessionId);
+	this.game = game;
+	this.statistics = statistics;
+    }
 
-	public T getStatistics() {
-		return statistics;
-	}
+    public String getGame() {
+	return game;
+    }
+
+    public IStatistics getStatistics() {
+	return statistics;
+    }
 }

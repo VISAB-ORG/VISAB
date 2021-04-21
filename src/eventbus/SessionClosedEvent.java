@@ -2,15 +2,9 @@ package eventbus;
 
 import java.util.UUID;
 
-public class SessionClosedEvent implements IEvent {
+public class SessionClosedEvent extends EventBase {
 
-	public UUID getSessionId() {
-		return sessionId;
-	}
-
-	private UUID sessionId;
-
-	public SessionClosedEvent(UUID sessionId) {
-		this.sessionId = sessionId;
-	}
+    public SessionClosedEvent(UUID sessionId) {
+	super(sessionId);
+    }
 }
