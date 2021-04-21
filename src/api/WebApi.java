@@ -2,9 +2,10 @@ package api;
 
 import java.io.IOException;
 
+import org.nanohttpd.protocols.http.NanoHTTPD;
+import org.nanohttpd.router.RouterNanoHTTPD;
+
 import eventbus.ApiEventBus;
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.router.RouterNanoHTTPD;
 
 public class WebApi extends RouterNanoHTTPD {
 
@@ -22,8 +23,12 @@ public class WebApi extends RouterNanoHTTPD {
     @Override
     public void addMappings() {
 	addRoute("/", IndexHandler.class);
+	addRoute("/test", TestHandler.class);
 	addRoute("/session", SessionHandler.class);
-	addRoute("/session/open", SessionHandler.class);
+    }
+
+    public void shutdown() {
+	this.stop();
     }
 
     @Override

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import fi.iki.elonen.NanoHTTPD.Response.IStatus;
-import fi.iki.elonen.router.RouterNanoHTTPD.DefaultHandler;
+import org.nanohttpd.protocols.http.response.IStatus;
+import org.nanohttpd.router.RouterNanoHTTPD.DefaultHandler;
 
 public class SessionHandler extends DefaultHandler {
 
