@@ -1,14 +1,17 @@
-package eventbus.subscribers;
+package processing.listener;
 
 import java.util.UUID;
 
 import api.WebApi;
-import eventbus.IEvent;
 import eventbus.ISubscriber;
 import eventbus.event.SessionClosedEvent;
 import eventbus.event.StatisticsReceivedEvent;
+import eventbus.subscriber.SubscriberBase;
+import processing.ISessionListener;
+import processing.ISessionListenerWithStatistics;
 
-public abstract class SessionListenerBase<TStatistics> implements ISessionListener {
+public abstract class SessionListenerBase<TStatistics>
+	implements ISessionListener, ISessionListenerWithStatistics<TStatistics> {
 
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
@@ -17,12 +20,11 @@ public abstract class SessionListenerBase<TStatistics> implements ISessionListen
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void invoke(SessionClosedEvent event) {
 	    SessionListenerFactory.removeListener((ISessionListener) SessionListenerBase.this);
 
-	    WebApi.getEventBus().unsubscribe((ISubscriber<IEvent>) (Object) statisticsSubscriber);
-	    WebApi.getEventBus().unsubscribe((ISubscriber<IEvent>) (Object) sessionClosedSubscriber);
+	    WebApi.getEventBus().unsubscribe((ISubscriber) statisticsSubscriber);
+	    WebApi.getEventBus().unsubscribe((ISubscriber) sessionClosedSubscriber);
 
 	    SessionListenerBase.this.onSessionClosed();
 	}
@@ -46,30 +48,34 @@ public abstract class SessionListenerBase<TStatistics> implements ISessionListen
     private UUID sessionId;
     private StatisticsSubscriber statisticsSubscriber;
 
-    @SuppressWarnings("unchecked")
     public SessionListenerBase(String game, UUID sessionId) {
 	this.game = game;
 	this.sessionId = sessionId;
 	this.statisticsSubscriber = new StatisticsSubscriber();
 	this.sessionClosedSubscriber = new SessionClosedSubscriber();
 
-	WebApi.getEventBus().subscribe((ISubscriber<IEvent>) (Object) statisticsSubscriber);
-	WebApi.getEventBus().subscribe((ISubscriber<IEvent>) (Object) sessionClosedSubscriber);
+	WebApi.getEventBus().subscribe((ISubscriber) statisticsSubscriber);
+	WebApi.getEventBus().subscribe((ISubscriber) sessionClosedSubscriber);
 
 	onSessionStarted();
     }
 
+    @Override
     public String getGame() {
 	return game;
     }
 
+    @Override
     public UUID getSessionId() {
 	return sessionId;
     }
 
+    @Override
     public abstract void onSessionClosed();
 
+    @Override
     public abstract void onSessionStarted();
 
+    @Override
     public abstract void processStatistics(TStatistics statistics);
 }

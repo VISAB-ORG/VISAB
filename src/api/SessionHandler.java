@@ -9,9 +9,9 @@ import fi.iki.elonen.router.RouterNanoHTTPD.DefaultHandler;
 
 public class SessionHandler extends DefaultHandler {
 
-    private static Map activeSessions = new HashMap<UUID, String>();
+    private static Map<UUID, String> activeSessions = new HashMap<>();
 
-    public static Map GetActiveSessions() {
+    public static Map<UUID, String> GetActiveSessions() {
 	return activeSessions;
     }
 

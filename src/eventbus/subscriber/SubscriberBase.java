@@ -1,8 +1,9 @@
-package eventbus.subscribers;
+package eventbus.subscriber;
 
 import eventbus.ISubscriber;
+import eventbus.ISubscriberWithEvent;
 
-public abstract class SubscriberBase<TEvent> implements ISubscriber<TEvent> {
+public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriberWithEvent<TEvent> {
 
     private String subscribedEventType;
 

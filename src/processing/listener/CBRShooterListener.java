@@ -2,7 +2,6 @@ package processing.listener;
 
 import java.util.UUID;
 
-import eventbus.subscribers.SessionListenerBase;
 import processing.statistics.CBRShooterStatistics;
 
 public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
