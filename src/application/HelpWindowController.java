@@ -24,9 +24,9 @@ public class HelpWindowController extends Application {
 	@FXML
 	private Button loadButton;
 
-	public Main main;
+	public GUIMain main;
 
-	public void setMain(Main main) {
+	public void setMain(GUIMain main) {
 		this.main = main;
 	}
 
