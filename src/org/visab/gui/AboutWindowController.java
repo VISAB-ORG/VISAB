@@ -1,4 +1,4 @@
-package application;
+package org.visab.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;

@@ -1,14 +1,15 @@
-package application;
+package org.visab.gui;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.visab.util.VisABUtil;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import util.VisABUtil;
 
 public class MainWindowController {
 

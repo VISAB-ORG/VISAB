@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.MainWindowController">
    <children>
       <Button fx:id="browseFile" layoutX="490.0" layoutY="475.0" mnemonicParsing="false" onAction="#handleBrowseFile" prefHeight="25.0" prefWidth="209.0" text="Browse file..." />
       <Label fx:id="warningMessage" layoutX="490.0" layoutY="516.0" prefHeight="83.0" prefWidth="393.0" textFill="#ee0606" wrapText="true" />
@@ -16,7 +16,7 @@
       <Button fx:id="statisticsViewButton" layoutX="490.0" layoutY="621.0" mnemonicParsing="false" onAction="#handleStatisticsViewButton" prefHeight="25.0" prefWidth="209.0" text="Statistics View" />
       <ImageView fitHeight="381.0" fitWidth="381.0" layoutX="378.0" layoutY="57.0">
          <image>
-            <Image url="@../../img/visabLogo.PNG" />
+            <Image url="@../../../../img/visabLogo.PNG" />
          </image>
       </ImageView>
    </children>

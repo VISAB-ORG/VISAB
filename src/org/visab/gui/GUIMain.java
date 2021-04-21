@@ -1,4 +1,4 @@
-package application;
+package org.visab.gui;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,10 +1,14 @@
-package application;
+package org.visab.gui;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.visab.gui.model.TableEntry;
+import org.visab.gui.model.TableEntryStatisticsVisab;
+import org.visab.util.VisABUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +25,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.TableEntry;
-import model.TableEntryStatisticsVisab;
-import util.VisABUtil;
 
 public class StatisticsWindowController {
 

@@ -1,4 +1,4 @@
-package application;
+package org.visab.gui;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+
+import org.visab.gui.model.TableEntryCBRBot;
+import org.visab.gui.model.TableEntryScriptBot;
+import org.visab.util.VisABUtil;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,9 +39,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
-import model.TableEntryCBRBot;
-import model.TableEntryScriptBot;
-import util.VisABUtil;
 
 public class PathViewerWindowController {
 

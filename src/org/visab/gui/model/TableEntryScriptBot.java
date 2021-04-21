@@ -1,4 +1,4 @@
-package model;
+package org.visab.gui.model;
 
 public class TableEntryScriptBot {
 

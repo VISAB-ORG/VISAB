@@ -1,4 +1,4 @@
-package util;
+package org.visab.util;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
