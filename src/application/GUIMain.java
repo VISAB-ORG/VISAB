@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
-public class Main extends Application {
+public class GUIMain extends Application {
 
 	private Stage primaryStage;
 
@@ -32,7 +32,7 @@ public class Main extends Application {
 
 	public void mainWindow() {
 		try {
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("MainWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("MainWindow.fxml"));
 			AnchorPane pane = loader.load();
 
 			primaryStage.setMinHeight(1000.00);
@@ -57,7 +57,7 @@ public class Main extends Application {
 	public void pathViewerWindow() {
 		try {
 
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("PathViewerWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("PathViewerWindow.fxml"));
 			AnchorPane pane = loader.load();
 
 			primaryStage.setMinHeight(1000.00);
@@ -84,7 +84,7 @@ public class Main extends Application {
 	public void statisticsWindow() {
 		try {
 
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("StatisticsWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("StatisticsWindow.fxml"));
 			AnchorPane pane = loader.load();
 
 			primaryStage.setMinHeight(1000.00);
@@ -111,7 +111,7 @@ public class Main extends Application {
 	public void aboutWindow() {
 		try {
 
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("AboutWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("AboutWindow.fxml"));
 			AnchorPane pane = loader.load();
 
 			primaryStage.setMinHeight(1000.00);
@@ -136,7 +136,7 @@ public class Main extends Application {
 	public void helpWindow() {
 		try {
 
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("HelpWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("HelpWindow.fxml"));
 			AnchorPane pane = loader.load();
 
 			primaryStage.setMinHeight(1000.00);
@@ -177,3 +177,4 @@ public class Main extends Application {
 		return filesComboBox;
 	}
 }
+
