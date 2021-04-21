@@ -1,6 +1,8 @@
-package eventbus;
+package eventbus.event;
 
 import java.util.UUID;
+
+import eventbus.IEvent;
 
 public abstract class EventBase implements IEvent {
 

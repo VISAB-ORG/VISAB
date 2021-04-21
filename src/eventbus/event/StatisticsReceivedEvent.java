@@ -1,4 +1,4 @@
-package eventbus;
+package eventbus.event;
 
 import java.util.UUID;
 

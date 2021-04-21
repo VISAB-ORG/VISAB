@@ -1,8 +1,11 @@
-package processing;
+package processing.listener;
 
 import java.util.UUID;
 
-public class CBRShooterListener extends SessionListener<CBRShooterStatistics> {
+import eventbus.subscribers.SessionListenerBase;
+import processing.statistics.CBRShooterStatistics;
+
+public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
 
     public CBRShooterListener(String game, UUID sessionId) {
 	super(game, sessionId);

@@ -1,4 +1,6 @@
-package eventbus;
+package eventbus.subscribers;
+
+import eventbus.ISubscriber;
 
 public abstract class SubscriberBase<TEvent> implements ISubscriber<TEvent> {
 

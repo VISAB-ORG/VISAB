@@ -1,16 +1,14 @@
-package processing;
+package eventbus.subscribers;
 
 import java.util.UUID;
 
 import api.WebApi;
 import eventbus.IEvent;
 import eventbus.ISubscriber;
-import eventbus.SessionClosedEvent;
-import eventbus.SessionListenerFactory;
-import eventbus.StatisticsReceivedEvent;
-import eventbus.SubscriberBase;
+import eventbus.event.SessionClosedEvent;
+import eventbus.event.StatisticsReceivedEvent;
 
-public abstract class SessionListener<TStatistics> {
+public abstract class SessionListenerBase<TStatistics> implements ISessionListener {
 
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
@@ -21,12 +19,12 @@ public abstract class SessionListener<TStatistics> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void invoke(SessionClosedEvent event) {
-	    SessionListenerFactory.removeListener(SessionListener.this);
+	    SessionListenerFactory.removeListener((ISessionListener) SessionListenerBase.this);
 
 	    WebApi.getEventBus().unsubscribe((ISubscriber<IEvent>) (Object) statisticsSubscriber);
 	    WebApi.getEventBus().unsubscribe((ISubscriber<IEvent>) (Object) sessionClosedSubscriber);
 
-	    SessionListener.this.onSessionClosed();
+	    SessionListenerBase.this.onSessionClosed();
 	}
     }
 
@@ -39,7 +37,7 @@ public abstract class SessionListener<TStatistics> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void invoke(StatisticsReceivedEvent event) {
-	    SessionListener.this.processStatistics((TStatistics) event.getStatistics());
+	    SessionListenerBase.this.processStatistics((TStatistics) event.getStatistics());
 	}
     }
 
@@ -49,7 +47,7 @@ public abstract class SessionListener<TStatistics> {
     private StatisticsSubscriber statisticsSubscriber;
 
     @SuppressWarnings("unchecked")
-    public SessionListener(String game, UUID sessionId) {
+    public SessionListenerBase(String game, UUID sessionId) {
 	this.game = game;
 	this.sessionId = sessionId;
 	this.statisticsSubscriber = new StatisticsSubscriber();
