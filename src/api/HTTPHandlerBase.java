@@ -8,19 +8,44 @@ import org.nanohttpd.protocols.http.response.Status;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResponder;
 
-public abstract class HandlerBase implements UriResponder {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-    protected static Response forbiddenResponse = Response.newFixedLengthResponse(Status.FORBIDDEN, "text/html",
-	    "HTTP Method forbidden by visab");
+public abstract class HTTPHandlerBase implements UriResponder {
+
+    protected static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static Response getBadRequestResponse(String error) {
 	return Response.newFixedLengthResponse(Status.BAD_REQUEST, "application/json",
 		"400: BadRequest with error:[" + error + "]");
     }
 
+    public static Response getForbiddenResponse(String error) {
+	return Response.newFixedLengthResponse(Status.BAD_REQUEST, "application/json",
+		"400: BadRequest with error:[" + error + "]");
+    }
+
+    protected static Response getJsonResponse(String json) {
+	return Response.newFixedLengthResponse(Status.OK, Constant.JSON_MIME_TYPE, json);
+    }
+
+    protected static <T> Response getJsonResponse(T object) {
+	var json = gson.toJson(object);
+
+	return Response.newFixedLengthResponse(Status.OK, Constant.JSON_MIME_TYPE, json);
+    }
+
     protected static Response getNotFoundResponse(UriResource uriResource) {
 	var responseMessage = "Adress: [" + Constant.WEB_API_BASE_URL + Constant.API_PORT + "/" + uriResource.getUri()
 		+ "] was not found.";
+
+	return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
+    }
+
+    protected static Response getNotFoundResponse(UriResource uriResource, String additionalMessage) {
+	var responseMessage = "Adress: [" + Constant.WEB_API_BASE_URL + Constant.API_PORT + "/" + uriResource.getUri()
+		+ "] was not found." + "Additional info: [" + additionalMessage + "]";
+
 	return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
 
@@ -29,13 +54,9 @@ public abstract class HandlerBase implements UriResponder {
 		"200: Request Ok with message:[" + message + "]");
     }
 
-    protected static <T> Response getSerializedJsonResponse(T object) {
-
-    }
-
     @Override
     public Response delete(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	return forbiddenResponse;
+	return getForbiddenResponse("Delete requests are forbidden!");
     }
 
     @Override
@@ -45,7 +66,7 @@ public abstract class HandlerBase implements UriResponder {
 
     @Override
     public Response other(String method, UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	return forbiddenResponse;
+	return getForbiddenResponse("Other requests are forbidden!");
     }
 
     @Override
@@ -59,7 +80,7 @@ public abstract class HandlerBase implements UriResponder {
 
     @Override
     public Response put(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	return forbiddenResponse;
+	return getForbiddenResponse("Put requests are forbidden!");
     }
 
 }

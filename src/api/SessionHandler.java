@@ -8,11 +8,12 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
+import api.model.SessionStatus;
 import eventbus.event.SessionClosedEvent;
 import eventbus.event.SessionOpenedEvent;
 import eventbus.publisher.PublisherBase;
 
-public class SessionHandler extends HandlerBase {
+public class SessionHandler extends HTTPHandlerBase {
 
     private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
 	private Response closeSession(IHTTPSession httpSession) {
@@ -87,7 +88,7 @@ public class SessionHandler extends HandlerBase {
 
     private OpenSessionPublisher openSessionPublisher = new OpenSessionPublisher();
 
-    private Response getSessionStatus(Map<String, String> urlParams, IHTTPSession httpSession) {
+    private Response getSessionStatus(Map<String, String> urlParams) {
 	UUID sessionId = null;
 
 	if (urlParams.containsKey("sessionId"))
@@ -99,19 +100,17 @@ public class SessionHandler extends HandlerBase {
 	if (sessionId == null)
 	    return getBadRequestResponse("Could not parse uuid!");
 
+	SessionStatus sessionStatus;
 	if (!activeSessions.containsKey(sessionId))
-	    return getOkResponse("No session with given Id active!");
+	    sessionStatus = new SessionStatus(false, sessionId, null);
+	else
+	    sessionStatus = new SessionStatus(true, sessionId, activeSessions.get(sessionId));
 
-	var sessionStatus = activeSessions.get(sessionId);
-
-	if (headers.containsKey("sessionId"))
-	    sessionId = tryParseUUID(headers.get("sessionId"));
+	return getJsonResponse(sessionStatus);
     }
 
     @Override
     public Response processGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
-	System.out.println(uriResource);
-
 	var endpointAdress = uriResource.getUri().replace("session/", "");
 	switch (endpointAdress) {
 	case "open":
@@ -121,22 +120,19 @@ public class SessionHandler extends HandlerBase {
 	    return closeSessionPublisher.closeSession(httpSession);
 
 	case "status":
-	    return getSessionStatus(httpSession);
+	    return getSessionStatus(urlParams);
 
 	case "list":
-	    // TODO: Serialize this
-	    return getOkResponse(activeSessions.toString());
-	default:
-	    break;
-	}
+	    return getJsonResponse(activeSessions);
 
-	return null;
+	default:
+	    return getNotFoundResponse(uriResource);
+	}
     }
 
     @Override
     public Response processPost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	// TODO Auto-generated method stub
-	return null;
+	return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
     }
 
 }

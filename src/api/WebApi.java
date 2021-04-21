@@ -23,7 +23,7 @@ public class WebApi extends RouterNanoHTTPD {
     @Override
     public void addMappings() {
 	addRoute("/", IndexHandler.class);
-	addRoute("/test", HandlerBase.class);
+	addRoute("/test", HTTPHandlerBase.class);
 	addRoute("/session", SessionHandler.class);
 	addRoute("/session/open", SessionHandler.class);
 	addRoute("/session/list", SessionHandler.class);
