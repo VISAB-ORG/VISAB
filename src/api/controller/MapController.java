@@ -6,6 +6,13 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
+/**
+ * The map controller, used for transmitting data for displaying unity maps in
+ * VISABs GUI.
+ *
+ * @author moritz
+ *
+ */
 public class MapController extends HTTPControllerBase {
 
     @Override

@@ -9,6 +9,13 @@ import eventbus.event.SessionOpenedEvent;
 import eventbus.subscriber.SubscriberBase;
 import processing.ISessionListener;
 
+/**
+ * The SessionListenerFactory that will create new SessionListeners whenever a
+ * new transmission session is opened.
+ *
+ * @author moritz
+ *
+ */
 public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 
     private static List<ISessionListener> activeListeners = new ArrayList<>();

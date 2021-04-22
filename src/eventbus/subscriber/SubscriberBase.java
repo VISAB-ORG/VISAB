@@ -3,6 +3,13 @@ package eventbus.subscriber;
 import eventbus.ISubscriber;
 import eventbus.ISubscriberWithEvent;
 
+/**
+ * The base subscriber class, that all subscribers should inherit from.
+ *
+ * @author moritz
+ *
+ * @param <TEvent> The event that the class will subscribe to.
+ */
 public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriberWithEvent<TEvent> {
 
     private String subscribedEventType;

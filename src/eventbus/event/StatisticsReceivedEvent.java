@@ -4,6 +4,13 @@ import java.util.UUID;
 
 import processing.IStatistics;
 
+/**
+ * The StatisticsReceivedEvent, that occurs when new statistics are received by
+ * the VISAB api.
+ *
+ * @author moritz
+ *
+ */
 public class StatisticsReceivedEvent extends EventBase {
 
     private String game;

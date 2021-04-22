@@ -10,9 +10,26 @@ import eventbus.subscriber.SubscriberBase;
 import processing.ISessionListener;
 import processing.ISessionListenerWithStatistics;
 
+/**
+ * The base SessionListener class, that should be implemented by all session
+ * listeners.
+ *
+ * @author moritz
+ *
+ * @param <TStatistics> The statistics type, that will be processed by the
+ *                      listeners
+ */
 public abstract class SessionListenerBase<TStatistics>
 	implements ISessionListener, ISessionListenerWithStatistics<TStatistics> {
 
+    /**
+     * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
 	public SessionClosedSubscriber() {
@@ -30,6 +47,14 @@ public abstract class SessionListenerBase<TStatistics>
 	}
     }
 
+    /**
+     * The StatisticsSubscriber, that subscribes to the StatisticsReceivedEvent.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
     private class StatisticsSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
 
 	public StatisticsSubscriber() {

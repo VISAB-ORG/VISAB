@@ -11,6 +11,12 @@ import org.nanohttpd.router.RouterNanoHTTPD.UriResponder;
 import api.WebApiHelper;
 import util.Settings;
 
+/**
+ * The base controller that all new controllers should inherit from.
+ *
+ * @author moritz
+ *
+ */
 public abstract class HTTPControllerBase implements UriResponder {
 
     protected static final Response getBadRequestResponse(String error) {
@@ -32,15 +38,15 @@ public abstract class HTTPControllerBase implements UriResponder {
     }
 
     protected static final Response getNotFoundResponse(UriResource uriResource) {
-	var responseMessage = "Adress: [" + Settings.WEB_API_BASE_ADDRESS + Settings.API_PORT + "/" + uriResource.getUri()
-		+ "] was not found.";
+	var responseMessage = "Adress: [" + Settings.WEB_API_BASE_ADDRESS + Settings.API_PORT + "/"
+		+ uriResource.getUri() + "] was not found.";
 
 	return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
 
     protected static final Response getNotFoundResponse(UriResource uriResource, String additionalMessage) {
-	var responseMessage = "Adress: [" + Settings.WEB_API_BASE_ADDRESS + Settings.API_PORT + "/" + uriResource.getUri()
-		+ "] was not found." + "Additional info: [" + additionalMessage + "]";
+	var responseMessage = "Adress: [" + Settings.WEB_API_BASE_ADDRESS + Settings.API_PORT + "/"
+		+ uriResource.getUri() + "] was not found." + "Additional info: [" + additionalMessage + "]";
 
 	return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }

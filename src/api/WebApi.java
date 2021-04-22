@@ -10,6 +10,13 @@ import api.controller.SessionController;
 import api.controller.StatisticsController;
 import eventbus.ApiEventBus;
 
+/**
+ * The main WebApi that hosts a small HTTP server. This is the entry point for
+ * all HTTP communication.
+ *
+ * @author moritz
+ *
+ */
 public class WebApi extends RouterNanoHTTPD {
 
     private static ApiEventBus apiEventBus = new ApiEventBus();

@@ -8,6 +8,7 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD.ResponseException;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
+import org.visab.util.VisABUtil;
 
 import api.WebApi;
 import api.WebApiHelper;
@@ -15,8 +16,13 @@ import eventbus.IPublisher;
 import eventbus.event.StatisticsReceivedEvent;
 import processing.IStatistics;
 import processing.statistics.CBRShooterStatistics;
-import org.visab.util.VisABUtil;
 
+/**
+ * The statistics controller, used for transmitting statistics data.
+ *
+ * @author moritz
+ *
+ */
 public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
 
     private final IStatistics getDeserializedStatistics(String json, String game) { // throws GameNotSupportedException

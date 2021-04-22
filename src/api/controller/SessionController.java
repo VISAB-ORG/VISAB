@@ -15,8 +15,24 @@ import eventbus.event.SessionClosedEvent;
 import eventbus.event.SessionOpenedEvent;
 import eventbus.publisher.PublisherBase;
 
+/**
+ * The SessionController, used for opening and closing VISAB transmission
+ * sessions. Can also give information on session status and show currently
+ * active sessions.
+ *
+ * @author moritz
+ *
+ */
 public class SessionController extends HTTPControllerBase {
 
+    /**
+     * The CloseSessionPublisher, used for processing requests to close the session.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
     private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
 	private Response closeSession(IHTTPSession httpSession) {
 	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
@@ -35,6 +51,14 @@ public class SessionController extends HTTPControllerBase {
 	}
     }
 
+    /**
+     * The OpenSessionPublisher, used for processing requests to open a session.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
     private class OpenSessionPublisher extends PublisherBase<SessionOpenedEvent> {
 	private Response openSession(IHTTPSession httpSession) {
 	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
@@ -62,6 +86,12 @@ public class SessionController extends HTTPControllerBase {
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
+    /**
+     * Getter for the currently active transmission sessions
+     *
+     * @return A Map of the currently active transmission sessions and their
+     *         respective games
+     */
     public static Map<UUID, String> getActiveSessions() {
 	return activeSessions;
     }

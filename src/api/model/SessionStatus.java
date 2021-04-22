@@ -2,6 +2,12 @@ package api.model;
 
 import java.util.UUID;
 
+/**
+ * A POJO for sending responses including session status.
+ *
+ * @author moritz
+ *
+ */
 public class SessionStatus {
 
     private boolean active;

@@ -4,6 +4,12 @@ import java.util.UUID;
 
 import eventbus.IEvent;
 
+/**
+ * A base event class, that all events should inherit from.
+ *
+ * @author moritz
+ *
+ */
 public abstract class EventBase implements IEvent {
 
     private UUID sessionId;

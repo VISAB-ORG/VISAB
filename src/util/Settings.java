@@ -3,6 +3,13 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * POJO for holding all settings required in the project. TODO: Should be
+ * persisted in file and loaded at start of VISAB.
+ *
+ * @author moritz
+ *
+ */
 public final class Settings {
 
     // TODO: Get this from YAML FILE

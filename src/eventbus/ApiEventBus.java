@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ApiEventBus, used for notifying subscribers of new messages to the api.
+ * Subscribers will be notified, when their subscribed event occurs.
+ *
+ * @author moritz
+ *
+ */
 public class ApiEventBus {
 
     private Map<String, ArrayList<ISubscriber>> subscribers = new HashMap<>();
