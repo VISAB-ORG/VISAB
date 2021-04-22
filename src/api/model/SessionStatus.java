@@ -9,7 +9,6 @@ public class SessionStatus {
     private UUID sessionId;
 
     public SessionStatus(boolean active, UUID sessionId, String game) {
-	super();
 	this.active = active;
 	this.sessionId = sessionId;
 	this.game = game;

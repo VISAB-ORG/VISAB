@@ -8,7 +8,7 @@ public class ApiEventBus {
 
     private Map<String, ArrayList<ISubscriber>> subscribers = new HashMap<>();
 
-    public <TEvent> void Publish(TEvent event) {
+    public <TEvent> void publish(TEvent event) {
 	var eventType = event.getClass().toString();
 
 	if (subscribers.containsKey(eventType))

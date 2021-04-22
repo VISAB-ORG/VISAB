@@ -1,4 +1,4 @@
-package api;
+package api.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,26 +8,24 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
+import api.WebApiHelper;
 import api.model.SessionStatus;
 import eventbus.event.SessionClosedEvent;
 import eventbus.event.SessionOpenedEvent;
 import eventbus.publisher.PublisherBase;
+import util.VisABUtil;
 
-public class SessionHandler extends HTTPHandlerBase {
+public class SessionController extends HTTPControllerBase {
 
     private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
 	private Response closeSession(IHTTPSession httpSession) {
-	    var headers = httpSession.getHeaders();
-
-	    UUID sessionId = null;
-	    if (headers.containsKey("sessionId"))
-		sessionId = tryParseUUID(headers.get("sessionId"));
+	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
 
 	    if (sessionId == null)
-		return getBadRequestResponse("Either no sessionId given or could not parse uuid!");
+		return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
 	    if (!activeSessions.containsKey(sessionId))
-		return getBadRequestResponse("No Session with given sessionId in activeSessions!");
+		return getBadRequestResponse("No Session with given sessionid in activeSessions!");
 
 	    activeSessions.remove(sessionId);
 	    // Publish the closed session to the EventBus
@@ -39,24 +37,16 @@ public class SessionHandler extends HTTPHandlerBase {
 
     private class OpenSessionPublisher extends PublisherBase<SessionOpenedEvent> {
 	private Response openSession(IHTTPSession httpSession) {
-	    var headers = httpSession.getHeaders();
-
-	    UUID sessionId = null;
-	    var game = "";
-
-	    if (headers.containsKey("sessionId"))
-		sessionId = tryParseUUID(headers.get("sessionId"));
-
-	    if (headers.containsKey("game"))
-		game = headers.get("game");
+	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+	    var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
 	    if (sessionId == null)
-		return getBadRequestResponse("Either no sessionId given or could not parse uuid!");
+		return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
 	    if (game == "")
 		return getBadRequestResponse("No game given!");
 
-	    if (!Constant.ALLOWED_GAMES.contains(game))
+	    if (!VisABUtil.gameIsSupported(game))
 		return getBadRequestResponse("Game is not supported!");
 
 	    if (activeSessions.containsKey(sessionId))
@@ -76,26 +66,19 @@ public class SessionHandler extends HTTPHandlerBase {
 	return activeSessions;
     }
 
-    private static UUID tryParseUUID(String UUIDString) {
-	try {
-	    return UUID.fromString(UUIDString);
-	} catch (Exception e) {
-	    return null;
-	}
-    }
-
     private CloseSessionPublisher closeSessionPublisher = new CloseSessionPublisher();
 
     private OpenSessionPublisher openSessionPublisher = new OpenSessionPublisher();
 
-    private Response getSessionStatus(Map<String, String> urlParams) {
+    private Response getSessionStatus(IHTTPSession httpSession) {
+	var parameters = httpSession.getParameters();
+
 	UUID sessionId = null;
+	if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
+	    sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
 
-	if (urlParams.containsKey("sessionId"))
-	    sessionId = tryParseUUID(urlParams.get("sessionId"));
-
-	if (!urlParams.containsKey("sessionId"))
-	    return getBadRequestResponse("No sessionId given in url parameters!");
+	if (!parameters.containsKey("sessionid"))
+	    return getBadRequestResponse("No sessionid given in url parameters!");
 
 	if (sessionId == null)
 	    return getBadRequestResponse("Could not parse uuid!");
@@ -110,7 +93,7 @@ public class SessionHandler extends HTTPHandlerBase {
     }
 
     @Override
-    public Response processGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
+    public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
 	var endpointAdress = uriResource.getUri().replace("session/", "");
 	switch (endpointAdress) {
 	case "open":
@@ -120,7 +103,7 @@ public class SessionHandler extends HTTPHandlerBase {
 	    return closeSessionPublisher.closeSession(httpSession);
 
 	case "status":
-	    return getSessionStatus(urlParams);
+	    return getSessionStatus(httpSession);
 
 	case "list":
 	    return getJsonResponse(activeSessions);
@@ -131,7 +114,7 @@ public class SessionHandler extends HTTPHandlerBase {
     }
 
     @Override
-    public Response processPost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
+    public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
 	return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
     }
 

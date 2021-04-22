@@ -5,6 +5,9 @@ import java.io.IOException;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.router.RouterNanoHTTPD;
 
+import api.controller.MapController;
+import api.controller.SessionController;
+import api.controller.StatisticsController;
 import eventbus.ApiEventBus;
 
 public class WebApi extends RouterNanoHTTPD {
@@ -23,12 +26,14 @@ public class WebApi extends RouterNanoHTTPD {
     @Override
     public void addMappings() {
 	addRoute("/", IndexHandler.class);
-	addRoute("/test", HTTPHandlerBase.class);
-	addRoute("/session", SessionHandler.class);
-	addRoute("/session/open", SessionHandler.class);
-	addRoute("/session/list", SessionHandler.class);
-	addRoute("/session/status", SessionHandler.class);
-	addRoute("/session/close", SessionHandler.class);
+	addRoute("/ping", IndexHandler.class);
+	// addRoute("/session", SessionController.class);
+	addRoute("/session/open", SessionController.class);
+	addRoute("/session/list", SessionController.class);
+	addRoute("/session/status", SessionController.class);
+	addRoute("/session/close", SessionController.class);
+	addRoute("send/statistics", StatisticsController.class);
+	addRoute("send/map", MapController.class);
     }
 
     public void shutdown() {

@@ -9,7 +9,7 @@ public class StatisticsReceivedEvent extends EventBase {
     private String game;
     private IStatistics statistics;
 
-    public StatisticsReceivedEvent(String game, UUID sessionId, IStatistics statistics) {
+    public StatisticsReceivedEvent(UUID sessionId, String game, IStatistics statistics) {
 	super(sessionId);
 	this.game = game;
 	this.statistics = statistics;

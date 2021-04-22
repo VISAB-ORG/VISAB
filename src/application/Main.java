@@ -3,7 +3,6 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
-import api.Constant;
 import api.WebApi;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -13,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import util.Settings;
 
 public class Main extends Application {
 
@@ -37,7 +37,7 @@ public class Main extends Application {
 
     private void startApiServer() {
 	try {
-	    webApi = new WebApi(Constant.API_PORT);
+	    webApi = new WebApi(Settings.API_PORT);
 	    webApi.start();
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
