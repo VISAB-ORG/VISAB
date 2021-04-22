@@ -1,4 +1,4 @@
-package org.visab.processing.listening;
+package org.visab.processing;
 
 import java.util.UUID;
 
@@ -7,8 +7,6 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.processing.ISessionListener;
-import org.visab.processing.ISessionListenerWithStatistics;
 
 /**
  * The base SessionListener class, that should be implemented by all session

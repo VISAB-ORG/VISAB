@@ -1,4 +1,4 @@
-package org.visab.processing.parsing;
+package org.visab.processing;
 
 import java.io.FileWriter;
 import java.io.IOException;

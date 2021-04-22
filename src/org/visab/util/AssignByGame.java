@@ -5,12 +5,12 @@ import java.util.UUID;
 import org.visab.api.WebApiHelper;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
-import org.visab.processing.listening.CBRShooterListener;
-import org.visab.processing.model.CBRShooterStatistics;
+import org.visab.processing.cbrshooter.CBRShooterListener;
+import org.visab.processing.cbrshooter.CBRShooterStatistics;
 
 /**
  * Class where game (-string) specific instance creations are done. When adding
- * new SessionListeners or Statistics objects, this class has to be extended.
+ * new SessionListeners or Statistics types, this class has to be extended.
  *
  * @author moritz
  *

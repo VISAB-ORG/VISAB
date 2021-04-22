@@ -50,14 +50,15 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 	try {
 	    var writeInto = new HashMap<String, String>();
 	    httpSession.parseBody(writeInto);
-	    json = writeInto.get("postBody");
+	    var keys = writeInto.keySet();
+	    var values = writeInto.values();
+	    json = writeInto.get("postData");
 	} catch (IOException | ResponseException e) {
 	    e.printStackTrace();
 	    return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 	}
 
-	var event = new StatisticsReceivedEvent(sessionId, game,
-		AssignByGame.getDeserializedStatistics(json, game));
+	var event = new StatisticsReceivedEvent(sessionId, game, AssignByGame.getDeserializedStatistics(json, game));
 	publish(event);
 
 	return getOkResponse("Statistics received.");

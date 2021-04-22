@@ -1,8 +1,8 @@
-package org.visab.processing.listening;
+package org.visab.processing.cbrshooter;
 
 import java.util.UUID;
 
-import org.visab.processing.model.CBRShooterStatistics;
+import org.visab.processing.SessionListenerBase;
 
 public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
 
@@ -22,7 +22,7 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
 
     @Override
     public void processStatistics(CBRShooterStatistics statistics) {
-	// TODO Auto-generated method stub
+	System.out.println("Hi from processing Statistics!");
     }
 
 }

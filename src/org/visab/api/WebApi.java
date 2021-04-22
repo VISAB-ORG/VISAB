@@ -8,6 +8,7 @@ import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.eventbus.ApiEventBus;
+import org.visab.processing.SessionListenerFactory;
 
 /**
  * The main WebApi that hosts a small HTTP server. This is the entry point for
@@ -27,6 +28,7 @@ public class WebApi extends RouterNanoHTTPD {
     public WebApi(int port) {
 	super(port);
 	addMappings();
+	new SessionListenerFactory();
     }
 
     @Override

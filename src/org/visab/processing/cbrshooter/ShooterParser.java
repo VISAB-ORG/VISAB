@@ -1,10 +1,10 @@
-package org.visab.processing.parsing;
+package org.visab.processing.cbrshooter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.visab.processing.model.ShooterDataRepresentation;
+import org.visab.processing.AbstractParser;
 
 /**
  * This class is responsible for parsing JSON data from Unity into visab-format.

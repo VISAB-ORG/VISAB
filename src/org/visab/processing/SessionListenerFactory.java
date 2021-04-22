@@ -1,13 +1,14 @@
-package org.visab.processing.listening;
+package org.visab.processing;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.visab.api.WebApi;
+import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.processing.ISessionListener;
 import org.visab.util.AssignByGame;
 
 /**
@@ -44,6 +45,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 
     public SessionListenerFactory() {
 	super(new SessionOpenedEvent(null, null).getClass().getSimpleName());
+	WebApi.getEventBus().subscribe((ISubscriber) this);
     }
 
     @Override

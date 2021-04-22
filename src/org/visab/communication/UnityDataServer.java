@@ -9,8 +9,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.visab.processing.parsing.AbstractParser;
-import org.visab.processing.parsing.ShooterParser;
+import org.visab.processing.AbstractParser;
+import org.visab.processing.cbrshooter.ShooterParser;
 
 /**
  *

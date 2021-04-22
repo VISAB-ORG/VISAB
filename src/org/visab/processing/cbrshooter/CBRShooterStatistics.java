@@ -1,4 +1,4 @@
-package org.visab.processing.model;
+package org.visab.processing.cbrshooter;
 
 import org.visab.processing.IStatistics;
 
