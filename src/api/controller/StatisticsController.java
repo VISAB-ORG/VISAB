@@ -15,7 +15,7 @@ import eventbus.IPublisher;
 import eventbus.event.StatisticsReceivedEvent;
 import processing.IStatistics;
 import processing.statistics.CBRShooterStatistics;
-import util.VisABUtil;
+import org.visab.util.VisABUtil;
 
 public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
 

@@ -7,13 +7,13 @@ import java.util.UUID;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
+import org.visab.util.VisABUtil;
 
 import api.WebApiHelper;
 import api.model.SessionStatus;
 import eventbus.event.SessionClosedEvent;
 import eventbus.event.SessionOpenedEvent;
 import eventbus.publisher.PublisherBase;
-import util.VisABUtil;
 
 public class SessionController extends HTTPControllerBase {
 
