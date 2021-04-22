@@ -12,8 +12,7 @@ import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.processing.IStatistics;
-import org.visab.processing.model.CBRShooterStatistics;
+import org.visab.util.AssignByGame;
 import org.visab.util.VisABUtil;
 
 /**
@@ -23,18 +22,6 @@ import org.visab.util.VisABUtil;
  *
  */
 public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
-
-    private final IStatistics getDeserializedStatistics(String json, String game) { // throws GameNotSupportedException
-										    // {
-	switch (game) {
-	case "CBRShooter":
-	    return WebApiHelper.deserializeObject(json, CBRShooterStatistics.class);
-	default:
-	    return null;
-	// throw new GameNotSupportedException(String.format("Game {1,string} is not
-	// supported by VISAB yet.", game));
-	}
-    }
 
     @Override
     public final Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
@@ -69,7 +56,8 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 	    return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 	}
 
-	var event = new StatisticsReceivedEvent(sessionId, game, getDeserializedStatistics(json, game));
+	var event = new StatisticsReceivedEvent(sessionId, game,
+		AssignByGame.getDeserializedStatistics(json, game));
 	publish(event);
 
 	return getOkResponse("Statistics received.");

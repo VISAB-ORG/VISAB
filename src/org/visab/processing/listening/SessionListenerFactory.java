@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.processing.ISessionListener;
+import org.visab.util.AssignByGame;
 
 /**
  * The SessionListenerFactory that will create new SessionListeners whenever a
@@ -21,7 +22,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     private static List<ISessionListener> activeListeners = new ArrayList<>();
 
     public static void addListener(UUID sessionId, String game) {
-	var listener = getListenerInstanceByGame(game, sessionId);
+	var listener = AssignByGame.getListenerInstanceByGame(game, sessionId);
 	activeListeners.add(listener);
     }
 
@@ -35,17 +36,6 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 
     public static List<ISessionListener> getActiveListeners(UUID sessionId) {
 	return activeListeners.stream().filter(x -> x.getSessionId() == sessionId).collect(Collectors.toList());
-    }
-
-    private static ISessionListener getListenerInstanceByGame(String game, UUID sessionId) {
-	// TODO: Load the allowed game names at VISAB start from YAML file
-	switch (game) {
-	case "CBRShooter":
-	    return new CBRShooterListener(game, sessionId);
-	default:
-	    // TODO: Raise exception
-	    return null;
-	}
     }
 
     public static void removeListener(ISessionListener listener) {
