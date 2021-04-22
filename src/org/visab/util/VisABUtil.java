@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javafx.scene.control.TableView;
-import util.Settings;
 
 public class VisABUtil {
 

@@ -3,7 +3,9 @@ package org.visab.gui;
 import java.io.File;
 import java.io.IOException;
 
-import api.WebApi;
+import org.visab.api.WebApi;
+import org.visab.util.Settings;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import util.Settings;
 
 public class GUIMain extends Application {
 
