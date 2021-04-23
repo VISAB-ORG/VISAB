@@ -1,4 +1,4 @@
-package org.visab.processing.cbrshooter;
+package org.visab.processing.cbrshooter.model;
 
 public class ShooterDataRepresentation {
 

@@ -6,7 +6,7 @@ import org.visab.api.WebApiHelper;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
 import org.visab.processing.cbrshooter.CBRShooterListener;
-import org.visab.processing.cbrshooter.CBRShooterStatistics;
+import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 
 /**
  * Class where game (-string) specific instance creations are done. When adding

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.visab.api.WebApi;
+import org.visab.processing.cbrshooter.CBRShooterFile;
+import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.Settings;
 
 import javafx.application.Application;
@@ -36,6 +38,7 @@ public class GUIMain extends Application {
     }
 
     private void startApiServer() {
+	new CBRShooterFile(null);
 	try {
 	    webApi = new WebApi(Settings.API_PORT);
 	    webApi.start();
@@ -44,17 +47,6 @@ public class GUIMain extends Application {
 	    e.printStackTrace();
 	}
 	return;
-//		new Thread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		        try {
-//		            new WebApi(Constant.API_PORT).start();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		    }
-//		}).start();
     }
 
     public void mainWindow() {

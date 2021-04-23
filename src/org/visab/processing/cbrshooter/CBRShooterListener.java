@@ -3,6 +3,7 @@ package org.visab.processing.cbrshooter;
 import java.util.UUID;
 
 import org.visab.processing.SessionListenerBase;
+import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 
 public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
 

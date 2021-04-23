@@ -1,17 +1,17 @@
 package org.visab.processing;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public abstract class VISABFileBase {
 
-    private Timestamp createdOn;
+    private Timestamp createdOn = new Timestamp(new Date().getTime());
 
     private String formatVersion;
 
     private String game;
 
-    public VISABFileBase(String game, String formatVersion, Timestamp creationDate) {
-	this.createdOn = creationDate;
+    public VISABFileBase(String game, String formatVersion) {
 	this.formatVersion = formatVersion;
 	this.game = game;
     }

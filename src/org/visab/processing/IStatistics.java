@@ -9,4 +9,6 @@ package org.visab.processing;
  */
 public interface IStatistics {
 
+    String getGame();
+
 }
