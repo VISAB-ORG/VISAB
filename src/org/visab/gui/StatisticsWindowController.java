@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.visab.gui.model.TableEntry;
 import org.visab.gui.model.TableEntryStatisticsVisab;
-import org.visab.util.VisABUtil;
+import org.visab.util.VISABUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -105,7 +105,7 @@ public class StatisticsWindowController {
 
 		// Read file
 		Path filePath = Paths.get("", "data\\" + fileNameFromComboBox);
-		String content = VisABUtil.readFile(filePath.toString());
+		String content = VISABUtil.readFile(filePath.toString());
 
 		if (fileNameFromComboBox == null) {
 			// Set InfoLabel
@@ -120,8 +120,8 @@ public class StatisticsWindowController {
 			}
 
 		} else {
-			for (int i = 0; i < VisABUtil.getAcceptedExternalDataEndings().length; i++) {
-				if (fileNameFromComboBox.endsWith(VisABUtil.getAcceptedExternalDataEndings()[i])) {
+			for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
+				if (fileNameFromComboBox.endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
 					externalFileAccepted = true;
 				}
 			}
@@ -202,9 +202,9 @@ public class StatisticsWindowController {
 	@SuppressWarnings("unchecked")
 	private void createTableFromContentExternal(String content) {
 
-		VisABUtil.clearTable(statisticsTable);
+		VISABUtil.clearTable(statisticsTable);
 		// Convert
-		List<List<String>> rawData = VisABUtil.convertStringToList(content);
+		List<List<String>> rawData = VISABUtil.convertStringToList(content);
 
 		// Create Table
 		@SuppressWarnings("rawtypes")
@@ -233,7 +233,7 @@ public class StatisticsWindowController {
 	@SuppressWarnings("unchecked")
 	private void createTableVisabStatistics() {
 
-		VisABUtil.clearTable(statisticsTable);
+		VISABUtil.clearTable(statisticsTable);
 
 		// Create Table
 		@SuppressWarnings("rawtypes")
@@ -356,7 +356,7 @@ public class StatisticsWindowController {
 		// Analoge Listen erstellen (s.o.)
 
 		// Convert
-		List<List<String>> rawData = VisABUtil.convertStringToList(content);
+		List<List<String>> rawData = VISABUtil.convertStringToList(content);
 
 		int frameCount = 0;
 
@@ -592,7 +592,7 @@ public class StatisticsWindowController {
 
 		planChartCBRBot.setTitle("Plan Chart CBR-Bot");
 
-		int sum = VisABUtil.sumIntegers(calculatedCounters.get(0), calculatedCounters.get(1), calculatedCounters.get(2),
+		int sum = VISABUtil.sumIntegers(calculatedCounters.get(0), calculatedCounters.get(1), calculatedCounters.get(2),
 				calculatedCounters.get(3), calculatedCounters.get(4), calculatedCounters.get(5),
 				calculatedCounters.get(6), calculatedCounters.get(7));
 
@@ -624,7 +624,7 @@ public class StatisticsWindowController {
 
 		planChartScriptBot.setTitle("Plan Chart Script Bot");
 
-		int sum = VisABUtil.sumIntegers(calculatedCounters.get(8), calculatedCounters.get(9),
+		int sum = VISABUtil.sumIntegers(calculatedCounters.get(8), calculatedCounters.get(9),
 				calculatedCounters.get(10), calculatedCounters.get(11), calculatedCounters.get(12),
 				calculatedCounters.get(13), calculatedCounters.get(14));
 

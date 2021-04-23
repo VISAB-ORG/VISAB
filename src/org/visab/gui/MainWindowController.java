@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.visab.util.VisABUtil;
+import org.visab.util.VISABUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -71,32 +71,32 @@ public class MainWindowController {
 			if (!fileExists) {
 
 				String loadedFilePath = file.getAbsolutePath();
-				String content = VisABUtil.readFile(loadedFilePath.toString());
+				String content = VISABUtil.readFile(loadedFilePath.toString());
 
 				boolean externalFileAccepted = false;
 				boolean visabFileAccepted = false;
 
 				if (currentFileName.toString().endsWith(".visab")) {
 					// show success message & write to Database
-					VisABUtil.writeFileToDatabase(currentFileName.toString(), content);
+					VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
 
 					visabFileAccepted = true;
 
 				} else {
-					for (int i = 0; i < VisABUtil.getAcceptedExternalDataEndings().length; i++) {
-						if (currentFileName.toString().endsWith(VisABUtil.getAcceptedExternalDataEndings()[i])) {
+					for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
+						if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
 							externalFileAccepted = true;
 						}
 					}
 				}
 				if (externalFileAccepted) {
-					VisABUtil.writeFileToDatabase(currentFileName.toString(), content);
+					VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
 					warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
 							+ file.getName() + " was saved anyway.");
 					warningMessage.setStyle("-fx-text-fill: orange;");
 				} else {
 					warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
-							+ VisABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
+							+ VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
 					warningMessage.setStyle("-fx-text-fill: red;");
 				}
 				if (visabFileAccepted) {

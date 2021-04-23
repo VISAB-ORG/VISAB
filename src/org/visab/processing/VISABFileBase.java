@@ -5,22 +5,20 @@ import java.util.Date;
 
 public abstract class VISABFileBase {
 
-    private Timestamp createdOn = new Timestamp(new Date().getTime());
-
+    private Timestamp creationDate = new Timestamp(new Date().getTime());
     private String formatVersion;
-
     private String game;
 
-    public VISABFileBase(String game, String formatVersion) {
-	this.formatVersion = formatVersion;
+    public VISABFileBase(String game, String fileFormatVersion) {
+	this.formatVersion = fileFormatVersion;
 	this.game = game;
     }
 
-    public Timestamp getCreatedOn() {
-	return createdOn;
+    public Timestamp getCreationDate() {
+	return creationDate;
     }
 
-    public String getFormatVersion() {
+    public String getFileFormatVersion() {
 	return formatVersion;
     }
 

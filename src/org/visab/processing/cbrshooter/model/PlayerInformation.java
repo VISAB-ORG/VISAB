@@ -1,7 +1,5 @@
 package org.visab.processing.cbrshooter.model;
 
-import java.util.Vector;
-
 public class PlayerInformation {
 
     private int health;
@@ -9,11 +7,11 @@ public class PlayerInformation {
     private String name;
     private String plan;
 
-    private Vector<Float> position;
+    private Vector2 position;
 
     private float relativeHealth;
 
-    private PlayerStatistics Statistics;
+    private PlayerStatistics statistics;
 
     private String weapon;
 
@@ -33,7 +31,7 @@ public class PlayerInformation {
 	return plan;
     }
 
-    public Vector<Float> getPosition() {
+    public Vector2 getPosition() {
 	return position;
     }
 
@@ -42,7 +40,7 @@ public class PlayerInformation {
     }
 
     public PlayerStatistics getStatistics() {
-	return Statistics;
+	return statistics;
     }
 
     public String getWeapon() {
@@ -65,7 +63,7 @@ public class PlayerInformation {
 	this.plan = plan;
     }
 
-    public void setPosition(Vector<Float> position) {
+    public void setPosition(Vector2 position) {
 	this.position = position;
     }
 
@@ -74,7 +72,7 @@ public class PlayerInformation {
     }
 
     public void setStatistics(PlayerStatistics statistics) {
-	Statistics = statistics;
+	this.statistics = statistics;
     }
 
     public void setWeapon(String weapon) {

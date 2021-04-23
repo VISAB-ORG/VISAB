@@ -7,7 +7,7 @@ import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.protocols.http.response.Status;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResponder;
-import org.visab.api.WebApiHelper;
+import org.visab.util.JsonSerializer;
 import org.visab.util.Settings;
 
 /**
@@ -29,7 +29,7 @@ public abstract class HTTPControllerBase implements UriResponder {
     }
 
     protected static final Response getJsonResponse(Object o) {
-	return Response.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, WebApiHelper.serializeObject(o));
+	return Response.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, JsonSerializer.serializeObject(o));
     }
 
     protected static final Response getJsonResponse(String json) {

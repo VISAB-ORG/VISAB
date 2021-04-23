@@ -12,7 +12,7 @@ import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
-import org.visab.util.VisABUtil;
+import org.visab.util.VISABUtil;
 
 /**
  * The SessionController, used for opening and closing VISAB transmission
@@ -69,7 +69,7 @@ public class SessionController extends HTTPControllerBase {
 	    if (game == "")
 		return getBadRequestResponse("No game given!");
 
-	    if (!VisABUtil.gameIsSupported(game))
+	    if (!VISABUtil.gameIsSupported(game))
 		return getBadRequestResponse("Game is not supported!");
 
 	    if (activeSessions.containsKey(sessionId))

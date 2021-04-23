@@ -1,6 +1,7 @@
 package org.visab.util;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.visab.main.Main;
+
 import javafx.scene.control.TableView;
 
-public class VisABUtil {
+public class VISABUtil {
 
     private static String[] acceptedExternalDataEndings = { ".txt" };
 
@@ -36,7 +39,6 @@ public class VisABUtil {
 	}
 
 	return data;
-
     }
 
     public static final boolean gameIsSupported(String game) {
@@ -52,6 +54,19 @@ public class VisABUtil {
 	for (String acceptedExternalDataEnding : acceptedExternalDataEndings)
 	    output.append(acceptedExternalDataEnding);
 	return output.toString();
+    }
+
+    /**
+     * Gets the path to the directory where the currently running jar file is
+     * located in.
+     *
+     * @return The path to the directory of the currently running jar file.
+     */
+    public static String getRunningJarRootDirPath() {
+	var runningJarFile = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	var pathToJar = runningJarFile.getAbsolutePath();
+
+	return pathToJar.replace(runningJarFile.getName(), "");
     }
 
     public static String readFile(String filePath) {

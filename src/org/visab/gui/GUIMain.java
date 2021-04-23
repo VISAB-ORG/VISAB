@@ -38,7 +38,6 @@ public class GUIMain extends Application {
     }
 
     private void startApiServer() {
-	new CBRShooterFile(null);
 	try {
 	    webApi = new WebApi(Settings.API_PORT);
 	    webApi.start();

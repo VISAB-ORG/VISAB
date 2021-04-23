@@ -13,7 +13,7 @@ import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.util.AssignByGame;
-import org.visab.util.VisABUtil;
+import org.visab.util.VISABUtil;
 
 /**
  * The statistics controller, used for transmitting statistics data.
@@ -43,7 +43,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 	if (game == "")
 	    return getBadRequestResponse("No game given in headers!");
 
-	if (!VisABUtil.gameIsSupported(game))
+	if (!VISABUtil.gameIsSupported(game))
 	    return getBadRequestResponse("Game is not supported!");
 
 	var json = "";

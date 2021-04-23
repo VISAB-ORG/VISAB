@@ -1,7 +1,5 @@
 package org.visab.processing.cbrshooter.model;
 
-import java.util.Vector;
-
 import org.visab.processing.IStatistics;
 
 /**
@@ -13,19 +11,19 @@ import org.visab.processing.IStatistics;
  */
 public class CBRShooterStatistics implements IStatistics {
 
-    private Vector<Float> ammunitionPosition;
+    private Vector2 ammunitionPosition;
     private PlayerInformation CBRPlayer;
     private String game;
-    private Vector<Float> healthPositon;
+    private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
     private boolean isWeaponCollected;
     private int round;
     private float roundTime;
-    private PlayerInformation ScriptPlayer;
-    private Vector<Float> weaponPosition;
+    private PlayerInformation scriptPlayer;
+    private Vector2 weaponPosition;
 
-    public Vector<Float> getAmmunitionPosition() {
+    public Vector2 getAmmunitionPosition() {
 	return ammunitionPosition;
     }
 
@@ -38,8 +36,20 @@ public class CBRShooterStatistics implements IStatistics {
 	return game;
     }
 
-    public Vector<Float> getHealthPositon() {
-	return healthPositon;
+    public Vector2 getHealthPosition() {
+	return healthPosition;
+    }
+
+    public boolean getIsAmmunitionCollected() {
+	return isAmmunitionCollected;
+    }
+
+    public boolean getIsHealthCollected() {
+	return isHealthCollected;
+    }
+
+    public boolean getIsWeaponCollected() {
+	return isWeaponCollected;
     }
 
     public int getRound() {
@@ -51,30 +61,14 @@ public class CBRShooterStatistics implements IStatistics {
     }
 
     public PlayerInformation getScriptPlayer() {
-	return ScriptPlayer;
+	return scriptPlayer;
     }
 
-    public Vector<Float> getWeaponPosition() {
+    public Vector2 getWeaponPosition() {
 	return weaponPosition;
     }
 
-    public boolean isAmmunitionCollected() {
-	return isAmmunitionCollected;
-    }
-
-    public boolean isHealthCollected() {
-	return isHealthCollected;
-    }
-
-    public boolean isWeaponCollected() {
-	return isWeaponCollected;
-    }
-
-    public void setAmmunitionCollected(boolean isAmmunitionCollected) {
-	this.isAmmunitionCollected = isAmmunitionCollected;
-    }
-
-    public void setAmmunitionPosition(Vector<Float> ammunitionPosition) {
+    public void setAmmunitionPosition(Vector2 ammunitionPosition) {
 	this.ammunitionPosition = ammunitionPosition;
     }
 
@@ -86,12 +80,20 @@ public class CBRShooterStatistics implements IStatistics {
 	this.game = game;
     }
 
-    public void setHealthCollected(boolean isHealthCollected) {
+    public void setHealthPosition(Vector2 healthPosition) {
+	this.healthPosition = healthPosition;
+    }
+
+    public void setIsAmmunitionCollected(boolean isAmmunitionCollected) {
+	this.isAmmunitionCollected = isAmmunitionCollected;
+    }
+
+    public void setIsHealthCollected(boolean isHealthCollected) {
 	this.isHealthCollected = isHealthCollected;
     }
 
-    public void setHealthPositon(Vector<Float> healthPositon) {
-	this.healthPositon = healthPositon;
+    public void setIsWeaponCollected(boolean isWeaponCollected) {
+	this.isWeaponCollected = isWeaponCollected;
     }
 
     public void setRound(int round) {
@@ -103,14 +105,10 @@ public class CBRShooterStatistics implements IStatistics {
     }
 
     public void setScriptPlayer(PlayerInformation scriptPlayer) {
-	ScriptPlayer = scriptPlayer;
+	this.scriptPlayer = scriptPlayer;
     }
 
-    public void setWeaponCollected(boolean isWeaponCollected) {
-	this.isWeaponCollected = isWeaponCollected;
-    }
-
-    public void setWeaponPosition(Vector<Float> weaponPosition) {
+    public void setWeaponPosition(Vector2 weaponPosition) {
 	this.weaponPosition = weaponPosition;
     }
 }

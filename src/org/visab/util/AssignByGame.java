@@ -2,7 +2,6 @@ package org.visab.util;
 
 import java.util.UUID;
 
-import org.visab.api.WebApiHelper;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
 import org.visab.processing.cbrshooter.CBRShooterListener;
@@ -21,7 +20,7 @@ public final class AssignByGame {
 											  // GameNotSupportedException
 	switch (game) {
 	case "CBRShooter":
-	    return WebApiHelper.deserializeObject(json, CBRShooterStatistics.class);
+	    return JsonSerializer.deserializeJson(json, CBRShooterStatistics.class);
 	default:
 	    return null;
 	// throw new GameNotSupportedException(String.format("Game {1,string} is not
