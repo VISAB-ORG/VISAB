@@ -14,7 +14,10 @@ import org.visab.main.Main;
 
 import javafx.scene.control.TableView;
 
-public class VISABUtil {
+/**
+ * Class containing various helper methods
+ */
+public final class VISABUtil {
 
     private static String[] acceptedExternalDataEndings = { ".txt" };
 

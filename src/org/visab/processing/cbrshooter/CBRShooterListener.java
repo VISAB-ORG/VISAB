@@ -11,6 +11,13 @@ import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.JsonSerializer;
 import org.visab.util.VISABUtil;
 
+/**
+ * The CBRShooterListener class, that is responsible for listening information
+ * sent by the CBRShooter game and creating files of that information.
+ *
+ * @author moritz
+ *
+ */
 public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
 
     private CBRShooterFile CBRShooterFile;
