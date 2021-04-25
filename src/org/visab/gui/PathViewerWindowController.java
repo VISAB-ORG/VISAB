@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import org.visab.gui.model.TableEntryCBRBot;
 import org.visab.gui.model.TableEntryScriptBot;
-import org.visab.util.VisABUtil;
+import org.visab.util.VISABUtil;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -266,7 +266,7 @@ public class PathViewerWindowController {
 
 		// Read file
 		Path filePath = Paths.get("", "data\\" + fileNameFromComboBox);
-		String content = VisABUtil.readFile(filePath.toString());
+		String content = VISABUtil.readFile(filePath.toString());
 
 		boolean externalFileAccepted = false;
 
@@ -286,8 +286,8 @@ public class PathViewerWindowController {
 			botTypeLabel2.setText("Type: Script-Bot");
 
 		} else {
-			for (int i = 0; i < VisABUtil.getAcceptedExternalDataEndings().length; i++) {
-				if (fileNameFromComboBox.endsWith(VisABUtil.getAcceptedExternalDataEndings()[i])) {
+			for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
+				if (fileNameFromComboBox.endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
 					externalFileAccepted = true;
 				}
 			}
@@ -308,7 +308,7 @@ public class PathViewerWindowController {
 	private void loadVisabStatistics(String content) {
 
 		// Convert
-		List<List<String>> rawData = VisABUtil.convertStringToList(content);
+		List<List<String>> rawData = VISABUtil.convertStringToList(content);
 
 		// Lists for Path Viewer
 		List<List<Double>> coordinatesCBRBotList = new ArrayList<List<Double>>();
@@ -1230,7 +1230,7 @@ public class PathViewerWindowController {
 	@SuppressWarnings("unchecked")
 	private void createTableCBRBot() {
 		// Clear to show entries only once
-		VisABUtil.clearTable(statisticsTableCBRBot);
+		VISABUtil.clearTable(statisticsTableCBRBot);
 
 		// Create Table Columns
 		@SuppressWarnings("rawtypes")
@@ -1300,7 +1300,7 @@ public class PathViewerWindowController {
 	@SuppressWarnings("unchecked")
 	private void createTableScriptBot() {
 		// Clear to show entries only once
-		VisABUtil.clearTable(statisticsTableScriptBot);
+		VISABUtil.clearTable(statisticsTableScriptBot);
 
 		// Create Table
 		@SuppressWarnings("rawtypes")

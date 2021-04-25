@@ -3,178 +3,200 @@ package org.visab.gui;
 import java.io.File;
 import java.io.IOException;
 
+import org.visab.api.WebApi;
+import org.visab.processing.cbrshooter.CBRShooterFile;
+import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.util.Settings;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class GUIMain extends Application {
 
-	private Stage primaryStage;
+    private WebApi webApi;
+    private Stage primaryStage;
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
+    public Stage getPrimaryStage() {
+	return primaryStage;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+	this.primaryStage = primaryStage;
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+	this.primaryStage = primaryStage;
+	startApiServer();
+	mainWindow();
+    }
+
+    private void startApiServer() {
+	try {
+	    webApi = new WebApi(Settings.API_PORT);
+	    webApi.start();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
+	return;
+    }
 
-	public void setPrimaryStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
+    public void mainWindow() {
+	try {
+
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("MainWindow.fxml"));
+	    AnchorPane pane = loader.load();
+
+	    primaryStage.setMinHeight(1000.00);
+	    primaryStage.setMinWidth(1200.00);
+	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.setTitle("VisAB");
+
+	    MainWindowController mainWindowController = loader.getController();
+	    mainWindowController.setMain(this);
+
+	    Scene scene = new Scene(pane);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	@Override
-	public void start(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-		mainWindow();
+    public void pathViewerWindow() {
+	try {
+
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("PathViewerWindow.fxml"));
+	    AnchorPane pane = loader.load();
+
+	    primaryStage.setMinHeight(1000.00);
+	    primaryStage.setMinWidth(1200.00);
+	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.setTitle("VisAB");
+
+	    PathViewerWindowController pathWindowController = loader.getController();
+	    ObservableList<String> filesComboBox = loadFilesFromDatabase();
+	    pathWindowController.updatePage(filesComboBox);
+	    pathWindowController.setMain(this);
+
+	    Scene scene = new Scene(pane);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	public void mainWindow() {
-		try {
-			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("MainWindow.fxml"));
-			AnchorPane pane = loader.load();
+    public void statisticsWindow() {
+	try {
 
-			primaryStage.setMinHeight(1000.00);
-			primaryStage.setMinWidth(1200.00);
-			primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
-			primaryStage.setTitle("VisAB");
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("StatisticsWindow.fxml"));
+	    AnchorPane pane = loader.load();
 
-			MainWindowController mainWindowController = loader.getController();
-			mainWindowController.setMain(this);
+	    primaryStage.setMinHeight(1000.00);
+	    primaryStage.setMinWidth(1200.00);
+	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.setTitle("VisAB");
 
-			Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    StatisticsWindowController statisticsWindowController = loader.getController();
+	    ObservableList<String> filesComboBox = loadFilesFromDatabase();
+	    statisticsWindowController.updatePage(filesComboBox);
+	    statisticsWindowController.setMain(this);
 
-			primaryStage.setScene(scene);
-			primaryStage.show();
+	    Scene scene = new Scene(pane);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	public void pathViewerWindow() {
-		try {
+    public void aboutWindow() {
+	try {
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("AboutWindow.fxml"));
+	    AnchorPane pane = loader.load();
 
-			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("PathViewerWindow.fxml"));
-			AnchorPane pane = loader.load();
+	    primaryStage.setMinHeight(1000.00);
+	    primaryStage.setMinWidth(1200.00);
+	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.setTitle("VisAB");
 
-			primaryStage.setMinHeight(1000.00);
-			primaryStage.setMinWidth(1200.00);
-			primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
-			primaryStage.setTitle("VisAB");
+	    AboutWindowController aboutWindowController = loader.getController();
+	    aboutWindowController.setMain(this);
 
-			PathViewerWindowController pathWindowController = loader.getController();
-			ObservableList<String> filesComboBox = loadFilesFromDatabase();
-			pathWindowController.updatePage(filesComboBox);
-			pathWindowController.setMain(this);
+	    Scene scene = new Scene(pane);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-			Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
 
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	public void statisticsWindow() {
-		try {
+    public void helpWindow() {
+	try {
 
-			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("StatisticsWindow.fxml"));
-			AnchorPane pane = loader.load();
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("HelpWindow.fxml"));
+	    AnchorPane pane = loader.load();
 
-			primaryStage.setMinHeight(1000.00);
-			primaryStage.setMinWidth(1200.00);
-			primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
-			primaryStage.setTitle("VisAB");
+	    primaryStage.setMinHeight(1000.00);
+	    primaryStage.setMinWidth(1200.00);
+	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.setTitle("VisAB");
 
-			StatisticsWindowController statisticsWindowController = loader.getController();
-			ObservableList<String> filesComboBox = loadFilesFromDatabase();
-			statisticsWindowController.updatePage(filesComboBox);
-			statisticsWindowController.setMain(this);
+	    HelpWindowController helpWindowController = loader.getController();
+	    helpWindowController.setMain(this);
 
-			Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    Scene scene = new Scene(pane);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-			primaryStage.setScene(scene);
-			primaryStage.show();
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	public void aboutWindow() {
-		try {
+    @Override
+    public void stop() {
+	webApi.shutdown();
+    }
 
-			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("AboutWindow.fxml"));
-			AnchorPane pane = loader.load();
+    public static void main(String[] args) {
+	launch(args);
+    }
 
-			primaryStage.setMinHeight(1000.00);
-			primaryStage.setMinWidth(1200.00);
-			primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
-			primaryStage.setTitle("VisAB");
+    private ObservableList<String> loadFilesFromDatabase() {
+	// Read database for Combobox
+	File folder = new File("data");
+	File[] listOfFiles = folder.listFiles();
 
-			AboutWindowController aboutWindowController = loader.getController();
-			aboutWindowController.setMain(this);
+	ObservableList<String> filesComboBox = FXCollections.observableArrayList();
 
-			Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	for (int i = 0; i < listOfFiles.length; i++) {
+	    if (listOfFiles[i].isFile()) {
+		filesComboBox.add(listOfFiles[i].getName());
+	    }
 	}
-
-	public void helpWindow() {
-		try {
-
-			FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("HelpWindow.fxml"));
-			AnchorPane pane = loader.load();
-
-			primaryStage.setMinHeight(1000.00);
-			primaryStage.setMinWidth(1200.00);
-			primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
-			primaryStage.setTitle("VisAB");
-
-			HelpWindowController helpWindowController = loader.getController();
-			helpWindowController.setMain(this);
-
-			Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	private ObservableList<String> loadFilesFromDatabase() {
-		// Read database for Combobox
-		File folder = new File("data");
-		File[] listOfFiles = folder.listFiles();
-
-		ObservableList<String> filesComboBox = FXCollections.observableArrayList();
-
-		for (int i = 0; i < listOfFiles.length; i++) {
-			if (listOfFiles[i].isFile()) {
-				filesComboBox.add(listOfFiles[i].getName());
-			}
-		}
-		return filesComboBox;
-	}
+	return filesComboBox;
+    }
 }
-

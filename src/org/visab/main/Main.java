@@ -49,7 +49,7 @@ public class Main {
             	System.exit(1);
             }
 
-        } catch( CmdLineException e ) {
+        } catch(CmdLineException e ) {
         	System.err.println("Exception occured while parsing command line arguments...");
             System.err.println(e.getMessage());
             // print the list of available options
