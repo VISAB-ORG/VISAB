@@ -32,7 +32,7 @@ public final class AssignByGame {
 	// TODO: Load the allowed game names at VISAB start from YAML file
 	switch (game) {
 	case "CBRShooter":
-	    return new CBRShooterListener(game, sessionId);
+	    return new CBRShooterListener(sessionId);
 	default:
 	    // TODO: Raise exception
 	    return null;

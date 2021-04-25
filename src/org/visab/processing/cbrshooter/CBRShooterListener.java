@@ -24,8 +24,8 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
     private String fileName;
     private String outDir;
 
-    public CBRShooterListener(String game, UUID sessionId) {
-	super(game, sessionId);
+    public CBRShooterListener(UUID sessionId) {
+	super("CBRShooter", sessionId);
     }
 
     @Override
@@ -62,6 +62,9 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
 	System.out.println(MessageFormat.format("File has {0} entries now.", CBRShooterFile.getStatistics().size()));
 
 	// TODO: Do a save when list has large amount of entries
+	// TODO: Since it may be hard to detect when a unity game closes, instead keep a
+	// filewriter open and write on every received.
+	// This should be done asynchronously
     }
 
 }

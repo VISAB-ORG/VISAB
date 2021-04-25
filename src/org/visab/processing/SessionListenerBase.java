@@ -36,12 +36,14 @@ public abstract class SessionListenerBase<TStatistics>
 
 	@Override
 	public void invoke(SessionClosedEvent event) {
-	    SessionListenerFactory.removeListener((ISessionListener) SessionListenerBase.this);
+	    if (event.getSessionId().equals(SessionListenerBase.this.sessionId)) {
+		SessionListenerFactory.removeListener((ISessionListener) SessionListenerBase.this);
 
-	    WebApi.getEventBus().unsubscribe((ISubscriber) statisticsSubscriber);
-	    WebApi.getEventBus().unsubscribe((ISubscriber) sessionClosedSubscriber);
+		WebApi.getEventBus().unsubscribe((ISubscriber) statisticsSubscriber);
+		WebApi.getEventBus().unsubscribe((ISubscriber) sessionClosedSubscriber);
 
-	    SessionListenerBase.this.onSessionClosed();
+		SessionListenerBase.this.onSessionClosed();
+	    }
 	}
     }
 
@@ -62,7 +64,8 @@ public abstract class SessionListenerBase<TStatistics>
 	@Override
 	@SuppressWarnings("unchecked")
 	public void invoke(StatisticsReceivedEvent event) {
-	    SessionListenerBase.this.processStatistics((TStatistics) event.getStatistics());
+	    if (event.getSessionId().equals(SessionListenerBase.this.sessionId))
+		SessionListenerBase.this.processStatistics((TStatistics) event.getStatistics());
 	}
     }
 

@@ -23,8 +23,10 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     private static List<ISessionListener> activeListeners = new ArrayList<>();
 
     public static void addListener(UUID sessionId, String game) {
-	var listener = AssignByGame.getListenerInstanceByGame(game, sessionId);
-	activeListeners.add(listener);
+	if (activeListeners.stream().filter(x -> x.getSessionId().equals(sessionId)).count() == 0) {
+	    var listener = AssignByGame.getListenerInstanceByGame(game, sessionId);
+	    activeListeners.add(listener);
+	}
     }
 
     public static List<ISessionListener> getActiveListeners() {
