@@ -1,4 +1,6 @@
 .vscode/
+*.iml
+.idea/
 
 **.visab2
 .metadata/
