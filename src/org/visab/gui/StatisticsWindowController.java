@@ -26,6 +26,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * The controller for the StatisticsWindow. TODO: Should likely be thrown away
+ * aswell.
+ * 
+ * @author VISAB 1.0 group
+ *
+ */
 public class StatisticsWindowController {
 
 	@FXML

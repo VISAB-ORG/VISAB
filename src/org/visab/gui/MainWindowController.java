@@ -11,31 +11,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 
+/**
+ * The Controlle for the MainWindow that is shown upon startup.
+ *
+ * @author VISAB 1.0 group
+ *
+ */
 public class MainWindowController {
 
 	// Views
 	@FXML
 	private Button browseFile;
-	@FXML
-	private Button statisticsViewButton;
+
+	private File file;
+
+	public GUIMain main;
 	@FXML
 	private Button pathViewerButton;
 	@FXML
+	private Button statisticsViewButton;
+
+	@FXML
 	private Label warningMessage;
-	private File file;
 
 	public File getFile() {
 		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-	public GUIMain main;
-
-	public void setMain(GUIMain main) {
-		this.main = main;
 	}
 
 	@FXML
@@ -117,12 +117,20 @@ public class MainWindowController {
 	}
 
 	@FXML
+	public void handlePathViewerButton() {
+		main.pathViewerWindow();
+	}
+
+	@FXML
 	public void handleStatisticsViewButton() {
 		main.statisticsWindow();
 	}
 
-	@FXML
-	public void handlePathViewerButton() {
-		main.pathViewerWindow();
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public void setMain(GUIMain main) {
+		this.main = main;
 	}
 }

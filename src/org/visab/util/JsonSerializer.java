@@ -37,7 +37,7 @@ public final class JsonSerializer {
      */
     public static final String serializeObject(Object o) {
 	try {
-	    return mapper.writeValueAsString(o);
+	     return mapper.writeValueAsString(o);
 	} catch (JsonProcessingException e) {
 	    e.printStackTrace();
 	    return "";

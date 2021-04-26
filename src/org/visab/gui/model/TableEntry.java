@@ -1,12 +1,18 @@
 package org.visab.gui.model;
 
+/**
+ * Base TableEntry used for generically displaying visab files in the
+ * StatisticsView.
+ * 
+ * @author VISAB 1.0 group
+ *
+ */
 public class TableEntry {
 
 	private String name;
 	private String value;
 
 	public TableEntry() {
-		super();
 	}
 
 	public TableEntry(String name, String value) {
@@ -18,12 +24,12 @@ public class TableEntry {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getValue() {
 		return value;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setValue(String value) {
