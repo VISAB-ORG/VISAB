@@ -15,15 +15,15 @@ public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriber
     private String subscribedEventType;
 
     public SubscriberBase(String subscribedEventType) {
-	this.subscribedEventType = subscribedEventType;
-	// TODO: Taken from
-	// https://stackoverflow.com/questions/3403909/get-generic-type-of-class-at-runtime
-	// this.persistentClass = (Class<TEvent>) ((ParameterizedType) getClass()
-	// .getGenericSuperclass()).getActualTypeArguments()[0];
+        this.subscribedEventType = subscribedEventType;
+        // TODO: Taken from
+        // https://stackoverflow.com/questions/3403909/get-generic-type-of-class-at-runtime
+        // this.persistentClass = (Class<TEvent>) ((ParameterizedType) getClass()
+        // .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Override
     public String getSubscribedEventType() {
-	return subscribedEventType;
+        return subscribedEventType;
     }
 }

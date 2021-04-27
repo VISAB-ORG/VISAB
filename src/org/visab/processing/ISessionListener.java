@@ -1,5 +1,6 @@
 package org.visab.processing;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 /**
@@ -13,6 +14,8 @@ public interface ISessionListener {
     String getGame();
 
     UUID getSessionId();
+
+    LocalTime getLastReceived();
 
     void onSessionClosed();
 

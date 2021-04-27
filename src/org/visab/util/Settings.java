@@ -22,4 +22,9 @@ public final class Settings {
     public static final String JSON_MIME_TYPE = "application/json";
     public static final String MEDIA_CONTENT_TYPE = JSON_MIME_TYPE;
     public static final String WEB_API_BASE_ADDRESS = "localhost:" + API_PORT;
+
+    /**
+     * The time in seconds until a session is automatically timed out if no statistics were received.
+     */
+    public static final int SESSION_TIMEOUT = 2;
 }

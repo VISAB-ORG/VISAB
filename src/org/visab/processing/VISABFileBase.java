@@ -10,20 +10,20 @@ public abstract class VISABFileBase {
     private String game;
 
     public VISABFileBase(String game, String fileFormatVersion) {
-	this.formatVersion = fileFormatVersion;
-	this.game = game;
+        this.formatVersion = fileFormatVersion;
+        this.game = game;
     }
 
     public Timestamp getCreationDate() {
-	return creationDate;
+        return creationDate;
     }
 
     public String getFileFormatVersion() {
-	return formatVersion;
+        return formatVersion;
     }
 
     public String getGame() {
-	return game;
+        return game;
     }
 
 }
