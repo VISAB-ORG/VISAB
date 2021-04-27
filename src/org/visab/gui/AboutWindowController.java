@@ -3,28 +3,40 @@ package org.visab.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
+/**
+ * Controller for the AboutWindow.
+ *
+ * @author VISAB 1.0 group
+ *
+ */
 public class AboutWindowController {
 
 	@FXML
+	private MenuItem aboutMenu;
+	@FXML
 	private MenuItem browseFileMenu;
 	@FXML
+	private MenuItem helpMenu;
+	public GUIMain main;
+	@FXML
 	private MenuItem pathViewerMenu;
+
 	@FXML
 	private MenuItem statisticsMenu;
-	@FXML
-	private MenuItem helpMenu;
-	@FXML
-	private MenuItem aboutMenu;
 
-	public GUIMain main;
-
-	public void setMain(GUIMain main) {
-		this.main = main;
+	@FXML
+	public void handleAboutMenu() {
+		// DO NOTHING
 	}
 
 	@FXML
 	public void handleBrowseFileMenu() {
 		main.mainWindow();
+	}
+
+	@FXML
+	public void handleHelpMenu() {
+		main.helpWindow();
 	}
 
 	@FXML
@@ -37,14 +49,8 @@ public class AboutWindowController {
 		main.statisticsWindow();
 	}
 
-	@FXML
-	public void handleHelpMenu() {
-		main.helpWindow();
-	}
-
-	@FXML
-	public void handleAboutMenu() {
-		// DO NOTHING
+	public void setMain(GUIMain main) {
+		this.main = main;
 	}
 
 }

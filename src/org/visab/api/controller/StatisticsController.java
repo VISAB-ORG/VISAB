@@ -50,8 +50,6 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 	try {
 	    var writeInto = new HashMap<String, String>();
 	    httpSession.parseBody(writeInto);
-	    var keys = writeInto.keySet();
-	    var values = writeInto.values();
 	    json = writeInto.get("postData");
 	} catch (IOException | ResponseException e) {
 	    e.printStackTrace();

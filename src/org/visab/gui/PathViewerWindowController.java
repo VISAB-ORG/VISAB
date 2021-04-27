@@ -40,6 +40,13 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 
+/**
+ * The controller for the PathViewerWindow. TODO: This abomination should
+ * probably just be thrown away and only kept for reference.
+ * 
+ * @author VISAB 1.0 group
+ *
+ */
 public class PathViewerWindowController {
 
 	/*
