@@ -1,13 +1,9 @@
 package org.visab.processing;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import org.visab.eventbus.event.SessionClosedEvent;
-import org.visab.eventbus.publisher.PublisherBase;
 
 public class SessionListenerAdministration {
 

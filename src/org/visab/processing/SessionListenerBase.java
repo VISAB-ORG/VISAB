@@ -1,7 +1,5 @@
 package org.visab.processing;
 
-import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -10,7 +8,6 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.util.Settings;
 
 /**
  * The base SessionListener class, that should be implemented by all session

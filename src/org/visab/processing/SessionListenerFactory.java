@@ -1,20 +1,12 @@
 package org.visab.processing;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.visab.api.WebApi;
 import org.visab.eventbus.ISubscriber;
-import org.visab.eventbus.ISubscriberWithEvent;
-import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.AssignByGame;
-import org.visab.util.Settings;
 
 /**
  * The SessionListenerFactory that will create new SessionListeners whenever a

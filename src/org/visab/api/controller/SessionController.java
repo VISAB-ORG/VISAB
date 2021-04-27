@@ -31,119 +31,119 @@ import org.visab.util.VISABUtil;
  */
 public class SessionController extends HTTPControllerBase {
 
-	/**
-	 * The CloseSessionPublisher, used for processing requests to close the session.
-	 * This has to be a nested class, due to implementing two generic
-	 * Interfaces/Classes not being allowed.
-	 *
-	 * @author moritz
-	 *
-	 */
-	private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
-		private Response closeSession(IHTTPSession httpSession) {
-			var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+    /**
+     * The CloseSessionPublisher, used for processing requests to close the session.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
+    private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
+        private Response closeSession(IHTTPSession httpSession) {
+            var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
 
-			if (sessionId == null)
-				return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+            if (sessionId == null)
+                return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-			if (!TransmissionSessionAdministration.isSessionActive(sessionId))
-				return getOkResponse("Session was already closed!");
+            if (!TransmissionSessionAdministration.isSessionActive(sessionId))
+                return getOkResponse("Session was already closed!");
 
-			TransmissionSessionAdministration.removeSession(sessionId);
-			// Publish the closed session to the EventBus
-			publishEvent(sessionId);
+            TransmissionSessionAdministration.removeSession(sessionId);
+            // Publish the closed session to the EventBus
+            publishEvent(sessionId);
 
-			return getOkResponse("Closed the session!");
-		}
+            return getOkResponse("Closed the session!");
+        }
 
-		private void publishEvent(UUID sessionId) {
-			publish(new SessionClosedEvent(sessionId, false));
-		}
-	}
+        private void publishEvent(UUID sessionId) {
+            publish(new SessionClosedEvent(sessionId, false));
+        }
+    }
 
-	/**
-	 * The OpenSessionPublisher, used for processing requests to open a session.
-	 * This has to be a nested class, due to implementing two generic
-	 * Interfaces/Classes not being allowed.
-	 *
-	 * @author moritz
-	 *
-	 */
-	private class OpenSessionPublisher extends PublisherBase<SessionOpenedEvent> {
-		private Response openSession(IHTTPSession httpSession) {
-			var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-			var game = WebApiHelper.extractGame(httpSession.getHeaders());
+    /**
+     * The OpenSessionPublisher, used for processing requests to open a session.
+     * This has to be a nested class, due to implementing two generic
+     * Interfaces/Classes not being allowed.
+     *
+     * @author moritz
+     *
+     */
+    private class OpenSessionPublisher extends PublisherBase<SessionOpenedEvent> {
+        private Response openSession(IHTTPSession httpSession) {
+            var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+            var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
-			if (sessionId == null)
-				return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+            if (sessionId == null)
+                return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-			if (game == "")
-				return getBadRequestResponse("No game given!");
+            if (game == "")
+                return getBadRequestResponse("No game given!");
 
-			if (!VISABUtil.gameIsSupported(game))
-				return getBadRequestResponse("Game is not supported!");
+            if (!VISABUtil.gameIsSupported(game))
+                return getBadRequestResponse("Game is not supported!");
 
-			if (TransmissionSessionAdministration.isSessionActive(sessionId))
-				return getBadRequestResponse("Session already active!");
+            if (TransmissionSessionAdministration.isSessionActive(sessionId))
+                return getBadRequestResponse("Session already active!");
 
-			TransmissionSessionAdministration.addSession(sessionId, game);
-			// Publish the new session to the EventBus
-			publish(new SessionOpenedEvent(sessionId, game));
+            TransmissionSessionAdministration.addSession(sessionId, game);
+            // Publish the new session to the EventBus
+            publish(new SessionOpenedEvent(sessionId, game));
 
-			return getOkResponse("Session added.");
-		}
-	}
+            return getOkResponse("Session added.");
+        }
+    }
 
-	private CloseSessionPublisher closeSessionPublisher = new CloseSessionPublisher();
+    private CloseSessionPublisher closeSessionPublisher = new CloseSessionPublisher();
 
-	private OpenSessionPublisher openSessionPublisher = new OpenSessionPublisher();
+    private OpenSessionPublisher openSessionPublisher = new OpenSessionPublisher();
 
-	private Response getSessionStatus(IHTTPSession httpSession) {
-		var parameters = httpSession.getParameters();
+    private Response getSessionStatus(IHTTPSession httpSession) {
+        var parameters = httpSession.getParameters();
 
-		UUID sessionId = null;
-		if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
-			sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
+        UUID sessionId = null;
+        if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
+            sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
 
-		if (!parameters.containsKey("sessionid"))
-			return getBadRequestResponse("No sessionid given in url parameters!");
+        if (!parameters.containsKey("sessionid"))
+            return getBadRequestResponse("No sessionid given in url parameters!");
 
-		if (sessionId == null)
-			return getBadRequestResponse("Could not parse uuid!");
+        if (sessionId == null)
+            return getBadRequestResponse("Could not parse uuid!");
 
-		SessionStatus sessionStatus;
-		if (!TransmissionSessionAdministration.isSessionActive(sessionId))
-			sessionStatus = new SessionStatus(false, sessionId, null);
-		else
-			sessionStatus = new SessionStatus(true, sessionId, TransmissionSessionAdministration.getGame(sessionId));
+        SessionStatus sessionStatus;
+        if (!TransmissionSessionAdministration.isSessionActive(sessionId))
+            sessionStatus = new SessionStatus(false, sessionId, null);
+        else
+            sessionStatus = new SessionStatus(true, sessionId, TransmissionSessionAdministration.getGame(sessionId));
 
-		return getJsonResponse(sessionStatus);
-	}
+        return getJsonResponse(sessionStatus);
+    }
 
-	@Override
-	public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
-		var endpointAdress = uriResource.getUri().replace("session/", "");
-		switch (endpointAdress) {
-		case "open":
-			return openSessionPublisher.openSession(httpSession);
+    @Override
+    public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
+        var endpointAdress = uriResource.getUri().replace("session/", "");
+        switch (endpointAdress) {
+        case "open":
+            return openSessionPublisher.openSession(httpSession);
 
-		case "close":
-			return closeSessionPublisher.closeSession(httpSession);
+        case "close":
+            return closeSessionPublisher.closeSession(httpSession);
 
-		case "status":
-			return getSessionStatus(httpSession);
+        case "status":
+            return getSessionStatus(httpSession);
 
-		case "list":
-			return getJsonResponse(TransmissionSessionAdministration.getActiveSessions());
+        case "list":
+            return getJsonResponse(TransmissionSessionAdministration.getActiveSessions());
 
-		default:
-			return getNotFoundResponse(uriResource);
-		}
-	}
+        default:
+            return getNotFoundResponse(uriResource);
+        }
+    }
 
-	@Override
-	public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-		return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
-	}
+    @Override
+    public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
+        return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
+    }
 
 }

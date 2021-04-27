@@ -15,6 +15,8 @@ public interface ISessionListener {
 
     UUID getSessionId();
 
+    boolean isActive();
+
     LocalTime getLastReceived();
 
     void onSessionClosed();
