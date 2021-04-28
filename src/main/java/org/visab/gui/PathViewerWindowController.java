@@ -1,10 +1,6 @@
 package org.visab.gui;
 
-import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -275,16 +271,11 @@ public class PathViewerWindowController {
 	drawPane.getChildren().clear();
 	String fileNameFromComboBox = comboBox.getValue();
 
-	URL res = GUIMain.class.getResource(Settings.DATA_PATH);
-	File file = Paths.get(res.toURI()).toFile();
-	String absolutePath = file.getAbsolutePath();
-	// Read file
-	Path filePath = Paths.get("", absolutePath + "/" + fileNameFromComboBox);
-	String content = VISABUtil.readFile(filePath.toString());
+	String content = VISABUtil.readFile(Settings.DATA_PATH + "/" + fileNameFromComboBox.toString());
 
 	boolean externalFileAccepted = false;
 
-	if (fileNameFromComboBox == null) {
+	if (fileNameFromComboBox == "" || fileNameFromComboBox == null) {
 	    // Set InfoLabel
 	    infoLabel.setText("Please select a file name first!");
 	} else if (fileNameFromComboBox.endsWith(".visab")) {

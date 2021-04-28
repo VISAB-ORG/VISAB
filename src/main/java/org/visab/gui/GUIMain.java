@@ -27,8 +27,6 @@ public class GUIMain extends Application {
 
     // src/main/resources is part of the classpath, so further subdirectories need
     // to be concerned here
-    private static String VISAB_LOGO_PATH = "/img/visabLogo.png";
-
     private static String ABOUT_FXML_PATH = "/AboutWindow.fxml";
     private static String HELP_FXML_PATH = "/HelpWindow.fxml";
     private static String MAIN_FXML_PATH = "/MainWindow.fxml";
@@ -50,7 +48,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    AboutWindowController aboutWindowController = loader.getController();
@@ -79,7 +77,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    HelpWindowController helpWindowController = loader.getController();
@@ -96,23 +94,24 @@ public class GUIMain extends Application {
 	}
     }
 
+    /**
+     * This method is responsible for retreiving the files located in the
+     * location-specific database.
+     * 
+     * @return an observable list of file names that are displayed in the GUI.
+     */
     private ObservableList<String> loadFilesFromDatabase() {
 
-	// Read database for Combobox
-	File folder = null;
-	try {
-	    folder = new File(GUIMain.class.getResource(Settings.DATA_PATH).toURI());
-	} catch (URISyntaxException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	File[] listOfFiles = folder.listFiles();
-
+	File database = new File(Settings.DATA_PATH);
+	File[] visabFiles = database.listFiles();
 	ObservableList<String> filesComboBox = FXCollections.observableArrayList();
 
-	for (int i = 0; i < listOfFiles.length; i++) {
-	    if (listOfFiles[i].isFile()) {
-		filesComboBox.add(listOfFiles[i].getName());
+	// Check if there are files in the database or the database does even exist
+	if (visabFiles != null) {
+	    for (int i = 0; i < visabFiles.length; i++) {
+		if (visabFiles[i].isFile()) {
+		    filesComboBox.add(visabFiles[i].getName());
+		}
 	    }
 	}
 	return filesComboBox;
@@ -125,7 +124,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    MainWindowController mainWindowController = loader.getController();
@@ -150,7 +149,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    PathViewerWindowController pathWindowController = loader.getController();
@@ -203,7 +202,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    StatisticsWindowController statisticsWindowController = loader.getController();

@@ -1,10 +1,6 @@
 package org.visab.gui;
 
-import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -114,13 +110,7 @@ public class StatisticsWindowController {
 
 	boolean externalFileAccepted = false;
 
-	URL res = GUIMain.class.getResource(Settings.DATA_PATH);
-	File file = Paths.get(res.toURI()).toFile();
-	String absolutePath = file.getAbsolutePath();
-	System.out.println(absolutePath);
-	// Read file
-	Path filePath = Paths.get("", absolutePath + "/" + fileNameFromComboBox);
-	String content = VISABUtil.readFile(filePath.toString());
+	String content = VISABUtil.readFile(Settings.DATA_PATH + "/" + fileNameFromComboBox);
 
 	if (fileNameFromComboBox == null) {
 	    // Set InfoLabel

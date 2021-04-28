@@ -2,11 +2,9 @@ package org.visab.gui;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.visab.util.Settings;
 import org.visab.util.VISABUtil;
 
 import javafx.fxml.FXML;
@@ -51,73 +49,51 @@ public class MainWindowController {
 
 	file = fileChooser.showOpenDialog(null);
 
-	URL res = GUIMain.class.getResource(Settings.DATA_PATH);
-	File folder = Paths.get(res.toURI()).toFile();
-	File[] listOfFiles = folder.listFiles();
-
 	// If file is selected
 	if (file != null) {
 
 	    // Get Current Filename
 	    Path currentFileName = Paths.get("", file.getName());
 
-	    // Check if file exists
-	    boolean fileExists = false;
+	    String loadedFilePath = file.getAbsolutePath();
+	    String content = VISABUtil.readFile(loadedFilePath.toString());
 
-	    for (int i = 0; i < listOfFiles.length; i++) {
-		if (listOfFiles[i].isFile()) {
-		    if (listOfFiles[i].getName().equals(currentFileName.toString())) {
-			fileExists = true;
+	    boolean externalFileAccepted = false;
+	    boolean visabFileAccepted = false;
+
+	    if (currentFileName.toString().endsWith(".visab")) {
+		// show success message & write to Database
+		VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+
+		visabFileAccepted = true;
+
+	    } else {
+		for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
+		    if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
+			externalFileAccepted = true;
 		    }
 		}
 	    }
-
-	    if (!fileExists) {
-
-		String loadedFilePath = file.getAbsolutePath();
-		String content = VISABUtil.readFile(loadedFilePath.toString());
-
-		boolean externalFileAccepted = false;
-		boolean visabFileAccepted = false;
-
-		if (currentFileName.toString().endsWith(".visab")) {
-		    // show success message & write to Database
-		    VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
-
-		    visabFileAccepted = true;
-
-		} else {
-		    for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-			if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
-			    externalFileAccepted = true;
-			}
-		    }
-		}
-		if (externalFileAccepted) {
-		    VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
-		    warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
-			    + file.getName() + " was saved anyway.");
-		    warningMessage.setStyle("-fx-text-fill: orange;");
-		} else {
-		    warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
-			    + VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
-		    warningMessage.setStyle("-fx-text-fill: red;");
-		}
-		if (visabFileAccepted) {
-		    warningMessage.setStyle("-fx-text-fill: green;");
-		    warningMessage.setText(file.getName() + " successfully saved");
-		}
-
+	    if (externalFileAccepted) {
+		VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+		warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
+			+ file.getName() + " was saved anyway.");
+		warningMessage.setStyle("-fx-text-fill: orange;");
 	    } else {
+		warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
+			+ VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
 		warningMessage.setStyle("-fx-text-fill: red;");
-		warningMessage
-			.setText("File already exists! Therefore it was not saved.\nPlease change the file name.");
+	    }
+	    if (visabFileAccepted) {
+		warningMessage.setStyle("-fx-text-fill: green;");
+		warningMessage.setText(file.getName() + " successfully saved");
 	    }
 
 	} else {
-	    warningMessage.setStyle("-fx-text-fill: orange;");
-	    warningMessage.setText("Please select file");
+	    warningMessage.setStyle("-fx-text-fill: red;");
+	    warningMessage.setText("File already exists! Therefore it was not saved.\nPlease change the file name.");
 	}
+
     }
 
     @FXML
