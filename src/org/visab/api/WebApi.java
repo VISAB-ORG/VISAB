@@ -34,7 +34,7 @@ public class WebApi extends RouterNanoHTTPD {
         new SessionListenerFactory();
 
         // Start the session administration. This also starts the session timeout loop
-        new TransmissionSessionAdministration();
+        new TransmissionSessionWatchdog();
     }
 
     /**

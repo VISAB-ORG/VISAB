@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.TransmissionSessionAdministration;
+import org.visab.api.TransmissionSessionWatchdog;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
@@ -39,10 +39,10 @@ public class SessionController extends HTTPControllerBase {
             if (sessionId == null)
                 return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-            if (!TransmissionSessionAdministration.isSessionActive(sessionId))
+            if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
                 return getOkResponse("Session was already closed!");
 
-            TransmissionSessionAdministration.removeSession(sessionId);
+            TransmissionSessionWatchdog.removeSession(sessionId);
             // Publish the closed session to the EventBus
             publishEvent(sessionId);
 
@@ -76,10 +76,10 @@ public class SessionController extends HTTPControllerBase {
             if (!VISABUtil.gameIsSupported(game))
                 return getBadRequestResponse("Game is not supported!");
 
-            if (TransmissionSessionAdministration.isSessionActive(sessionId))
+            if (TransmissionSessionWatchdog.isSessionActive(sessionId))
                 return getBadRequestResponse("Session already active!");
 
-            TransmissionSessionAdministration.addSession(sessionId, game);
+            TransmissionSessionWatchdog.addSession(sessionId, game);
             // Publish the new session to the EventBus
             publish(new SessionOpenedEvent(sessionId, game));
 
@@ -105,10 +105,10 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse("Could not parse uuid!");
 
         SessionStatus sessionStatus;
-        if (!TransmissionSessionAdministration.isSessionActive(sessionId))
+        if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
             sessionStatus = new SessionStatus(false, sessionId, null);
         else
-            sessionStatus = new SessionStatus(true, sessionId, TransmissionSessionAdministration.getGame(sessionId));
+            sessionStatus = new SessionStatus(true, sessionId, TransmissionSessionWatchdog.getGame(sessionId));
 
         return getJsonResponse(sessionStatus);
     }
@@ -127,7 +127,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(TransmissionSessionAdministration.getActiveSessions());
+            return getJsonResponse(TransmissionSessionWatchdog.getActiveSessions());
 
         default:
             return getNotFoundResponse(uriResource);

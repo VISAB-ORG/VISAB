@@ -20,7 +20,7 @@ import org.visab.util.Settings;
  * @author moritz
  * 
  */
-public class TransmissionSessionAdministration extends SubscriberBase<StatisticsReceivedEvent>
+public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
         implements IPublisher<SessionClosedEvent> {
 
     /**
@@ -64,7 +64,7 @@ public class TransmissionSessionAdministration extends SubscriberBase<Statistics
         statisticsSentTimes.remove(sessionId);
     }
 
-    public TransmissionSessionAdministration() {
+    public TransmissionSessionWatchdog() {
         super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
         WebApi.getEventBus().subscribe(this);
 

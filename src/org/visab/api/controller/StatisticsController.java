@@ -8,7 +8,7 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD.ResponseException;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.TransmissionSessionAdministration;
+import org.visab.api.TransmissionSessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
@@ -39,7 +39,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!TransmissionSessionAdministration.isSessionActive(sessionId))
+        if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
             return getBadRequestResponse("Tried to send statistics without having an active session!");
 
         if (game == "")
