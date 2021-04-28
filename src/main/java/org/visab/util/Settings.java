@@ -22,4 +22,9 @@ public final class Settings {
     public static final String JSON_MIME_TYPE = "application/json";
     public static final String MEDIA_CONTENT_TYPE = JSON_MIME_TYPE;
     public static final String WEB_API_BASE_ADDRESS = "localhost:" + API_PORT;
+    // src/main/resources is part of the class path which is why these paths work
+    public static final String DATA_PATH = "/data/";
+    public static final String CSS_PATH = "/application.css";
+    public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
+    public static final String IMAGE_PATH = "/img/";
 }

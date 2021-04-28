@@ -1,5 +1,7 @@
 package org.visab.gui;
 
+import java.net.URISyntaxException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
@@ -45,7 +47,7 @@ public class AboutWindowController {
     }
 
     @FXML
-    public void handleStatisticsMenu() {
+    public void handleStatisticsMenu() throws URISyntaxException {
 	main.statisticsWindow();
     }
 

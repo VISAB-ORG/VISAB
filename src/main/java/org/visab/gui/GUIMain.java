@@ -2,6 +2,7 @@ package org.visab.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.visab.api.WebApi;
 import org.visab.util.Settings;
@@ -24,6 +25,16 @@ import javafx.stage.Stage;
  */
 public class GUIMain extends Application {
 
+    // src/main/resources is part of the classpath, so further subdirectories need
+    // to be concerned here
+    private static String VISAB_LOGO_PATH = "/img/visabLogo.png";
+
+    private static String ABOUT_FXML_PATH = "/AboutWindow.fxml";
+    private static String HELP_FXML_PATH = "/HelpWindow.fxml";
+    private static String MAIN_FXML_PATH = "/MainWindow.fxml";
+    private static String PATHVIEWER_FXML_PATH = "/PathViewerWindow.fxml";
+    private static String STATISCTICS_FXML_PATH = "/StatisticsWindow.fxml";
+
     public static void main(String[] args) {
 	launch(args);
     }
@@ -34,19 +45,19 @@ public class GUIMain extends Application {
 
     public void aboutWindow() {
 	try {
-	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("AboutWindow.fxml"));
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(ABOUT_FXML_PATH));
 	    AnchorPane pane = loader.load();
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
 	    primaryStage.setTitle("VisAB");
 
 	    AboutWindowController aboutWindowController = loader.getController();
 	    aboutWindowController.setMain(this);
 
 	    Scene scene = new Scene(pane);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource(Settings.CSS_PATH).toExternalForm());
 
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -63,19 +74,19 @@ public class GUIMain extends Application {
     public void helpWindow() {
 	try {
 
-	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("HelpWindow.fxml"));
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(HELP_FXML_PATH));
 	    AnchorPane pane = loader.load();
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
 	    primaryStage.setTitle("VisAB");
 
 	    HelpWindowController helpWindowController = loader.getController();
 	    helpWindowController.setMain(this);
 
 	    Scene scene = new Scene(pane);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource(Settings.CSS_PATH).toExternalForm());
 
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -86,8 +97,15 @@ public class GUIMain extends Application {
     }
 
     private ObservableList<String> loadFilesFromDatabase() {
+
 	// Read database for Combobox
-	File folder = new File("data");
+	File folder = null;
+	try {
+	    folder = new File(GUIMain.class.getResource(Settings.DATA_PATH).toURI());
+	} catch (URISyntaxException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 	File[] listOfFiles = folder.listFiles();
 
 	ObservableList<String> filesComboBox = FXCollections.observableArrayList();
@@ -102,20 +120,19 @@ public class GUIMain extends Application {
 
     public void mainWindow() {
 	try {
-
-	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("MainWindow.fxml"));
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(MAIN_FXML_PATH));
 	    AnchorPane pane = loader.load();
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
 	    primaryStage.setTitle("VisAB");
 
 	    MainWindowController mainWindowController = loader.getController();
 	    mainWindowController.setMain(this);
 
 	    Scene scene = new Scene(pane);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource(Settings.CSS_PATH).toExternalForm());
 
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -128,12 +145,12 @@ public class GUIMain extends Application {
     public void pathViewerWindow() {
 	try {
 
-	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("PathViewerWindow.fxml"));
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(PATHVIEWER_FXML_PATH));
 	    AnchorPane pane = loader.load();
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
 	    primaryStage.setTitle("VisAB");
 
 	    PathViewerWindowController pathWindowController = loader.getController();
@@ -142,7 +159,7 @@ public class GUIMain extends Application {
 	    pathWindowController.setMain(this);
 
 	    Scene scene = new Scene(pane);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource(Settings.CSS_PATH).toExternalForm());
 
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -178,15 +195,15 @@ public class GUIMain extends Application {
 	return;
     }
 
-    public void statisticsWindow() {
+    public void statisticsWindow() throws URISyntaxException {
 	try {
 
-	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource("StatisticsWindow.fxml"));
+	    FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(STATISCTICS_FXML_PATH));
 	    AnchorPane pane = loader.load();
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image("file:img/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(VISAB_LOGO_PATH)));
 	    primaryStage.setTitle("VisAB");
 
 	    StatisticsWindowController statisticsWindowController = loader.getController();
@@ -195,7 +212,7 @@ public class GUIMain extends Application {
 	    statisticsWindowController.setMain(this);
 
 	    Scene scene = new Scene(pane);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource(Settings.CSS_PATH).toExternalForm());
 
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
