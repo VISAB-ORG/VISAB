@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * The SessionListenerAdministration that holds a reference to all active SessionListeners.
+ * 
+ * @author moritz
+ * 
+ */
 public class SessionListenerAdministration {
 
     private static List<ISessionListener> activeListeners = new ArrayList<>();

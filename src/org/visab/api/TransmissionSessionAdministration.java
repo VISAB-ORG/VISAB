@@ -14,6 +14,12 @@ import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.Settings;
 
+/**
+ * Class for administering the current transmission sessions. Holds a reference to the current sessions and checks them for timeout.
+ * 
+ * @author moritz
+ * 
+ */
 public class TransmissionSessionAdministration extends SubscriberBase<StatisticsReceivedEvent>
         implements IPublisher<SessionClosedEvent> {
 
@@ -21,7 +27,7 @@ public class TransmissionSessionAdministration extends SubscriberBase<Statistics
      * Contains the last times statistics data was sent for the respective session.
      * Used for closing sessions via timeout.
      */
-    private static Map<UUID, LocalTime> sessionAccess = new HashMap<>();
+    private static Map<UUID, LocalTime> statisticsSentTimes = new HashMap<>();
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
@@ -51,19 +57,18 @@ public class TransmissionSessionAdministration extends SubscriberBase<Statistics
         activeSessions.put(sessionId, game);
     }
 
-    // TODO: Remove gracefully?
     public static void removeSession(UUID sessionId) {
         activeSessions.remove(sessionId);
 
         // Also remove the session from timeout check
-        if (sessionAccess.containsKey(sessionId))
-            activeSessions.remove(sessionId);
+        statisticsSentTimes.remove(sessionId);
     }
 
     public TransmissionSessionAdministration() {
         super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
         WebApi.getEventBus().subscribe(this);
 
+        // Starts the infinite timeout checking loop on a different thread.
         new Thread(() -> {
             try {
                 // TODO: Check if loop should break
@@ -78,17 +83,19 @@ public class TransmissionSessionAdministration extends SubscriberBase<Statistics
         }).start();
     }
 
+    /**
+     * Checks whether one of the current sessions should be timeouted.
+     * If that is the case, removes the sessions from activeSessions and statisticsSentTimes.
+     * After that a SessionClosedEvent is published.
+     */
     private void checkSessionTimeouts() {
         var entries = new ArrayList<Entry<UUID, LocalTime>>();
-        entries.addAll(sessionAccess.entrySet());
+        entries.addAll(statisticsSentTimes.entrySet());
 
         for (var entry : entries) {
             var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
             if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
                 var sessionId = entry.getKey();
-
-                if (activeSessions.containsKey(sessionId))
-                    activeSessions.remove(sessionId);
                 removeSession(sessionId);
 
                 // Invoke the SessionClosedEvent event manually.
@@ -99,7 +106,7 @@ public class TransmissionSessionAdministration extends SubscriberBase<Statistics
 
     @Override
     public void invoke(StatisticsReceivedEvent event) {
-        sessionAccess.put(event.getSessionId(), LocalTime.now());
+        statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
     }
 
     @Override

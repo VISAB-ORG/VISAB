@@ -1,8 +1,5 @@
 package org.visab.api.controller;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -10,15 +7,11 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.api.TransmissionSessionAdministration;
-import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
-import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.util.Settings;
 import org.visab.util.VISABUtil;
 
 /**

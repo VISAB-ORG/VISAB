@@ -15,20 +15,20 @@ public class SessionStatus {
     private UUID sessionId;
 
     public SessionStatus(boolean active, UUID sessionId, String game) {
-	this.active = active;
-	this.sessionId = sessionId;
-	this.game = game;
+        this.active = active;
+        this.sessionId = sessionId;
+        this.game = game;
     }
 
     public String getGame() {
-	return game;
+        return game;
     }
 
     public UUID getSessionId() {
-	return sessionId;
+        return sessionId;
     }
 
     public boolean isActive() {
-	return active;
+        return active;
     }
 }
