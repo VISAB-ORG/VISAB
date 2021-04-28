@@ -33,10 +33,6 @@ public class GUIMain extends Application {
     private static String PATHVIEWER_FXML_PATH = "/PathViewerWindow.fxml";
     private static String STATISCTICS_FXML_PATH = "/StatisticsWindow.fxml";
 
-    public static void main(String[] args) {
-	launch(args);
-    }
-
     private Stage primaryStage;
 
     private WebApi webApi;
