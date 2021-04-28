@@ -23,14 +23,18 @@ public class WebApi extends RouterNanoHTTPD {
     private static ApiEventBus apiEventBus = new ApiEventBus();
 
     public static ApiEventBus getEventBus() {
-	return apiEventBus;
+        return apiEventBus;
     }
 
     public WebApi(int port) {
-	super(port);
-	addMappings();
-	// Just initialize it anywhere and it will be a subscriber in the eventbus.
-	new SessionListenerFactory();
+        super(port);
+        addMappings();
+
+        // Just initialize it anywhere and it will be a subscriber in the eventbus.
+        new SessionListenerFactory();
+
+        // Start the session administration. This also starts the session timeout loop
+        new TransmissionSessionWatchdog();
     }
 
     /**
@@ -38,24 +42,24 @@ public class WebApi extends RouterNanoHTTPD {
      */
     @Override
     public void addMappings() {
-	addRoute("/", IndexHandler.class);
-	addRoute("/ping", IndexHandler.class);
-	addRoute("/session/open", SessionController.class);
-	addRoute("/session/list", SessionController.class);
-	addRoute("/session/status", SessionController.class);
-	addRoute("/session/close", SessionController.class);
-	addRoute("send/statistics", StatisticsController.class);
-	addRoute("send/map", MapController.class);
-	addRoute("games", GameSupportController.class);
+        addRoute("/", IndexHandler.class);
+        addRoute("/ping", IndexHandler.class);
+        addRoute("/session/open", SessionController.class);
+        addRoute("/session/list", SessionController.class);
+        addRoute("/session/status", SessionController.class);
+        addRoute("/session/close", SessionController.class);
+        addRoute("send/statistics", StatisticsController.class);
+        addRoute("send/map", MapController.class);
+        addRoute("games", GameSupportController.class);
     }
 
     public void shutdown() {
-	this.stop();
+        this.stop();
     }
 
     @Override
     public void start() throws IOException {
-	start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
 }

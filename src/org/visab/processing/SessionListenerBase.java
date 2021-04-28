@@ -1,5 +1,6 @@
 package org.visab.processing;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 import org.visab.api.WebApi;
@@ -15,10 +16,10 @@ import org.visab.eventbus.subscriber.SubscriberBase;
  * @author moritz
  *
  * @param <TStatistics> The statistics type, that will be processed by the
- *                      listeners
+ *                      listener
  */
 public abstract class SessionListenerBase<TStatistics>
-	implements ISessionListener, ISessionListenerWithStatistics<TStatistics> {
+        implements ISessionListener, ISessionListenerWithStatistics<TStatistics> {
 
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
@@ -30,21 +31,23 @@ public abstract class SessionListenerBase<TStatistics>
      */
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
-	public SessionClosedSubscriber() {
-	    super(new SessionClosedEvent(null).getClass().getSimpleName());
-	}
+        public SessionClosedSubscriber() {
+            super(new SessionClosedEvent(null, false).getClass().getSimpleName());
+        }
 
-	@Override
-	public void invoke(SessionClosedEvent event) {
-	    if (event.getSessionId().equals(SessionListenerBase.this.sessionId)) {
-		SessionListenerFactory.removeListener((ISessionListener) SessionListenerBase.this);
+        @Override
+        public void invoke(SessionClosedEvent event) {
+            if (event.getSessionId().equals(SessionListenerBase.this.sessionId)) {
+                SessionListenerAdministration.removeListener((ISessionListener) SessionListenerBase.this);
 
-		WebApi.getEventBus().unsubscribe((ISubscriber) statisticsSubscriber);
-		WebApi.getEventBus().unsubscribe((ISubscriber) sessionClosedSubscriber);
+                WebApi.getEventBus().unsubscribe((ISubscriber) statisticsSubscriber);
+                WebApi.getEventBus().unsubscribe((ISubscriber) sessionClosedSubscriber);
 
-		SessionListenerBase.this.onSessionClosed();
-	    }
-	}
+                isActive = false;
+
+                SessionListenerBase.this.onSessionClosed();
+            }
+        }
     }
 
     /**
@@ -57,17 +60,25 @@ public abstract class SessionListenerBase<TStatistics>
      */
     private class StatisticsSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
 
-	public StatisticsSubscriber() {
-	    super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
-	}
+        public StatisticsSubscriber() {
+            super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
+        }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void invoke(StatisticsReceivedEvent event) {
-	    if (event.getSessionId().equals(SessionListenerBase.this.sessionId))
-		SessionListenerBase.this.processStatistics((TStatistics) event.getStatistics());
-	}
+        @Override
+        @SuppressWarnings("unchecked")
+        public void invoke(StatisticsReceivedEvent event) {
+            if (event.getSessionId().equals(SessionListenerBase.this.sessionId)) {
+                lastReceived = LocalTime.now();
+                SessionListenerBase.this.processStatistics((TStatistics) event.getStatistics());
+            }
+        }
     }
+
+    /**
+     * The time at which the last statistics object was received for the session.
+     */
+    private LocalTime lastReceived = LocalTime.now();
+    private boolean isActive = true;
 
     private String game;
     private SessionClosedSubscriber sessionClosedSubscriber;
@@ -75,25 +86,34 @@ public abstract class SessionListenerBase<TStatistics>
     private StatisticsSubscriber statisticsSubscriber;
 
     public SessionListenerBase(String game, UUID sessionId) {
-	this.game = game;
-	this.sessionId = sessionId;
-	this.statisticsSubscriber = new StatisticsSubscriber();
-	this.sessionClosedSubscriber = new SessionClosedSubscriber();
+        this.game = game;
+        this.sessionId = sessionId;
+        this.statisticsSubscriber = new StatisticsSubscriber();
+        this.sessionClosedSubscriber = new SessionClosedSubscriber();
 
-	WebApi.getEventBus().subscribe((ISubscriber) statisticsSubscriber);
-	WebApi.getEventBus().subscribe((ISubscriber) sessionClosedSubscriber);
+        WebApi.getEventBus().subscribe((ISubscriber) statisticsSubscriber);
+        WebApi.getEventBus().subscribe((ISubscriber) sessionClosedSubscriber);
 
-	onSessionStarted();
+        onSessionStarted();
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override
     public String getGame() {
-	return game;
+        return game;
     }
 
     @Override
     public UUID getSessionId() {
-	return sessionId;
+        return sessionId;
+    }
+
+    @Override
+    public LocalTime getLastReceived() {
+        return lastReceived;
     }
 
     @Override

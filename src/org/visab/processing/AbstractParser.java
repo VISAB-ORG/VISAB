@@ -37,9 +37,9 @@ public abstract class AbstractParser {
     protected FileWriter writer;
 
     public AbstractParser(String outDir, String visabFileName) {
-	this.outDir = outDir;
-	this.visabFileName = visabFileName;
-	this.gson = new Gson();
+        this.outDir = outDir;
+        this.visabFileName = visabFileName;
+        this.gson = new Gson();
     }
 
     /**
