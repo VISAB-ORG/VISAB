@@ -11,11 +11,11 @@ public class CBRShooterFile extends VISABFileBase {
     private List<CBRShooterStatistics> statistics = new ArrayList<>();
 
     public CBRShooterFile() {
-	super("CBRShooter", "2.0");
+        super("CBRShooter", "2.0");
     }
 
     public List<CBRShooterStatistics> getStatistics() {
-	return statistics;
+        return statistics;
     }
 
 }
