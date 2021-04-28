@@ -11,7 +11,14 @@ import java.util.UUID;
  */
 public class SessionClosedEvent extends EventBase {
 
-    public SessionClosedEvent(UUID sessionId) {
-	super(sessionId);
+    private boolean closedByTimeout;
+
+    public boolean isClosedByTimeout() {
+        return closedByTimeout;
+    }
+
+    public SessionClosedEvent(UUID sessionId, boolean closedByTimeout) {
+        super(sessionId);
+        this.closedByTimeout = closedByTimeout;
     }
 }

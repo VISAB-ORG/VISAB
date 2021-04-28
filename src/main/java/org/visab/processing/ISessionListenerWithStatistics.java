@@ -6,7 +6,7 @@ package org.visab.processing;
  *
  * @author moritz
  *
- * @param <TStatistics> The statistics object, that will be processed.
+ * @param <TStatistics> The statistics type, that will be processed.
  */
 public interface ISessionListenerWithStatistics<TStatistics> {
 
