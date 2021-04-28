@@ -44,7 +44,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    AboutWindowController aboutWindowController = loader.getController();
@@ -73,7 +73,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    HelpWindowController helpWindowController = loader.getController();
@@ -120,7 +120,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    MainWindowController mainWindowController = loader.getController();
@@ -145,7 +145,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    PathViewerWindowController pathWindowController = loader.getController();
@@ -198,7 +198,7 @@ public class GUIMain extends Application {
 
 	    primaryStage.setMinHeight(1000.00);
 	    primaryStage.setMinWidth(1200.00);
-	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "/visabLogo.png")));
+	    primaryStage.getIcons().add((new Image(Settings.IMAGE_PATH + "visabLogo.png")));
 	    primaryStage.setTitle("VisAB");
 
 	    StatisticsWindowController statisticsWindowController = loader.getController();

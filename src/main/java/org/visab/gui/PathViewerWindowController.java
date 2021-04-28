@@ -271,7 +271,7 @@ public class PathViewerWindowController {
 	drawPane.getChildren().clear();
 	String fileNameFromComboBox = comboBox.getValue();
 
-	String content = VISABUtil.readFile(Settings.DATA_PATH + "/" + fileNameFromComboBox.toString());
+	String content = VISABUtil.readFile(Settings.DATA_PATH + fileNameFromComboBox.toString());
 
 	boolean externalFileAccepted = false;
 

@@ -110,7 +110,7 @@ public class StatisticsWindowController {
 
 	boolean externalFileAccepted = false;
 
-	String content = VISABUtil.readFile(Settings.DATA_PATH + "/" + fileNameFromComboBox);
+	String content = VISABUtil.readFile(Settings.DATA_PATH + fileNameFromComboBox);
 
 	if (fileNameFromComboBox == null) {
 	    // Set InfoLabel

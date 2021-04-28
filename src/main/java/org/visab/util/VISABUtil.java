@@ -98,7 +98,7 @@ public final class VISABUtil {
 
 	File databaseDir = new File(Settings.DATA_PATH);
 	databaseDir.mkdirs();
-	File saveIntoDatabase = new File(Settings.DATA_PATH + "/" + fileName);
+	File saveIntoDatabase = new File(Settings.DATA_PATH + fileName);
 
 	BufferedWriter writer;
 	try {
