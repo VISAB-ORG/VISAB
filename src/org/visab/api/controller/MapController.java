@@ -2,9 +2,9 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.response.Response;
-import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
+import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
  * The map controller, used for transmitting data for displaying unity maps in

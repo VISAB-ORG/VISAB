@@ -2,10 +2,11 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.response.Response;
-import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.util.Settings;
+
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
+import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
  * Controller for getting the games supported by VISAB

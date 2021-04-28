@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.NanoHTTPD.ResponseException;
-import org.nanohttpd.protocols.http.response.Response;
-import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.util.AssignByGame;
 import org.visab.util.VISABUtil;
+
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
+import fi.iki.elonen.NanoHTTPD.ResponseException;
+import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
  * The statistics controller, used for transmitting statistics data.

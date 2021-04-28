@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.response.Response;
-import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
 import org.visab.util.VISABUtil;
+
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.Response;
+import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
  * The SessionController, used for opening and closing VISAB transmission

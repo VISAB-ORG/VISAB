@@ -2,14 +2,15 @@ package org.visab.api;
 
 import java.io.IOException;
 
-import org.nanohttpd.protocols.http.NanoHTTPD;
-import org.nanohttpd.router.RouterNanoHTTPD;
 import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.eventbus.ApiEventBus;
 import org.visab.processing.SessionListenerFactory;
+
+import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.router.RouterNanoHTTPD;
 
 /**
  * The main WebApi that hosts a small HTTP server. This is the entry point for
