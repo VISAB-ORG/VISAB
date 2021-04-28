@@ -2,6 +2,7 @@
 *.iml
 .idea/
 
+**.visab
 **.visab2
 .metadata/
 .classpath
