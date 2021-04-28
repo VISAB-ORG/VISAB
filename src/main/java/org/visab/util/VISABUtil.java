@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.visab.gui.GUIMain;
 import org.visab.main.Main;
 
 import javafx.scene.control.TableView;
@@ -78,12 +76,13 @@ public final class VISABUtil {
     }
 
     public static String readFile(String filePath) {
-	var content = "";
+	String content = "";
 	try {
 	    content = new String(Files.readAllBytes(Paths.get(filePath)));
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+
 	return content;
     }
 
@@ -96,17 +95,15 @@ public final class VISABUtil {
     }
 
     public static void writeFileToDatabase(String fileName, String content) throws URISyntaxException {
-	URL res = GUIMain.class.getResource(Settings.DATA_PATH);
-	File folder = Paths.get(res.toURI()).toFile();
-	var filePath = Paths.get("", folder + "/" + fileName);
-	var parent = filePath.getParent();
-	System.out.println(filePath);
-	System.out.println(parent);
+
+	File databaseDir = new File(Settings.DATA_PATH);
+	databaseDir.mkdirs();
+	File saveIntoDatabase = new File(Settings.DATA_PATH + "/" + fileName);
 
 	BufferedWriter writer;
 	try {
 
-	    writer = new BufferedWriter(new FileWriter(filePath.toString()));
+	    writer = new BufferedWriter(new FileWriter(saveIntoDatabase));
 	    writer.write(content);
 	    writer.close();
 
