@@ -2,6 +2,7 @@
 *.iml
 .idea/
 
+**.visab
 **.visab2
 .metadata/
 .classpath
@@ -65,6 +66,10 @@ local.properties
 .scala_dependencies
 .worksheet
 
+# Maven-generated reduced pom exclusion
+dependency-reduced-pom.xml
+
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
+/target/
