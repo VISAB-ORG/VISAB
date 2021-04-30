@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.visab.api.TransmissionSessionWatchdog;
+import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
@@ -39,7 +39,9 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
+            return getBadRequestResponse("Session was already closed!");
+       
+        if (!SessionWatchdog.isSessionActive(sessionId))
             return getBadRequestResponse("Session was already closed!");
 
         if (game == "")

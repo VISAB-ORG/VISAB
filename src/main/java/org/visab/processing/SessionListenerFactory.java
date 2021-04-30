@@ -28,7 +28,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     }
 
     public SessionListenerFactory() {
-        super(new SessionOpenedEvent(null, null).getClass().getSimpleName());
+        super(SessionOpenedEvent.class);
         WebApi.getEventBus().subscribe((ISubscriber) this);
     }
 

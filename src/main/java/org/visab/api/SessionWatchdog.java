@@ -5,8 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.SessionClosedEvent;
@@ -15,13 +15,18 @@ import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.Settings;
 
 /**
- * Class for administering the current transmission sessions. Holds a reference to the current sessions and checks them for timeout.
- * 
+ * Class for administering the current transmission sessions. Holds a reference
+ * to the current sessions and checks them for timeout.
+ *
  * @author moritz
- * 
+ *
  */
-public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
+public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
         implements IPublisher<SessionClosedEvent> {
+
+    private static Map<UUID, String> activeSessions = new HashMap<>();
+
+    private static boolean checkTimeouts = true;
 
     /**
      * Contains the last times statistics data was sent for the respective session.
@@ -29,21 +34,19 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
      */
     private static Map<UUID, LocalTime> statisticsSentTimes = new HashMap<>();
 
-    private static Map<UUID, String> activeSessions = new HashMap<>();
+    public static void addSession(UUID sessionId, String game) {
+        activeSessions.put(sessionId, game);
+    }
 
     /**
      * Returns the currently active sessions. Warning: Returns a copy, not the
      * reference so don't try modifying this.
-     * 
+     *
      * @return A Map of the currently active transmission sessions and their
      *         respective games
      */
     public static Map<UUID, String> getActiveSessions() {
         return new HashMap<UUID, String>(activeSessions);
-    }
-
-    public static boolean isSessionActive(UUID sessionId) {
-        return activeSessions.containsKey(sessionId);
     }
 
     public static String getGame(UUID sessionId) {
@@ -53,8 +56,8 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
         return "";
     }
 
-    public static void addSession(UUID sessionId, String game) {
-        activeSessions.put(sessionId, game);
+    public static boolean isSessionActive(UUID sessionId) {
+        return activeSessions.containsKey(sessionId);
     }
 
     public static void removeSession(UUID sessionId) {
@@ -64,8 +67,8 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
         statisticsSentTimes.remove(sessionId);
     }
 
-    public TransmissionSessionWatchdog() {
-        super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
+    public SessionWatchdog() {
+        super(StatisticsReceivedEvent.class);
         WebApi.getEventBus().subscribe(this);
 
         // Starts the infinite timeout checking loop on a different thread.
@@ -83,8 +86,8 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
     }
 
     /**
-     * Checks whether one of the current sessions should be timeouted.
-     * If that is the case, removes the sessions from activeSessions and statisticsSentTimes.
+     * Checks whether one of the current sessions should be timeouted. If that is
+     * the case, removes the sessions from activeSessions and statisticsSentTimes.
      * After that a SessionClosedEvent is published.
      */
     private void checkSessionTimeouts() {

@@ -32,7 +32,7 @@ public abstract class SessionListenerBase<TStatistics>
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
         public SessionClosedSubscriber() {
-            super(new SessionClosedEvent(null, false).getClass().getSimpleName());
+            super(SessionClosedEvent.class);
         }
 
         @Override
@@ -61,7 +61,7 @@ public abstract class SessionListenerBase<TStatistics>
     private class StatisticsSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
 
         public StatisticsSubscriber() {
-            super(new StatisticsReceivedEvent(null, null, null).getClass().getSimpleName());
+            super(StatisticsReceivedEvent.class);
         }
 
         @Override
