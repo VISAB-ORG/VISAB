@@ -17,7 +17,7 @@ import javafx.scene.control.TableView;
 
 /**
  * Class containing various helper methods
- * 
+ *
  * @author VISAB 1.0 and 2.0 group
  */
 public final class VISABUtil {
@@ -45,10 +45,6 @@ public final class VISABUtil {
         }
 
         return data;
-    }
-
-    public static final boolean gameIsSupported(String game) {
-        return Settings.ALLOWED_GAMES.contains(game);
     }
 
     public static String[] getAcceptedExternalDataEndings() {

@@ -2,7 +2,7 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.visab.util.Settings;
+import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -18,7 +18,7 @@ public class GameSupportController extends HTTPControllerBase {
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return getJsonResponse(Settings.ALLOWED_GAMES);
+        return getJsonResponse(AssignByGame.ALLOWED_GAMES);
     }
 
     @Override

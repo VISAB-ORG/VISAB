@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+/**
+ * Class for serializing and deserializing objects / json files.
+ *
+ * @author moritz
+ *
+ */
 public final class JsonConvert {
 
     public static final ObjectMapper mapper = new ObjectMapper()
