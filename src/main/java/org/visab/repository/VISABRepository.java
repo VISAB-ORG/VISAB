@@ -60,6 +60,32 @@ public class VISABRepository {
     }
 
     /**
+     * Deletes a file of a give game with a given name
+     *
+     * @param game     The game of the file
+     * @param fileName The name of the file
+     * @return True if deleted, false else
+     */
+    public boolean deleteFileByName(String game, String fileName) {
+        var filePath = baseDir + game + "/" + fileName;
+
+        return deleteFileByPath(filePath);
+    }
+
+    /**
+     * Deletes a file at a given path
+     *
+     * @param filePath The path of the file to delete
+     * @return True if deleted, false else
+     */
+    public boolean deleteFileByPath(String filePath) {
+        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
+            filePath += ".visab2";
+
+        return new File(filePath).delete();
+    }
+
+    /**
      * Loads a file from the database
      *
      * @param <T>      The type of the file
@@ -110,9 +136,8 @@ public class VISABRepository {
         new File(fileDir).mkdirs();
 
         var filePath = fileDir + "/" + visabFile.getFileName();
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab")) {
+        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
             filePath += ".visab2";
-        }
 
         return writeFile(filePath, json);
     }
