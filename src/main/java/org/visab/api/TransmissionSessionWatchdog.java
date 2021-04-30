@@ -71,8 +71,7 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
         // Starts the infinite timeout checking loop on a different thread.
         new Thread(() -> {
             try {
-                // TODO: Check if loop should break
-                while (true) {
+                while (checkTimeouts) {
                     checkSessionTimeouts();
                     Thread.sleep(1000);
                 }
@@ -104,6 +103,8 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
         }
     }
 
+    private static boolean checkTimeouts = true;
+
     @Override
     public void invoke(StatisticsReceivedEvent event) {
         statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
@@ -112,6 +113,10 @@ public class TransmissionSessionWatchdog extends SubscriberBase<StatisticsReceiv
     @Override
     public void publish(SessionClosedEvent event) {
         WebApi.getEventBus().publish(event);
+    }
+
+    public void stopTimeoutLoop() {
+        checkTimeouts = false;
     }
 
 }
