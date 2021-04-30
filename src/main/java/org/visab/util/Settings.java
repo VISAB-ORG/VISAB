@@ -24,7 +24,7 @@ public final class Settings {
     public static final String WEB_API_BASE_ADDRESS = "localhost:" + API_PORT;
 
     // Always initialize the data path respective to the root dir path of execution
-    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/visabDatabase/";
+    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/database/";
     public static final String CSS_PATH = "/application.css";
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";

@@ -2,7 +2,7 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.visab.util.JsonSerializer;
+import org.visab.util.JsonConvert;
 import org.visab.util.Settings;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -31,7 +31,7 @@ public abstract class HTTPControllerBase implements UriResponder {
     }
 
     protected static final Response getJsonResponse(Object o) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, JsonSerializer.serializeObject(o));
+        return NanoHTTPD.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, JsonConvert.serializeObject(o));
     }
 
     protected static final Response getJsonResponse(String json) {

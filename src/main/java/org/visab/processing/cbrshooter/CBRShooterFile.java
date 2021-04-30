@@ -5,13 +5,21 @@ import java.util.List;
 
 import org.visab.processing.VISABFileBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.util.AssignByGame;
 
 public class CBRShooterFile extends VISABFileBase {
 
     private List<CBRShooterStatistics> statistics = new ArrayList<>();
 
+    /**
+     * Used for deserialization
+     */
     public CBRShooterFile() {
-        super("CBRShooter", "2.0");
+        super("", "", "");
+    }
+
+    public CBRShooterFile(String fileName) {
+        super(AssignByGame.CBR_SHOOTER_STRING, "2.0", fileName);
     }
 
     public List<CBRShooterStatistics> getStatistics() {

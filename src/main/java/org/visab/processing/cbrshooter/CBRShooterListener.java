@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.visab.processing.SessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
-import org.visab.util.JsonSerializer;
+import org.visab.util.JsonConvert;
 import org.visab.util.VISABUtil;
 
 /**
@@ -30,7 +30,7 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
 
 	@Override
 	public void onSessionClosed() {
-		var json = JsonSerializer.serializeObject(CBRShooterFile);
+		var json = JsonConvert.serializeObject(CBRShooterFile);
 
 		var fullFilePath = new File(outDir + fileName);
 
@@ -44,7 +44,7 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
 
 	@Override
 	public void onSessionStarted() {
-		CBRShooterFile = new CBRShooterFile();
+		CBRShooterFile = new CBRShooterFile(getSessionId().toString());
 
 		outDir = VISABUtil.getRunningJarRootDirPath() + "/visab_files/CBRShooter/";
 		// fileName = CBRShooterFile.getCreationDate().toString() + ".txt";
