@@ -52,7 +52,8 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("/session/status", SessionController.class);
         addRoute("/session/close", SessionController.class);
         addRoute("send/statistics", StatisticsController.class);
-        addRoute("send/map", MapController.class);
+        addRoute("send/map/image", MapController.class);
+        addRoute("send/map/information", MapController.class);
         addRoute("games", GameSupportController.class);
     }
 
