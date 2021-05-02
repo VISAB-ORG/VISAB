@@ -49,9 +49,6 @@ public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInfor
     }
 
     public UnitySessionListenerBase(String game, UUID sessionId) {
-        // TODO: Be careful here, since the super contructor invokes onSessionStart()
-        // and we can't know how much time will be spent in the call. Potentially call
-        // onSessionStart from the factory instead.
         super(game, sessionId);
 
         var mapImageSubscriber = new UnityMapImageSubscriber();

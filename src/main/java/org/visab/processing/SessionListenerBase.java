@@ -104,9 +104,6 @@ public abstract class SessionListenerBase<TStatistics> implements ISessionListen
 
         subscribers.add(statisticsSubscriber);
         subscribers.add(sessionClosedSubscriber);
-
-        // TODO: Potentially call from factory instead.
-        onSessionStarted();
     }
 
     @Override
