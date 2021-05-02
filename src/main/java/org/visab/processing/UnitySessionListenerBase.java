@@ -7,8 +7,16 @@ import org.visab.eventbus.event.MapImageReceivedEvent;
 import org.visab.eventbus.event.MapInformationReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 
-public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInformation>
-        extends SessionListenerBase<TStatistics> {
+/**
+ *
+ * @author moritz
+ *
+ * @param <TStatistics>
+ * @param <TMapImage>
+ * @param <TMapInformation>
+ */
+public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInformation> extends
+        SessionListenerBase<TStatistics> implements IUnitySessionListener<TStatistics, TMapImage, TMapInformation> {
 
     private class UnityMapImageSubscriber extends SubscriberBase<MapImageReceivedEvent> {
 
@@ -56,7 +64,9 @@ public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInfor
         subscribers.add(mapInfoSubscriber);
     }
 
+    @Override
     public abstract void processMapImage(TMapImage mapImage);
 
+    @Override
     public abstract void processMapInformation(TMapInformation mapInformation);
 }

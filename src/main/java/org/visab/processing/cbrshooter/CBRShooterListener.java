@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.visab.processing.SessionListenerBase;
+import org.visab.processing.UnitySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
 
@@ -14,7 +15,7 @@ import org.visab.util.AssignByGame;
  * @author moritz
  *
  */
-public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
+public class CBRShooterListener extends UnitySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage, CBRShooterMapInformation> {
 
     private CBRShooterFile CBRShooterFile;
 
@@ -46,6 +47,18 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
         // TODO: Since it may be hard to detect when a unity game closes, instead keep a
         // filewriter open and write on every received.
         // This should be done asynchronously
+    }
+
+    @Override
+    public void processMapImage(CBRShooterMapImage mapImage) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void processMapInformation(CBRShooterMapInformation mapInformation) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
