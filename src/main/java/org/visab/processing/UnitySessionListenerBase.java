@@ -1,6 +1,5 @@
 package org.visab.processing;
 
-import java.time.LocalTime;
 import java.util.UUID;
 
 import org.visab.api.WebApi;

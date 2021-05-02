@@ -21,8 +21,7 @@ import org.visab.repository.VISABRepository;
  * @param <TStatistics> The statistics type, that will be processed by the
  *                      listener
  */
-public abstract class SessionListenerBase<TStatistics>
-        implements ISessionListener, ISessionListenerWithStatistics<TStatistics> {
+public abstract class SessionListenerBase<TStatistics> implements ISessionListener {
 
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
@@ -96,7 +95,7 @@ public abstract class SessionListenerBase<TStatistics>
     public SessionListenerBase(String game, UUID sessionId) {
         this.game = game;
         this.sessionId = sessionId;
-        
+
         var statisticsSubscriber = new StatisticsSubscriber();
         var sessionClosedSubscriber = new SessionClosedSubscriber();
 
@@ -136,6 +135,5 @@ public abstract class SessionListenerBase<TStatistics>
     @Override
     public abstract void onSessionStarted();
 
-    @Override
     public abstract void processStatistics(TStatistics statistics);
 }
