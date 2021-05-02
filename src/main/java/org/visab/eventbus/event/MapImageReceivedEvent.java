@@ -15,7 +15,7 @@ public class MapImageReceivedEvent extends EventBase {
         this.mapImage = mapImage;
     }
 
-    public IUnityMapImage getMapImage() {
+    public IUnityMapImage getImage() {
         return this.mapImage;
     }
 

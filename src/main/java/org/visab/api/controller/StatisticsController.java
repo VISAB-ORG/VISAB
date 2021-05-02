@@ -1,7 +1,5 @@
 package org.visab.api.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.api.SessionWatchdog;
@@ -13,7 +11,6 @@ import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
-import fi.iki.elonen.NanoHTTPD.ResponseException;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
@@ -39,8 +36,6 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-            return getBadRequestResponse("Session was already closed!");
-       
         if (!SessionWatchdog.isSessionActive(sessionId))
             return getBadRequestResponse("Session was already closed!");
 

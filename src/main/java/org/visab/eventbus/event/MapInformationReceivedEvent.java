@@ -19,7 +19,7 @@ public class MapInformationReceivedEvent extends EventBase {
         return game;
     }
 
-    public IUnityMapInformation getMapInformation() {
+    public IUnityMapInformation getInformation() {
         return mapInformation;
     }
 }

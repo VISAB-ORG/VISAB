@@ -2,7 +2,7 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.visab.api.TransmissionSessionWatchdog;
+import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApiHelper;
 import org.visab.eventbus.event.MapImageReceivedEvent;
 import org.visab.eventbus.event.MapInformationReceivedEvent;
@@ -39,7 +39,7 @@ public class MapController extends HTTPControllerBase {
             if (!AssignByGame.gameIsSupported(game))
                 return getBadRequestResponse("Game is not supported!");
 
-            if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
+            if (!SessionWatchdog.isSessionActive(sessionId))
                 return getBadRequestResponse("Session was closed!");
 
             var json = WebApiHelper.extractJsonBody(httpSession);
@@ -54,7 +54,8 @@ public class MapController extends HTTPControllerBase {
     }
 
     /**
-     * The MapInformationPublisher, that handles requests for sending map information. 
+     * The MapInformationPublisher, that handles requests for sending map
+     * information.
      */
     private class MapInformationPublisher extends PublisherBase<MapInformationReceivedEvent> {
         private Response receiveMapInformation(IHTTPSession httpSession) {
@@ -70,7 +71,7 @@ public class MapController extends HTTPControllerBase {
             if (!AssignByGame.gameIsSupported(game))
                 return getBadRequestResponse("Game is not supported!");
 
-            if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
+            if (!SessionWatchdog.isSessionActive(sessionId))
                 return getBadRequestResponse("Session was closed!");
 
             var json = WebApiHelper.extractJsonBody(httpSession);
@@ -99,14 +100,14 @@ public class MapController extends HTTPControllerBase {
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
         var endpointAdress = uriResource.getUri().replace("map/", "");
         switch (endpointAdress) {
-            case "image":
-                return mapImagePublisher.receiveMapImage(session);
+        case "image":
+            return mapImagePublisher.receiveMapImage(session);
 
-            case "information":
-                return mapInfoPublisher.receiveMapInformation(session);
+        case "information":
+            return mapInfoPublisher.receiveMapInformation(session);
 
-            default:
-                return getNotFoundResponse(uriResource);
+        default:
+            return getNotFoundResponse(uriResource);
         }
     }
 }

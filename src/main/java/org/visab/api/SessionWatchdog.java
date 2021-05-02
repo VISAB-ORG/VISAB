@@ -21,8 +21,7 @@ import org.visab.util.Settings;
  * @author moritz
  *
  */
-public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
-        implements IPublisher<SessionClosedEvent> {
+public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> implements IPublisher<SessionClosedEvent> {
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
@@ -105,8 +104,6 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
             }
         }
     }
-
-    private static boolean checkTimeouts = true;
 
     @Override
     public void invoke(StatisticsReceivedEvent event) {
