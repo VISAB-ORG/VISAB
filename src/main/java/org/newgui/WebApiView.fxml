@@ -53,27 +53,27 @@
     <children>
         <TableView fx:id="sessionTable" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TableColumn fx:id="sessionId" prefWidth="75.0" text="SessionId">
+                <TableColumn prefWidth="75.0" text="SessionId">
                     <cellValueFactory>
-                        <PropertyValueFactory property="SessionId" />
+                        <PropertyValueFactory property="sessionId" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="game" prefWidth="75.0" text="Game">
+                <TableColumn prefWidth="75.0" text="Game">
                     <cellValueFactory>
                         <PropertyValueFactory property="game" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="sessionStart" prefWidth="75.0" text="SessionStart">
+                <TableColumn prefWidth="75.0" text="SessionStart">
                     <cellValueFactory>
                         <PropertyValueFactory property="sessionStart" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="lastStatistics" prefWidth="75.0" text="LastStatistics">
+                <TableColumn prefWidth="75.0" text="LastStatistics">
                     <cellValueFactory>
                         <PropertyValueFactory property="lastReceived" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="isActive" prefWidth="115.0" text="IsActive">
+                <TableColumn prefWidth="115.0" text="IsActive">
                     <cellValueFactory>
                         <PropertyValueFactory property="isActive" />
                     </cellValueFactory>
