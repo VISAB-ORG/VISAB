@@ -1,6 +1,7 @@
 package org.newgui;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.newgui.model.SessionTableRow;
@@ -23,13 +24,12 @@ public class WebApiViewModel implements ViewModel {
     private class SessionOpenedSubscriber extends SubscriberBase<SessionOpenedEvent> {
 
         public SessionOpenedSubscriber() {
-            super("SessionOpenedEvent");
+            super(SessionOpenedEvent.class);
         }
 
         @Override
         public void invoke(SessionOpenedEvent event) {
-            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(),
-                    LocalTime.now());
+            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now());
 
             sessions.add(newRow);
         }
@@ -39,14 +39,15 @@ public class WebApiViewModel implements ViewModel {
     private class StatisticsReceivedSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
 
         public StatisticsReceivedSubscriber() {
-            super("StatisticsReceivedEvent");
+            super(StatisticsReceivedEvent.class);
         }
 
         @Override
         public void invoke(StatisticsReceivedEvent event) {
             for (var row : sessions) {
-                if (row.getSessionId() == event.getSessionId()) {
+                if (row.getSessionId().equals(event.getSessionId())) {
                     row.setLastReceived(LocalTime.now());
+                    notifySessionRowUpdate(event.getSessionId());
                     break;
                 }
             }
@@ -57,14 +58,15 @@ public class WebApiViewModel implements ViewModel {
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
         public SessionClosedSubscriber() {
-            super("SessionClosedEvent");
+            super(SessionClosedEvent.class);
         }
 
         @Override
         public void invoke(SessionClosedEvent event) {
             for (var row : sessions) {
-                if (row.getSessionId() == event.getSessionId()) {
+                if (row.getSessionId().equals(event.getSessionId())) {
                     row.setIsActive(false);
+                    notifySessionRowUpdate(event.getSessionId());
                     break;
                 }
             }
@@ -76,15 +78,23 @@ public class WebApiViewModel implements ViewModel {
         WebApi.getEventBus().subscribe(new SessionOpenedSubscriber());
         WebApi.getEventBus().subscribe(new StatisticsReceivedSubscriber());
         WebApi.getEventBus().subscribe(new SessionClosedSubscriber());
-        addSession(new SessionTableRow(UUID.randomUUID(), "xd", LocalTime.now(), LocalTime.now()));
     }
 
-    private void addSession(SessionTableRow session) {
-        sessions.add(session);
+    /**
+     * Notifies the View, that a property of a SessionTableRow was updated
+     */
+    private void notifySessionRowUpdate(UUID sessionId) {
+        for (int i = 0; i < sessions.size(); i++) {
+            var row = sessions.get(i);
+            if (row.getSessionId().equals(sessionId)) {
+                sessions.set(i, row);
+                break;
+            }
+        }
     }
 
     private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
-    
+
     private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
 
     public ObservableList<SessionTableRow> sessionsProperty() {
