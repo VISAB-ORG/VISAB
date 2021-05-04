@@ -1,5 +1,7 @@
 package org.visab.processing.cbrshooter;
 
-public class CBRShooterMapImage {
+import org.visab.processing.IUnityMapImage;
+
+public class CBRShooterMapImage implements IUnityMapImage {
 
 }

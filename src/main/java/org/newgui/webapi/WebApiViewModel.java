@@ -3,7 +3,7 @@ package org.newgui.webapi;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import org.newgui.model.SessionTableRow;
+import org.newgui.webapi.model.SessionTableRow;
 import org.visab.api.WebApi;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;

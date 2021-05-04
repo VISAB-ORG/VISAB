@@ -21,7 +21,7 @@ import org.visab.repository.VISABRepository;
  * @param <TStatistics> The statistics type, that will be processed by the
  *                      listener
  */
-public abstract class SessionListenerBase<TStatistics> implements ISessionListener {
+public abstract class SessionListenerBase<TStatistics extends IStatistics> implements ISessionListener {
 
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.

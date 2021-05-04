@@ -15,8 +15,9 @@ import org.visab.eventbus.subscriber.SubscriberBase;
  * @param <TMapImage>
  * @param <TMapInformation>
  */
-public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInformation> extends
-        SessionListenerBase<TStatistics> implements IUnitySessionListener<TStatistics, TMapImage, TMapInformation> {
+public abstract class UnitySessionListenerBase<TStatistics extends IStatistics, TMapImage extends IUnityMapImage, TMapInformation extends IUnityMapInformation>
+        extends SessionListenerBase<TStatistics>
+        implements IUnitySessionListener<TStatistics, TMapImage, TMapInformation> {
 
     private class UnityMapImageSubscriber extends SubscriberBase<MapImageReceivedEvent> {
 

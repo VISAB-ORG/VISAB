@@ -3,7 +3,7 @@ package org.newgui.webapi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.newgui.model.SessionTableRow;
+import org.newgui.webapi.model.SessionTableRow;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;

@@ -1,4 +1,4 @@
-package org.newgui.model;
+package org.newgui.webapi.model;
 
 import java.time.LocalTime;
 import java.util.UUID;

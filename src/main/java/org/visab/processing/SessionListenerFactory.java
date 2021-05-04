@@ -3,7 +3,6 @@ package org.visab.processing;
 import java.util.UUID;
 
 import org.visab.api.WebApi;
-import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.AssignByGame;
@@ -31,7 +30,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 
     public SessionListenerFactory() {
         super(SessionOpenedEvent.class);
-        WebApi.getEventBus().subscribe((ISubscriber) this);
+        WebApi.getEventBus().subscribe(this);
     }
 
     @Override

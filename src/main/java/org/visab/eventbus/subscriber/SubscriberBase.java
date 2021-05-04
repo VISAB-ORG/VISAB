@@ -1,5 +1,6 @@
 package org.visab.eventbus.subscriber;
 
+import org.visab.eventbus.IEvent;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.ISubscriberWithEvent;
 
@@ -10,7 +11,7 @@ import org.visab.eventbus.ISubscriberWithEvent;
  *
  * @param <TEvent> The event that the class will subscribe to.
  */
-public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriberWithEvent<TEvent> {
+public abstract class SubscriberBase<TEvent extends IEvent> implements ISubscriber, ISubscriberWithEvent<TEvent> {
 
     private String subscribedEventType;
 

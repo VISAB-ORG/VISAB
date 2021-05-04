@@ -1,6 +1,6 @@
 package org.visab.processing;
 
-public interface IUnitySessionListener<TStatistics, TMapImage, TMapInformation> {
+public interface IUnitySessionListener<TStatistics extends IStatistics, TMapImage extends IUnityMapImage, TMapInformation extends IUnityMapInformation> {
 
     void processMapImage(TMapImage mapImage);
 
