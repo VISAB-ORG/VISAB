@@ -13,11 +13,11 @@ public interface ISessionListener {
 
     String getGame();
 
+    LocalTime getLastReceived();
+
     UUID getSessionId();
 
     boolean isActive();
-
-    LocalTime getLastReceived();
 
     void onSessionClosed();
 

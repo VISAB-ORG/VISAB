@@ -17,16 +17,16 @@ public class StatisticsReceivedEvent extends EventBase {
     private IStatistics statistics;
 
     public StatisticsReceivedEvent(UUID sessionId, String game, IStatistics statistics) {
-	super(sessionId);
-	this.game = game;
-	this.statistics = statistics;
+        super(sessionId);
+        this.game = game;
+        this.statistics = statistics;
     }
 
     public String getGame() {
-	return game;
+        return game;
     }
 
     public IStatistics getStatistics() {
-	return statistics;
+        return statistics;
     }
 }

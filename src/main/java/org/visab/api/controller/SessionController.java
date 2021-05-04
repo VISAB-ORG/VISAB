@@ -3,13 +3,13 @@ package org.visab.api.controller;
 import java.util.Map;
 import java.util.UUID;
 
-import org.visab.api.TransmissionSessionWatchdog;
+import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
-import org.visab.util.VISABUtil;
+import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -40,18 +40,14 @@ public class SessionController extends HTTPControllerBase {
             if (sessionId == null)
                 return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-            if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
+            if (!SessionWatchdog.isSessionActive(sessionId))
                 return getOkResponse("Session was already closed!");
 
-            TransmissionSessionWatchdog.removeSession(sessionId);
+            SessionWatchdog.removeSession(sessionId);
             // Publish the closed session to the EventBus
-            publishEvent(sessionId);
+            publish(new SessionClosedEvent(sessionId, false));
 
             return getOkResponse("Closed the session!");
-        }
-
-        private void publishEvent(UUID sessionId) {
-            publish(new SessionClosedEvent(sessionId, false));
         }
     }
 
@@ -74,13 +70,13 @@ public class SessionController extends HTTPControllerBase {
             if (game == "")
                 return getBadRequestResponse("No game given!");
 
-            if (!VISABUtil.gameIsSupported(game))
+            if (!AssignByGame.gameIsSupported(game))
                 return getBadRequestResponse("Game is not supported!");
 
-            if (TransmissionSessionWatchdog.isSessionActive(sessionId))
+            if (SessionWatchdog.isSessionActive(sessionId))
                 return getBadRequestResponse("Session already active!");
 
-            TransmissionSessionWatchdog.addSession(sessionId, game);
+            SessionWatchdog.addSession(sessionId, game);
             // Publish the new session to the EventBus
             publish(new SessionOpenedEvent(sessionId, game));
 
@@ -106,10 +102,10 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse("Could not parse uuid!");
 
         SessionStatus sessionStatus;
-        if (!TransmissionSessionWatchdog.isSessionActive(sessionId))
+        if (!SessionWatchdog.isSessionActive(sessionId))
             sessionStatus = new SessionStatus(false, sessionId, null);
         else
-            sessionStatus = new SessionStatus(true, sessionId, TransmissionSessionWatchdog.getGame(sessionId));
+            sessionStatus = new SessionStatus(true, sessionId, SessionWatchdog.getGame(sessionId));
 
         return getJsonResponse(sessionStatus);
     }
@@ -128,7 +124,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(TransmissionSessionWatchdog.getActiveSessions());
+            return getJsonResponse(SessionWatchdog.getActiveSessions());
 
         default:
             return getNotFoundResponse(uriResource);

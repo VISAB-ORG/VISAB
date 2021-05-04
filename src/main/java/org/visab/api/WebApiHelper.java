@@ -1,7 +1,13 @@
 package org.visab.api;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import fi.iki.elonen.NanoHTTPD.IHTTPSession;
+import fi.iki.elonen.NanoHTTPD.ResponseException;
+
 import java.util.UUID;
 
 /**
@@ -30,6 +36,20 @@ public final class WebApiHelper {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static final String extractJsonBody(IHTTPSession session) {
+        var json = "";
+        try {
+            var writeInto = new HashMap<String, String>();
+            session.parseBody(writeInto);
+            json = writeInto.get("postData");
+        } catch (IOException | ResponseException e) {
+            e.printStackTrace();
+            json = "";
+        }
+
+        return json;
     }
 
 }

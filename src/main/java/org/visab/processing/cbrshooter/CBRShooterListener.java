@@ -1,15 +1,12 @@
 package org.visab.processing.cbrshooter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.visab.processing.SessionListenerBase;
+import org.visab.processing.UnitySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
-import org.visab.util.JsonSerializer;
-import org.visab.util.VISABUtil;
+import org.visab.util.AssignByGame;
 
 /**
  * The CBRShooterListener class, that is responsible for listening information
@@ -18,54 +15,50 @@ import org.visab.util.VISABUtil;
  * @author moritz
  *
  */
-public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
+public class CBRShooterListener extends UnitySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage, CBRShooterMapInformation> {
 
-	private CBRShooterFile CBRShooterFile;
-	private String fileName;
-	private String outDir;
+    private CBRShooterFile CBRShooterFile;
 
-	public CBRShooterListener(UUID sessionId) {
-		super("CBRShooter", sessionId);
-	}
+    public CBRShooterListener(UUID sessionId) {
+        super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
+    }
 
-	@Override
+    @Override
 	public void onSessionClosed() {
-		var json = JsonSerializer.serializeObject(CBRShooterFile);
-
-		var fullFilePath = new File(outDir + fileName);
-
-		try (var fileWriter = new FileWriter(fullFilePath)) {
-			fileWriter.write(json);
-			System.out.println("Saved file @" + fullFilePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        if (repo.saveFile(CBRShooterFile))
+            System.out.println("Saved file in repository!");
+        else
+            System.out.print("Couldent save file in repository!");
 	}
 
-	@Override
-	public void onSessionStarted() {
-		CBRShooterFile = new CBRShooterFile();
+    @Override
+    public void onSessionStarted() {
+        CBRShooterFile = new CBRShooterFile(getSessionId().toString());
+    }
 
-		outDir = VISABUtil.getRunningJarRootDirPath() + "/visab_files/CBRShooter/";
-		// fileName = CBRShooterFile.getCreationDate().toString() + ".txt";
-		fileName = getSessionId() + ".visab2";
+    @Override
+    public void processStatistics(CBRShooterStatistics statistics) {
+        CBRShooterFile.getStatistics().add(statistics);
 
-		var directory = new File(outDir);
-		if (!directory.exists())
-			directory.mkdirs();
-	}
+        System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
+                getSessionId(), CBRShooterFile.getStatistics().size()));
 
-	@Override
-	public void processStatistics(CBRShooterStatistics statistics) {
-		CBRShooterFile.getStatistics().add(statistics);
+        // TODO: Do a save when list has large amount of entries
+        // TODO: Since it may be hard to detect when a unity game closes, instead keep a
+        // filewriter open and write on every received.
+        // This should be done asynchronously
+    }
 
-		System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
-				getSessionId(), CBRShooterFile.getStatistics().size()));
+    @Override
+    public void processMapImage(CBRShooterMapImage mapImage) {
+        // TODO Auto-generated method stub
+        
+    }
 
-		// TODO: Do a save when list has large amount of entries
-		// TODO: Since it may be hard to detect when a unity game closes, instead keep a
-		// filewriter open and write on every received.
-		// This should be done asynchronously
-	}
+    @Override
+    public void processMapInformation(CBRShooterMapInformation mapInformation) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
