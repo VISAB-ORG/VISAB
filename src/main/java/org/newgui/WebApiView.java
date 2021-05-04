@@ -21,23 +21,26 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
     @FXML
     private TableView<SessionTableRow> sessionTable;
 
-
-    @FXML
-    private TableColumn<SessionTableRow, String> sessionId;
-
     @InjectViewModel
     private WebApiViewModel viewModel;
 
     // Called after the view is completely loaded
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sessionId.setCellValueFactory(cellData -> cellData.getValue().);
-        var idCol = new TableColumn<>("")
+        sessionTable.setItems(viewModel.getSessions());
 
+		viewModel.selectedSessionRowProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
+
+		// When the selectedTableRowProperty changes in the viewModel we need to update the table
+		// viewModel.setOnSelect(vm -> contactTable.getSelectionModel().select(vm));
+
+
+        /*
         sampleLabel.textProperty().bind(viewModel.sampleMessageProperty());
         
         sessionTable.setItems(viewModel.sessionsProperty());
         // viewModel.selectedItemProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
+        */
     }
     
 }

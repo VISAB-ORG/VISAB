@@ -12,6 +12,7 @@ import org.visab.eventbus.subscriber.SubscriberBase;
 
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -28,7 +29,7 @@ public class WebApiViewModel implements ViewModel {
         @Override
         public void invoke(SessionOpenedEvent event) {
             var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(),
-                    LocalTime.of(0, 0));
+                    LocalTime.now());
 
             sessions.add(newRow);
         }
@@ -71,36 +72,31 @@ public class WebApiViewModel implements ViewModel {
 
     }
 
-    public WebApiViewModel() {
+    public void initialize() {
         WebApi.getEventBus().subscribe(new SessionOpenedSubscriber());
         WebApi.getEventBus().subscribe(new StatisticsReceivedSubscriber());
         WebApi.getEventBus().subscribe(new SessionClosedSubscriber());
-        sessions.add(new SessionTableRow(UUID.randomUUID(), "xd", LocalTime.now(), LocalTime.now()));
+        addSession(new SessionTableRow(UUID.randomUUID(), "xd", LocalTime.now(), LocalTime.now()));
+    }
+
+    private void addSession(SessionTableRow session) {
+        sessions.add(session);
     }
 
     private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
-    private ObjectProperty<SessionTableRow> selectedItem;
+    
+    private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
 
     public ObservableList<SessionTableRow> sessionsProperty() {
         return sessions;
     }
 
-    public ObjectProperty<SessionTableRow> selectedItemProperty() {
-        return selectedItem;
+    public ObjectProperty<SessionTableRow> selectedSessionRowProperty() {
+        return selectedSessionRow;
     }
 
-    private StringProperty sampleMessage = new SimpleStringProperty("Im a sample message");
-
-    public StringProperty sampleMessageProperty() {
-        return sampleMessage;
-    }
-
-    public String getSampleMessage() {
-        return sampleMessage.get();
-    }
-
-    public void setSampleMessage(String message) {
-        sampleMessage.set(message);
+    public ObservableList<SessionTableRow> getSessions() {
+        return sessions;
     }
 
 }

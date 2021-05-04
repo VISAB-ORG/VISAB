@@ -3,50 +3,47 @@ package org.newgui.model;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class SessionTableRow {
 
-    private SimpleStringProperty sessionId;
-    private SimpleStringProperty game;
-    private SimpleStringProperty sessionStart;
-    private SimpleStringProperty lastReceived;
-    private SimpleBooleanProperty isActive = new SimpleBooleanProperty(true);
+    private UUID sessionId;
+    private String game;
+    private LocalTime sessionStart;
+    private LocalTime lastReceived;
+    private boolean isActive = true;
 
     public SessionTableRow(UUID sessionId, String game, LocalTime sessionStart, LocalTime lastReceived) {
-        this.sessionId = new SimpleStringProperty(sessionId.toString());
-        this.game = new SimpleStringProperty(game);
-        this.sessionStart = new SimpleStringProperty(sessionStart.toString());
-        this.lastReceived = new SimpleStringProperty(lastReceived.toString());
+        this.sessionId = sessionId;
+        this.game = game;
+        this.sessionStart = sessionStart;
+        this.lastReceived = lastReceived;
     }
 
-    public String getSessionId() {
-        return this.sessionId.get();
+    public UUID getSessionId() {
+        return this.sessionId;
     }
 
     public String getGame() {
-        return this.game.get();
+        return this.game;
     }
 
-    public String getSessionStart() {
-        return this.sessionStart.get();
+    public LocalTime getSessionStart() {
+        return this.sessionStart;
     }
 
-    public String getLastReceived() {
-        return this.lastReceived.get();
+    public LocalTime getLastReceived() {
+        return this.lastReceived;
     }
 
     public void setLastReceived(LocalTime lastReceived) {
-        this.lastReceived.set(lastReceived.toString());
+        this.lastReceived = lastReceived;
     }
 
     public boolean getIsActive() {
-        return this.isActive.get();
+        return this.isActive;
     }
 
     public void setIsActive(boolean isActive) {
-        this.isActive.set(isActive);
+        this.isActive = isActive;
     }
 
 }

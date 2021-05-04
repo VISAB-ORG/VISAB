@@ -16,13 +16,15 @@ public class SampleApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Sample Application");
+        stage.setTitle("VISAB");
+
+        // mvvmfx magic
         var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
 
         var root = viewTupel.getView();
         stage.setScene(new Scene(root));
         stage.show();
-
+        
         startApiServer();
     }
 
