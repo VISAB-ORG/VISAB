@@ -69,6 +69,7 @@ public class WebApi extends RouterNanoHTTPD {
     @Override
     public void start() throws IOException {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        watchdog.StartTimeoutLoop();
     }
 
 }

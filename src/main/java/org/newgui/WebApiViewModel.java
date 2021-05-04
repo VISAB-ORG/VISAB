@@ -82,8 +82,7 @@ public class WebApiViewModel implements ViewModel {
         return new DelegateCommand(() -> new Action() {
             @Override
             protected void action() throws Exception {
-                // TODO: Is this the correct way to nullcheck?
-                if (selectedSessionRow != null)
+                if (selectedSessionRow.get() != null)
                     WebApi.getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
             }
         });

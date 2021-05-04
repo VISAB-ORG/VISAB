@@ -11,8 +11,6 @@ import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
@@ -42,5 +40,11 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
 		// When the selectedTableRowProperty changes in the viewModel we need to update the table
 		// viewModel.setOnSelect(vm -> contactTable.getSelectionModel().select(vm));
     }
+
+    // TODO: Why is this needed? Can't we just bind directly and thats it?
+    @FXML
+	public void closeSessionAction() {
+		closeSessionCommand.execute();
+	}
     
 }
