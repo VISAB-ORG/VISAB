@@ -29,6 +29,10 @@ public class WebApi extends RouterNanoHTTPD {
         return apiEventBus;
     }
 
+    public static SessionWatchdog getSessionWatchdog() {
+        return watchdog;
+    }
+
     public WebApi(int port) {
         super(port);
         addMappings();

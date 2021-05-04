@@ -1,7 +1,6 @@
 package org.newgui;
 
 import java.time.LocalTime;
-import java.util.List;
 import java.util.UUID;
 
 import org.newgui.model.SessionTableRow;
@@ -12,12 +11,34 @@ import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 
 import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Action;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class WebApiViewModel implements ViewModel {
+
+    private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
+
+        public SessionClosedSubscriber() {
+            super(SessionClosedEvent.class);
+        }
+
+        @Override
+        public void notify(SessionClosedEvent event) {
+            for (var row : sessions) {
+                if (row.getSessionId().equals(event.getSessionId())) {
+                    row.setIsActive(false);
+                    notifySessionRowUpdate(event.getSessionId());
+                    break;
+                }
+            }
+        }
+
+    }
 
     private class SessionOpenedSubscriber extends SubscriberBase<SessionOpenedEvent> {
 
@@ -26,7 +47,7 @@ public class WebApiViewModel implements ViewModel {
         }
 
         @Override
-        public void invoke(SessionOpenedEvent event) {
+        public void notify(SessionOpenedEvent event) {
             var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now());
 
             sessions.add(newRow);
@@ -41,7 +62,7 @@ public class WebApiViewModel implements ViewModel {
         }
 
         @Override
-        public void invoke(StatisticsReceivedEvent event) {
+        public void notify(StatisticsReceivedEvent event) {
             for (var row : sessions) {
                 if (row.getSessionId().equals(event.getSessionId())) {
                     row.setLastReceived(LocalTime.now());
@@ -53,23 +74,23 @@ public class WebApiViewModel implements ViewModel {
 
     }
 
-    private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
+    private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
 
-        public SessionClosedSubscriber() {
-            super(SessionClosedEvent.class);
-        }
+    private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
 
-        @Override
-        public void invoke(SessionClosedEvent event) {
-            for (var row : sessions) {
-                if (row.getSessionId().equals(event.getSessionId())) {
-                    row.setIsActive(false);
-                    notifySessionRowUpdate(event.getSessionId());
-                    break;
-                }
+    public Command getCloseSessionCommand() {
+        return new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                // TODO: Is this the correct way to nullcheck?
+                if (selectedSessionRow != null)
+                    WebApi.getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
             }
-        }
+        });
+    }
 
+    public ObservableList<SessionTableRow> getSessions() {
+        return sessions;
     }
 
     public void initialize() {
@@ -91,19 +112,11 @@ public class WebApiViewModel implements ViewModel {
         }
     }
 
-    private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
-
-    private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
-
-    public ObservableList<SessionTableRow> sessionsProperty() {
-        return sessions;
-    }
-
     public ObjectProperty<SessionTableRow> selectedSessionRowProperty() {
         return selectedSessionRow;
     }
 
-    public ObservableList<SessionTableRow> getSessions() {
+    public ObservableList<SessionTableRow> sessionsProperty() {
         return sessions;
     }
 

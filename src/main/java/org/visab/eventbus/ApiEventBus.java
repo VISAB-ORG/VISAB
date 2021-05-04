@@ -25,7 +25,7 @@ public class ApiEventBus {
             for (var subscriber : _subscribers) {
                 @SuppressWarnings("unchecked")
                 var correctSubscriber = ((ISubscriberWithEvent<TEvent>) subscriber);
-                correctSubscriber.invoke(event);
+                correctSubscriber.notify(event);
             }
         }
     }

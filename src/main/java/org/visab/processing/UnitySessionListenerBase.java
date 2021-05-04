@@ -26,7 +26,7 @@ public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInfor
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(MapImageReceivedEvent event) {
+        public void notify(MapImageReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 processMapImage((TMapImage) event.getImage());
             }
@@ -41,7 +41,7 @@ public abstract class UnitySessionListenerBase<TStatistics, TMapImage, TMapInfor
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(MapInformationReceivedEvent event) {
+        public void notify(MapInformationReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 processMapInformation((TMapInformation) event.getInformation());
             }

@@ -35,7 +35,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     }
 
     @Override
-    public void invoke(SessionOpenedEvent event) {
+    public void notify(SessionOpenedEvent event) {
         addListener(event.getSessionId(), event.getGame());
     }
 }

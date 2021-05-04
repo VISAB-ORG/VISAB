@@ -8,34 +8,42 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.SessionClosedEvent;
+import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
+import org.visab.eventbus.publisher.PublisherBase;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.Settings;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
- * to the current sessions and checks them for timeout.
+ * to the current sessions and checks them for timeout. Publishes the
+ * SessionOpenedEvent and SessionClosedEvent to the Eventbus.
  *
  * @author moritz
  *
  */
-public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> implements IPublisher<SessionClosedEvent> {
+public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
+
+    private class SessionClosedPublisher extends PublisherBase<SessionClosedEvent> {
+        private void publishSessionClosed(UUID sessionId, boolean closedByTimeout) {
+            publish(new SessionClosedEvent(sessionId, closedByTimeout));
+        }
+    }
+
+    private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
+        private void publishSessionOpened(UUID sessionId, String game) {
+            publish(new SessionOpenedEvent(sessionId, game));
+        }
+    }
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
-
-    private static boolean checkTimeouts = true;
 
     /**
      * Contains the last times statistics data was sent for the respective session.
      * Used for closing sessions via timeout.
      */
     private static Map<UUID, LocalTime> statisticsSentTimes = new HashMap<>();
-
-    public static void addSession(UUID sessionId, String game) {
-        activeSessions.put(sessionId, game);
-    }
 
     /**
      * Returns the currently active sessions. Warning: Returns a copy, not the
@@ -59,29 +67,16 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
         return activeSessions.containsKey(sessionId);
     }
 
-    public static void removeSession(UUID sessionId) {
-        activeSessions.remove(sessionId);
+    private boolean checkTimeouts = true;
 
-        // Also remove the session from timeout check
-        statisticsSentTimes.remove(sessionId);
-    }
+    private SessionClosedPublisher closedPublisher = new SessionClosedPublisher();
+
+    private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
 
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
         WebApi.getEventBus().subscribe(this);
 
-        // Starts the infinite timeout checking loop on a different thread.
-        new Thread(() -> {
-            try {
-                while (checkTimeouts) {
-                    checkSessionTimeouts();
-                    Thread.sleep(1000);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("CAUGHT [" + e + "] when running the timeout loop!");
-            }
-        }).start();
     }
 
     /**
@@ -97,22 +92,47 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
             var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
             if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
                 var sessionId = entry.getKey();
-                removeSession(sessionId);
-
-                // Invoke the SessionClosedEvent event manually.
-                publish(new SessionClosedEvent(sessionId, true));
+                closeSession(sessionId, true);
             }
         }
     }
 
-    @Override
-    public void invoke(StatisticsReceivedEvent event) {
-        statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
+    public void closeSession(UUID sessionId, boolean closedByTimeout) {
+        activeSessions.remove(sessionId);
+
+        // Also remove the session from timeout check
+        statisticsSentTimes.remove(sessionId);
+
+        // Publish the SessionClosedEvent event
+        closedPublisher.publishSessionClosed(sessionId, closedByTimeout);
     }
 
     @Override
-    public void publish(SessionClosedEvent event) {
-        WebApi.getEventBus().publish(event);
+    public void notify(StatisticsReceivedEvent event) {
+        statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
+    }
+
+    public void openSession(UUID sessionId, String game) {
+        activeSessions.put(sessionId, game);
+
+        // Publish the SessionOpenedEvent
+        openedPublisher.publishSessionOpened(sessionId, game);
+    }
+
+    /**
+     * Starts the infinite timeout checking loop on a different thread.
+     */
+    public void StartTimeoutLoop() {
+        new Thread(() -> {
+            try {
+                while (checkTimeouts) {
+                    checkSessionTimeouts();
+                    Thread.sleep(1000);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void stopTimeoutLoop() {

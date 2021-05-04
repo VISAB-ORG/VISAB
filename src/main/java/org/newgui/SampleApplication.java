@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 
 public class SampleApplication extends Application {
 
-    private WebApi webApi;
-
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("VISAB");
@@ -24,19 +22,6 @@ public class SampleApplication extends Application {
         var root = viewTupel.getView();
         stage.setScene(new Scene(root));
         stage.show();
-        
-        startApiServer();
-    }
-
-    private void startApiServer() {
-        try {
-            webApi = new WebApi(Settings.API_PORT);
-            webApi.start();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return;
     }
 
     /**
@@ -44,6 +29,6 @@ public class SampleApplication extends Application {
      */
     @Override
     public void stop() {
-        webApi.shutdown();
+        Main.shutdownWebApi();
     }
 }

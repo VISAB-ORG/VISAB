@@ -11,6 +11,6 @@ package org.visab.eventbus;
  */
 public interface ISubscriberWithEvent<TEvent> {
 
-    void invoke(TEvent event);
+    void notify(TEvent event);
 
 }
