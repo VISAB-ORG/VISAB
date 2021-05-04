@@ -1,9 +1,6 @@
 package org.newgui;
 
-import java.io.IOException;
-
-import org.visab.api.WebApi;
-import org.visab.util.Settings;
+import org.newgui.webapi.WebApiView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;

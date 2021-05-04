@@ -1,4 +1,4 @@
-package org.newgui;
+package org.newgui.webapi;
 
 import java.net.URL;
 import java.util.ResourceBundle;
