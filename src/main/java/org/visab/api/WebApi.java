@@ -23,7 +23,7 @@ public class WebApi extends RouterNanoHTTPD {
 
     private static ApiEventBus apiEventBus = new ApiEventBus();
     private static SessionListenerFactory listenerFactory;
-    private static TransmissionSessionWatchdog watchdog;
+    private static SessionWatchdog watchdog;
 
     public static ApiEventBus getEventBus() {
         return apiEventBus;
@@ -37,7 +37,7 @@ public class WebApi extends RouterNanoHTTPD {
         listenerFactory = new SessionListenerFactory();
 
         // Start the session administration. This also starts the session timeout loop
-        watchdog = new TransmissionSessionWatchdog();
+        watchdog = new SessionWatchdog();
     }
 
     /**
