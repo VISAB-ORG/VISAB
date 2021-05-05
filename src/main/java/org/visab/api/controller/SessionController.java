@@ -9,7 +9,7 @@ import org.visab.api.model.SessionStatus;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
-import org.visab.util.VISABUtil;
+import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -70,7 +70,7 @@ public class SessionController extends HTTPControllerBase {
             if (game == "")
                 return getBadRequestResponse("No game given!");
 
-            if (!VISABUtil.gameIsSupported(game))
+            if (!AssignByGame.gameIsSupported(game))
                 return getBadRequestResponse("Game is not supported!");
 
             if (SessionWatchdog.isSessionActive(sessionId))

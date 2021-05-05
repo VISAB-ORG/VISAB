@@ -10,7 +10,6 @@ import org.visab.api.WebApiHelper;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.util.AssignByGame;
-import org.visab.util.VISABUtil;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -46,7 +45,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (game == "")
             return getBadRequestResponse("No game given in headers!");
 
-        if (!VISABUtil.gameIsSupported(game))
+        if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
         var json = "";
