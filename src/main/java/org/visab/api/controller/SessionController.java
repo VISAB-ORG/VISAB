@@ -119,7 +119,8 @@ public class SessionController extends HTTPControllerBase {
         if (SessionWatchdog.isSessionActive(sessionId))
             return getBadRequestResponse("Session already active!");
 
-        WebApi.getSessionWatchdog().openSession(sessionId, game);
+        WebApi.getSessionWatchdog().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
+                httpSession.getRemoteHostName());
 
         return getOkResponse("Session added.");
     }

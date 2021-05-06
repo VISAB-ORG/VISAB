@@ -26,15 +26,9 @@ import org.visab.util.Settings;
 public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
     private class SessionClosedPublisher extends PublisherBase<SessionClosedEvent> {
-        private void publishSessionClosed(UUID sessionId, boolean closedByTimeout) {
-            publish(new SessionClosedEvent(sessionId, closedByTimeout));
-        }
     }
 
     private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
-        private void publishSessionOpened(UUID sessionId, String game) {
-            publish(new SessionOpenedEvent(sessionId, game));
-        }
     }
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
@@ -76,7 +70,6 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
         WebApi.getEventBus().subscribe(this);
-
     }
 
     /**
@@ -104,7 +97,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         statisticsSentTimes.remove(sessionId);
 
         // Publish the SessionClosedEvent event
-        closedPublisher.publishSessionClosed(sessionId, closedByTimeout);
+        closedPublisher.publish(new SessionClosedEvent(sessionId, closedByTimeout));
     }
 
     @Override
@@ -112,11 +105,13 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
     }
 
-    public void openSession(UUID sessionId, String game) {
+    public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
         activeSessions.put(sessionId, game);
 
+        var event = new SessionOpenedEvent(sessionId, game, remoteCallerIp, remoteCallerHostName);
+
         // Publish the SessionOpenedEvent
-        openedPublisher.publishSessionOpened(sessionId, game);
+        openedPublisher.publish(event);
     }
 
     /**

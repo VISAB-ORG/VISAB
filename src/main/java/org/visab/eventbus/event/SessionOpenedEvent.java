@@ -12,13 +12,30 @@ import java.util.UUID;
 public class SessionOpenedEvent extends EventBase {
 
     private String game;
+    private String remoteCallerIp = "";
+    private String remoteCallerHostName = "";
 
     public SessionOpenedEvent(UUID sessionId, String game) {
-	super(sessionId);
-	this.game = game;
+        super(sessionId);
+        this.game = game;
+    }
+
+    public SessionOpenedEvent(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
+        super(sessionId);
+        this.game = game;
+        this.remoteCallerIp = remoteCallerIp;
+        this.remoteCallerHostName = remoteCallerHostName;
     }
 
     public String getGame() {
-	return game;
+        return game;
+    }
+
+    public String getRemoteCallerIp() {
+        return this.remoteCallerIp;
+    }
+
+    public String getRemoteCallerHostName() {
+        return this.remoteCallerHostName;
     }
 }
