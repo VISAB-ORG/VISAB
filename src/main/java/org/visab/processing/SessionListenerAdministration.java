@@ -6,12 +6,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * The SessionListenerAdministration that holds a reference to all active SessionListeners.
+ * The SessionListenerAdministration that holds a reference to all active
+ * SessionListeners.
  * 
  * @author moritz
  * 
  */
-public class SessionListenerAdministration {
+public final class SessionListenerAdministration {
+
+    private static SessionListenerFactory listenerFactory;
+
+    public static SessionListenerFactory getListenerFactory() {
+        return listenerFactory;
+    }
 
     private static List<ISessionListener> activeListeners = new ArrayList<>();
 
@@ -47,5 +54,9 @@ public class SessionListenerAdministration {
     // TODO: Remove gracefully?
     public static void removeListener(ISessionListener listener) {
         activeListeners.remove(listener);
+    }
+
+    public static void initializeFactory() {
+        listenerFactory = new SessionListenerFactory();
     }
 }

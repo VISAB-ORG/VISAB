@@ -7,7 +7,7 @@ import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.eventbus.ApiEventBus;
-import org.visab.processing.SessionListenerFactory;
+import org.visab.processing.SessionListenerAdministration;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -22,8 +22,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
 public class WebApi extends RouterNanoHTTPD {
 
     private static ApiEventBus apiEventBus = new ApiEventBus();
-    private static SessionListenerFactory listenerFactory;
-    private static SessionWatchdog watchdog;
+    private static SessionWatchdog watchdog = new SessionWatchdog();
 
     public static ApiEventBus getEventBus() {
         return apiEventBus;
@@ -37,11 +36,8 @@ public class WebApi extends RouterNanoHTTPD {
         super(port);
         addMappings();
 
-        // Just initialize it anywhere and it will be a subscriber in the eventbus.
-        listenerFactory = new SessionListenerFactory();
-
-        // Start the session administration. This also starts the session timeout loop
-        watchdog = new SessionWatchdog();
+        // Add the SessionListenerFactory as subscriber of eventbus.
+        SessionListenerAdministration.initializeFactory();
     }
 
     /**
