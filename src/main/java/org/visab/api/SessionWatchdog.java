@@ -26,8 +26,6 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
-    private static boolean checkTimeouts = true;
-
     /**
      * Contains the last times statistics data was sent for the respective session.
      * Used for closing sessions via timeout.
