@@ -48,7 +48,8 @@ public class WebApiViewModel implements ViewModel {
 
         @Override
         public void notify(SessionOpenedEvent event) {
-            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now());
+            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now(),
+                    event.getRemoteCallerIp(), event.getRemoteCallerHostName());
 
             sessions.add(newRow);
         }

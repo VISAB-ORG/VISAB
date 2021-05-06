@@ -10,12 +10,24 @@ public class SessionTableRow {
     private LocalTime sessionStart;
     private LocalTime lastReceived;
     private boolean isActive = true;
+    private String remoteIp;
+    private String remoteHostName;
 
-    public SessionTableRow(UUID sessionId, String game, LocalTime sessionStart, LocalTime lastReceived) {
+    public SessionTableRow(UUID sessionId, String game, LocalTime sessionStart, LocalTime lastReceived, String remoteIp, String remoteHostName) {
         this.sessionId = sessionId;
         this.game = game;
         this.sessionStart = sessionStart;
         this.lastReceived = lastReceived;
+        this.remoteIp = remoteIp;
+        this.remoteHostName = remoteHostName;
+    }
+
+    public String getRemoteIp() {
+        return this.remoteIp;
+    }
+
+    public String getRemoteHostName() {
+        return this.remoteHostName;
     }
 
     public UUID getSessionId() {
