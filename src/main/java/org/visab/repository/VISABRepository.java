@@ -114,13 +114,9 @@ public class VISABRepository {
 
         var json = readFile(filePath);
 
-        try {
-            return (T) AssignByGame.getDeserializedFile(json, game);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
+        var file = AssignByGame.getDeserializedFile(json, game);
+        
+        return file != null ? (T) file : null;
     }
 
     /**

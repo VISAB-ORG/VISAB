@@ -39,6 +39,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
         CBRShooterFile.getStatistics().add(statistics);
 
+        // TODO: log this instead
         System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
                 getSessionId(), CBRShooterFile.getStatistics().size()));
     }

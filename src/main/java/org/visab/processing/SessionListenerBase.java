@@ -14,8 +14,10 @@ import org.visab.repository.VISABRepository;
 
 /**
  * The base SessionListener class, that should be implemented by all session
- * listeners.
- *
+ * listeners. TODO: Should have their own logger instance or configuration, such
+ * that they will always write their identification (sessionid + game) before
+ * messages
+ * 
  * @author moritz
  *
  * @param <TStatistics> The statistics type, that will be processed by the
@@ -70,7 +72,13 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
         public void notify(StatisticsReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 lastReceived = LocalTime.now();
-                processStatistics((TStatistics) event.getStatistics());
+
+                var statistics = event.getStatistics();
+                if (statistics == null)
+                    // TODO: Log here!
+                    System.out.println("Received Statistics was null!");
+                else
+                    processStatistics((TStatistics) statistics);
             }
         }
     }
@@ -133,9 +141,10 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     public abstract void onSessionStarted();
 
     /**
-     * Called upon reciving statistics for the current session
+     * Called upon reciving statistics for the current session.
+     * Is only called if the received statistics object was not null.
      * 
-     * @param statistics A TStatistics object, that can be null
+     * @param statistics A TStatistics object
      */
     public abstract void processStatistics(TStatistics statistics);
 }

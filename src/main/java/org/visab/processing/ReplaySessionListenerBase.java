@@ -27,7 +27,12 @@ public abstract class ReplaySessionListenerBase<TStatistics extends IStatistics,
         @SuppressWarnings("unchecked")
         public void notify(MapImageReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
-                processMapImage((TMapImage) event.getImage());
+                var image = event.getImage();
+                if (image == null)
+                    // TODO: Log here!
+                    System.out.println("Received Image was null!");
+                else
+                    processMapImage((TMapImage) image);
             }
         }
     }

@@ -14,7 +14,6 @@ public class DefaultFile extends VISABFileBase {
         super("", "", "");
     }
 
-    // TODO: Check what we can set generally
     public DefaultFile(String game, String fileName) {
         super(game, "2.0", fileName);
     }
