@@ -65,6 +65,8 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
         statisticsSentTimes.remove(sessionId);
     }
 
+    private boolean checkTimeouts = true;
+
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
         WebApi.getEventBus().subscribe(this);
