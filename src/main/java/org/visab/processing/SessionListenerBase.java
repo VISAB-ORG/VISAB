@@ -132,5 +132,10 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     @Override
     public abstract void onSessionStarted();
 
+    /**
+     * Called upon reciving statistics for the current session
+     * 
+     * @param statistics A TStatistics object, that can be null
+     */
     public abstract void processStatistics(TStatistics statistics);
 }

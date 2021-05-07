@@ -10,7 +10,11 @@ import org.visab.processing.IMapImage;
 import org.visab.processing.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
+import org.visab.processing.cbrshooter.CBRShooterMapImage;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.processing.starter.DefaultFile;
+import org.visab.processing.starter.DefaultSessionListener;
+import org.visab.processing.starter.model.DefaultStatistics;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
@@ -18,12 +22,14 @@ import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
  * Methods in this class return the abstract interface of the instantiated
  * objects.
  *
- * TODO: Add default implementations
+ * TODO: Add default implementations TODO: Try catch return null on deployment
+ * 
  * @author moritz
  *
  */
 public final class AssignByGame {
 
+    // TODO: Load this from yaml file
     public static final List<String> ALLOWED_GAMES = new ArrayList<>() {
         {
             add(CBR_SHOOTER_STRING);
@@ -46,10 +52,10 @@ public final class AssignByGame {
      */
     public static final IVISABFile getDeserializedFile(String json, String game) {
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return JsonConvert.deserializeJson(json, CBRShooterFile.class);
-            default:
-                return null;
+        case CBR_SHOOTER_STRING:
+            return JsonConvert.deserializeJson(json, CBRShooterFile.class);
+        default:
+            return JsonConvert.deserializeJson(json, DefaultFile.class);
         }
     }
 
@@ -60,21 +66,18 @@ public final class AssignByGame {
      * @param game The game
      * @return The statistics object
      */
-    public static final IStatistics getDeserializedStatistics(String json, String game) { // throws
-        // GameNotSupportedException
+    public static final IStatistics getDeserializedStatistics(String json, String game) {
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return JsonConvert.deserializeJson(json, CBRShooterStatistics.class);
-            default:
-                return null;
-            // throw new GameNotSupportedException(String.format("Game {1,string} is not
-            // supported by VISAB yet.", game));
+        case CBR_SHOOTER_STRING:
+            return JsonConvert.deserializeJson(json, CBRShooterStatistics.class);
+        default:
+            return new DefaultStatistics(game, json);
         }
     }
 
     /**
-     * TODO: instantiate by game
-     * Creates an map image object based on json data and the game.
+     * Creates an map image object based on json data and
+     * the game.
      *
      * @param json The json data to fill the object with
      * @param game The game
@@ -82,8 +85,10 @@ public final class AssignByGame {
      */
     public static final IMapImage getDeserializedMapImage(String json, String game) {
         switch (game) {
-            default:
-                return null;
+        case CBR_SHOOTER_STRING:
+            return JsonConvert.deserializeJson(json, CBRShooterMapImage.class);
+        default:
+            return null;
         }
     }
 
@@ -96,11 +101,10 @@ public final class AssignByGame {
      */
     public static final ISessionListener getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return new CBRShooterListener(sessionId);
-            default:
-                // TODO: Raise exception
-                return null;
+        case CBR_SHOOTER_STRING:
+            return new CBRShooterListener(sessionId);
+        default:
+            return new DefaultSessionListener(game, sessionId);
         }
     }
 }
