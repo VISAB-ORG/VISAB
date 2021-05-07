@@ -14,18 +14,18 @@ import org.visab.eventbus.subscriber.SubscriberBase;
  * @param <TMapImage>
  * @param <TMapInformation>
  */
-public abstract class ReplaySessionListenerBase<TStatistics, TMapImage> extends SessionListenerBase<TStatistics>
-        implements IReplaySessionListener<TStatistics, TMapImage> {
+public abstract class ReplaySessionListenerBase<TStatistics extends IStatistics, TMapImage extends IMapImage>
+        extends SessionListenerBase<TStatistics> implements IReplaySessionListener<TStatistics, TMapImage> {
 
-    private class UnityMapImageSubscriber extends SubscriberBase<MapImageReceivedEvent> {
+    private class MapImageSubscriber extends SubscriberBase<MapImageReceivedEvent> {
 
-        public UnityMapImageSubscriber() {
+        public MapImageSubscriber() {
             super(MapImageReceivedEvent.class);
         }
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(MapImageReceivedEvent event) {
+        public void notify(MapImageReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 processMapImage((TMapImage) event.getImage());
             }
@@ -35,7 +35,7 @@ public abstract class ReplaySessionListenerBase<TStatistics, TMapImage> extends 
     public ReplaySessionListenerBase(String game, UUID sessionId) {
         super(game, sessionId);
 
-        var mapImageSubscriber = new UnityMapImageSubscriber();
+        var mapImageSubscriber = new MapImageSubscriber();
         WebApi.getEventBus().subscribe(mapImageSubscriber);
         subscribers.add(mapImageSubscriber);
     }
