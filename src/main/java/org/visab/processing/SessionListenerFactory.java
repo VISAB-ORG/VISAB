@@ -22,6 +22,8 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
         if (SessionListenerAdministration.getSessionListener(sessionId) == null) {
             var newListener = AssignByGame.getListenerInstanceByGame(game, sessionId);
             SessionListenerAdministration.addListener(newListener);
+            // Notify the listener that the session started
+            newListener.onSessionStarted();
         } else {
             System.out.println("TRIED TO ADD SAME UUID SESSION!!!");
         }

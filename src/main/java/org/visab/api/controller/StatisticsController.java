@@ -1,7 +1,5 @@
 package org.visab.api.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.api.SessionWatchdog;
@@ -13,7 +11,6 @@ import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
-import fi.iki.elonen.NanoHTTPD.ResponseException;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
@@ -40,7 +37,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
         if (!SessionWatchdog.isSessionActive(sessionId))
-            return getBadRequestResponse("Tried to send statistics without having an active session!");
+            return getBadRequestResponse("Session was already closed!");
 
         if (game == "")
             return getBadRequestResponse("No game given in headers!");
@@ -48,15 +45,9 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        var json = "";
-        try {
-            var writeInto = new HashMap<String, String>();
-            httpSession.parseBody(writeInto);
-            json = writeInto.get("postData");
-        } catch (IOException | ResponseException e) {
-            e.printStackTrace();
+        var json = WebApiHelper.extractJsonBody(httpSession);
+        if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
-        }
 
         var event = new StatisticsReceivedEvent(sessionId, game, AssignByGame.getDeserializedStatistics(json, game));
         publish(event);

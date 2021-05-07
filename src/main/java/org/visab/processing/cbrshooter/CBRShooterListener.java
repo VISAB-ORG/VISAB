@@ -3,7 +3,7 @@ package org.visab.processing.cbrshooter;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import org.visab.processing.SessionListenerBase;
+import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
 
@@ -14,7 +14,7 @@ import org.visab.util.AssignByGame;
  * @author moritz
  *
  */
-public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics> {
+public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage> {
 
     private CBRShooterFile CBRShooterFile;
 
@@ -41,11 +41,11 @@ public class CBRShooterListener extends SessionListenerBase<CBRShooterStatistics
 
         System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
                 getSessionId(), CBRShooterFile.getStatistics().size()));
-
-        // TODO: Do a save when list has large amount of entries
-        // TODO: Since it may be hard to detect when a unity game closes, instead keep a
-        // filewriter open and write on every received.
-        // This should be done asynchronously
     }
 
+    @Override
+    public void processMapImage(CBRShooterMapImage mapImage) {
+        // TODO Auto-generated method stub
+        
+    }
 }

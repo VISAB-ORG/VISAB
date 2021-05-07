@@ -104,8 +104,6 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
         }
     }
 
-    private static boolean checkTimeouts = true;
-
     @Override
     public void invoke(StatisticsReceivedEvent event) {
         statisticsSentTimes.put(event.getSessionId(), LocalTime.now());

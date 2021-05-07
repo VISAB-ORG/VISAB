@@ -2,6 +2,13 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
+import org.visab.api.SessionWatchdog;
+import org.visab.api.WebApi;
+import org.visab.api.WebApiHelper;
+import org.visab.eventbus.IPublisher;
+import org.visab.eventbus.event.MapImageReceivedEvent;
+import org.visab.util.AssignByGame;
+
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
@@ -13,18 +20,47 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  * @author moritz
  *
  */
-public class MapController extends HTTPControllerBase {
+public class MapController extends HTTPControllerBase implements IPublisher<MapImageReceivedEvent> {
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	// TODO Auto-generated method stub
-	return null;
+        return getNotFoundResponse(uriResource,
+                "Get request are not supported when sending map images / map information!");
     }
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	// TODO Auto-generated method stub
-	return null;
+        return receiveMapImage(session);
     }
 
+    private Response receiveMapImage(IHTTPSession httpSession) {
+        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+
+        if (sessionId == null)
+            return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+
+        if (game == "")
+            return getBadRequestResponse("No game given!");
+
+        if (!AssignByGame.gameIsSupported(game))
+            return getBadRequestResponse("Game is not supported!");
+
+        if (!SessionWatchdog.isSessionActive(sessionId))
+            return getBadRequestResponse("Session was closed!");
+
+        var json = WebApiHelper.extractJsonBody(httpSession);
+        if (json == "")
+            return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
+
+        var event = new MapImageReceivedEvent(sessionId, game, AssignByGame.getDeserializedMapImage(json, game));
+        publish(event);
+
+        return getOkResponse("Received Unity map images.");
+    }
+
+    @Override
+    public void publish(MapImageReceivedEvent event) {
+        WebApi.getEventBus().publish(event);
+    }
 }
