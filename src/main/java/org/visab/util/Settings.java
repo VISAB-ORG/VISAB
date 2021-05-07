@@ -1,8 +1,5 @@
 package org.visab.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * POJO for holding all settings required in the project. TODO: Should be
  * persisted in file and loaded at start of VISAB.

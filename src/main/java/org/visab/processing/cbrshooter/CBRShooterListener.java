@@ -3,7 +3,7 @@ package org.visab.processing.cbrshooter;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import org.visab.processing.UnitySessionListenerBase;
+import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
 
@@ -14,7 +14,7 @@ import org.visab.util.AssignByGame;
  * @author moritz
  *
  */
-public class CBRShooterListener extends UnitySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage, CBRShooterMapInformation> {
+public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage> {
 
     private CBRShooterFile CBRShooterFile;
 
@@ -48,11 +48,4 @@ public class CBRShooterListener extends UnitySessionListenerBase<CBRShooterStati
         // TODO Auto-generated method stub
         
     }
-
-    @Override
-    public void processMapInformation(CBRShooterMapInformation mapInformation) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

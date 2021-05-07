@@ -6,8 +6,7 @@ import java.util.UUID;
 
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
-import org.visab.processing.IUnityMapImage;
-import org.visab.processing.IUnityMapInformation;
+import org.visab.processing.IMapImage;
 import org.visab.processing.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
@@ -19,6 +18,7 @@ import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
  * Methods in this class return the abstract interface of the instantiated
  * objects.
  *
+ * TODO: Add default implementations
  * @author moritz
  *
  */
@@ -80,22 +80,7 @@ public final class AssignByGame {
      * @param game The game
      * @return The statistics object
      */
-    public static final IUnityMapImage getDeserializedMapImage(String json, String game) {
-        switch (game) {
-            default:
-                return null;
-        }
-    }
-
-    /**
-    * TODO: instantiate by game
-     * Creates an map information object based on json data and the game.
-     *
-     * @param json The json data to fill the object with
-     * @param game The game
-     * @return The statistics object
-     */
-    public static final IUnityMapInformation getDeserializedMapInformation(String json, String game) {
+    public static final IMapImage getDeserializedMapImage(String json, String game) {
         switch (game) {
             default:
                 return null;
