@@ -2,6 +2,7 @@ package org.visab.eventbus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,32 +14,29 @@ import java.util.Map;
  */
 public class ApiEventBus {
 
-    private Map<String, ArrayList<ISubscriber>> subscribers = new HashMap<>();
+    private Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
 
-    public <TEvent> void publish(TEvent event) {
+    public <TEvent extends IEvent> void publish(TEvent event) {
         var eventType = event.getClass().getSimpleName().toString();
 
         if (subscribers.containsKey(eventType)) {
             // Make a copy, since the subscribers list will be modified if the event is of
             // type SessionClosedEvent.
-            var _subscribers = new ArrayList<ISubscriber>(subscribers.get(eventType));
-            for (var subscriber : _subscribers) {
-                @SuppressWarnings("unchecked")
-                var correctSubscriber = ((ISubscriberWithEvent<TEvent>) subscriber);
-                correctSubscriber.invoke(event);
-            }
+            var _subscribers = this.<TEvent>castSubscribers(subscribers.get(eventType));
+            for (var sub : _subscribers)
+                sub.invoke(event);
         }
     }
 
-    public void subscribe(ISubscriber subscriber) {
+    public void subscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
         if (!subscribers.containsKey(eventType))
-            subscribers.put(eventType, new ArrayList<ISubscriber>());
+            subscribers.put(eventType, new ArrayList<ISubscriber<?>>());
         subscribers.get(eventType).add(subscriber);
     }
 
-    public void unsubscribe(ISubscriber subscriber) {
+    public void unsubscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
         if (subscribers.containsKey(eventType))
@@ -46,5 +44,24 @@ public class ApiEventBus {
         else {
             // Throw some exception
         }
+    }
+
+    /**
+     * Casts the subscribers to their concrete EventType. If this throws an error,
+     * your subscriber class was passed the wrong event class at initialization.
+     * 
+     * @param <TEvent>            The type of event to cast to
+     * @param uncastedSubscribers The uncasted subscribers
+     * @return A list of subscribers casted to TEvent
+     */
+    @SuppressWarnings("unchecked")
+    private <TEvent extends IEvent> List<ISubscriber<TEvent>> castSubscribers(
+            List<ISubscriber<?>> uncastedSubscribers) {
+        var casted = new ArrayList<ISubscriber<TEvent>>();
+        
+        for (var sub : uncastedSubscribers)
+            casted.add((ISubscriber<TEvent>) sub);
+
+        return casted;
     }
 }
