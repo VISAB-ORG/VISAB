@@ -3,8 +3,8 @@ package org.visab.processing.cbrshooter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.processing.VISABFileBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.repository.VISABFileBase;
 import org.visab.util.AssignByGame;
 
 public class CBRShooterFile extends VISABFileBase {

@@ -7,10 +7,10 @@ import java.util.UUID;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
 import org.visab.processing.IMapImage;
-import org.visab.processing.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding

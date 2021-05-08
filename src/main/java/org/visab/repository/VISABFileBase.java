@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.repository;
 
 import java.sql.Timestamp;
 import java.util.Date;
