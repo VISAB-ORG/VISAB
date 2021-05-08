@@ -8,18 +8,11 @@ import java.time.ZoneId;
 
 import org.newgui.repository.model.FileRow;
 
-import javafx.event.Event;
 import javafx.scene.control.TreeItem;
 
 public class FileTreeItem extends TreeItem<FileRow> {
 
-    private boolean isDirectory;
-
     private FileRow fileRow;
-
-    public boolean isDirectory() {
-        return this.isDirectory;
-    }
 
     public FileRow getFileRow() {
         return this.fileRow;
@@ -33,23 +26,26 @@ public class FileTreeItem extends TreeItem<FileRow> {
         var lastModified = Instant.ofEpochMilli(asFile.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         var size = FileSizeHelper.size(file) / 1000L; // In kb
         var fullPath = file.toAbsolutePath().toString();
+        var isDirectory = Files.isDirectory(file);
 
-        var fileRow = new FileRow(name, lastModified, size, fullPath);
+        var fileRow = new FileRow(name, lastModified, size, fullPath, isDirectory);
         this.fileRow = fileRow;
 
-        if (Files.isDirectory(file)) {
-            isDirectory = true;
-
+        if (isDirectory)
             // Recursively add FileTreeItem as children.
             addChildren(file);
-            // TODO: Set graphic
-        } else {
-            // Set graphic
-        }
 
         this.setValue(fileRow);
-        this.addEventHandler(FileTreeItem.branchExpandedEvent(), e -> expandedHandler(e));
-        this.addEventHandler(FileTreeItem.branchCollapsedEvent(), e -> collapsedHandler(e));
+
+        this.addEventHandler(FileTreeItem.branchExpandedEvent(), e -> {
+            var treeItem = (FileTreeItem) (Object) e.getSource();
+            treeItem.getFileRow().setExpanded(true);
+        });
+
+        this.addEventHandler(FileTreeItem.branchCollapsedEvent(), e -> {
+            var treeItem = (FileTreeItem) (Object) e.getSource();
+            treeItem.getFileRow().setExpanded(false);
+        });
     }
 
     private void addChildren(Path file) {
@@ -61,19 +57,4 @@ public class FileTreeItem extends TreeItem<FileRow> {
         }
     }
 
-    private void collapsedHandler(Event e) {
-        var source = (FileTreeItem) e.getSource();
-        if (source.isDirectory() && !source.isExpanded()) {
-            // imageview iv=(imageview)source.getgraphic();
-            // iv.setimage(foldercollapseimage);
-        }
-    }
-
-    private void expandedHandler(Event e) {
-        var source = (FileTreeItem) e.getSource();
-        if (source.isDirectory() && source.isExpanded()) {
-            // TODO: Add image
-        }
-        // TODO: Maybe add children dynamically if repository gets to big.
-    }
 }

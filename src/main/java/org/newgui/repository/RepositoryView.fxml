@@ -20,7 +20,7 @@
     <children>
         <TreeTableView fx:id="fileView" >
             <columns>
-                <TreeTableColumn prefWidth="400.0" text="Name">
+                <TreeTableColumn prefWidth="400.0" text="Name" fx.id="nameColumn">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="name" />
                     </cellValueFactory>
