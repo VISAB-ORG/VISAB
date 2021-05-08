@@ -107,7 +107,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
     }
 
     @Override
-    public void invoke(StatisticsReceivedEvent event) {
+    public void notify(StatisticsReceivedEvent event) {
         statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
     }
 

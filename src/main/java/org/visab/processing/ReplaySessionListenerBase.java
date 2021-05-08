@@ -14,8 +14,8 @@ import org.visab.eventbus.subscriber.SubscriberBase;
  * @param <TMapImage>
  * @param <TMapInformation>
  */
-public abstract class ReplaySessionListenerBase<TStatistics, TMapImage> extends SessionListenerBase<TStatistics>
-        implements IReplaySessionListener<TStatistics, TMapImage> {
+public abstract class ReplaySessionListenerBase<TStatistics extends IStatistics, TMapImage extends IMapImage>
+        extends SessionListenerBase<TStatistics> implements IMapImageListener<TMapImage> {
 
     private class UnityMapImageSubscriber extends SubscriberBase<MapImageReceivedEvent> {
 
@@ -25,7 +25,7 @@ public abstract class ReplaySessionListenerBase<TStatistics, TMapImage> extends 
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(MapImageReceivedEvent event) {
+        public void notify(MapImageReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 processMapImage((TMapImage) event.getImage());
             }

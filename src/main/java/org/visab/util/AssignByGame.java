@@ -7,10 +7,10 @@ import java.util.UUID;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
 import org.visab.processing.IMapImage;
-import org.visab.processing.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
+import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
@@ -94,7 +94,7 @@ public final class AssignByGame {
      * @param sessionId The sessionId for the Listener to listen to
      * @return The SessionListener object
      */
-    public static final ISessionListener getListenerInstanceByGame(String game, UUID sessionId) {
+    public static final ISessionListener<?> getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
             case CBR_SHOOTER_STRING:
                 return new CBRShooterListener(sessionId);
