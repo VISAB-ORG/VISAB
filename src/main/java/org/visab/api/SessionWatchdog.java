@@ -21,8 +21,7 @@ import org.visab.util.Settings;
  * @author moritz
  *
  */
-public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
-        implements IPublisher<SessionClosedEvent> {
+public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> implements IPublisher<SessionClosedEvent> {
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
@@ -91,6 +90,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent>
      * After that a SessionClosedEvent is published.
      */
     private void checkSessionTimeouts() {
+        // Make a copy because of potential modification during iteration
         var entries = new ArrayList<Entry<UUID, LocalTime>>();
         entries.addAll(statisticsSentTimes.entrySet());
 

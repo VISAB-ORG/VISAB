@@ -19,6 +19,7 @@ import org.visab.repository.IVISABFile;
  * objects.
  *
  * TODO: Add default implementations
+ * 
  * @author moritz
  *
  */
@@ -46,10 +47,10 @@ public final class AssignByGame {
      */
     public static final IVISABFile getDeserializedFile(String json, String game) {
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return JsonConvert.deserializeJson(json, CBRShooterFile.class);
-            default:
-                return null;
+        case CBR_SHOOTER_STRING:
+            return JsonConvert.deserializeJson(json, CBRShooterFile.class);
+        default:
+            return null;
         }
     }
 
@@ -63,18 +64,18 @@ public final class AssignByGame {
     public static final IStatistics getDeserializedStatistics(String json, String game) { // throws
         // GameNotSupportedException
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return JsonConvert.deserializeJson(json, CBRShooterStatistics.class);
-            default:
-                return null;
-            // throw new GameNotSupportedException(String.format("Game {1,string} is not
-            // supported by VISAB yet.", game));
+        case CBR_SHOOTER_STRING:
+            return JsonConvert.deserializeJson(json, CBRShooterStatistics.class);
+        default:
+            return null;
+        // throw new GameNotSupportedException(String.format("Game {1,string} is not
+        // supported by VISAB yet.", game));
         }
     }
 
     /**
-     * TODO: instantiate by game
-     * Creates an map image object based on json data and the game.
+     * TODO: instantiate by game Creates an map image object based on json data and
+     * the game.
      *
      * @param json The json data to fill the object with
      * @param game The game
@@ -82,8 +83,8 @@ public final class AssignByGame {
      */
     public static final IMapImage getDeserializedMapImage(String json, String game) {
         switch (game) {
-            default:
-                return null;
+        default:
+            return null;
         }
     }
 
@@ -94,13 +95,13 @@ public final class AssignByGame {
      * @param sessionId The sessionId for the Listener to listen to
      * @return The SessionListener object
      */
-    public static final ISessionListener<?> getListenerInstanceByGame(String game, UUID sessionId) {
+    public static final ISessionListener<? extends IStatistics> getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
-            case CBR_SHOOTER_STRING:
-                return new CBRShooterListener(sessionId);
-            default:
-                // TODO: Raise exception
-                return null;
+        case CBR_SHOOTER_STRING:
+            return new CBRShooterListener(sessionId);
+        default:
+            // TODO: Raise exception
+            return null;
         }
     }
 }
