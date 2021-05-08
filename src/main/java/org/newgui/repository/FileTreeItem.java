@@ -15,16 +15,27 @@ public class FileTreeItem extends TreeItem<FileRow> {
 
     private boolean isDirectory;
 
+    private FileRow fileRow;
+
     public boolean isDirectory() {
         return this.isDirectory;
     }
 
+    public FileRow getFileRow() {
+        return this.fileRow;
+    }
+
     public FileTreeItem(Path file) {
+        // Create the FileRow
         var asFile = file.toFile();
+
+        var name = asFile.getName();
         var lastModified = Instant.ofEpochMilli(asFile.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         var size = FileSizeHelper.size(file) / 1000L; // In kb
+        var fullPath = file.toAbsolutePath().toString();
 
-        var fileRow = new FileRow(asFile.getName(), lastModified, size);
+        var fileRow = new FileRow(name, lastModified, size, fullPath);
+        this.fileRow = fileRow;
 
         if (Files.isDirectory(file)) {
             isDirectory = true;
@@ -37,7 +48,6 @@ public class FileTreeItem extends TreeItem<FileRow> {
         }
 
         this.setValue(fileRow);
-
         this.addEventHandler(FileTreeItem.branchExpandedEvent(), e -> expandedHandler(e));
         this.addEventHandler(FileTreeItem.branchCollapsedEvent(), e -> collapsedHandler(e));
     }

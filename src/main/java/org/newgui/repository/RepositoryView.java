@@ -25,12 +25,15 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Non MVVM
         // TODO: Change to get from settings
         var repositoryPath = Paths.get(Settings.DATA_PATH);
 
         var rootNode = new FileTreeItem(repositoryPath);
         fileView.setRoot(rootNode);
 
+        // MVVM
+        // viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
     }
 
 }
