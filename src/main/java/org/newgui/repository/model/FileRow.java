@@ -1,19 +1,19 @@
 package org.newgui.repository.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class FileRow {
-    private Date lastChanged;
+    private LocalDateTime lastChanged;
     private String name;
     private long size;
 
-    public FileRow(String name, Date lastModified, long size) {
+    public FileRow(String name, LocalDateTime lastModified, long size) {
         this.lastChanged = lastModified;
         this.name = name;
         this.size = size;
     }
 
-    public Date getLastModified() {
+    public LocalDateTime getLastModified() {
         return this.lastChanged;
     }
 

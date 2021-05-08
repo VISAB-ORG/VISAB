@@ -9,29 +9,28 @@
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
 
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.newgui.repository.RepositoryView">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.newgui.repository.RepositoryView">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TreeView fx:id="fileView" prefHeight="200.0" prefWidth="200.0" />
-        <TreeTableView fx:id="fileView2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+        <TreeTableView fx:id="fileView" >
             <columns>
-                <TreeTableColumn prefWidth="75.0" text="FileName">
+                <TreeTableColumn prefWidth="400.0" text="Name">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="name" />
                     </cellValueFactory>
                 </TreeTableColumn>
-                <TreeTableColumn prefWidth="75.0" text="Last modified">
+                <TreeTableColumn prefWidth="150.0" text="Last modified">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="lastModified" />
                     </cellValueFactory>
                 </TreeTableColumn>
-                <TreeTableColumn prefWidth="75.0" text="Size (kb)">
+                <TreeTableColumn prefWidth="75.0" text="Size in KB">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="size" />
                     </cellValueFactory>

@@ -3,7 +3,8 @@ package org.newgui.repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
 
 import org.newgui.repository.model.FileRow;
 
@@ -14,20 +15,16 @@ public class FileTreeItem extends TreeItem<FileRow> {
 
     private boolean isDirectory;
 
-    private String fullPath;
-
     public boolean isDirectory() {
         return this.isDirectory;
     }
 
-    public String getFullPath() {
-        return this.fullPath;
-    }
-
     public FileTreeItem(Path file) {
         var asFile = file.toFile();
-        var fileRow = new FileRow(asFile.getName(), new Date(asFile.lastModified()), FileSizeHelper.size(file) / 1000L);
-        this.fullPath = file.toString();
+        var lastModified = Instant.ofEpochMilli(asFile.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        var size = FileSizeHelper.size(file) / 1000L; // In kb
+
+        var fileRow = new FileRow(asFile.getName(), lastModified, size);
 
         if (Files.isDirectory(file)) {
             isDirectory = true;

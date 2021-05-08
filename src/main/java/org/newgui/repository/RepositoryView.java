@@ -12,17 +12,13 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.control.TreeView;
 import org.visab.util.Settings;
 import org.newgui.repository.model.FileRow;
 
 public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializable {
 
     @FXML
-    TreeView<String> fileView;
-
-    @FXML
-    TreeTableView<FileRow> fileView2;
+    TreeTableView<FileRow> fileView;
 
     @InjectViewModel
     RepositoryViewModel viewModel;
@@ -32,18 +28,9 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
         // TODO: Change to get from settings
         var repositoryPath = Paths.get(Settings.DATA_PATH);
 
-        var rootNode = new FileTreeItemOld(repositoryPath);
+        var rootNode = new FileTreeItem(repositoryPath);
         fileView.setRoot(rootNode);
 
-        var root = new FileTreeItem(repositoryPath);
-        fileView2.setRoot(root);
-
-        // try {
-        // for (var file : Files.newDirectoryStream(repositoryPath))
-        // rootNode.getChildren().add(new FileTreeItem(file));
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
 }
