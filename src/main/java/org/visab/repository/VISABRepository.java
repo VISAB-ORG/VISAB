@@ -93,7 +93,7 @@ public class VISABRepository {
      * @param fileName The name of the file
      * @return
      */
-    public <T> T loadFileByName(String game, String fileName) {
+    public <T extends IVISABFile> T loadFileByName(String game, String fileName) {
         var filePath = baseDir + game + "/" + fileName;
 
         return loadFileByPath(game, filePath);
@@ -108,7 +108,7 @@ public class VISABRepository {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> T loadFileByPath(String game, String filePath) {
+    public <T extends IVISABFile> T loadFileByPath(String game, String filePath) {
         if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
             filePath += ".visab2";
 
