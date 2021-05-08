@@ -32,10 +32,10 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
         // TODO: Change to get from settings
         var repositoryPath = Paths.get(Settings.DATA_PATH);
 
-        var rootNode = new FileTreeItem(repositoryPath);
+        var rootNode = new FileTreeItemOld(repositoryPath);
         fileView.setRoot(rootNode);
 
-        var root = new FileTreeItem2(repositoryPath);
+        var root = new FileTreeItem(repositoryPath);
         fileView2.setRoot(root);
 
         // try {

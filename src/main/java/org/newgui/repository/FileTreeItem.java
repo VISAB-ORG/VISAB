@@ -3,11 +3,14 @@ package org.newgui.repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Date;
+
+import org.newgui.repository.model.FileRow;
 
 import javafx.event.Event;
 import javafx.scene.control.TreeItem;
 
-public class FileTreeItem extends TreeItem<String> {
+public class FileTreeItem extends TreeItem<FileRow> {
 
     private boolean isDirectory;
 
@@ -22,7 +25,8 @@ public class FileTreeItem extends TreeItem<String> {
     }
 
     public FileTreeItem(Path file) {
-        super(file.toString());
+        var asFile = file.toFile();
+        var fileRow = new FileRow(asFile.getName(), new Date(asFile.lastModified()), FileSizeHelper.size(file) / 1000L);
         this.fullPath = file.toString();
 
         if (Files.isDirectory(file)) {
@@ -35,7 +39,7 @@ public class FileTreeItem extends TreeItem<String> {
             // Set graphic
         }
 
-        setValue(file);
+        this.setValue(fileRow);
 
         this.addEventHandler(FileTreeItem.branchExpandedEvent(), e -> expandedHandler(e));
         this.addEventHandler(FileTreeItem.branchCollapsedEvent(), e -> collapsedHandler(e));
@@ -64,9 +68,5 @@ public class FileTreeItem extends TreeItem<String> {
             // TODO: Add image
         }
         // TODO: Maybe add children dynamically if repository gets to big.
-    }
-
-    private void setValue(Path file) {
-        setValue(file.getFileName().toString());
     }
 }
