@@ -25,7 +25,7 @@ public abstract class ReplaySessionListenerBase<TStatistics, TMapImage> extends 
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(MapImageReceivedEvent event) {
+        public void notify(MapImageReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 processMapImage((TMapImage) event.getImage());
             }

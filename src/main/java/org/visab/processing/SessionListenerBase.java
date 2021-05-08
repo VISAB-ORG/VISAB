@@ -38,7 +38,7 @@ public abstract class SessionListenerBase<TStatistics> implements ISessionListen
         }
 
         @Override
-        public void invoke(SessionClosedEvent event) {
+        public void notify(SessionClosedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 SessionListenerAdministration.removeListener(SessionListenerBase.this);
 
@@ -67,7 +67,7 @@ public abstract class SessionListenerBase<TStatistics> implements ISessionListen
 
         @Override
         @SuppressWarnings("unchecked")
-        public void invoke(StatisticsReceivedEvent event) {
+        public void notify(StatisticsReceivedEvent event) {
             if (event.getSessionId().equals(sessionId)) {
                 lastReceived = LocalTime.now();
                 processStatistics((TStatistics) event.getStatistics());

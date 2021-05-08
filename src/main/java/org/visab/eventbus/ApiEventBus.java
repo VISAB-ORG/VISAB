@@ -24,7 +24,7 @@ public class ApiEventBus {
             // type SessionClosedEvent.
             var _subscribers = this.<TEvent>castSubscribers(subscribers.get(eventType));
             for (var sub : _subscribers)
-                sub.invoke(event);
+                sub.notify(event);
         }
     }
 

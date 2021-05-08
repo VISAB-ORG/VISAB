@@ -10,7 +10,7 @@ import org.visab.eventbus.ISubscriber;
  *
  * @param <TEvent> The event that the class will subscribe to.
  */
-public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriber<TEvent> {
+public abstract class SubscriberBase<TEvent extends IEvent> implements ISubscriber<TEvent> {
 
     private String subscribedEventType;
 
@@ -22,4 +22,8 @@ public abstract class SubscriberBase<TEvent> implements ISubscriber, ISubscriber
     public String getSubscribedEventType() {
         return subscribedEventType;
     }
+
+    @Override
+    public abstract void notify(TEvent event);
+
 }
