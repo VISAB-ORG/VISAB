@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.visab.processing.IVISABFile;
+import org.visab.processing.VISABFileBase;
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
 import org.visab.util.Settings;
@@ -28,7 +29,7 @@ public class VISABRepository {
      * @param filePath The path to the file
      * @return The contents of the file or empty string if unsuccessful
      */
-    private static String readFile(String filePath) {
+    public String readFile(String filePath) {
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
@@ -45,7 +46,7 @@ public class VISABRepository {
      * @param content  The content of the file
      * @return True if file was successfully written, false else
      */
-    private static boolean writeFile(String filePath, String content) {
+    public boolean writeFile(String filePath, String content) {
         var file = new File(filePath);
 
         try (var writer = new BufferedWriter(new FileWriter(file))) {
@@ -115,23 +116,30 @@ public class VISABRepository {
         var json = readFile(filePath);
 
         var file = AssignByGame.getDeserializedFile(json, game);
-        
+
         return file != null ? (T) file : null;
+    }
+
+    public VISABFileBase loadBaseFile(String filePath) {
+        var json = readFile(filePath);
+
+        return JsonConvert.deserializeJson(json, VISABFileBase.class);
     }
 
     /**
      * Saves a file to the database
      *
      * @param visabFile The file to save
+     * @param fileName  The name of the file
      * @return True if successfully saved, false else
      */
-    public boolean saveFile(IVISABFile visabFile) {
+    public boolean saveFile(IVISABFile visabFile, String fileName) {
         var json = JsonConvert.serializeObject(visabFile);
 
         var fileDir = baseDir + visabFile.getGame();
         new File(fileDir).mkdirs();
 
-        var filePath = fileDir + "/" + visabFile.getFileName();
+        var filePath = fileDir + "/" + fileName;
         if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
             filePath += ".visab2";
 

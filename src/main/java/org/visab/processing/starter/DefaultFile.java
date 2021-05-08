@@ -11,11 +11,11 @@ public class DefaultFile extends VISABFileBase {
      * Used for deserialization
      */
     public DefaultFile() {
-        super("", "", "");
+        super("", "");
     }
 
-    public DefaultFile(String game, String fileName) {
-        super(game, "2.0", fileName);
+    public DefaultFile(String game) {
+        super(game, "2.0");
     }
 
     private List<String> statistics = new ArrayList<>();

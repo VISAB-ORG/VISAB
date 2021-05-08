@@ -20,12 +20,12 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultStatistic
 
     @Override
     public void onSessionClosed() {
-        repo.saveFile(file);
+        repo.saveFile(file, sessionId.toString());
     }
 
     @Override
     public void onSessionStarted() {
-        file = new DefaultFile(game, sessionId.toString());
+        file = new DefaultFile(game);
     }
 
     @Override

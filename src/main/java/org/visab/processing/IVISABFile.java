@@ -1,14 +1,12 @@
 package org.visab.processing;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public interface IVISABFile {
 
-    Timestamp getCreationDate();
+    LocalDateTime getCreationDate();
 
     String getFileFormatVersion();
 
     public String getGame();
-
-    String getFileName();
 }

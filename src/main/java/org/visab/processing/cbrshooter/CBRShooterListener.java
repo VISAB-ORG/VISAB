@@ -23,16 +23,16 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-	public void onSessionClosed() {
-        if (repo.saveFile(CBRShooterFile))
+    public void onSessionClosed() {
+        if (repo.saveFile(CBRShooterFile, sessionId.toString()))
             System.out.println("Saved file in repository!");
         else
             System.out.print("Couldent save file in repository!");
-	}
+    }
 
     @Override
     public void onSessionStarted() {
-        CBRShooterFile = new CBRShooterFile(getSessionId().toString());
+        CBRShooterFile = new CBRShooterFile();
     }
 
     @Override
@@ -47,6 +47,6 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public void processMapImage(CBRShooterMapImage mapImage) {
         // TODO Auto-generated method stub
-        
+
     }
 }
