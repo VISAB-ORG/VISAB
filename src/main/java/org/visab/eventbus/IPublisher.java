@@ -7,7 +7,7 @@ package org.visab.eventbus;
  *
  * @param <TEvent> The event that will be published.
  */
-public interface IPublisher<TEvent> {
+public interface IPublisher<TEvent extends IEvent> {
 
     void publish(TEvent event);
 }

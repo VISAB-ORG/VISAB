@@ -9,7 +9,7 @@ package org.visab.eventbus;
  *
  * @param <TEvent> The event that will be subscribed to.
  */
-public interface ISubscriber<TEvent> {
+public interface ISubscriber<TEvent extends IEvent> {
 
     void notify(TEvent event);
 

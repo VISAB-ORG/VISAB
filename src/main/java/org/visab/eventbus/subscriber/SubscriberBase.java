@@ -1,6 +1,6 @@
 package org.visab.eventbus.subscriber;
 
-import org.visab.eventbus.ISubscriber;
+import org.visab.eventbus.IEvent;
 import org.visab.eventbus.ISubscriber;
 
 /**
