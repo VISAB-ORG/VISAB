@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import de.saxsys.mvvmfx.utils.commands.Action;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,10 +21,8 @@ import javafx.scene.Node;
 import org.visab.util.VISABUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializable {
@@ -59,8 +56,10 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
 
         refreshButton.setOnAction(e -> refreshFileView());
         addButton.setOnAction(e -> fileDialog(e));
+
         // MVVM
         // viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
+        // TODO: Somehow doesnt work
         fileChanges.textProperty().bind(viewModel.fileChangesProperty().asString());
     }
 

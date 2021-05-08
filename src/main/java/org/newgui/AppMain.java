@@ -1,7 +1,6 @@
 package org.newgui;
 
 import org.newgui.repository.RepositoryView;
-import org.newgui.webapi.WebApiView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;

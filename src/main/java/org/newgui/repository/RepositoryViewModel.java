@@ -5,8 +5,8 @@ import java.io.File;
 import org.newgui.repository.model.FileRow;
 
 import de.saxsys.mvvmfx.ViewModel;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.visab.repository.VISABRepository;
@@ -22,9 +22,9 @@ public class RepositoryViewModel implements ViewModel {
         return selectedFileRow;
     }
 
-    private ReadOnlyIntegerProperty fileChanges = new SimpleIntegerProperty();
+    private IntegerProperty fileChanges = new SimpleIntegerProperty(0);
 
-    public ReadOnlyIntegerProperty fileChangesProperty() {
+    public IntegerProperty fileChangesProperty() {
         return fileChanges;
     }
 
@@ -34,7 +34,7 @@ public class RepositoryViewModel implements ViewModel {
             var baseFile = repo.loadBaseFile(file.getAbsolutePath());
 
             var concreteFile = AssignByGame.getDeserializedFile(json, baseFile.getGame());
-            if (repo.saveFile(concreteFile)) {
+            if (repo.saveFile(concreteFile, file.getName())) {
                 fileChanges.add(1);
                 System.out.println("add file");
             }
