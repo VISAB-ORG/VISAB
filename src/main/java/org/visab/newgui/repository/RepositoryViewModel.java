@@ -6,7 +6,7 @@ import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.repository.model.FileRow;
-import org.visab.repository.VISABRepository;
+import org.visab.repository.VISABFileRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
 
@@ -17,20 +17,20 @@ import javafx.scene.control.TreeItem;
 
 public class RepositoryViewModel extends ViewModelBase {
 
-    private VISABRepository repo = new VISABRepository();
+    private VISABFileRepository repo = new VISABFileRepository();
     private FileRow rootFile;
 
     public void addFile(File file) {
         try {
             var fileName = file.getName();
 
-            var json = repo.readFile(file.getAbsolutePath());
+            var json = repo.readFileContents(file.getAbsolutePath());
             var baseFile = repo.loadBaseFile(file.getAbsolutePath());
 
             var concreteFile = AssignByGame.getDeserializedFile(json, baseFile.getGame());
             if (repo.saveFile(concreteFile, fileName)) {
                 // Add to the tree if saved succesfully
-                var addedFile = repo.loadFile(concreteFile.getGame(), fileName);
+                var addedFile = repo.loadFile(concreteFile.getGame() + "/" + fileName);
 
                 // If a new dir was created, add as child of rootFile
                 var dirName = concreteFile.getGame();
@@ -108,7 +108,7 @@ public class RepositoryViewModel extends ViewModelBase {
 
             // TODO: check if selected row is repository
             if (!selectedRow.getName().equals("repository")) {
-                if (repo.deleteFileByPath(selectedRow.getFullPath()))
+                if (repo.deleteFile(selectedRow.getFullPath()))
                     removeFileRow(rootFile, selectedRow);
             }
         });

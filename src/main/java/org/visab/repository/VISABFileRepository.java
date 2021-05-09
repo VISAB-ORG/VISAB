@@ -1,12 +1,5 @@
 package org.visab.repository;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
 import org.visab.util.Settings;
@@ -17,16 +10,11 @@ import org.visab.util.Settings;
  * @author moritz
  *
  */
-public class VISABRepository extends RepositoryBase {
+public class VISABFileRepository extends RepositoryBase {
 
-    public VISABRepository() {
+    public VISABFileRepository() {
+        // TODO:
         super(Settings.DATA_PATH);
-    }
-
-    public File loadFile(String fileName, String game) {
-        var filePath = baseDirectory + game + "/" + fileName;
-
-        return loadFile(filePath);
     }
 
     /**
@@ -96,7 +84,7 @@ public class VISABRepository extends RepositoryBase {
         var json = JsonConvert.serializeObject(visabFile);
 
         var fileDir = baseDirectory + visabFile.getGame();
-        new File(fileDir).mkdirs();
+        createMissingDirectories(fileDir);
 
         var filePath = fileDir + "/" + fileName;
         // If file has no extension, make it .visab2

@@ -19,6 +19,16 @@ public class RepositoryBase {
     }
 
     /**
+     * Creates missing directorie for a given file path
+     * 
+     * @param filePath The file path
+     * @return True if directories were created, false else
+     */
+    public boolean createMissingDirectories(String filePath) {
+        return new File(filePath).mkdirs();
+    }
+
+    /**
      * Reads the contents of a file at a given path
      *
      * @param filePath The path to the file
