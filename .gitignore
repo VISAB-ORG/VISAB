@@ -8,6 +8,8 @@
 .classpath
 /data/
 
+**visablogs/
+
 # Generic Eclispe .gitignore
 /bin/
 .metadata
