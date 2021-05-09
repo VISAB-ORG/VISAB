@@ -23,6 +23,11 @@ public class VISABRepository {
 
     private static final String baseDir = Settings.DATA_PATH;
 
+    public VISABRepository() {
+        // Create the base directory
+        new File(baseDir).mkdirs();
+    }
+
     /**
      * Reads the contents of a file at a given path
      *

@@ -1,4 +1,4 @@
-package org.newgui.repository;
+package org.visab.newgui.repository;
 
 import java.util.List;
 import java.util.stream.Collectors;

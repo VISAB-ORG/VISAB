@@ -1,4 +1,4 @@
-package org.newgui;
+package org.visab.newgui;
 
 import java.io.IOException;
 

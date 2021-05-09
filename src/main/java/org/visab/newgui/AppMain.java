@@ -1,6 +1,7 @@
-package org.newgui;
+package org.visab.newgui;
 
-import org.newgui.repository.RepositoryView;
+import org.visab.newgui.repository.RepositoryView;
+import org.visab.newgui.webapi.WebApiView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;

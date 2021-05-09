@@ -1,9 +1,9 @@
-package org.newgui.webapi;
+package org.visab.newgui.webapi;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.newgui.webapi.model.SessionTableRow;
+import org.visab.newgui.webapi.model.SessionTableRow;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;

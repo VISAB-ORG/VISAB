@@ -1,16 +1,16 @@
-package org.newgui.webapi;
+package org.visab.newgui.webapi;
 
 import java.time.LocalTime;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import org.newgui.ViewModelBase;
-import org.newgui.webapi.model.SessionTableRow;
 import org.visab.api.WebApi;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.newgui.ViewModelBase;
+import org.visab.newgui.webapi.model.SessionTableRow;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;

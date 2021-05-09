@@ -1,4 +1,4 @@
-package org.newgui.repository.model;
+package org.visab.newgui.repository.model;
 
 import java.time.LocalDateTime;
 

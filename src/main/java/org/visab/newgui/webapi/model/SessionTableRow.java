@@ -1,4 +1,4 @@
-package org.newgui.webapi.model;
+package org.visab.newgui.webapi.model;
 
 import java.time.LocalTime;
 import java.util.UUID;

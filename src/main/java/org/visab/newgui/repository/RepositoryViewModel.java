@@ -1,11 +1,11 @@
-package org.newgui.repository;
+package org.visab.newgui.repository;
 
 import java.io.File;
 import java.time.Instant;
 import java.time.ZoneId;
 
-import org.newgui.ViewModelBase;
-import org.newgui.repository.model.FileRow;
+import org.visab.newgui.ViewModelBase;
+import org.visab.newgui.repository.model.FileRow;
 import org.visab.repository.VISABRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;

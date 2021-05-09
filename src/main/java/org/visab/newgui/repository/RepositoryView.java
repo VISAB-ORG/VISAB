@@ -1,10 +1,10 @@
-package org.newgui.repository;
+package org.visab.newgui.repository;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
-import org.newgui.repository.model.FileRow;
+import org.visab.newgui.repository.model.FileRow;
 import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;

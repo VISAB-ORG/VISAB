@@ -1,4 +1,4 @@
-package org.newgui.main;
+package org.visab.newgui.main;
 import java.net.URL;
 import java.util.ResourceBundle;
 
