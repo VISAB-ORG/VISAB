@@ -20,7 +20,7 @@ public final class SessionListenerAdministration {
         return listenerFactory;
     }
 
-    private static List<ISessionListener> activeListeners = new ArrayList<>();
+    private static List<ISessionListener<? extends IStatistics>> activeListeners = new ArrayList<>();
 
     /**
      * Returns a list of the currently active listeners. Warning: Does not return
@@ -29,30 +29,29 @@ public final class SessionListenerAdministration {
      * 
      * @return A copy of the currently active listeners
      */
-    public static List<ISessionListener> getActiveListeners() {
-        return new ArrayList<ISessionListener>(activeListeners);
+    public static List<ISessionListener<? extends IStatistics>> getActiveListeners() {
+        return new ArrayList<ISessionListener<? extends IStatistics>>(activeListeners);
     }
 
-    public static ISessionListener getSessionListener(UUID sessionId) {
-        var listeners = getActiveListeners(sessionId);
+    public static ISessionListener<? extends IStatistics> getSessionListener(UUID sessionId) {
+        for (var listener : activeListeners) {
+            if (listener.getSessionId().equals(sessionId))
+                return listener;
+        }
 
-        return listeners.size() > 0 ? listeners.get(0) : null;
+        return null;
     }
 
-    public static List<ISessionListener> getActiveListeners(String game) {
+    public static List<ISessionListener<? extends IStatistics>> getActiveListeners(String game) {
         return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
     }
 
-    public static void addListener(ISessionListener listener) {
+    public static void addListener(ISessionListener<? extends IStatistics> listener) {
         activeListeners.add(listener);
     }
 
-    public static List<ISessionListener> getActiveListeners(UUID sessionId) {
-        return activeListeners.stream().filter(x -> x.getSessionId() == sessionId).collect(Collectors.toList());
-    }
-
     // TODO: Remove gracefully?
-    public static void removeListener(ISessionListener listener) {
+    public static void removeListener(ISessionListener<? extends IStatistics> listener) {
         activeListeners.remove(listener);
     }
 

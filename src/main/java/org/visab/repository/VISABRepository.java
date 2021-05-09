@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.visab.processing.IVISABFile;
-import org.visab.processing.VISABFileBase;
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
 import org.visab.util.Settings;

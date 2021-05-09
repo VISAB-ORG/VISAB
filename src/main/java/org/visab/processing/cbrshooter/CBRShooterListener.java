@@ -47,6 +47,6 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public void processMapImage(CBRShooterMapImage mapImage) {
         // TODO Auto-generated method stub
-
+        
     }
 }

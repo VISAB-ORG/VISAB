@@ -9,7 +9,7 @@ import java.util.UUID;
  * @author moritz
  *
  */
-public interface ISessionListener {
+public interface ISessionListener<TStatistics extends IStatistics> {
 
     String getGame();
 
@@ -22,5 +22,7 @@ public interface ISessionListener {
     void onSessionClosed();
 
     void onSessionStarted();
+
+    void processStatistics(TStatistics statistics);
 
 }

@@ -61,11 +61,11 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         return activeSessions.containsKey(sessionId);
     }
 
-    private boolean checkTimeouts = true;
-
     private SessionClosedPublisher closedPublisher = new SessionClosedPublisher();
 
     private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
+
+    private boolean checkTimeouts = true;
 
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
@@ -78,6 +78,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
      * After that a SessionClosedEvent is published.
      */
     private void checkSessionTimeouts() {
+        // Make a copy because of potential modification during iteration
         var entries = new ArrayList<Entry<UUID, LocalTime>>();
         entries.addAll(statisticsSentTimes.entrySet());
 

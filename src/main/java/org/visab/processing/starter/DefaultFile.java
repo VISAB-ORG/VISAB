@@ -3,7 +3,7 @@ package org.visab.processing.starter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.processing.VISABFileBase;
+import org.visab.repository.VISABFileBase;
 
 public class DefaultFile extends VISABFileBase {
 

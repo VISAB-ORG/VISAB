@@ -2,7 +2,6 @@ package org.visab.newgui.webapi;
 
 import java.time.LocalTime;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 import org.visab.api.WebApi;
 import org.visab.eventbus.event.SessionClosedEvent;

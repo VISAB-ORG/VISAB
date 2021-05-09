@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
 import org.visab.processing.IMapImage;
-import org.visab.processing.IVISABFile;
+import org.visab.repository.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.cbrshooter.CBRShooterMapImage;
@@ -76,8 +76,7 @@ public final class AssignByGame {
     }
 
     /**
-     * Creates an map image object based on json data and
-     * the game.
+     * Creates an map image object based on json data and the game.
      *
      * @param json The json data to fill the object with
      * @param game The game
@@ -99,7 +98,7 @@ public final class AssignByGame {
      * @param sessionId The sessionId for the Listener to listen to
      * @return The SessionListener object
      */
-    public static final ISessionListener getListenerInstanceByGame(String game, UUID sessionId) {
+    public static final ISessionListener<? extends IStatistics> getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
         case CBR_SHOOTER_STRING:
             return new CBRShooterListener(sessionId);

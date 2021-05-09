@@ -1,6 +1,6 @@
 package org.visab.processing.settlersofcatan;
 
-import org.visab.processing.VISABFileBase;
+import org.visab.repository.VISABFileBase;
 import org.visab.util.AssignByGame;
 
 public class SettlersFile extends VISABFileBase {

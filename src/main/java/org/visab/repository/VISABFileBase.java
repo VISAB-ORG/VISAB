@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.repository;
 
 import java.time.LocalDateTime;
 

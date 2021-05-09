@@ -16,7 +16,7 @@ import org.visab.util.AssignByGame;
  */
 public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 
-    public static void addListener(UUID sessionId, String game) {
+    public void addListener(UUID sessionId, String game) {
         // TODO: This is more of a sanity check, that can be removed when deploying
         if (SessionListenerAdministration.getSessionListener(sessionId) == null) {
             var newListener = AssignByGame.getListenerInstanceByGame(game, sessionId);
