@@ -42,7 +42,6 @@ public class Main {
     public void doMain(String[] args) throws Exception {
 	CmdLineParser parser = new CmdLineParser(this);
 
-	logger.info("test");
 	try {
 	    parser.parseArgument(args);
 
