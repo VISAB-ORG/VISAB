@@ -20,6 +20,9 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
 
     @Override
     public boolean addFile(File file) {
+        if (file.isDirectory())
+            return false;
+
         var added = false;
         try {
             var fileName = file.getName();
