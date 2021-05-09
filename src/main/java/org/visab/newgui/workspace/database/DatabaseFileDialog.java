@@ -9,7 +9,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class DatabaseFileDialog extends FileDialog {
 
     public DatabaseFileDialog() {
-        super("Add VISAB file", List.of(new ExtensionFilter("VISAB files", ".visab2")));
+        super("Add VISAB file", List.of(new ExtensionFilter("VISAB files", "*.visab2")));
     }
 
 }
