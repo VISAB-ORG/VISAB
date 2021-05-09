@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.processing.AbstractParser;
 import org.visab.processing.cbrshooter.model.ShooterDataRepresentation;
 
@@ -15,6 +17,9 @@ import org.visab.processing.cbrshooter.model.ShooterDataRepresentation;
  *
  */
 public class ShooterParser extends AbstractParser {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(ShooterParser.class);
 
     public ShooterParser(String outDir, String visabFileName) {
 	super(outDir, visabFileName);

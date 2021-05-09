@@ -3,6 +3,8 @@ package org.visab.gui;
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.util.Settings;
 
 import javafx.application.Application;
@@ -19,6 +21,9 @@ import javafx.stage.Stage;
  *
  */
 public class HelpWindowController extends Application {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(HelpWindowController.class);
 
     @FXML
     private MenuItem aboutMenu;

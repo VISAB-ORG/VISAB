@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.util.VISABUtil;
 
 import javafx.fxml.FXML;
@@ -19,6 +21,9 @@ import javafx.stage.FileChooser;
  *
  */
 public class MainWindowController {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(MainWindowController.class);
 
     // Views
     @FXML

@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
+import org.visab.main.Main;
 import org.visab.util.Settings;
 
 import javafx.application.Application;
@@ -24,6 +27,9 @@ import javafx.stage.Stage;
  *
  */
 public class GUIMain extends Application {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(GUIMain.class);
 
     // src/main/resources is part of the classpath, so further subdirectories need
     // to be concerned here

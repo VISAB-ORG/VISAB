@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
 import org.visab.util.Settings;
@@ -19,6 +21,9 @@ import org.visab.util.Settings;
  */
 public class VISABRepository {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(VISABRepository.class);
+
     private static final String baseDir = Settings.DATA_PATH;
 
     /**
@@ -28,13 +33,13 @@ public class VISABRepository {
      * @return The contents of the file or empty string if unsuccessful
      */
     private static String readFile(String filePath) {
-        try {
-            return new String(Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException e) {
-            e.printStackTrace();
+	try {
+	    return new String(Files.readAllBytes(Paths.get(filePath)));
+	} catch (IOException e) {
+	    e.printStackTrace();
 
-            return "";
-        }
+	    return "";
+	}
     }
 
     /**
@@ -45,17 +50,17 @@ public class VISABRepository {
      * @return True if file was successfully written, false else
      */
     private static boolean writeFile(String filePath, String content) {
-        var file = new File(filePath);
+	var file = new File(filePath);
 
-        try (var writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(content);
-        } catch (IOException e) {
-            e.printStackTrace();
+	try (var writer = new BufferedWriter(new FileWriter(file))) {
+	    writer.write(content);
+	} catch (IOException e) {
+	    e.printStackTrace();
 
-            return false;
-        }
+	    return false;
+	}
 
-        return true;
+	return true;
     }
 
     /**
@@ -66,9 +71,9 @@ public class VISABRepository {
      * @return True if deleted, false else
      */
     public boolean deleteFileByName(String game, String fileName) {
-        var filePath = baseDir + game + "/" + fileName;
+	var filePath = baseDir + game + "/" + fileName;
 
-        return deleteFileByPath(filePath);
+	return deleteFileByPath(filePath);
     }
 
     /**
@@ -78,10 +83,10 @@ public class VISABRepository {
      * @return True if deleted, false else
      */
     public boolean deleteFileByPath(String filePath) {
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
-            filePath += ".visab2";
+	if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
+	    filePath += ".visab2";
 
-        return new File(filePath).delete();
+	return new File(filePath).delete();
     }
 
     /**
@@ -93,9 +98,9 @@ public class VISABRepository {
      * @return
      */
     public <T extends IVISABFile> T loadFileByName(String game, String fileName) {
-        var filePath = baseDir + game + "/" + fileName;
+	var filePath = baseDir + game + "/" + fileName;
 
-        return loadFileByPath(game, filePath);
+	return loadFileByPath(game, filePath);
     }
 
     /**
@@ -108,18 +113,18 @@ public class VISABRepository {
      */
     @SuppressWarnings("unchecked")
     public <T extends IVISABFile> T loadFileByPath(String game, String filePath) {
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
-            filePath += ".visab2";
+	if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
+	    filePath += ".visab2";
 
-        var json = readFile(filePath);
+	var json = readFile(filePath);
 
-        try {
-            return (T) AssignByGame.getDeserializedFile(json, game);
-        } catch (Exception e) {
-            e.printStackTrace();
+	try {
+	    return (T) AssignByGame.getDeserializedFile(json, game);
+	} catch (Exception e) {
+	    e.printStackTrace();
 
-            return null;
-        }
+	    return null;
+	}
     }
 
     /**
@@ -129,16 +134,16 @@ public class VISABRepository {
      * @return True if successfully saved, false else
      */
     public boolean saveFile(IVISABFile visabFile) {
-        var json = JsonConvert.serializeObject(visabFile);
+	var json = JsonConvert.serializeObject(visabFile);
 
-        var fileDir = baseDir + visabFile.getGame();
-        new File(fileDir).mkdirs();
+	var fileDir = baseDir + visabFile.getGame();
+	new File(fileDir).mkdirs();
 
-        var filePath = fileDir + "/" + visabFile.getFileName();
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
-            filePath += ".visab2";
+	var filePath = fileDir + "/" + visabFile.getFileName();
+	if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
+	    filePath += ".visab2";
 
-        return writeFile(filePath, json);
+	return writeFile(filePath, json);
     }
 
 }

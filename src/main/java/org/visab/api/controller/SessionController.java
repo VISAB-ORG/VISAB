@@ -3,6 +3,8 @@ package org.visab.api.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
@@ -25,6 +27,9 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  */
 public class SessionController extends HTTPControllerBase {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionController.class);
+
     /**
      * The CloseSessionPublisher, used for processing requests to close the session.
      * This has to be a nested class, due to implementing two generic
@@ -34,21 +39,21 @@ public class SessionController extends HTTPControllerBase {
      *
      */
     private class CloseSessionPublisher extends PublisherBase<SessionClosedEvent> {
-        private Response closeSession(IHTTPSession httpSession) {
-            var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+	private Response closeSession(IHTTPSession httpSession) {
+	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
 
-            if (sessionId == null)
-                return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+	    if (sessionId == null)
+		return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-            if (!SessionWatchdog.isSessionActive(sessionId))
-                return getOkResponse("Session was already closed!");
+	    if (!SessionWatchdog.isSessionActive(sessionId))
+		return getOkResponse("Session was already closed!");
 
-            SessionWatchdog.removeSession(sessionId);
-            // Publish the closed session to the EventBus
-            publish(new SessionClosedEvent(sessionId, false));
+	    SessionWatchdog.removeSession(sessionId);
+	    // Publish the closed session to the EventBus
+	    publish(new SessionClosedEvent(sessionId, false));
 
-            return getOkResponse("Closed the session!");
-        }
+	    return getOkResponse("Closed the session!");
+	}
     }
 
     /**
@@ -60,28 +65,28 @@ public class SessionController extends HTTPControllerBase {
      *
      */
     private class OpenSessionPublisher extends PublisherBase<SessionOpenedEvent> {
-        private Response openSession(IHTTPSession httpSession) {
-            var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-            var game = WebApiHelper.extractGame(httpSession.getHeaders());
+	private Response openSession(IHTTPSession httpSession) {
+	    var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+	    var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
-            if (sessionId == null)
-                return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+	    if (sessionId == null)
+		return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-            if (game == "")
-                return getBadRequestResponse("No game given!");
+	    if (game == "")
+		return getBadRequestResponse("No game given!");
 
-            if (!AssignByGame.gameIsSupported(game))
-                return getBadRequestResponse("Game is not supported!");
+	    if (!AssignByGame.gameIsSupported(game))
+		return getBadRequestResponse("Game is not supported!");
 
-            if (SessionWatchdog.isSessionActive(sessionId))
-                return getBadRequestResponse("Session already active!");
+	    if (SessionWatchdog.isSessionActive(sessionId))
+		return getBadRequestResponse("Session already active!");
 
-            SessionWatchdog.addSession(sessionId, game);
-            // Publish the new session to the EventBus
-            publish(new SessionOpenedEvent(sessionId, game));
+	    SessionWatchdog.addSession(sessionId, game);
+	    // Publish the new session to the EventBus
+	    publish(new SessionOpenedEvent(sessionId, game));
 
-            return getOkResponse("Session added.");
-        }
+	    return getOkResponse("Session added.");
+	}
     }
 
     private CloseSessionPublisher closeSessionPublisher = new CloseSessionPublisher();
@@ -89,51 +94,51 @@ public class SessionController extends HTTPControllerBase {
     private OpenSessionPublisher openSessionPublisher = new OpenSessionPublisher();
 
     private Response getSessionStatus(IHTTPSession httpSession) {
-        var parameters = httpSession.getParameters();
+	var parameters = httpSession.getParameters();
 
-        UUID sessionId = null;
-        if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
-            sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
+	UUID sessionId = null;
+	if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
+	    sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
 
-        if (!parameters.containsKey("sessionid"))
-            return getBadRequestResponse("No sessionid given in url parameters!");
+	if (!parameters.containsKey("sessionid"))
+	    return getBadRequestResponse("No sessionid given in url parameters!");
 
-        if (sessionId == null)
-            return getBadRequestResponse("Could not parse uuid!");
+	if (sessionId == null)
+	    return getBadRequestResponse("Could not parse uuid!");
 
-        SessionStatus sessionStatus;
-        if (!SessionWatchdog.isSessionActive(sessionId))
-            sessionStatus = new SessionStatus(false, sessionId, null);
-        else
-            sessionStatus = new SessionStatus(true, sessionId, SessionWatchdog.getGame(sessionId));
+	SessionStatus sessionStatus;
+	if (!SessionWatchdog.isSessionActive(sessionId))
+	    sessionStatus = new SessionStatus(false, sessionId, null);
+	else
+	    sessionStatus = new SessionStatus(true, sessionId, SessionWatchdog.getGame(sessionId));
 
-        return getJsonResponse(sessionStatus);
+	return getJsonResponse(sessionStatus);
     }
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
-        var endpointAdress = uriResource.getUri().replace("session/", "");
-        switch (endpointAdress) {
-        case "open":
-            return openSessionPublisher.openSession(httpSession);
+	var endpointAdress = uriResource.getUri().replace("session/", "");
+	switch (endpointAdress) {
+	case "open":
+	    return openSessionPublisher.openSession(httpSession);
 
-        case "close":
-            return closeSessionPublisher.closeSession(httpSession);
+	case "close":
+	    return closeSessionPublisher.closeSession(httpSession);
 
-        case "status":
-            return getSessionStatus(httpSession);
+	case "status":
+	    return getSessionStatus(httpSession);
 
-        case "list":
-            return getJsonResponse(SessionWatchdog.getActiveSessions());
+	case "list":
+	    return getJsonResponse(SessionWatchdog.getActiveSessions());
 
-        default:
-            return getNotFoundResponse(uriResource);
-        }
+	default:
+	    return getNotFoundResponse(uriResource);
+	}
     }
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
+	return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
     }
 
 }

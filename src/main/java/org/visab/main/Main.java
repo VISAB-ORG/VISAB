@@ -2,6 +2,8 @@ package org.visab.main;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -17,6 +19,9 @@ import org.visab.gui.GUIMain;
  *
  */
 public class Main {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(Main.class);
 
     @Option(name = "-mode", usage = "The mode you want to execute VISAB in: { 'gui' | 'headless' }.", required = true)
     private static String mode;
@@ -37,6 +42,7 @@ public class Main {
     public void doMain(String[] args) throws Exception {
 	CmdLineParser parser = new CmdLineParser(this);
 
+	logger.info("test");
 	try {
 	    parser.parseArgument(args);
 

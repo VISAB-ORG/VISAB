@@ -2,6 +2,8 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
@@ -23,41 +25,44 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  */
 public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(StatisticsController.class);
+
     @Override
     public final Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
-        return getNotFoundResponse(uriResource, "Get request are not supported when sending statistics!");
+	return getNotFoundResponse(uriResource, "Get request are not supported when sending statistics!");
     }
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+	var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+	var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
-        if (sessionId == null)
-            return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+	if (sessionId == null)
+	    return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!SessionWatchdog.isSessionActive(sessionId))
-            return getBadRequestResponse("Session was already closed!");
+	if (!SessionWatchdog.isSessionActive(sessionId))
+	    return getBadRequestResponse("Session was already closed!");
 
-        if (game == "")
-            return getBadRequestResponse("No game given in headers!");
+	if (game == "")
+	    return getBadRequestResponse("No game given in headers!");
 
-        if (!AssignByGame.gameIsSupported(game))
-            return getBadRequestResponse("Game is not supported!");
+	if (!AssignByGame.gameIsSupported(game))
+	    return getBadRequestResponse("Game is not supported!");
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
-        if (json == "")
-            return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
+	var json = WebApiHelper.extractJsonBody(httpSession);
+	if (json == "")
+	    return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        var event = new StatisticsReceivedEvent(sessionId, game, AssignByGame.getDeserializedStatistics(json, game));
-        publish(event);
+	var event = new StatisticsReceivedEvent(sessionId, game, AssignByGame.getDeserializedStatistics(json, game));
+	publish(event);
 
-        return getOkResponse("Statistics received.");
+	return getOkResponse("Statistics received.");
     }
 
     @Override
     public final void publish(StatisticsReceivedEvent event) {
-        WebApi.getEventBus().publish(event);
+	WebApi.getEventBus().publish(event);
     }
 
 }

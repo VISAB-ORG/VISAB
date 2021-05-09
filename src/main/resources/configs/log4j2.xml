@@ -6,8 +6,9 @@
 	</Properties>
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
+		    <!-- Console output does not need to output class and method names -->
 			<PatternLayout
-				pattern="[%highlight{%-5level}] %d{DEFAULT} %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
+				pattern="[%highlight{%-5level}] %d{DEFAULT} - %msg%n%throwable{short.lineNumber}" />
 		</Console>
 		<!-- The current log file will always be names visab.log -->
 		<RollingFile name="rollingFile"

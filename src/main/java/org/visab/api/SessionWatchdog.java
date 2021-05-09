@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
@@ -23,6 +25,9 @@ import org.visab.util.Settings;
  */
 public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> implements IPublisher<SessionClosedEvent> {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionWatchdog.class);
+
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
     /**
@@ -32,7 +37,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
     private static Map<UUID, LocalTime> statisticsSentTimes = new HashMap<>();
 
     public static void addSession(UUID sessionId, String game) {
-        activeSessions.put(sessionId, game);
+	activeSessions.put(sessionId, game);
     }
 
     /**
@@ -43,45 +48,45 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
      *         respective games
      */
     public static Map<UUID, String> getActiveSessions() {
-        return new HashMap<UUID, String>(activeSessions);
+	return new HashMap<UUID, String>(activeSessions);
     }
 
     public static String getGame(UUID sessionId) {
-        if (activeSessions.containsKey(sessionId))
-            return activeSessions.get(sessionId);
+	if (activeSessions.containsKey(sessionId))
+	    return activeSessions.get(sessionId);
 
-        return "";
+	return "";
     }
 
     public static boolean isSessionActive(UUID sessionId) {
-        return activeSessions.containsKey(sessionId);
+	return activeSessions.containsKey(sessionId);
     }
 
     public static void removeSession(UUID sessionId) {
-        activeSessions.remove(sessionId);
+	activeSessions.remove(sessionId);
 
-        // Also remove the session from timeout check
-        statisticsSentTimes.remove(sessionId);
+	// Also remove the session from timeout check
+	statisticsSentTimes.remove(sessionId);
     }
 
     private boolean checkTimeouts = true;
 
     public SessionWatchdog() {
-        super(StatisticsReceivedEvent.class);
-        WebApi.getEventBus().subscribe(this);
+	super(StatisticsReceivedEvent.class);
+	WebApi.getEventBus().subscribe(this);
 
-        // Starts the infinite timeout checking loop on a different thread.
-        new Thread(() -> {
-            try {
-                while (checkTimeouts) {
-                    checkSessionTimeouts();
-                    Thread.sleep(1000);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("CAUGHT [" + e + "] when running the timeout loop!");
-            }
-        }).start();
+	// Starts the infinite timeout checking loop on a different thread.
+	new Thread(() -> {
+	    try {
+		while (checkTimeouts) {
+		    checkSessionTimeouts();
+		    Thread.sleep(1000);
+		}
+	    } catch (Exception e) {
+		e.printStackTrace();
+		System.out.println("CAUGHT [" + e + "] when running the timeout loop!");
+	    }
+	}).start();
     }
 
     /**
@@ -90,34 +95,34 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
      * After that a SessionClosedEvent is published.
      */
     private void checkSessionTimeouts() {
-        // Make a copy because of potential modification during iteration
-        var entries = new ArrayList<Entry<UUID, LocalTime>>();
-        entries.addAll(statisticsSentTimes.entrySet());
+	// Make a copy because of potential modification during iteration
+	var entries = new ArrayList<Entry<UUID, LocalTime>>();
+	entries.addAll(statisticsSentTimes.entrySet());
 
-        for (var entry : entries) {
-            var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
-            if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
-                var sessionId = entry.getKey();
-                removeSession(sessionId);
+	for (var entry : entries) {
+	    var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
+	    if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
+		var sessionId = entry.getKey();
+		removeSession(sessionId);
 
-                // Invoke the SessionClosedEvent event manually.
-                publish(new SessionClosedEvent(sessionId, true));
-            }
-        }
+		// Invoke the SessionClosedEvent event manually.
+		publish(new SessionClosedEvent(sessionId, true));
+	    }
+	}
     }
 
     @Override
     public void notify(StatisticsReceivedEvent event) {
-        statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
+	statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
     }
 
     @Override
     public void publish(SessionClosedEvent event) {
-        WebApi.getEventBus().publish(event);
+	WebApi.getEventBus().publish(event);
     }
 
     public void stopTimeoutLoop() {
-        checkTimeouts = false;
+	checkTimeouts = false;
     }
 
 }

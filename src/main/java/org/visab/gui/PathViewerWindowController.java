@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.gui.model.TableEntryCBRBot;
 import org.visab.gui.model.TableEntryScriptBot;
 import org.visab.util.Settings;
@@ -48,6 +50,9 @@ import javafx.scene.shape.MoveTo;
  *
  */
 public class PathViewerWindowController {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(PathViewerWindowController.class);
 
     /*
      * Initializing of variables used for the PathViewer Window

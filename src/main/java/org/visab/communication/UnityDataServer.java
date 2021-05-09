@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.processing.AbstractParser;
 import org.visab.processing.cbrshooter.ShooterParser;
 
@@ -22,6 +24,9 @@ import org.visab.processing.cbrshooter.ShooterParser;
  *
  */
 public class UnityDataServer {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(UnityDataServer.class);
 
     /**
      * The name of the game communicating with VISAB.

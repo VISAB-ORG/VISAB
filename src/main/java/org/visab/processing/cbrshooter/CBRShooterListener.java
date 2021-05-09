@@ -3,6 +3,8 @@ package org.visab.processing.cbrshooter;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
@@ -16,36 +18,39 @@ import org.visab.util.AssignByGame;
  */
 public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage> {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
+
     private CBRShooterFile CBRShooterFile;
 
     public CBRShooterListener(UUID sessionId) {
-        super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
+	super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
     }
 
     @Override
-	public void onSessionClosed() {
-        if (repo.saveFile(CBRShooterFile))
-            System.out.println("Saved file in repository!");
-        else
-            System.out.print("Couldent save file in repository!");
-	}
+    public void onSessionClosed() {
+	if (repo.saveFile(CBRShooterFile))
+	    System.out.println("Saved file in repository!");
+	else
+	    System.out.print("Couldent save file in repository!");
+    }
 
     @Override
     public void onSessionStarted() {
-        CBRShooterFile = new CBRShooterFile(getSessionId().toString());
+	CBRShooterFile = new CBRShooterFile(getSessionId().toString());
     }
 
     @Override
     public void processStatistics(CBRShooterStatistics statistics) {
-        CBRShooterFile.getStatistics().add(statistics);
+	CBRShooterFile.getStatistics().add(statistics);
 
-        System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
-                getSessionId(), CBRShooterFile.getStatistics().size()));
+	System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
+		getSessionId(), CBRShooterFile.getStatistics().size()));
     }
 
     @Override
     public void processMapImage(CBRShooterMapImage mapImage) {
-        // TODO Auto-generated method stub
-        
+	// TODO Auto-generated method stub
+
     }
 }
