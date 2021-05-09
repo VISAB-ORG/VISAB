@@ -2,6 +2,9 @@ package org.newgui.repository.model;
 
 import java.time.LocalDateTime;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class FileRow {
 
     private LocalDateTime lastChanged;
@@ -10,6 +13,7 @@ public class FileRow {
     private String fullPath;
     private boolean isDirectory;
     private boolean isExpanded;
+    private ObservableList<FileRow> files = FXCollections.observableArrayList();
 
     public FileRow(String name, LocalDateTime lastModified, long size, String fullPath, boolean isDirectory) {
         this.lastChanged = lastModified;
@@ -17,9 +21,10 @@ public class FileRow {
         this.isDirectory = isDirectory;
         this.size = size;
         this.fullPath = fullPath;
+    }
 
-        if (isDirectory && !name.endsWith("/"))
-            this.name += "/";
+    public ObservableList<FileRow> getFiles() {
+        return files;
     }
 
     public boolean isExpanded() {

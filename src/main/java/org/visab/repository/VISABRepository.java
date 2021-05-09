@@ -60,6 +60,16 @@ public class VISABRepository {
         return true;
     }
 
+    public File loadFile(String game, String fileName) {
+        var filePath = baseDir + game + "/" + fileName;
+
+        return loadFile(filePath);
+    }
+
+    public File loadFile(String filePath) {
+        return new File(filePath);
+    }
+
     /**
      * Deletes a file of a give game with a given name
      *
@@ -80,9 +90,6 @@ public class VISABRepository {
      * @return True if deleted, false else
      */
     public boolean deleteFileByPath(String filePath) {
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
-            filePath += ".visab2";
-
         return new File(filePath).delete();
     }
 
@@ -110,9 +117,6 @@ public class VISABRepository {
      */
     @SuppressWarnings("unchecked")
     public <T extends IVISABFile> T loadFileByPath(String game, String filePath) {
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
-            filePath += ".visab2";
-
         var json = readFile(filePath);
 
         var file = AssignByGame.getDeserializedFile(json, game);
@@ -140,7 +144,8 @@ public class VISABRepository {
         new File(fileDir).mkdirs();
 
         var filePath = fileDir + "/" + fileName;
-        if (!filePath.endsWith(".visab2") && !filePath.endsWith(".visab"))
+        // If file has no extension, make it .visab2
+        if (!filePath.contains("."))
             filePath += ".visab2";
 
         return writeFile(filePath, json);

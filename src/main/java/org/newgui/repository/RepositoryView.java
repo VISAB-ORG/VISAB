@@ -51,10 +51,14 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Non MVVM
-        initializeFileView();
+        var root = viewModel.rootFileRowProperty();
+        var rootItem = new RecursiveTreeItem<FileRow>(root.getValue(), x -> x.getFiles());
+        fileView.setRoot(rootItem);
+
+        // initializeFileView();
         initializeDragAndDrop();
 
-        refreshButton.setOnAction(e -> refreshFileView());
+        // refreshButton.setOnAction(e -> refreshFileView());
         addButton.setOnAction(e -> fileDialog(e));
 
         // MVVM
