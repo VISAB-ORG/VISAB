@@ -1,0 +1,216 @@
+package org.visab.newgui.workspace;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.visab.newgui.workspace.model.FileRow;
+
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
+
+public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements FxmlView<TViewModel>, Initializable {
+
+    /**
+     * Graphics for FileView
+     */
+    private static Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
+
+    private static Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
+
+    private static Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
+
+    private static Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
+
+    /**
+     * The explorer view
+     */
+    @FXML
+    TreeTableView<FileRow> explorerView;
+
+    /**
+     * The file name column of the explorer view
+     */
+    @FXML
+    TreeTableColumn<FileRow, String> nameColumn;
+
+    @FXML
+    Button removeButton;
+
+    @FXML
+    public void removeAction() {
+        removeCommand.execute();
+    }
+
+    private Command removeCommand;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        var viewModel = getViewModel();
+
+        initializeDragAndDrop();
+        initializeExplorerPresentation();
+        refreshExplorerView();
+
+        viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
+
+        // TODO: I still hate this. Look for different solution at some point
+        removeCommand = viewModel.deleteFileCommand();
+        removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
+
+        afterInitialize(location, resources);
+    }
+
+    /**
+     * Fully refreshes the explorer view
+     */
+    protected void refreshExplorerView() {
+        var viewModel = getViewModel();
+
+        explorerView.setRoot(null);
+
+        var root = viewModel.getBaseFileRow();
+        var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
+        explorerView.setRoot(rootItem);
+
+        // If there arent that many files, expand some more nodes
+        var expandUntil = 25;
+        for (var child : rootItem.getChildren()) {
+            if (expandUntil - child.getChildren().size() >= 0) {
+                child.setExpanded(true);
+                expandUntil -= child.getChildren().size();
+            }
+        }
+
+    }
+
+    /**
+     * Sets the graphics for the ExplorerView
+     */
+    private void initializeExplorerPresentation() {
+        nameColumn.setCellFactory(x -> new TreeTableCell<>() {
+
+            final ImageView file = new ImageView(fileImage);
+            final ImageView folderClosed = new ImageView(folderClosedImage);
+            final ImageView folderOpen = new ImageView(folderOpenImage);
+            final ImageView visabFile = new ImageView(visabFileImage);
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                var row = getTreeTableRow();
+                var fileRow = row.getItem();
+
+                // Set text
+                if (!empty && fileRow != null)
+                    setText(fileRow.isDirectory() ? item + "/" : item);
+                else
+                    setText(null);
+
+                // Set graphics
+                if (!empty && fileRow != null) {
+                    if (fileRow.getName().endsWith(".visab2"))
+                        setGraphic(visabFile);
+                    else if (fileRow.isDirectory() && row.getTreeItem().isExpanded()) {
+                        setGraphic(folderOpen);
+                        getTreeTableView().refresh();
+                    } else if (fileRow.isDirectory() && !row.getTreeItem().isExpanded()) {
+                        setGraphic(folderClosed);
+                        getTreeTableView().refresh();
+                    } else
+                        setGraphic(file);
+                } else
+                    setGraphic(null);
+            }
+        });
+    }
+
+    /**
+     * Intializes drag and drop for the file view
+     */
+    private void initializeDragAndDrop() {
+        explorerView.setOnDragOver(e -> {
+            if (e.getGestureSource() != explorerView && e.getDragboard().hasFiles())
+                e.acceptTransferModes(TransferMode.MOVE);
+            e.consume();
+        });
+
+        explorerView.setOnDragDropped(e -> addFilesHandler(e));
+
+    }
+
+    /**
+     * Handler for adding files via drag and drop
+     * 
+     * @param e The DragEvent
+     */
+    private void addFilesHandler(DragEvent e) {
+        var db = e.getDragboard();
+        var hasFiles = db.hasFiles();
+
+        if (hasFiles) {
+            for (var file : db.getFiles())
+                addFile(file);
+        }
+
+        e.setDropCompleted(hasFiles);
+        e.consume();
+    }
+
+    /**
+     * Recursively adds a file to the viewModel. If the file is a directory, adds
+     * all the directories files instead.
+     * 
+     * @param file The file to add
+     */
+    protected void addFile(File file) {
+        if (file.isDirectory()) {
+            for (var _file : file.listFiles())
+                addFile(_file);
+        } else if (hasAllowedExtension(file))
+            getViewModel().addFile(file);
+    }
+
+    /**
+     * Checks if a file has an allowed file extension
+     * 
+     * @param file The file to check
+     * @return True if allowed, false else
+     */
+    private boolean hasAllowedExtension(File file) {
+        for (var extension : getAllowedExtensions()) {
+            if (file.getName().contains(extension))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Dialog for adding files
+     * 
+     * @param e The ActionEvent
+     */
+    protected abstract void addFileDialog(ActionEvent e);
+
+    protected abstract ExplorerViewModelBase getViewModel();
+
+    protected abstract List<String> getAllowedExtensions();
+
+    protected abstract void afterInitialize(URL location, ResourceBundle resources);
+
+}

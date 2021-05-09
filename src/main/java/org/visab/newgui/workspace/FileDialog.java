@@ -1,4 +1,4 @@
-package org.visab.newgui.repository;
+package org.visab.newgui.workspace;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -7,17 +7,19 @@ import java.util.List;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 
-public class VISABFileDialog {
+public abstract class FileDialog {
 
     private FileChooser fileChooser;
 
-    public VISABFileDialog() {
+    public FileDialog(String title, List<ExtensionFilter> extensionFilters) {
         this.fileChooser = new FileChooser();
 
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("VISAB files", "*.visab2"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
-        fileChooser.setTitle("Add VISAB files");
+        if (extensionFilters != null)
+            fileChooser.getExtensionFilters().addAll(extensionFilters);
+
+        fileChooser.setTitle(title);
     }
 
     public List<File> getFiles(Path initialDir, Stage parentStage) {

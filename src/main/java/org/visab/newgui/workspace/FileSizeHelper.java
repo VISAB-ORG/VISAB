@@ -1,4 +1,4 @@
-package org.visab.newgui.repository;
+package org.visab.newgui.workspace;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -12,7 +12,6 @@ public class FileSizeHelper {
     /**
      * Attempts to calculate the size of a file or directory.
      *
-     * <p>
      * Since the operation is non-atomic, the returned value may be inaccurate.
      * However, this method is quick and does its best.
      */

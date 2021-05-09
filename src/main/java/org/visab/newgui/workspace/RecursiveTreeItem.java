@@ -1,4 +1,4 @@
-package org.visab.newgui.repository;
+package org.visab.newgui.workspace;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +10,7 @@ import javafx.scene.control.TreeItem;
 import javafx.util.Callback;
 
 /**
- * Copied from https://lestard.eu/2015/treetable_datamodel/
+ * Taken from https://lestard.eu/2015/treetable_datamodel/
  */
 public class RecursiveTreeItem<T> extends TreeItem<T> {
 

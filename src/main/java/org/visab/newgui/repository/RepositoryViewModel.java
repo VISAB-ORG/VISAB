@@ -6,7 +6,7 @@ import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.repository.model.FileRow;
-import org.visab.repository.VISABFileRepository;
+import org.visab.repository.DatabaseRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
 
@@ -17,7 +17,7 @@ import javafx.scene.control.TreeItem;
 
 public class RepositoryViewModel extends ViewModelBase {
 
-    private VISABFileRepository repo = new VISABFileRepository();
+    private DatabaseRepository repo = new DatabaseRepository();
     private FileRow rootFile;
 
     public void addFile(File file) {
