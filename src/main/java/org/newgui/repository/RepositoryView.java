@@ -51,11 +51,11 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Non MVVM
-        var root = viewModel.rootFileRowProperty();
-        var rootItem = new RecursiveTreeItem<FileRow>(root.getValue(), x -> x.getFiles());
+        var root = viewModel.getRootFileRow();
+        var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
         fileView.setRoot(rootItem);
 
-        // initializeFileView();
+        initializeFileView();
         initializeDragAndDrop();
 
         // refreshButton.setOnAction(e -> refreshFileView());
@@ -124,14 +124,12 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
         });
     }
 
+    private static Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
+    private static Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
+    private static Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
+    private static Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
+
     private void initializeFileView() {
-        refreshFileView();
-
-        var folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
-        var folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
-        var fileImage = new Image("/repository/file.png", 16, 16, false, false);
-        var visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
-
         nameColumn.setCellFactory(x -> new TreeTableCell<>() {
 
             final ImageView folderClosed = new ImageView(folderClosedImage);
@@ -144,15 +142,15 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
                 super.updateItem(item, empty);
                 setText(empty ? null : item);
 
-                // Set images
-                var fileRow = getTreeTableRow().getItem();
+                var row = getTreeTableRow();
+                var fileRow = row.getItem();
                 if (!empty && fileRow != null) {
                     if (fileRow.getName().endsWith(".visab2"))
                         setGraphic(visabFile);
-                    else if (fileRow.isDirectory() && fileRow.isExpanded()) {
+                    else if (fileRow.isDirectory() && row.getTreeItem().isExpanded()) {
                         setGraphic(folderOpen);
                         getTreeTableView().refresh();
-                    } else if (fileRow.isDirectory() && !fileRow.isExpanded()) {
+                    } else if (fileRow.isDirectory() && !row.getTreeItem().isExpanded()) {
                         setGraphic(folderClosed);
                         getTreeTableView().refresh();
                     } else

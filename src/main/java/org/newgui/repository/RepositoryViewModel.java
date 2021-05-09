@@ -8,9 +8,7 @@ import org.newgui.repository.model.FileRow;
 
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import org.visab.repository.VISABRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
@@ -19,7 +17,7 @@ public class RepositoryViewModel implements ViewModel {
 
     private VISABRepository repo = new VISABRepository();
 
-    public ObjectProperty<FileRow> rootFileRowProperty = new SimpleObjectProperty<>();
+    private FileRow rootFile;
 
     private IntegerProperty fileChanges = new SimpleIntegerProperty(0);
 
@@ -39,16 +37,15 @@ public class RepositoryViewModel implements ViewModel {
                 // Add to the tree if saved succesfully
                 var addedFile = repo.loadFile(concreteFile.getGame(), fileName);
 
-
                 // If a new dir was created, add as child of rootFile
                 var dirName = concreteFile.getGame();
-                if (!rootFileRowProperty.get().getFiles().stream().anyMatch(x -> x.getName().equals(dirName))) {
+                if (!rootFile.getFiles().stream().anyMatch(x -> x.getName().equals(dirName))) {
                     var newDir = addedFile.getParentFile();
-                    rootFileRowProperty.get().getFiles().add(initializeFileRow(newDir));
+                    rootFile.getFiles().add(initializeFileRow(newDir));
                 }
 
                 // Add the file as a child of the dir in rootFile
-                for (var fileRow : rootFileRowProperty().get().getFiles()) {
+                for (var fileRow : rootFile.getFiles()) {
                     if (fileRow.getName().equals(dirName)) {
                         // Simply reload all files, so that replacements are supported
                         fileRow.getFiles().clear();
@@ -61,28 +58,22 @@ public class RepositoryViewModel implements ViewModel {
         }
     }
 
-    public RepositoryViewModel() {
-        initializeRootFileRow();
-    }
-
     public void filesRefreshed() {
         if (fileChanges != null)
             fileChanges.subtract(fileChanges.get());
     }
 
-    public ObjectProperty<FileRow> rootFileRowProperty() {
-        return rootFileRowProperty;
-    }
-
-    private void initializeRootFileRow() {
+    public FileRow getRootFileRow() {
         // TODO: Load from settings
         var repoDir = new File(Settings.DATA_PATH);
-        var fileRow = initializeFileRow(repoDir);
+        var rootFile = initializeFileRow(repoDir);
 
         // Recursively set children
-        setChildFiles(fileRow);
+        setChildFiles(rootFile);
 
-        this.rootFileRowProperty.set(fileRow);
+        this.rootFile = rootFile;
+
+        return this.rootFile;
     }
 
     /**

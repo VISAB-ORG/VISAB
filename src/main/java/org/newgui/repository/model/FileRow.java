@@ -12,7 +12,6 @@ public class FileRow {
     private long size;
     private String fullPath;
     private boolean isDirectory;
-    private boolean isExpanded;
     private ObservableList<FileRow> files = FXCollections.observableArrayList();
 
     public FileRow(String name, LocalDateTime lastModified, long size, String fullPath, boolean isDirectory) {
@@ -25,14 +24,6 @@ public class FileRow {
 
     public ObservableList<FileRow> getFiles() {
         return files;
-    }
-
-    public boolean isExpanded() {
-        return this.isExpanded;
-    }
-
-    public void setExpanded(boolean isExpanded) {
-        this.isExpanded = isExpanded;
     }
 
     public boolean isDirectory() {
