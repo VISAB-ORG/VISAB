@@ -9,6 +9,7 @@ import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,8 +48,18 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
     @FXML
     Button refreshButton;
 
+    @FXML
+    Button deleteButton;
+
     @InjectViewModel
     RepositoryViewModel viewModel;
+
+    private Command deleteFileCommand;
+
+    @FXML
+    public void deleteFileAction() {
+        deleteFileCommand.execute();
+    }
 
     private void addFileDialog(ActionEvent e) {
         var initialDir = Path.of(VISABUtil.getRunningJarRootDirPath());
@@ -69,9 +80,13 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
         addButton.setOnAction(e -> addFileDialog(e));
 
         refreshFileView();
-        
+
         // MVVM
         viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
+
+        // TODO: I still hate this. Look for different solution at some point
+        deleteFileCommand = viewModel.deleteFileCommand();
+        deleteButton.disableProperty().bind(deleteFileCommand.notExecutableProperty());
     }
 
     /**
@@ -115,10 +130,17 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? null : item);
 
                 var row = getTreeTableRow();
                 var fileRow = row.getItem();
+
+                // Set text
+                if (!empty && fileRow != null)
+                    setText(fileRow.isDirectory() ? item + "/" : item);
+                else
+                    setText(null);
+
+                // Set graphics
                 if (!empty && fileRow != null) {
                     if (fileRow.getName().endsWith(".visab2"))
                         setGraphic(visabFile);

@@ -90,7 +90,28 @@ public class VISABRepository {
      * @return True if deleted, false else
      */
     public boolean deleteFileByPath(String filePath) {
-        return new File(filePath).delete();
+        var file = new File(filePath);
+
+        if (!file.isDirectory())
+            return file.delete();
+        else
+            return deleteFolder(file);
+    }
+
+    private boolean deleteFolder(File folder) {
+        var files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory())
+                    deleteFolder(f);
+                else {
+                    if (!f.delete())
+                        return false;
+                }
+            }
+        }
+
+        return folder.delete();
     }
 
     /**

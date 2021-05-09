@@ -14,14 +14,16 @@ public final class Settings {
 
     // Always initialize the data path respective to the root dir path of execution
     // TODO: This should instead be set manually by the user.
-    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/database/";
+    // TODO: Should it thought? Maybe just make it general. It can be edited using
+    // the repository view anyway.
+    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/repository/";
     public static final String CSS_PATH = "/application.css";
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
 
-
     /**
-     * The time in seconds until a session is automatically timed out if no statistics were received.
+     * The time in seconds until a session is automatically timed out if no
+     * statistics were received.
      */
     public static final int SESSION_TIMEOUT = 2;
 }

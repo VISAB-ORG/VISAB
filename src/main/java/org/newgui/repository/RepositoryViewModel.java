@@ -10,9 +10,7 @@ import org.visab.repository.VISABRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
 
-import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TreeItem;
@@ -99,24 +97,39 @@ public class RepositoryViewModel extends ViewModelBase {
     private ObjectProperty<TreeItem<FileRow>> selectedFileRow = new SimpleObjectProperty<>();
 
     // TODO: This violates MVVM, but makes it so that we dont have can define
-    // commands in the viewmodel
+    // commands in the view
     public ObjectProperty<TreeItem<FileRow>> selectedFileRowProperty() {
         return selectedFileRow;
     }
 
     public Command deleteFileCommand() {
-        return runnableCommand(() -> removeFileRow(selectedFileRowProperty().get().getValue()));
+        return runnableCommand(() -> {
+            var selectedRow = selectedFileRowProperty().get().getValue();
+
+            // TODO: check if selected row is repository
+            if (!selectedRow.getName().equals("repository")) {
+                if (repo.deleteFileByPath(selectedRow.getFullPath()))
+                    removeFileRow(rootFile, selectedRow);
+            }
+        });
     }
 
-    private void removeFileRow(FileRow fileRow) {
-        for (var child : fileRow.getFiles()) {
-            if (child == fileRow) {
-                fileRow.getFiles().remove(child);
+    /**
+     * Recursively removes a given FileRow from the file tree.
+     * 
+     * @param parentRow The parent Row
+     * @param removeRow The row to remove
+     */
+    private void removeFileRow(FileRow parentRow, FileRow removeRow) {
+        for (var child : parentRow.getFiles()) {
+            if (child == removeRow) {
+                parentRow.getFiles().remove(child);
+                System.out.println("Removed" + child.getFullPath());
                 return;
             }
 
             if (child.isDirectory())
-                removeFileRow(child);
+                removeFileRow(child, removeRow);
         }
     }
 
