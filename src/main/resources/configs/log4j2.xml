@@ -1,24 +1,38 @@
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration debug="true" xmlns:log4j='http://jakarta.apache.org/log4j/'>
- 
-  <appender name="console" class="org.apache.log4j.ConsoleAppender">
-    <param name="Target" value="System.out"/>
-    <layout class="org.apache.log4j.PatternLayout">
-    <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-    </layout>
-  </appender>
- 
-  <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="demoApplication.log"/>
-    <layout class="org.apache.log4j.PatternLayout">
-    <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-    </layout>
-  </appender>
- 
-  <root>
-    <priority value ="debug"></priority>
-    <appender-ref ref="console"></appender>
-    <appender-ref ref="fileAppender"></appender>
-  </root>
- 
-</log4j:configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+		<Property name="logPath">visablogs</Property>
+		<Property name="rollingFileName">visab</Property>
+	</Properties>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%highlight{%-5level}] %d{DEFAULT} %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
+		</Console>
+		<!-- The current log file will always be names visab.log -->
+		<RollingFile name="rollingFile"
+			fileName="${logPath}/${rollingFileName}.log"
+			filePattern="${logPath}/${rollingFileName}_%d{yyyy-MM-dd}.log">
+			<PatternLayout
+				pattern="[%highlight{%-5level}] %d{DEFAULT} %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
+			<Policies>
+			    <!-- This policy gets triggered if the most fine-granular part of the file name pattern
+			    is incremented by 1: means if we are on at least the next day -->
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<!-- Prevent single log files to become too large -->
+				<SizeBasedTriggeringPolicy size="500 MB" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+	    <!-- Root logger with level INFO for STDOUT will display scopes: INFO, WARN, ERROR and FATAL -->
+		<Root level="INFO">
+			<AppenderRef ref="console" level="info" />
+		</Root>
+		<!-- File logger will log all scopes -->
+		<Logger name="org.visab" level="all">
+			<AppenderRef ref="rollingFile" level="all" />
+		</Logger>
+	</Loggers>
+</Configuration>
