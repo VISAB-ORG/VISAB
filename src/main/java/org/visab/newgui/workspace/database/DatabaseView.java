@@ -22,14 +22,6 @@ public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
     @FXML
     ButtonBase addButton;
 
-    @InjectViewModel
-    DatabaseViewModel viewModel;
-
-    @Override
-    protected ExplorerViewModelBase getViewModel() {
-        return viewModel;
-    }
-
     @Override
     protected List<String> getAllowedExtensions() {
         // TODO: Only allow visab2 for now

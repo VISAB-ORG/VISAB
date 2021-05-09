@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.visab.newgui.workspace.model.FileRow;
 
 import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.event.ActionEvent;
@@ -20,11 +21,11 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 
-public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements FxmlView<TViewModel>, Initializable {
+public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
+        implements FxmlView<TViewModel>, Initializable {
 
     /**
      * Graphics for FileView
@@ -49,13 +50,25 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
     @FXML
     TreeTableColumn<FileRow, String> nameColumn;
 
+    /**
+     * The button to remove the currently selected item
+     */
     @FXML
     Button removeButton;
 
+    /**
+     * The action to be executed when the removeButton is pressed
+     */
     @FXML
     public void removeAction() {
         removeCommand.execute();
     }
+
+    /**
+     * The ViewModel
+     */
+    @InjectViewModel
+    protected TViewModel viewModel;
 
     private Command removeCommand;
 
@@ -69,9 +82,8 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
         explorerView.setOnKeyPressed(e -> handleKeyPressed(e));
 
         // MVVM
-        var viewModel = getViewModel();
         viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
-        
+
         // TODO: I still hate this. Look for different solution at some point
         removeCommand = viewModel.deleteFileCommand();
         removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
@@ -113,8 +125,6 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
      * Fully refreshes the explorer view
      */
     protected void refreshExplorerView() {
-        var viewModel = getViewModel();
-
         explorerView.setRoot(null);
 
         var root = viewModel.getBaseFileRow();
@@ -203,7 +213,7 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
             for (var _file : file.listFiles())
                 addFile(_file);
         } else if (hasAllowedExtension(file))
-            getViewModel().addFile(file);
+            viewModel.addFile(file);
     }
 
     /**
@@ -227,8 +237,6 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
      * @param e The ActionEvent
      */
     protected abstract void addFileDialog(ActionEvent e);
-
-    protected abstract ExplorerViewModelBase getViewModel();
 
     protected abstract List<String> getAllowedExtensions();
 
