@@ -2,7 +2,9 @@ package org.newgui.webapi;
 
 import java.time.LocalTime;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
+import org.newgui.ViewModelBase;
 import org.newgui.webapi.model.SessionTableRow;
 import org.visab.api.WebApi;
 import org.visab.eventbus.event.SessionClosedEvent;
@@ -10,16 +12,13 @@ import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 
-import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class WebApiViewModel implements ViewModel {
+public class WebApiViewModel extends ViewModelBase {
 
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
@@ -80,12 +79,9 @@ public class WebApiViewModel implements ViewModel {
     private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
 
     public Command getCloseSessionCommand() {
-        return new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                if (selectedSessionRow.get() != null)
-                    WebApi.getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
-            }
+        return runnableCommand(() -> {
+            if (selectedSessionRow.get() != null)
+                WebApi.getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
         });
     }
 

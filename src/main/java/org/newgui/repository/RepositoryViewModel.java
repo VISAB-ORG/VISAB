@@ -4,14 +4,20 @@ import java.io.File;
 import java.time.Instant;
 import java.time.ZoneId;
 
+import org.newgui.ViewModelBase;
 import org.newgui.repository.model.FileRow;
 import org.visab.repository.VISABRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
 
 import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.TreeItem;
 
-public class RepositoryViewModel implements ViewModel {
+public class RepositoryViewModel extends ViewModelBase {
 
     private VISABRepository repo = new VISABRepository();
     private FileRow rootFile;
@@ -87,6 +93,30 @@ public class RepositoryViewModel implements ViewModel {
                 if (row.isDirectory())
                     setChildFiles(row);
             }
+        }
+    }
+
+    private ObjectProperty<TreeItem<FileRow>> selectedFileRow = new SimpleObjectProperty<>();
+
+    // TODO: This violates MVVM, but makes it so that we dont have can define
+    // commands in the viewmodel
+    public ObjectProperty<TreeItem<FileRow>> selectedFileRowProperty() {
+        return selectedFileRow;
+    }
+
+    public Command deleteFileCommand() {
+        return runnableCommand(() -> removeFileRow(selectedFileRowProperty().get().getValue()));
+    }
+
+    private void removeFileRow(FileRow fileRow) {
+        for (var child : fileRow.getFiles()) {
+            if (child == fileRow) {
+                fileRow.getFiles().remove(child);
+                return;
+            }
+
+            if (child.isDirectory())
+                removeFileRow(child);
         }
     }
 

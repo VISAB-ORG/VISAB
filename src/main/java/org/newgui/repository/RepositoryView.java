@@ -69,9 +69,9 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
         addButton.setOnAction(e -> addFileDialog(e));
 
         refreshFileView();
+        
         // MVVM
-
-        // viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
+        viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
     }
 
     /**
