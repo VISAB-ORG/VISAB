@@ -20,6 +20,8 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 
 public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements FxmlView<TViewModel>, Initializable {
@@ -59,19 +61,52 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        var viewModel = getViewModel();
-
-        initializeDragAndDrop();
         initializeExplorerPresentation();
         refreshExplorerView();
 
-        viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
+        explorerView.setOnDragOver(e -> handleDragOver(e));
+        explorerView.setOnDragDropped(e -> handleFilesDropped(e));
+        explorerView.setOnKeyPressed(e -> handleKeyPressed(e));
 
+        // MVVM
+        var viewModel = getViewModel();
+        viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
+        
         // TODO: I still hate this. Look for different solution at some point
         removeCommand = viewModel.deleteFileCommand();
         removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
 
         afterInitialize(location, resources);
+    }
+
+    /**
+     * Handler for key being pressed on explorer view
+     * 
+     * @param e The KeyEvent
+     */
+    private void handleKeyPressed(KeyEvent e) {
+        var selectedRow = explorerView.getSelectionModel().getSelectedItem();
+        switch (e.getCode()) {
+        case DELETE:
+            if (selectedRow != null)
+                removeAction();
+            break;
+
+        default:
+            break;
+        }
+        e.consume();
+    }
+
+    /**
+     * Handler for file being dragged over
+     * 
+     * @param e The DragEvent
+     */
+    private void handleDragOver(DragEvent e) {
+        if (e.getGestureSource() != explorerView && e.getDragboard().hasFiles())
+            e.acceptTransferModes(TransferMode.MOVE);
+        e.consume();
     }
 
     /**
@@ -140,25 +175,11 @@ public abstract class ExplorerViewBase<TViewModel extends ViewModel> implements 
     }
 
     /**
-     * Intializes drag and drop for the file view
-     */
-    private void initializeDragAndDrop() {
-        explorerView.setOnDragOver(e -> {
-            if (e.getGestureSource() != explorerView && e.getDragboard().hasFiles())
-                e.acceptTransferModes(TransferMode.MOVE);
-            e.consume();
-        });
-
-        explorerView.setOnDragDropped(e -> addFilesHandler(e));
-
-    }
-
-    /**
      * Handler for adding files via drag and drop
      * 
      * @param e The DragEvent
      */
-    private void addFilesHandler(DragEvent e) {
+    private void handleFilesDropped(DragEvent e) {
         var db = e.getDragboard();
         var hasFiles = db.hasFiles();
 
