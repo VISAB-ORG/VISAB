@@ -24,7 +24,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
 public class WebApi extends RouterNanoHTTPD {
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(RouterNanoHTTPD.class);
+    private static Logger logger = LogManager.getLogger(WebApi.class);
 
     private static ApiEventBus apiEventBus = new ApiEventBus();
     private static SessionListenerFactory listenerFactory;
