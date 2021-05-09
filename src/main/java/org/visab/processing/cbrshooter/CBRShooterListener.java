@@ -30,9 +30,9 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public void onSessionClosed() {
 	if (repo.saveFile(CBRShooterFile))
-	    System.out.println("Saved file in repository!");
+	    logger.info("Saved file in repository!");
 	else
-	    System.out.print("Couldent save file in repository!");
+	    logger.info("Couldn't save file in repository!");
     }
 
     @Override
@@ -44,8 +44,8 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
 	CBRShooterFile.getStatistics().add(statistics);
 
-	System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
-		getSessionId(), CBRShooterFile.getStatistics().size()));
+	logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
+		CBRShooterFile.getStatistics().size()));
     }
 
     @Override

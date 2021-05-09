@@ -29,7 +29,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
 	    // Notify the listener that the session started
 	    newListener.onSessionStarted();
 	} else {
-	    System.out.println("TRIED TO ADD SAME UUID SESSION!!!");
+	    logger.debug("TRIED TO ADD SAME UUID SESSION!!!");
 	}
     }
 

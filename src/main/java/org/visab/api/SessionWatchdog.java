@@ -83,8 +83,8 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
 		    Thread.sleep(1000);
 		}
 	    } catch (Exception e) {
-		e.printStackTrace();
-		System.out.println("CAUGHT [" + e + "] when running the timeout loop!");
+		logger.error("CAUGHT [" + e + "] when running the timeout loop - stacktrace:");
+		logger.error(e.getStackTrace().toString());
 	    }
 	}).start();
     }

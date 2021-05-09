@@ -697,7 +697,8 @@ public class PathViewerWindowController {
 				    try {
 					Thread.sleep(sleepTimer);
 				    } catch (InterruptedException e) {
-					System.out.println("First interrupted");
+					logger.error("CAUGHT [" + e + "] on Thread.sleep() - stacktrace:");
+					logger.error(e.getStackTrace().toString());
 				    }
 				    // Interrupts the loop if toggle button pressed again
 				} else {

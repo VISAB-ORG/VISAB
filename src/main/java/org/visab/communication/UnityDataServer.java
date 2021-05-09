@@ -46,7 +46,7 @@ public class UnityDataServer {
 	this.port = port;
 	this.game = game;
 	this.outDir = outDir;
-	System.out.println("UnitDataServer successfully spawned for unity data transmission.");
+	logger.info("UnitDataServer successfully spawned for unity data transmission.");
     }
 
     /**
@@ -57,7 +57,7 @@ public class UnityDataServer {
      */
     public void receive() throws IOException {
 
-	System.out.println("Starting to receive data from unity game on port: " + this.port);
+	logger.info("Starting to receive data from unity game on port: " + this.port);
 
 	var outDir = this.outDir;
 
@@ -78,8 +78,7 @@ public class UnityDataServer {
 	    // TODO: Add the Settlers Parser here when time comes.
 	    break;
 	default:
-	    System.err.println(
-		    "Unity game provided unknown game name '" + this.game + "', cannot pick the correct parser.");
+	    logger.error("Unity game provided unknown game name '" + this.game + "', cannot pick the correct parser.");
 	    System.exit(1);
 	}
 
@@ -115,11 +114,11 @@ public class UnityDataServer {
 
 		    parser.writeToFile(visabString);
 
-		    System.out.println("VISAB received JSON String: " + jsonString);
+		    logger.debug("VISAB received JSON String: " + jsonString);
 
 		} catch (IOException e) {
-		    System.err.println("Exception occured while reading JSON Strings from Unity game.");
-		    e.printStackTrace();
+		    logger.error("CAUGHT [" + e + "] while reading JSON Strings from Unity game - stacktrace:");
+		    logger.error(e.getStackTrace().toString());
 		    parser.writeToFile(e.getMessage());
 		} finally {
 		    try {
@@ -128,8 +127,8 @@ public class UnityDataServer {
 			socket.close();
 			serverSocket.close();
 		    } catch (IOException e) {
-			System.err.println("Exception occured while shutting down the communication server:");
-			e.printStackTrace();
+			logger.error("CAUGHT [" + e + "] while shutting down the UnityDataServer - stacktrace:");
+			logger.error(e.getStackTrace().toString());
 		    }
 		}
 	    }

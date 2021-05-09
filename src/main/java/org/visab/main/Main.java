@@ -48,16 +48,17 @@ public class Main {
 
 	    // Validate input and print information
 	    if (mode.equals("gui") || mode.equals("headless")) {
-		System.out.println("Valid execution mode " + "'" + mode + "' for VISAB detected");
+		logger.info("Valid execution mode " + "'" + mode + "' for VISAB detected");
 	    } else {
-		System.err.println("Invalid execution mode " + "' " + mode + "' for VISAB detected");
+		logger.error("Invalid execution mode " + "' " + mode + "' for VISAB detected");
 		parser.printUsage(System.err);
 		System.exit(1);
 	    }
 
 	} catch (CmdLineException e) {
-	    System.err.println("Exception occured while parsing command line arguments...");
-	    System.err.println(e.getMessage());
+	    logger.error("CAUGHT [" + e + "] while parsing command line arguments - stacktrace:");
+	    logger.error(e.getStackTrace().toString());
+
 	    // print the list of available options
 	    parser.printUsage(System.err);
 
@@ -65,7 +66,7 @@ public class Main {
 	}
 
 	if (mode.equals("gui")) {
-	    System.out.println("Starting VISAB as a GUI application.");
+	    logger.info("Starting VISAB as a GUI application.");
 	    // Start the VISAB GUI as a new thread
 	    new Thread() {
 		@Override
@@ -74,18 +75,18 @@ public class Main {
 		}
 	    }.start();
 	} else {
-	    System.out.println("Starting VISAB as a headless server application ...");
+	    logger.info("Starting VISAB as a headless server application ...");
 	    if (port == 0) {
-		System.err.println("No port provided, VISAB cannot start in headless server mode.");
+		logger.error("No port provided, VISAB cannot start in headless server mode.");
 		System.exit(1);
 	    } else if (game == null) {
-		System.err.println("No game name provided, VISAB cannot start in headless server mode.");
+		logger.error("No game name provided, VISAB cannot start in headless server mode.");
 		System.exit(1);
 	    } else if (out == null) {
-		System.err.println("No output directory provided, VISAB cannot start in headless server mode.");
+		logger.error("No output directory provided, VISAB cannot start in headless server mode.");
 		System.exit(1);
 	    } else {
-		System.out.println("... on port: " + port + " for game: " + game + " ...");
+		logger.info("... on port: " + port + " for game: " + game + " ...");
 		UnityDataServer unityDataServer = new UnityDataServer(port, game, out);
 
 		new Thread(new Runnable() {
@@ -96,8 +97,9 @@ public class Main {
 			    try {
 				unityDataServer.receive();
 			    } catch (IOException e) {
-				System.err.println("Error occured while listening for Unity game data.");
-				e.printStackTrace();
+				logger.error("CAUGHT [" + e
+					+ "] while listening to TCP/IP connection with unity game - stacktrace:");
+				logger.error(e.getStackTrace().toString());
 			    }
 			}
 		    }
