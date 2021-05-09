@@ -2,8 +2,6 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.util.JsonConvert;
 import org.visab.util.Settings;
 
@@ -21,9 +19,6 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResponder;
  *
  */
 public abstract class HTTPControllerBase implements UriResponder {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(HTTPControllerBase.class);
 
     protected static final Response getBadRequestResponse(String error) {
 	return NanoHTTPD.newFixedLengthResponse(Status.BAD_REQUEST, "application/json",
