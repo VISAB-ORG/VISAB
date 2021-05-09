@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.util.Callback;
+
 /**
  * Copied from https://lestard.eu/2015/treetable_datamodel/
  */
@@ -19,10 +20,6 @@ public class RecursiveTreeItem<T> extends TreeItem<T> {
 
     public RecursiveTreeItem(Callback<T, ObservableList<T>> childrenFactory) {
         this(null, childrenFactory);
-    }
-
-    public RecursiveTreeItem(final T value, Callback<T, ObservableList<T>> childrenFactory) {
-        this(value, (item) -> null, childrenFactory);
     }
 
     public RecursiveTreeItem(final T value, Callback<T, Node> graphicsFactory,
@@ -43,6 +40,10 @@ public class RecursiveTreeItem<T> extends TreeItem<T> {
         });
 
         this.setExpanded(true);
+    }
+
+    public RecursiveTreeItem(final T value, Callback<T, ObservableList<T>> childrenFactory) {
+        this(value, (item) -> null, childrenFactory);
     }
 
     private void addChildrenListener(T value) {

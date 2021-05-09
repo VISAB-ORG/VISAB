@@ -15,8 +15,8 @@ public class VISABFileDialog {
     public VISABFileDialog() {
         this.fileChooser = new FileChooser();
 
-        // TODO: Allow json I guess?
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("VISAB files", "*.visab2"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
         fileChooser.setTitle("Add VISAB files");
     }
 

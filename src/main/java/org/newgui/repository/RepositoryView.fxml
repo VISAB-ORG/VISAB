@@ -49,11 +49,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox fx:id="dropBox" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" />
-            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add File" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label text="File changes since refresh" />
+            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add Files" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh Files" GridPane.columnIndex="2" />
-            <Label fx:id="fileChanges" prefHeight="17.0" prefWidth="31.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
     </children>

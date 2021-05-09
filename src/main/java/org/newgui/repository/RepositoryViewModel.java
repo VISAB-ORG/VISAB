@@ -5,25 +5,16 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 import org.newgui.repository.model.FileRow;
-
-import de.saxsys.mvvmfx.ViewModel;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import org.visab.repository.VISABRepository;
 import org.visab.util.AssignByGame;
 import org.visab.util.Settings;
 
+import de.saxsys.mvvmfx.ViewModel;
+
 public class RepositoryViewModel implements ViewModel {
 
     private VISABRepository repo = new VISABRepository();
-
     private FileRow rootFile;
-
-    private IntegerProperty fileChanges = new SimpleIntegerProperty(0);
-
-    public IntegerProperty fileChangesProperty() {
-        return fileChanges;
-    }
 
     public void addFile(File file) {
         try {
@@ -58,11 +49,6 @@ public class RepositoryViewModel implements ViewModel {
         }
     }
 
-    public void filesRefreshed() {
-        if (fileChanges != null)
-            fileChanges.subtract(fileChanges.get());
-    }
-
     public FileRow getRootFileRow() {
         // TODO: Load from settings
         var repoDir = new File(Settings.DATA_PATH);
@@ -76,9 +62,19 @@ public class RepositoryViewModel implements ViewModel {
         return this.rootFile;
     }
 
+    private FileRow initializeFileRow(File file) {
+        var name = file.getName();
+        var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
+        var fullPath = file.getAbsolutePath();
+        var isDirectory = file.isDirectory();
+
+        return new FileRow(name, lastModified, size, fullPath, isDirectory);
+    }
+
     /**
      * Recursively sets files to a given FileRow
-     * 
+     *
      * @param fileRow The FileRow to add files to
      */
     private void setChildFiles(FileRow fileRow) {
@@ -92,16 +88,6 @@ public class RepositoryViewModel implements ViewModel {
                     setChildFiles(row);
             }
         }
-    }
-
-    private FileRow initializeFileRow(File file) {
-        var name = file.getName();
-        var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
-        var fullPath = file.getAbsolutePath();
-        var isDirectory = file.isDirectory();
-
-        return new FileRow(name, lastModified, size, fullPath, isDirectory);
     }
 
 }

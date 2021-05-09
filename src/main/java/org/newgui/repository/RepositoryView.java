@@ -2,30 +2,41 @@ package org.newgui.repository;
 
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
+
+import org.newgui.repository.model.FileRow;
+import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import org.visab.util.Settings;
-import org.newgui.repository.model.FileRow;
-import javafx.scene.Node;
-import org.visab.util.VISABUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializable {
+
+    /**
+     * Graphics for FileView
+     */
+    private static Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
+
+    private static Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
+
+    private static Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
+
+    private static Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
+
+    @FXML
+    Button addButton;
 
     @FXML
     TreeTableView<FileRow> fileView;
@@ -34,40 +45,12 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
     TreeTableColumn<FileRow, String> nameColumn;
 
     @FXML
-    VBox dropBox;
-
-    @FXML
     Button refreshButton;
-
-    @FXML
-    Button addButton;
-
-    @FXML
-    Label fileChanges;
 
     @InjectViewModel
     RepositoryViewModel viewModel;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Non MVVM
-        var root = viewModel.getRootFileRow();
-        var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
-        fileView.setRoot(rootItem);
-
-        initializeFileView();
-        initializeDragAndDrop();
-
-        // refreshButton.setOnAction(e -> refreshFileView());
-        addButton.setOnAction(e -> fileDialog(e));
-
-        // MVVM
-        // viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
-        // TODO: Somehow doesnt work
-        fileChanges.textProperty().bind(viewModel.fileChangesProperty().asString());
-    }
-
-    private void fileDialog(ActionEvent e) {
+    private void addFileDialog(ActionEvent e) {
         var initialDir = Path.of(VISABUtil.getRunningJarRootDirPath());
         var parentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         var files = new VISABFileDialog().getFiles(initialDir, parentStage);
@@ -76,65 +59,57 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
             viewModel.addFile(file);
     }
 
-    private void refreshFileView() {
-        // TODO: Change to get from settings
-        var repositoryPath = Paths.get(Settings.DATA_PATH);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Non MVVM
+        initializeFileView();
+        initializeDragAndDrop();
 
-        fileView.setRoot(null);
+        refreshButton.setOnAction(e -> refreshFileView());
+        addButton.setOnAction(e -> addFileDialog(e));
 
-        var newRoot = new FileTreeItem(repositoryPath);
-        fileView.setRoot(newRoot);
-        newRoot.setExpanded(true);
+        refreshFileView();
+        // MVVM
 
-        // If there arent that many visab files, expand some more nodes
-        var expandUntil = 25;
-        for (var child : newRoot.getChildren()) {
-            if (expandUntil - child.getChildren().size() >= 0) {
-                child.setExpanded(true);
-                expandUntil -= child.getChildren().size();
-            }
-        }
-
-        viewModel.filesRefreshed();
+        // viewModel.selectedFileRowProperty().bind(fileView.getSelectionModel().selectedItemProperty());
     }
 
+    /**
+     * Intializes drag and drop for the file view
+     */
     private void initializeDragAndDrop() {
-        dropBox.setOnDragOver(e -> {
-            if (e.getGestureSource() != dropBox && e.getDragboard().hasFiles())
+        fileView.setOnDragOver(e -> {
+            if (e.getGestureSource() != fileView && e.getDragboard().hasFiles())
                 e.acceptTransferModes(TransferMode.MOVE);
             e.consume();
         });
 
-        dropBox.setOnDragDropped(e -> {
+        fileView.setOnDragDropped(e -> {
             var db = e.getDragboard();
-            var success = false;
+            var success = db.hasFiles();
+
             if (db.hasFiles()) {
                 for (var file : db.getFiles()) {
-                    // TODO: Allow json I guess
-                    if (file.getName().endsWith(".visab2"))
+                    if (file.getName().endsWith(".visab2") || file.getName().endsWith(".json"))
                         viewModel.addFile(file);
                 }
-                success = true;
             }
-            /*
-             * let the source know whether the string was successfully transferred and used
-             */
+
+            // let the source know whether the string was successfully transferred and used
             e.setDropCompleted(success);
             e.consume();
         });
     }
 
-    private static Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
-    private static Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
-    private static Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
-    private static Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
-
+    /**
+     * Sets the graphics for the FileView
+     */
     private void initializeFileView() {
         nameColumn.setCellFactory(x -> new TreeTableCell<>() {
 
+            final ImageView file = new ImageView(fileImage);
             final ImageView folderClosed = new ImageView(folderClosedImage);
             final ImageView folderOpen = new ImageView(folderOpenImage);
-            final ImageView file = new ImageView(fileImage);
             final ImageView visabFile = new ImageView(visabFileImage);
 
             @Override
@@ -159,6 +134,27 @@ public class RepositoryView implements FxmlView<RepositoryViewModel>, Initializa
                     setGraphic(null);
             }
         });
+    }
+
+    /**
+     * Reloads the root from the viewModel. Might be needed if repository path is
+     * changed in settings.
+     */
+    private void refreshFileView() {
+        fileView.setRoot(null);
+
+        var root = viewModel.getRootFileRow();
+        var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
+        fileView.setRoot(rootItem);
+
+        // If there arent that many visab files, expand some more nodes
+        var expandUntil = 25;
+        for (var child : rootItem.getChildren()) {
+            if (expandUntil - child.getChildren().size() >= 0) {
+                child.setExpanded(true);
+                expandUntil -= child.getChildren().size();
+            }
+        }
     }
 
 }

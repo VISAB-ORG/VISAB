@@ -7,12 +7,12 @@ import javafx.collections.ObservableList;
 
 public class FileRow {
 
+    private ObservableList<FileRow> files = FXCollections.observableArrayList();
+    private String fullPath;
+    private boolean isDirectory;
     private LocalDateTime lastChanged;
     private String name;
     private long size;
-    private String fullPath;
-    private boolean isDirectory;
-    private ObservableList<FileRow> files = FXCollections.observableArrayList();
 
     public FileRow(String name, LocalDateTime lastModified, long size, String fullPath, boolean isDirectory) {
         this.lastChanged = lastModified;
@@ -26,16 +26,12 @@ public class FileRow {
         return files;
     }
 
-    public boolean isDirectory() {
-        return isDirectory;
+    public String getFullPath() {
+        return this.fullPath;
     }
 
     public LocalDateTime getLastModified() {
         return this.lastChanged;
-    }
-
-    public String getFullPath() {
-        return this.fullPath;
     }
 
     public String getName() {
@@ -44,6 +40,10 @@ public class FileRow {
 
     public long getSize() {
         return this.size;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
 }
