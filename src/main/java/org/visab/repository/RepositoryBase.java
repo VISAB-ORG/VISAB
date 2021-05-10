@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class RepositoryBase {
+public abstract class RepositoryBase {
 
     protected String baseDirectory;
 

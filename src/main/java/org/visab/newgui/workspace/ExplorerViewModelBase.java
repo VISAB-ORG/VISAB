@@ -6,7 +6,7 @@ import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.workspace.model.FileRow;
-import org.visab.repository.RepositoryBase;
+import org.visab.repository.BasicRepository;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
@@ -19,7 +19,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
     protected FileRow baseFile;
 
-    protected RepositoryBase basicRepo = new RepositoryBase("");
+    protected BasicRepository basicRepo = new BasicRepository("");
 
     /**
      * This violates MVVM, but its the only way we can consistently have the
