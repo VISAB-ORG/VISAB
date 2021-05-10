@@ -19,7 +19,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
     protected FileRow baseFile;
 
-    protected BasicRepository basicRepo = new BasicRepository("");
+    private BasicRepository basicRepo = new BasicRepository("");
 
     /**
      * This violates MVVM, but its the only way we can consistently have the
