@@ -5,9 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class RepositoryBase {
+public abstract class RepositoryBase {
 
     protected String baseDirectory;
 
@@ -16,6 +17,17 @@ public class RepositoryBase {
 
         // Create the base directory if it doesn't exist.
         new File(baseDirectory).mkdirs();
+    }
+
+    /**
+     * Combines path strings to one string
+     * 
+     * @param path The base path
+     * @param more The paths to add
+     * @return The combined path
+     */
+    public String combinePath(String path, String... more) {
+        return Path.of(path, more).toString();
     }
 
     /**
@@ -63,6 +75,7 @@ public class RepositoryBase {
      */
     public boolean writeToFile(String filePath, String content) {
         var file = new File(filePath);
+        createMissingDirectories(file.getParent());
 
         try (var writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(content);
@@ -110,6 +123,31 @@ public class RepositoryBase {
         }
 
         return folder.delete();
+    }
+
+    /**
+     * Writes to a file with a path relative to the base directory
+     * 
+     * @param content      The content to write to the file
+     * @param relativePath The relative path of the file
+     * @return True if successfully saved, false else
+     */
+    public boolean writeToFileRelative(String content, String relativePath) {
+        var filePath = combinePath(baseDirectory, relativePath);
+
+        return writeToFile(filePath, content);
+    }
+
+    /**
+     * Loads a file with a path relative to the base directory
+     * 
+     * @param relativePath The relative path of the file
+     * @return The loaded file
+     */
+    public File loadFileRelative(String relativePath) {
+        var filePath = combinePath(baseDirectory, relativePath);
+
+        return loadFile(filePath);
     }
 
 }

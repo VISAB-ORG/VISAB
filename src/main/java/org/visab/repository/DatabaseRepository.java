@@ -10,10 +10,10 @@ import org.visab.util.Settings;
  * @author moritz
  *
  */
-public class VISABFileRepository extends RepositoryBase {
+public class DatabaseRepository extends RepositoryBase {
 
-    public VISABFileRepository() {
-        // TODO:
+    public DatabaseRepository() {
+        // TODO: Get from somewhere else
         super(Settings.DATA_PATH);
     }
 
@@ -25,7 +25,7 @@ public class VISABFileRepository extends RepositoryBase {
      * @return True if deleted, false else
      */
     public boolean deleteFileByName(String fileName, String game) {
-        var filePath = baseDirectory + game + "/" + fileName;
+        var filePath = combinePath(baseDirectory, game, fileName);
 
         return deleteFile(filePath);
     }
@@ -39,7 +39,7 @@ public class VISABFileRepository extends RepositoryBase {
      * @return
      */
     public <T extends IVISABFile> T loadVISABFile(String fileName, String game) {
-        var filePath = baseDirectory + game + "/" + fileName;
+        var filePath = combinePath(baseDirectory, game, fileName);
 
         return this.<T>loadVISABFileByPath(game, filePath);
     }
@@ -83,15 +83,14 @@ public class VISABFileRepository extends RepositoryBase {
     public boolean saveFile(IVISABFile visabFile, String fileName) {
         var json = JsonConvert.serializeObject(visabFile);
 
-        var fileDir = baseDirectory + visabFile.getGame();
+        var fileDir = combinePath(baseDirectory, visabFile.getGame());
         createMissingDirectories(fileDir);
 
-        var filePath = fileDir + "/" + fileName;
+        var filePath = combinePath(fileDir, fileName);
         // If file has no extension, make it .visab2
         if (!filePath.contains("."))
             filePath += ".visab2";
 
         return writeToFile(filePath, json);
     }
-
 }
