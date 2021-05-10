@@ -3,6 +3,8 @@ package org.visab.gui;
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.util.Settings;
 
 import javafx.application.Application;
@@ -19,6 +21,9 @@ import javafx.stage.Stage;
  *
  */
 public class HelpWindowController extends Application {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(HelpWindowController.class);
 
     @FXML
     private MenuItem aboutMenu;
@@ -37,49 +42,49 @@ public class HelpWindowController extends Application {
 
     @FXML
     public void handleAboutMenu() {
-	main.aboutWindow();
+        main.aboutWindow();
     }
 
     @FXML
     public void handleBrowseFileMenu() {
-	main.mainWindow();
+        main.mainWindow();
     }
 
     @FXML
     public void handleHelpMenu() {
-	// DO NOTHING
+        // DO NOTHING
     }
 
     @FXML
     public void handleLoadButton() {
-	File file = null;
-	try {
-	    file = new File(GUIMain.class.getResource(Settings.VISAB_DOC_PATH).toURI());
-	} catch (URISyntaxException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	HostServices hostServices = getHostServices();
-	hostServices.showDocument(file.getAbsolutePath());
+        File file = null;
+        try {
+            file = new File(GUIMain.class.getResource(Settings.VISAB_DOC_PATH).toURI());
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        HostServices hostServices = getHostServices();
+        hostServices.showDocument(file.getAbsolutePath());
     }
 
     @FXML
     public void handlePathViewerMenu() {
-	main.pathViewerWindow();
+        main.pathViewerWindow();
     }
 
     @FXML
     public void handleStatisticsMenu() throws URISyntaxException {
-	main.statisticsWindow();
+        main.statisticsWindow();
     }
 
     public void setMain(GUIMain main) {
-	this.main = main;
+        this.main = main;
     }
 
     @Override
     public void start(Stage arg0) throws Exception {
-	// DO NOTHING
+        // DO NOTHING
     }
 
 }

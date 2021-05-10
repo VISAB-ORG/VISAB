@@ -24,6 +24,13 @@
 			<artifactId>args4j</artifactId>
 			<version>2.33</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd -->
 		<dependency>
 			<groupId>org.nanohttpd</groupId>
@@ -130,12 +137,16 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>org.visab.main.Main</mainClass>
+									<manifestEntries>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
 								</transformer>
 							</transformers>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 
 		</plugins>
 	</build>

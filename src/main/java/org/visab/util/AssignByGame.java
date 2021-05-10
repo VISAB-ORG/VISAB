@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.visab.processing.IMapImage;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
-import org.visab.processing.IMapImage;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
@@ -24,6 +26,9 @@ import org.visab.repository.IVISABFile;
  *
  */
 public final class AssignByGame {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(AssignByGame.class);
 
     public static final List<String> ALLOWED_GAMES = new ArrayList<>() {
         {

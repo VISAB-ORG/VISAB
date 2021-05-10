@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
@@ -22,6 +24,9 @@ import org.visab.util.Settings;
  *
  */
 public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> implements IPublisher<SessionClosedEvent> {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionWatchdog.class);
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 
@@ -78,8 +83,8 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> imp
                     Thread.sleep(1000);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("CAUGHT [" + e + "] when running the timeout loop!");
+                logger.error("CAUGHT [" + e + "] when running the timeout loop - stacktrace:");
+                logger.error(e.getStackTrace().toString());
             }
         }).start();
     }

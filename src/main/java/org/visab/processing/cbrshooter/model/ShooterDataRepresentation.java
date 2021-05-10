@@ -1,5 +1,15 @@
 package org.visab.processing.cbrshooter.model;
 
+/**
+ * Renamed from "StatisticsForPathViewer to ShooterDataRepresentation
+ * 
+ * Represents all information that is contained in a message string sent from
+ * the unity game to VISAB.
+ * 
+ * @author VISAB 1.0 Group
+ *
+ */
+
 public class ShooterDataRepresentation {
 
     private String ammuPosition;

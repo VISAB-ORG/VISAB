@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.main.Main;
 
 import javafx.scene.control.TableView;
@@ -21,6 +23,9 @@ import javafx.scene.control.TableView;
  * @author VISAB 1.0 and 2.0 group
  */
 public final class VISABUtil {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(VISABUtil.class);
 
     private static String[] acceptedExternalDataEndings = { ".txt" };
 

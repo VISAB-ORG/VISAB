@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.processing.AbstractParser;
 import org.visab.processing.cbrshooter.model.ShooterDataRepresentation;
 
@@ -16,6 +18,9 @@ import org.visab.processing.cbrshooter.model.ShooterDataRepresentation;
  */
 public class ShooterParser extends AbstractParser {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(ShooterParser.class);
+
     public ShooterParser(String outDir, String visabFileName) {
 	super(outDir, visabFileName);
     }
@@ -26,14 +31,14 @@ public class ShooterParser extends AbstractParser {
 	    this.writer.flush();
 	    this.writer.close();
 	} catch (IOException e) {
-	    System.err.println("Exception occured while closing the output file writer.");
-	    e.printStackTrace();
+	    logger.error("CAUGHT [" + e + "] while closing the file writer - stacktrace:");
+	    logger.error(e.getStackTrace().toString());
 	}
     }
 
     @Override
     public void init() throws IOException {
-	System.out.println("Output file for current run: " + this.outDir.concat("\\" + visabFileName));
+	logger.debug("Output file for current run: " + this.outDir.concat("\\" + visabFileName));
 	var directory = new File(this.outDir);
 
 	// Create output directory if necessary
@@ -59,8 +64,8 @@ public class ShooterParser extends AbstractParser {
 	    this.writer.write(visabString);
 	    this.writer.write("\r\n");
 	} catch (IOException e) {
-	    System.err.println("Exception occured while writing to the .visab output file.");
-	    e.printStackTrace();
+	    logger.error("CAUGHT [" + e + "] while writing to .visab output file - stacktrace:");
+	    logger.error(e.getStackTrace().toString());
 	}
     }
 
