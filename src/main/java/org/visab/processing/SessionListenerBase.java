@@ -11,7 +11,7 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.repository.VISABRepository;
+import org.visab.repository.VISABFileRepository;
 
 /**
  * The base SessionListener class, that should be implemented by all session
@@ -91,7 +91,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      * The time at which the last statistics object was received for the session.
      */
     protected LocalTime lastReceived = LocalTime.now();
-    protected VISABRepository repo = new VISABRepository();
+    protected VISABFileRepository repo = new VISABFileRepository();
 
     protected UUID sessionId;
 
@@ -142,8 +142,8 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     public abstract void onSessionStarted();
 
     /**
-     * Called upon reciving statistics for the current session.
-     * Is only called if the received statistics object was not null.
+     * Called upon reciving statistics for the current session. Is only called if
+     * the received statistics object was not null.
      * 
      * @param statistics A TStatistics object
      */
