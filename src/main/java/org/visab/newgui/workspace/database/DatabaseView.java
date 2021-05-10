@@ -19,9 +19,6 @@ import org.visab.util.VISABUtil;
 
 public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 
-    @FXML
-    Button addButton;
-
     @Override
     protected List<String> getAllowedExtensions() {
         // TODO: Only allow visab2 for now
@@ -30,7 +27,6 @@ public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 
     @Override
     protected void afterInitialize(URL location, ResourceBundle resources) {
-        addButton.setOnAction(e -> addFileDialog(e));
     }
 
     @Override
@@ -41,5 +37,10 @@ public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 
         for (var file : files)
             addFile(file);
+    }
+
+    @Override
+    protected boolean addOnlyFiles() {
+        return true;
     }
 }

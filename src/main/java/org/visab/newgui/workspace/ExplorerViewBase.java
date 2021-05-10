@@ -1,6 +1,7 @@
 package org.visab.newgui.workspace;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +23,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
+import org.visab.util.VISABUtil;
+import org.visab.util.VISABUtil.OS;
 
 public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         implements FxmlView<TViewModel>, Initializable {
@@ -56,6 +59,18 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     Button removeButton;
 
     /**
+     * The button to add files
+     */
+    @FXML
+    Button addButton;
+
+    /**
+     * Button for showing the currently selected file in explorer
+     */
+    @FXML
+    Button showInExplorerButton;
+
+    /**
      * The action to be executed when the removeButton is pressed
      */
     @FXML
@@ -76,6 +91,8 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         initializeExplorerPresentation();
         refreshExplorerView();
 
+        addButton.setOnAction(e -> addFileDialog(e));
+        showInExplorerButton.setOnAction(e -> showInExplorer(e));
         explorerView.setOnDragOver(e -> handleDragOver(e));
         explorerView.setOnDragDropped(e -> handleFilesDropped(e));
         explorerView.setOnKeyPressed(e -> handleKeyPressed(e));
@@ -88,6 +105,25 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
 
         afterInitialize(location, resources);
+    }
+
+    private void showInExplorer(ActionEvent e) {
+        try {
+            switch (VISABUtil.getOS()) {
+            case WINDOWS:
+                var command = "explorer.exe " + viewModel.getBaseDirPath();
+                if (viewModel.getSelectedFileRow() != null)
+                    command = "explorer.exe /select," + viewModel.getSelectedFileRow().getAbsolutePath();
+
+                Runtime.getRuntime().exec(command);
+                break;
+            default:
+                System.out.println("Opening explorer not supported for non windows OS.");
+                break;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -126,7 +162,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     protected void refreshExplorerView() {
         explorerView.setRoot(null);
 
-        var root = viewModel.getBaseFileRow();
+        var root = viewModel.getFreshBaseFileRow();
         var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
         explorerView.setRoot(rootItem);
 
@@ -208,10 +244,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      * @param file The file to add
      */
     protected void addFile(File file) {
-        if (file.isDirectory()) {
+        if (file.isDirectory() && addOnlyFiles()) {
             for (var _file : file.listFiles())
                 addFile(_file);
-        } else if (hasAllowedExtension(file))
+        } else if (file.isDirectory() && !addOnlyFiles())
+            addFile(file);
+        else if (hasAllowedExtension(file))
             viewModel.addFile(file);
     }
 
@@ -237,8 +275,27 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      */
     protected abstract void addFileDialog(ActionEvent e);
 
+    /**
+     * The allowed file extensions for drag and drop
+     * 
+     * @return A list of the allowed extensions
+     */
     protected abstract List<String> getAllowedExtensions();
 
+    /**
+     * Called directly after initialize is done
+     * 
+     * @param location  Forwarded from initialize
+     * @param resources Forwarded from initialize
+     */
     protected abstract void afterInitialize(URL location, ResourceBundle resources);
 
+    /**
+     * Identicates, whether folders added via drag and drop should pass its contents
+     * instead of the folder itself to the viewModels addFile method
+     * 
+     * @return True if contents should be passed instead of the folder, false if
+     *         folders can be passed
+     */
+    protected abstract boolean addOnlyFiles();
 }

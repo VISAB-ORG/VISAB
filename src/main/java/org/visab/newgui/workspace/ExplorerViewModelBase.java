@@ -56,12 +56,16 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
         });
     }
 
+    public String getBaseDirPath() {
+        return this.baseDirPath;
+    }
+
     /**
      * Initializes the base file row item and subsequently returns it
      *
      * @return The base file row item
      */
-    public FileRow getBaseFileRow() {
+    public FileRow getFreshBaseFileRow() {
         // Recursively set children
         var file = basicRepo.loadFile(baseDirPath);
         var baseFile = getFileRow(file, null);
@@ -95,7 +99,10 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * @return The currently selected file row
      */
     protected FileRow getSelectedFileRow() {
-        return selectedFileRow.get().getValue();
+        if (selectedFileRow.get() != null)
+            return selectedFileRow.get().getValue();
+
+        return null;
     }
 
     /**

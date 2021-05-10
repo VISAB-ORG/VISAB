@@ -8,7 +8,7 @@ import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 public abstract class ViewModelBase implements ViewModel {
 
     /**
-     * Gets a Command from that invokes the given runnable
+     * Gets a Command that invokes the given runnable
      * 
      * @param runnable The runnable to invoke
      * @return A command
