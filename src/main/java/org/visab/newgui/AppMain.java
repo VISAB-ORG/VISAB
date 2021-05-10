@@ -10,8 +10,11 @@ import javafx.stage.Stage;
 
 public class AppMain extends Application {
 
+    public static Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws Exception {
+        primaryStage = stage;
         stage.setTitle("VISAB");
 
         // mvvmfx magic

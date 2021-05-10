@@ -3,9 +3,14 @@ package org.visab.newgui.workspace;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.sound.sampled.Clip;
+
+import org.visab.newgui.AppMain;
 import org.visab.newgui.workspace.model.FileRow;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -20,12 +25,19 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
-import org.visab.util.VISABUtil;
-import org.visab.util.VISABUtil.OS;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import org.visab.util.VISABUtil;
+
+// TODO: Add error message when adding file fails
 public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         implements FxmlView<TViewModel>, Initializable {
 
@@ -71,6 +83,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     Button showInExplorerButton;
 
     /**
+     * Button for fully refreshing the explorer view
+     */
+    @FXML
+    Button refreshButton;
+
+    /**
      * The action to be executed when the removeButton is pressed
      */
     @FXML
@@ -93,9 +111,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
 
         addButton.setOnAction(e -> addFileDialog(e));
         showInExplorerButton.setOnAction(e -> showInExplorer(e));
+        refreshButton.setOnAction(e -> refreshExplorerView());
+
         explorerView.setOnDragOver(e -> handleDragOver(e));
         explorerView.setOnDragDropped(e -> handleFilesDropped(e));
-        explorerView.setOnKeyPressed(e -> handleKeyPressed(e));
+
+        initializeKeyCombinations();
 
         // MVVM
         viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
@@ -105,6 +126,34 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
 
         afterInitialize(location, resources);
+    }
+
+    /**
+     * Adds the KeyCombations. For now CTRL + V and DELETE are supported. TODO: Add
+     * these
+     */
+    private void initializeKeyCombinations() {
+        var keyCombinations = new HashMap<KeyCodeCombination, Runnable>();
+
+        // CTRL + V pasting
+        keyCombinations.put(new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN), () -> {
+            // TODO: Do we require focussed?
+            if (explorerView.isFocused() && viewModel.getSelectedFileRow() != null) {
+                var clipboard = Clipboard.getSystemClipboard();
+                var hasFiles = clipboard.getFiles() != null;
+
+                if (hasFiles) {
+                    for (var file : clipboard.getFiles())
+                        addFile(file);
+                }
+            }
+        });
+
+        // DELETE removing selected file
+        keyCombinations.put(new KeyCodeCombination(KeyCode.DELETE), () -> {
+            if (viewModel.getSelectedFileRow() != null)
+                removeAction();
+        });
     }
 
     private void showInExplorer(ActionEvent e) {
@@ -124,25 +173,6 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    /**
-     * Handler for key being pressed on explorer view
-     * 
-     * @param e The KeyEvent
-     */
-    private void handleKeyPressed(KeyEvent e) {
-        var selectedRow = explorerView.getSelectionModel().getSelectedItem();
-        switch (e.getCode()) {
-        case DELETE:
-            if (selectedRow != null)
-                removeAction();
-            break;
-
-        default:
-            break;
-        }
-        e.consume();
     }
 
     /**
@@ -291,8 +321,8 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     protected abstract void afterInitialize(URL location, ResourceBundle resources);
 
     /**
-     * Identicates, whether folders added via drag and drop should pass its contents
-     * instead of the folder itself to the viewModels addFile method
+     * Identicates, whether folders added via drag and drop and ctrl+v should pass
+     * its contents instead of the folder itself to the viewModels addFile method
      * 
      * @return True if contents should be passed instead of the folder, false if
      *         folders can be passed
