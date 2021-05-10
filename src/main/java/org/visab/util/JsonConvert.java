@@ -20,8 +20,8 @@ public final class JsonConvert {
     private static Logger logger = LogManager.getLogger(JsonConvert.class);
 
     public static final ObjectMapper mapper = new ObjectMapper()
-	    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-	    .enable(SerializationFeature.INDENT_OUTPUT);
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .enable(SerializationFeature.INDENT_OUTPUT);
 
     /**
      * Deserializes a Json string into an object of given class.
@@ -32,12 +32,12 @@ public final class JsonConvert {
      * @return The deserialized object, null deserialization failed
      */
     public static final <T> T deserializeJson(String json, Class<T> outClass) {
-	try {
-	    return mapper.readValue(json, outClass);
-	} catch (JsonProcessingException e) {
-	    e.printStackTrace();
-	    return null;
-	}
+        try {
+            return mapper.readValue(json, outClass);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -48,12 +48,12 @@ public final class JsonConvert {
      *         fails
      */
     public static final String serializeObject(Object o) {
-	try {
-	    return mapper.writeValueAsString(o);
-	} catch (JsonProcessingException e) {
-	    e.printStackTrace();
-	    return "";
-	}
+        try {
+            return mapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }

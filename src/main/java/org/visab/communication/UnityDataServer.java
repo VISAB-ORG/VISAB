@@ -43,10 +43,10 @@ public class UnityDataServer {
     private int port;
 
     public UnityDataServer(int port, String game, String outDir) {
-	this.port = port;
-	this.game = game;
-	this.outDir = outDir;
-	logger.info("UnitDataServer successfully spawned for unity data transmission.");
+        this.port = port;
+        this.game = game;
+        this.outDir = outDir;
+        logger.info("UnitDataServer successfully spawned for unity data transmission.");
     }
 
     /**
@@ -57,83 +57,83 @@ public class UnityDataServer {
      */
     public void receive() throws IOException {
 
-	logger.info("Starting to receive data from unity game on port: " + this.port);
+        logger.info("Starting to receive data from unity game on port: " + this.port);
 
-	var outDir = this.outDir;
+        var outDir = this.outDir;
 
-	// Generate localized timestamp for visab file name
-	var dateFormat = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
-	var timestamp = dateFormat.format(new Date(System.currentTimeMillis()));
+        // Generate localized timestamp for visab file name
+        var dateFormat = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
+        var timestamp = dateFormat.format(new Date(System.currentTimeMillis()));
 
-	var visabFileName = game + "_" + timestamp + ".visab";
+        var visabFileName = game + "_" + timestamp + ".visab";
 
-	// Determine the correct parser for current game communicating
-	AbstractParser parser = null;
-	switch (this.game) {
-	case "shooter":
-	    parser = new ShooterParser(outDir, visabFileName);
-	    parser.init();
-	    break;
-	case "settlers":
-	    // TODO: Add the Settlers Parser here when time comes.
-	    break;
-	default:
-	    logger.error("Unity game provided unknown game name '" + this.game + "', cannot pick the correct parser.");
-	    System.exit(1);
-	}
+        // Determine the correct parser for current game communicating
+        AbstractParser parser = null;
+        switch (this.game) {
+        case "shooter":
+            parser = new ShooterParser(outDir, visabFileName);
+            parser.init();
+            break;
+        case "settlers":
+            // TODO: Add the Settlers Parser here when time comes.
+            break;
+        default:
+            logger.error("Unity game provided unknown game name '" + this.game + "', cannot pick the correct parser.");
+            System.exit(1);
+        }
 
-	try {
+        try {
 
-	    // Endlessly listen on the port
-	    while (true) {
+            // Endlessly listen on the port
+            while (true) {
 
-		// Reset everything
-		// TODO: Check if this is really necessary or can be done more elegant
-		ServerSocket serverSocket = null;
-		Socket socket = null;
+                // Reset everything
+                // TODO: Check if this is really necessary or can be done more elegant
+                ServerSocket serverSocket = null;
+                Socket socket = null;
 
-		InputStream in = null;
-		// OutputStream out = null;
+                InputStream in = null;
+                // OutputStream out = null;
 
-		try {
+                try {
 
-		    // Initialize socket with port and accept communication
-		    serverSocket = new ServerSocket(this.port);
-		    socket = serverSocket.accept();
+                    // Initialize socket with port and accept communication
+                    serverSocket = new ServerSocket(this.port);
+                    socket = serverSocket.accept();
 
-		    // Initialize socket streams
-		    in = socket.getInputStream();
-		    // out = socket.getOutputStream();
+                    // Initialize socket streams
+                    in = socket.getInputStream();
+                    // out = socket.getOutputStream();
 
-		    // Read JSON String
-		    var inFromClient = new BufferedReader(new InputStreamReader(in));
-		    var jsonString = inFromClient.readLine();
+                    // Read JSON String
+                    var inFromClient = new BufferedReader(new InputStreamReader(in));
+                    var jsonString = inFromClient.readLine();
 
-		    // Parse JSON -> .visab format
-		    var visabString = parser.parseJson(jsonString);
+                    // Parse JSON -> .visab format
+                    var visabString = parser.parseJson(jsonString);
 
-		    parser.writeToFile(visabString);
+                    parser.writeToFile(visabString);
 
-		    logger.debug("VISAB received JSON String: " + jsonString);
+                    logger.debug("VISAB received JSON String: " + jsonString);
 
-		} catch (IOException e) {
-		    logger.error("CAUGHT [" + e + "] while reading JSON Strings from Unity game - stacktrace:");
-		    logger.error(e.getStackTrace().toString());
-		    parser.writeToFile(e.getMessage());
-		} finally {
-		    try {
-			// out.close();
-			in.close();
-			socket.close();
-			serverSocket.close();
-		    } catch (IOException e) {
-			logger.error("CAUGHT [" + e + "] while shutting down the UnityDataServer - stacktrace:");
-			logger.error(e.getStackTrace().toString());
-		    }
-		}
-	    }
-	} finally {
-	    parser.close();
-	}
+                } catch (IOException e) {
+                    logger.error("CAUGHT [" + e + "] while reading JSON Strings from Unity game - stacktrace:");
+                    logger.error(e.getStackTrace().toString());
+                    parser.writeToFile(e.getMessage());
+                } finally {
+                    try {
+                        // out.close();
+                        in.close();
+                        socket.close();
+                        serverSocket.close();
+                    } catch (IOException e) {
+                        logger.error("CAUGHT [" + e + "] while shutting down the UnityDataServer - stacktrace:");
+                        logger.error(e.getStackTrace().toString());
+                    }
+                }
+            }
+        } finally {
+            parser.close();
+        }
     }
 }

@@ -20,9 +20,9 @@ public final class Settings {
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
 
-
     /**
-     * The time in seconds until a session is automatically timed out if no statistics were received.
+     * The time in seconds until a session is automatically timed out if no
+     * statistics were received.
      */
     public static final int SESSION_TIMEOUT = 2;
 }

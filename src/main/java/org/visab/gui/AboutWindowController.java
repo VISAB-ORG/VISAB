@@ -34,31 +34,31 @@ public class AboutWindowController {
 
     @FXML
     public void handleAboutMenu() {
-	// DO NOTHING
+        // DO NOTHING
     }
 
     @FXML
     public void handleBrowseFileMenu() {
-	main.mainWindow();
+        main.mainWindow();
     }
 
     @FXML
     public void handleHelpMenu() {
-	main.helpWindow();
+        main.helpWindow();
     }
 
     @FXML
     public void handlePathViewerMenu() {
-	main.pathViewerWindow();
+        main.pathViewerWindow();
     }
 
     @FXML
     public void handleStatisticsMenu() throws URISyntaxException {
-	main.statisticsWindow();
+        main.statisticsWindow();
     }
 
     public void setMain(GUIMain main) {
-	this.main = main;
+        this.main = main;
     }
 
 }
