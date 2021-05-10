@@ -13,14 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Button;
 
 import org.visab.util.VISABUtil;
 
 public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 
     @FXML
-    ButtonBase addButton;
+    Button addButton;
 
     @Override
     protected List<String> getAllowedExtensions() {

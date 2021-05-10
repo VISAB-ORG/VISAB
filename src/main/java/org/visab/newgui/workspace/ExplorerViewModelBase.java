@@ -64,7 +64,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     public FileRow getBaseFileRow() {
         // Recursively set children
         var file = basicRepo.loadFile(baseDirPath);
-        var baseFile = getFileRow(file);
+        var baseFile = getFileRow(file, null);
 
         this.baseFile = baseFile;
 
@@ -79,14 +79,14 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * @param file The file to create a FileRow of
      * @return The FileRow
      */
-    protected FileRow getFileRow(File file) {
+    protected FileRow getFileRow(File file, FileRow parentDir) {
         var name = file.getName();
         var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
         var fullPath = file.getAbsolutePath();
         var isDirectory = file.isDirectory();
 
-        return new FileRow(name, lastModified, size, fullPath, isDirectory);
+        return new FileRow(name, lastModified, size, fullPath, isDirectory, parentDir);
     }
 
     /**
@@ -110,7 +110,9 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
                 parentRow.getFiles().remove(child);
                 // TODO: Log this
                 System.out.println("Removed" + child.getAbsolutePath());
-                // TODO: Update file row information for all parents?
+
+                // Finally update the parent directories information
+                updateDirectoryInformation(child);
                 return;
             }
 
@@ -138,13 +140,35 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
         if (fileRow.isDirectory()) {
             var files = basicRepo.loadFile(fileRow.getAbsolutePath()).listFiles();
             for (var file : files) {
-                var row = getFileRow(file);
+                var row = getFileRow(file, fileRow);
                 fileRow.getFiles().add(row);
 
                 if (row.isDirectory())
                     setChildFiles(row);
             }
         }
+    }
+
+    /**
+     * Recursively updates the file information (last modified + size) of the given
+     * fileRow and all its parent directories
+     * 
+     * @param fileRow The fileRow to start from
+     */
+    protected void updateDirectoryInformation(FileRow fileRow) {
+        if (fileRow.isDirectory()) {
+            var file = basicRepo.loadFile(fileRow.getAbsolutePath());
+
+            var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
+
+            fileRow.setLastModifies(lastModified);
+            fileRow.setSize(size);
+        }
+
+        if (fileRow.getParentDir() != null)
+            updateDirectoryInformation(fileRow.getParentDir());
     }
 
 }

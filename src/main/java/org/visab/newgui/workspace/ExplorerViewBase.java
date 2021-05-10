@@ -9,7 +9,6 @@ import org.visab.newgui.workspace.model.FileRow;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
