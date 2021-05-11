@@ -3,14 +3,16 @@ package org.visab.newgui.workspace;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.sound.sampled.Clip;
-
-import org.visab.newgui.AppMain;
 import org.visab.newgui.workspace.model.FileRow;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -30,10 +32,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import org.visab.util.VISABUtil;
 
@@ -44,13 +43,13 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     /**
      * Graphics for FileView
      */
-    private static Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
+    private static final Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
 
-    private static Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
+    private static final Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
 
-    private static Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
+    private static final Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
 
-    private static Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
+    private static final Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
 
     /**
      * The explorer view
@@ -63,6 +62,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      */
     @FXML
     TreeTableColumn<FileRow, String> nameColumn;
+
+    /**
+     * The last modified column of the explorer view
+     */
+    @FXML
+    TreeTableColumn<FileRow, LocalDateTime> modifiedColumn;
 
     /**
      * The button to remove the currently selected item
@@ -245,6 +250,23 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
                         setGraphic(file);
                 } else
                     setGraphic(null);
+            }
+        });
+
+        // Set gregorian time
+        modifiedColumn.setCellFactory(x -> new TreeTableCell<>() {
+
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+
+                var fileRow = getTreeTableRow().getItem();
+                if (!empty && fileRow != null) {
+                    var formattedTime = fileRow.getLastModified().format(formatter);
+                    setText(formattedTime);
+                }
             }
         });
     }

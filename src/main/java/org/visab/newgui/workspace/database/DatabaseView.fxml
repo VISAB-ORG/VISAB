@@ -24,7 +24,7 @@
                         <TreeItemPropertyValueFactory property="name" />
                     </cellValueFactory>
                 </TreeTableColumn>
-                <TreeTableColumn prefWidth="150.0" text="Last modified">
+                <TreeTableColumn fx:id="modifiedColumn" prefWidth="150.0" text="Last modified">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="lastModified" />
                     </cellValueFactory>
