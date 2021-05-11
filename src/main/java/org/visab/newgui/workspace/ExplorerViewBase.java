@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import org.visab.newgui.workspace.model.FileRow;
 
@@ -94,6 +95,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     Button refreshButton;
 
     /**
+     * Button for renaming the currently selected file
+     */
+    @FXML
+    Button renameButton;
+
+    /**
      * The action to be executed when the removeButton is pressed
      */
     @FXML
@@ -117,6 +124,9 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         addButton.setOnAction(e -> addFileDialog(e));
         showInExplorerButton.setOnAction(e -> showInExplorer(e));
         refreshButton.setOnAction(e -> refreshExplorerView());
+
+        // TODO: Show some dialog I guess
+        renameButton.setOnAction(e -> viewModel.renameSelectedFile(UUID.randomUUID().toString()));
 
         explorerView.setOnDragOver(e -> handleDragOver(e));
         explorerView.setOnDragDropped(e -> handleFilesDropped(e));

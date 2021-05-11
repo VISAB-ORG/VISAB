@@ -20,6 +20,41 @@ public abstract class RepositoryBase {
     }
 
     /**
+     * Renames a file at a given path to
+     * 
+     * @param filePath    The path to the file to rename
+     * @param newFilePath The new path for the file
+     * @return True if file was renamed succesfully, false else
+     */
+    public boolean renameFile(String filePath, String newFilePath) {
+        var deletedCurrent = false;
+        var createdNew = false;
+
+        var file = loadFile(filePath);
+
+        var newFile = new File(newFilePath);
+        
+        // TODO: According to stackoverflow doesnt work sometimes
+        return file.renameTo(newFile);
+        
+        /*
+        var content = readFileContents(filePath);
+
+        if (file.exists()) {
+            deletedCurrent = file.delete();
+
+            if (deletedCurrent)
+                createdNew = writeToFile(newFilePath, content);
+
+            // Otherwise reverse it.
+            if (deletedCurrent & !createdNew)
+                writeToFile(filePath, content); 
+        }
+
+        return deletedCurrent && createdNew;*/
+    }
+
+    /**
      * Combines path strings to one string
      * 
      * @param path The base path

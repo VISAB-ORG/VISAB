@@ -40,6 +40,7 @@
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -50,6 +51,7 @@
                 <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#removeAction" text="Delete file" GridPane.rowIndex="1" />
                 <Button fx:id="showInExplorerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Show in explorer" />
             <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Refresh" GridPane.columnIndex="1" />
+            <Button fx:id="renameButton" mnemonicParsing="false" text="Rename" GridPane.columnIndex="2" />
             </children>
         </GridPane>
     </children>

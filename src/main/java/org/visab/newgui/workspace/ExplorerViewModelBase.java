@@ -112,12 +112,12 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * @param removeRow The row to remove
      */
     protected void removeFileRow(FileRow parentRow, FileRow removeRow) {
+        if (parentRow == null)
+            return;
+
         for (var child : parentRow.getFiles()) {
             if (child == removeRow) {
                 parentRow.getFiles().remove(child);
-                // TODO: Log this
-                System.out.println("Removed" + child.getAbsolutePath());
-
                 // Finally update the parent directories information
                 updateDirectoryInformation(child);
                 return;
@@ -176,6 +176,33 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
         if (fileRow.getParentDir() != null)
             updateDirectoryInformation(fileRow.getParentDir());
+    }
+
+    public boolean renameSelectedFile(String newName) {
+        var selectedRow = getSelectedFileRow();
+        if (selectedRow != null && selectedRow != baseFile) {
+            var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
+            
+            if (basicRepo.renameFile(selectedRow.getAbsolutePath(), newFilePath)) {
+                // Remove the current fileRow
+                removeFileRow(selectedRow.getParentDir(), selectedRow);
+
+                var newFile = basicRepo.loadFile(newFilePath);
+                var newRow = getFileRow(newFile, selectedRow.getParentDir());
+
+                // Add the new fileRow
+                newRow.getParentDir().getFiles().add(newRow);
+
+                // Set the child files if the
+                if (newRow.isDirectory())
+                    setChildFiles(newRow);
+
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
 }
