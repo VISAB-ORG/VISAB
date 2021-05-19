@@ -24,91 +24,91 @@ public class CBRShooterStatistics implements IStatistics {
     private Vector2 weaponPosition;
 
     public Vector2 getAmmunitionPosition() {
-	return ammunitionPosition;
+        return ammunitionPosition;
     }
 
     public PlayerInformation getCBRPlayer() {
-	return CBRPlayer;
+        return CBRPlayer;
     }
 
     @Override
     public String getGame() {
-	return game;
+        return game;
     }
 
     public Vector2 getHealthPosition() {
-	return healthPosition;
+        return healthPosition;
     }
 
     public boolean getIsAmmunitionCollected() {
-	return isAmmunitionCollected;
+        return isAmmunitionCollected;
     }
 
     public boolean getIsHealthCollected() {
-	return isHealthCollected;
+        return isHealthCollected;
     }
 
     public boolean getIsWeaponCollected() {
-	return isWeaponCollected;
+        return isWeaponCollected;
     }
 
     public int getRound() {
-	return round;
+        return round;
     }
 
     public float getRoundTime() {
-	return roundTime;
+        return roundTime;
     }
 
     public PlayerInformation getScriptPlayer() {
-	return scriptPlayer;
+        return scriptPlayer;
     }
 
     public Vector2 getWeaponPosition() {
-	return weaponPosition;
+        return weaponPosition;
     }
 
     public void setAmmunitionPosition(Vector2 ammunitionPosition) {
-	this.ammunitionPosition = ammunitionPosition;
+        this.ammunitionPosition = ammunitionPosition;
     }
 
     public void setCBRPlayer(PlayerInformation cBRPlayer) {
-	CBRPlayer = cBRPlayer;
+        CBRPlayer = cBRPlayer;
     }
 
     public void setGame(String game) {
-	this.game = game;
+        this.game = game;
     }
 
     public void setHealthPosition(Vector2 healthPosition) {
-	this.healthPosition = healthPosition;
+        this.healthPosition = healthPosition;
     }
 
     public void setIsAmmunitionCollected(boolean isAmmunitionCollected) {
-	this.isAmmunitionCollected = isAmmunitionCollected;
+        this.isAmmunitionCollected = isAmmunitionCollected;
     }
 
     public void setIsHealthCollected(boolean isHealthCollected) {
-	this.isHealthCollected = isHealthCollected;
+        this.isHealthCollected = isHealthCollected;
     }
 
     public void setIsWeaponCollected(boolean isWeaponCollected) {
-	this.isWeaponCollected = isWeaponCollected;
+        this.isWeaponCollected = isWeaponCollected;
     }
 
     public void setRound(int round) {
-	this.round = round;
+        this.round = round;
     }
 
     public void setRoundTime(float roundTime) {
-	this.roundTime = roundTime;
+        this.roundTime = roundTime;
     }
 
     public void setScriptPlayer(PlayerInformation scriptPlayer) {
-	this.scriptPlayer = scriptPlayer;
+        this.scriptPlayer = scriptPlayer;
     }
 
     public void setWeaponPosition(Vector2 weaponPosition) {
-	this.weaponPosition = weaponPosition;
+        this.weaponPosition = weaponPosition;
     }
 }

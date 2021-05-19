@@ -1,22 +1,25 @@
 package org.visab.repository;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public abstract class VISABFileBase implements IVISABFile {
+public class VISABFileBase implements IVISABFile {
 
-    protected Timestamp creationDate = new Timestamp(new Date().getTime());
+    protected LocalDateTime creationDate = LocalDateTime.now();
     protected String formatVersion;
     protected String game;
-    protected String fileName;
 
-    public VISABFileBase(String game, String fileFormatVersion, String fileName) {
-        this.formatVersion = fileFormatVersion;
-        this.game = game;
-        this.fileName = fileName;
+    /**
+     * Used for deserialization
+     */
+    public VISABFileBase() {
     }
 
-    public Timestamp getCreationDate() {
+    public VISABFileBase(String game, String fileFormatVersion) {
+        this.formatVersion = fileFormatVersion;
+        this.game = game;
+    }
+
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
@@ -28,10 +31,6 @@ public abstract class VISABFileBase implements IVISABFile {
         return game;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
     public void setGame(String game) {
         this.game = game;
     }
@@ -40,14 +39,10 @@ public abstract class VISABFileBase implements IVISABFile {
         this.formatVersion = version;
     }
 
-    public void setFileName(String name) {
-        this.fileName = name;
-    }
-
     /**
      * This has to exist for deserializing existing files
      */
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

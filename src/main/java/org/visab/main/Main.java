@@ -94,7 +94,7 @@ public class Main {
                     public void run() {
                         while (true) {
                             try {
-                            	// continuously listen for unity game data
+                                // continuously listen for unity game data
                                 unityDataServer.receive();
                             } catch (IOException e) {
                                 logger.error("CAUGHT [" + e

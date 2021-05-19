@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
-import org.visab.main.Main;
 import org.visab.util.Settings;
 
 import javafx.application.Application;

@@ -22,12 +22,12 @@ public class GameSupportController extends HTTPControllerBase {
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	return getJsonResponse(AssignByGame.ALLOWED_GAMES);
+        return getJsonResponse(AssignByGame.ALLOWED_GAMES);
     }
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-	return getForbiddenResponse("Post request are not supported for getting supported games!");
+        return getForbiddenResponse("Post request are not supported for getting supported games!");
     }
 
 }

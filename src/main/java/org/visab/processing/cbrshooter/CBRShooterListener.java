@@ -24,33 +24,33 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     private CBRShooterFile CBRShooterFile;
 
     public CBRShooterListener(UUID sessionId) {
-	super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
+        super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
     }
 
     @Override
     public void onSessionClosed() {
-	if (repo.saveFile(CBRShooterFile))
-	    logger.info("Saved file in repository!");
-	else
-	    logger.info("Couldn't save file in repository!");
+        if (repo.saveFile(CBRShooterFile, sessionId.toString()))
+            logger.info("Saved file in repository!");
+        else
+            logger.info("Couldn't save file in repository!");
     }
 
     @Override
     public void onSessionStarted() {
-	CBRShooterFile = new CBRShooterFile(getSessionId().toString());
+        CBRShooterFile = new CBRShooterFile();
     }
 
     @Override
     public void processStatistics(CBRShooterStatistics statistics) {
-	CBRShooterFile.getStatistics().add(statistics);
+        CBRShooterFile.getStatistics().add(statistics);
 
-	logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
-		CBRShooterFile.getStatistics().size()));
+        logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
+                CBRShooterFile.getStatistics().size()));
     }
 
     @Override
     public void processMapImage(CBRShooterMapImage mapImage) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 }

@@ -16,67 +16,67 @@ public class PlayerInformation {
     private String weapon;
 
     public int getHealth() {
-	return health;
+        return health;
     }
 
     public int getMagazineAmmunition() {
-	return magazineAmmunition;
+        return magazineAmmunition;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public String getPlan() {
-	return plan;
+        return plan;
     }
 
     public Vector2 getPosition() {
-	return position;
+        return position;
     }
 
     public float getRelativeHealth() {
-	return relativeHealth;
+        return relativeHealth;
     }
 
     public PlayerStatistics getStatistics() {
-	return statistics;
+        return statistics;
     }
 
     public String getWeapon() {
-	return weapon;
+        return weapon;
     }
 
     public void setHealth(int health) {
-	this.health = health;
+        this.health = health;
     }
 
     public void setMagazineAmmunition(int magazineAmmunition) {
-	this.magazineAmmunition = magazineAmmunition;
+        this.magazineAmmunition = magazineAmmunition;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public void setPlan(String plan) {
-	this.plan = plan;
+        this.plan = plan;
     }
 
     public void setPosition(Vector2 position) {
-	this.position = position;
+        this.position = position;
     }
 
     public void setRelativeHealth(float relativeHealth) {
-	this.relativeHealth = relativeHealth;
+        this.relativeHealth = relativeHealth;
     }
 
     public void setStatistics(PlayerStatistics statistics) {
-	this.statistics = statistics;
+        this.statistics = statistics;
     }
 
     public void setWeapon(String weapon) {
-	this.weapon = weapon;
+        this.weapon = weapon;
     }
 
 }

@@ -9,7 +9,7 @@ import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.eventbus.ApiEventBus;
-import org.visab.processing.SessionListenerFactory;
+import org.visab.processing.SessionListenerAdministration;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -27,22 +27,22 @@ public class WebApi extends RouterNanoHTTPD {
     private static Logger logger = LogManager.getLogger(WebApi.class);
 
     private static ApiEventBus apiEventBus = new ApiEventBus();
-    private static SessionListenerFactory listenerFactory;
-    private static SessionWatchdog watchdog;
+    private static SessionWatchdog watchdog = new SessionWatchdog();
 
     public static ApiEventBus getEventBus() {
-	return apiEventBus;
+        return apiEventBus;
+    }
+
+    public static SessionWatchdog getSessionWatchdog() {
+        return watchdog;
     }
 
     public WebApi(int port) {
-	super(port);
-	addMappings();
+        super(port);
+        addMappings();
 
-	// Just initialize it anywhere and it will be a subscriber in the eventbus.
-	listenerFactory = new SessionListenerFactory();
-
-	// Start the session administration. This also starts the session timeout loop
-	watchdog = new SessionWatchdog();
+        // Add the SessionListenerFactory as subscriber of eventbus.
+        SessionListenerAdministration.initializeFactory();
     }
 
     /**
@@ -50,25 +50,26 @@ public class WebApi extends RouterNanoHTTPD {
      */
     @Override
     public void addMappings() {
-	addRoute("/", IndexHandler.class);
-	addRoute("/ping", IndexHandler.class);
-	addRoute("/session/open", SessionController.class);
-	addRoute("/session/list", SessionController.class);
-	addRoute("/session/status", SessionController.class);
-	addRoute("/session/close", SessionController.class);
-	addRoute("send/statistics", StatisticsController.class);
-	addRoute("send/map", MapController.class);
-	addRoute("games", GameSupportController.class);
+        addRoute("/", IndexHandler.class);
+        addRoute("/ping", IndexHandler.class);
+        addRoute("/session/open", SessionController.class);
+        addRoute("/session/list", SessionController.class);
+        addRoute("/session/status", SessionController.class);
+        addRoute("/session/close", SessionController.class);
+        addRoute("send/statistics", StatisticsController.class);
+        addRoute("send/map", MapController.class);
+        addRoute("games", GameSupportController.class);
     }
 
     public void shutdown() {
-	watchdog.stopTimeoutLoop();
-	this.stop();
+        watchdog.stopTimeoutLoop();
+        this.stop();
     }
 
     @Override
     public void start() throws IOException {
-	start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        watchdog.StartTimeoutLoop();
     }
 
 }

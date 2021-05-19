@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.main.Main;
 
 /**
  * The SessionListenerAdministration that holds a reference to all active
@@ -16,7 +15,13 @@ import org.visab.main.Main;
  * @author moritz
  * 
  */
-public class SessionListenerAdministration {
+public final class SessionListenerAdministration {
+
+    private static SessionListenerFactory listenerFactory;
+
+    public static SessionListenerFactory getListenerFactory() {
+        return listenerFactory;
+    }
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerAdministration.class);
@@ -31,28 +36,32 @@ public class SessionListenerAdministration {
      * @return A copy of the currently active listeners
      */
     public static List<ISessionListener<? extends IStatistics>> getActiveListeners() {
-	return new ArrayList<ISessionListener<? extends IStatistics>>(activeListeners);
+        return new ArrayList<ISessionListener<? extends IStatistics>>(activeListeners);
     }
 
     public static ISessionListener<? extends IStatistics> getSessionListener(UUID sessionId) {
-	for (var listener : activeListeners) {
-	    if (listener.getSessionId().equals(sessionId))
-		return listener;
-	}
+        for (var listener : activeListeners) {
+            if (listener.getSessionId().equals(sessionId))
+                return listener;
+        }
 
-	return null;
+        return null;
     }
 
     public static List<ISessionListener<? extends IStatistics>> getActiveListeners(String game) {
-	return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
+        return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
     }
 
     public static void addListener(ISessionListener<? extends IStatistics> listener) {
-	activeListeners.add(listener);
+        activeListeners.add(listener);
     }
 
     // TODO: Remove gracefully?
     public static void removeListener(ISessionListener<? extends IStatistics> listener) {
-	activeListeners.remove(listener);
+        activeListeners.remove(listener);
+    }
+
+    public static void initializeFactory() {
+        listenerFactory = new SessionListenerFactory();
     }
 }
