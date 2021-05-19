@@ -6,18 +6,18 @@ public class PlayerStatistics {
     private int frags;
 
     public int getDeaths() {
-	return deaths;
+        return deaths;
     }
 
     public int getFrags() {
-	return frags;
+        return frags;
     }
 
     public void setDeaths(int deaths) {
-	this.deaths = deaths;
+        this.deaths = deaths;
     }
 
     public void setFrags(int frags) {
-	this.frags = frags;
+        this.frags = frags;
     }
 }

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
@@ -30,6 +32,9 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
     private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
     }
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionWatchdog.class);
 
     private static Map<UUID, String> activeSessions = new HashMap<>();
 

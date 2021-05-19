@@ -33,25 +33,22 @@ public abstract class RepositoryBase {
         var file = loadFile(filePath);
 
         var newFile = new File(newFilePath);
-        
+
         // TODO: According to stackoverflow doesnt work sometimes
         return file.renameTo(newFile);
-        
+
         /*
-        var content = readFileContents(filePath);
-
-        if (file.exists()) {
-            deletedCurrent = file.delete();
-
-            if (deletedCurrent)
-                createdNew = writeToFile(newFilePath, content);
-
-            // Otherwise reverse it.
-            if (deletedCurrent & !createdNew)
-                writeToFile(filePath, content); 
-        }
-
-        return deletedCurrent && createdNew;*/
+         * var content = readFileContents(filePath);
+         * 
+         * if (file.exists()) { deletedCurrent = file.delete();
+         * 
+         * if (deletedCurrent) createdNew = writeToFile(newFilePath, content);
+         * 
+         * // Otherwise reverse it. if (deletedCurrent & !createdNew)
+         * writeToFile(filePath, content); }
+         * 
+         * return deletedCurrent && createdNew;
+         */
     }
 
     /**

@@ -8,122 +8,122 @@ package org.visab.gui.model;
  */
 public class TableEntryCBRBot {
 
-	private String ammuPosition;
-	private String botType;
-	private String coordinatesCBRBot;
-	private int frame;
-	private String healthCBRBot;
-	private String healthPosition;
-	private String nameCBRBot;
-	private String planCBRBot;
-	private String roundCounter;
-	private String statisticCBRBot;
-	private String weaponCBRBot;
-	private String weaponMagAmmuCBRBot;
-	private String weaponPosition;
+    private String ammuPosition;
+    private String botType;
+    private String coordinatesCBRBot;
+    private int frame;
+    private String healthCBRBot;
+    private String healthPosition;
+    private String nameCBRBot;
+    private String planCBRBot;
+    private String roundCounter;
+    private String statisticCBRBot;
+    private String weaponCBRBot;
+    private String weaponMagAmmuCBRBot;
+    private String weaponPosition;
 
-	public String getAmmuPosition() {
-		return ammuPosition;
-	}
+    public String getAmmuPosition() {
+        return ammuPosition;
+    }
 
-	public String getBotType() {
-		return botType;
-	}
+    public String getBotType() {
+        return botType;
+    }
 
-	public String getCoordinatesCBRBot() {
-		return coordinatesCBRBot;
-	}
+    public String getCoordinatesCBRBot() {
+        return coordinatesCBRBot;
+    }
 
-	public int getFrame() {
-		return frame;
-	}
+    public int getFrame() {
+        return frame;
+    }
 
-	public String getHealthCBRBot() {
-		return healthCBRBot;
-	}
+    public String getHealthCBRBot() {
+        return healthCBRBot;
+    }
 
-	public String getHealthPosition() {
-		return healthPosition;
-	}
+    public String getHealthPosition() {
+        return healthPosition;
+    }
 
-	public String getNameCBRBot() {
-		return nameCBRBot;
-	}
+    public String getNameCBRBot() {
+        return nameCBRBot;
+    }
 
-	public String getPlanCBRBot() {
-		return planCBRBot;
-	}
+    public String getPlanCBRBot() {
+        return planCBRBot;
+    }
 
-	public String getRoundCounter() {
-		return roundCounter;
-	}
+    public String getRoundCounter() {
+        return roundCounter;
+    }
 
-	public String getStatisticCBRBot() {
-		return statisticCBRBot;
-	}
+    public String getStatisticCBRBot() {
+        return statisticCBRBot;
+    }
 
-	public String getWeaponCBRBot() {
-		return weaponCBRBot;
-	}
+    public String getWeaponCBRBot() {
+        return weaponCBRBot;
+    }
 
-	public String getWeaponMagAmmuCBRBot() {
-		return weaponMagAmmuCBRBot;
-	}
+    public String getWeaponMagAmmuCBRBot() {
+        return weaponMagAmmuCBRBot;
+    }
 
-	public String getWeaponPosition() {
-		return weaponPosition;
-	}
+    public String getWeaponPosition() {
+        return weaponPosition;
+    }
 
-	public void setAmmuPosition(String ammuPosition) {
-		this.ammuPosition = ammuPosition;
-	}
+    public void setAmmuPosition(String ammuPosition) {
+        this.ammuPosition = ammuPosition;
+    }
 
-	public void setBotType(String botType) {
-		this.botType = botType;
-	}
+    public void setBotType(String botType) {
+        this.botType = botType;
+    }
 
-	public void setCoordinatesCBRBot(String coordinatesCBRBot) {
-		this.coordinatesCBRBot = coordinatesCBRBot;
-	}
+    public void setCoordinatesCBRBot(String coordinatesCBRBot) {
+        this.coordinatesCBRBot = coordinatesCBRBot;
+    }
 
-	public void setFrame(int frame) {
-		this.frame = frame;
-	}
+    public void setFrame(int frame) {
+        this.frame = frame;
+    }
 
-	public void setHealthCBRBot(String healthCBRBot) {
-		this.healthCBRBot = healthCBRBot;
-	}
+    public void setHealthCBRBot(String healthCBRBot) {
+        this.healthCBRBot = healthCBRBot;
+    }
 
-	public void setHealthPosition(String healthPosition) {
-		this.healthPosition = healthPosition;
-	}
+    public void setHealthPosition(String healthPosition) {
+        this.healthPosition = healthPosition;
+    }
 
-	public void setNameCBRBot(String nameCBRBot) {
-		this.nameCBRBot = nameCBRBot;
-	}
+    public void setNameCBRBot(String nameCBRBot) {
+        this.nameCBRBot = nameCBRBot;
+    }
 
-	public void setPlanCBRBot(String planCBRBot) {
-		this.planCBRBot = planCBRBot;
-	}
+    public void setPlanCBRBot(String planCBRBot) {
+        this.planCBRBot = planCBRBot;
+    }
 
-	public void setRoundCounter(String roundCounter) {
-		this.roundCounter = roundCounter;
-	}
+    public void setRoundCounter(String roundCounter) {
+        this.roundCounter = roundCounter;
+    }
 
-	public void setStatisticCBRBot(String statisticCBRBot) {
-		this.statisticCBRBot = statisticCBRBot;
-	}
+    public void setStatisticCBRBot(String statisticCBRBot) {
+        this.statisticCBRBot = statisticCBRBot;
+    }
 
-	public void setWeaponCBRBot(String weaponCBRBot) {
-		this.weaponCBRBot = weaponCBRBot;
-	}
+    public void setWeaponCBRBot(String weaponCBRBot) {
+        this.weaponCBRBot = weaponCBRBot;
+    }
 
-	public void setWeaponMagAmmuCBRBot(String weaponMagAmmuCBRBot) {
-		this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
-	}
+    public void setWeaponMagAmmuCBRBot(String weaponMagAmmuCBRBot) {
+        this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
+    }
 
-	public void setWeaponPosition(String weaponPosition) {
-		this.weaponPosition = weaponPosition;
-	}
+    public void setWeaponPosition(String weaponPosition) {
+        this.weaponPosition = weaponPosition;
+    }
 
 }

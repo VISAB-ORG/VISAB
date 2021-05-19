@@ -2,6 +2,8 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
@@ -22,6 +24,9 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  *
  */
 public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(StatisticsController.class);
 
     @Override
     public final Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {

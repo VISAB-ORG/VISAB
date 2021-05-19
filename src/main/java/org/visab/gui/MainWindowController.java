@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.util.VISABUtil;
 
 import javafx.fxml.FXML;
@@ -19,6 +21,9 @@ import javafx.stage.FileChooser;
  *
  */
 public class MainWindowController {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(MainWindowController.class);
 
     // Views
     @FXML
@@ -36,81 +41,81 @@ public class MainWindowController {
     private Label warningMessage;
 
     public File getFile() {
-	return file;
+        return file;
     }
 
     @FXML
     public void handleBrowseFile() throws URISyntaxException {
 
-	warningMessage.setText("");
+        warningMessage.setText("");
 
-	FileChooser fileChooser = new FileChooser();
-	fileChooser.setTitle("Open Resource File");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
 
-	file = fileChooser.showOpenDialog(null);
+        file = fileChooser.showOpenDialog(null);
 
-	// If file is selected
-	if (file != null) {
+        // If file is selected
+        if (file != null) {
 
-	    // Get Current Filename
-	    Path currentFileName = Paths.get("", file.getName());
+            // Get Current Filename
+            Path currentFileName = Paths.get("", file.getName());
 
-	    String loadedFilePath = file.getAbsolutePath();
-	    String content = VISABUtil.readFile(loadedFilePath.toString());
+            String loadedFilePath = file.getAbsolutePath();
+            String content = VISABUtil.readFile(loadedFilePath.toString());
 
-	    boolean externalFileAccepted = false;
-	    boolean visabFileAccepted = false;
+            boolean externalFileAccepted = false;
+            boolean visabFileAccepted = false;
 
-	    if (currentFileName.toString().endsWith(".visab")) {
-		// show success message & write to Database
-		VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+            if (currentFileName.toString().endsWith(".visab")) {
+                // show success message & write to Database
+                VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
 
-		visabFileAccepted = true;
+                visabFileAccepted = true;
 
-	    } else {
-		for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-		    if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
-			externalFileAccepted = true;
-		    }
-		}
-	    }
-	    if (externalFileAccepted) {
-		VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
-		warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
-			+ file.getName() + " was saved anyway.");
-		warningMessage.setStyle("-fx-text-fill: orange;");
-	    } else {
-		warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
-			+ VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
-		warningMessage.setStyle("-fx-text-fill: red;");
-	    }
-	    if (visabFileAccepted) {
-		warningMessage.setStyle("-fx-text-fill: green;");
-		warningMessage.setText(file.getName() + " successfully saved");
-	    }
+            } else {
+                for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
+                    if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
+                        externalFileAccepted = true;
+                    }
+                }
+            }
+            if (externalFileAccepted) {
+                VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+                warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
+                        + file.getName() + " was saved anyway.");
+                warningMessage.setStyle("-fx-text-fill: orange;");
+            } else {
+                warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
+                        + VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
+                warningMessage.setStyle("-fx-text-fill: red;");
+            }
+            if (visabFileAccepted) {
+                warningMessage.setStyle("-fx-text-fill: green;");
+                warningMessage.setText(file.getName() + " successfully saved");
+            }
 
-	} else {
-	    warningMessage.setStyle("-fx-text-fill: red;");
-	    warningMessage.setText("File already exists! Therefore it was not saved.\nPlease change the file name.");
-	}
+        } else {
+            warningMessage.setStyle("-fx-text-fill: red;");
+            warningMessage.setText("File already exists! Therefore it was not saved.\nPlease change the file name.");
+        }
 
     }
 
     @FXML
     public void handlePathViewerButton() throws URISyntaxException {
-	main.pathViewerWindow();
+        main.pathViewerWindow();
     }
 
     @FXML
     public void handleStatisticsViewButton() throws URISyntaxException {
-	main.statisticsWindow();
+        main.statisticsWindow();
     }
 
     public void setFile(File file) {
-	this.file = file;
+        this.file = file;
     }
 
     public void setMain(GUIMain main) {
-	this.main = main;
+        this.main = main;
     }
 }

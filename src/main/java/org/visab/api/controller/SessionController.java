@@ -3,6 +3,8 @@ package org.visab.api.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
@@ -22,6 +24,9 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  *
  */
 public class SessionController extends HTTPControllerBase {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionController.class);
 
     /**
      * Closes a transmission session.

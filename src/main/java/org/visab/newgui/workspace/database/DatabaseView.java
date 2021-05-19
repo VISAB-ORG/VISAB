@@ -6,16 +6,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.workspace.ExplorerViewBase;
-import org.visab.newgui.workspace.ExplorerViewModelBase;
-
-import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-
 import org.visab.util.VISABUtil;
+
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 
 public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The SessionListenerAdministration that holds a reference to all active
  * SessionListeners.
@@ -19,6 +22,9 @@ public final class SessionListenerAdministration {
     public static SessionListenerFactory getListenerFactory() {
         return listenerFactory;
     }
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(SessionListenerAdministration.class);
 
     private static List<ISessionListener<? extends IStatistics>> activeListeners = new ArrayList<>();
 

@@ -1,11 +1,15 @@
 package org.visab.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 /**
  * Class for serializing and deserializing objects / json files.
  *
@@ -14,11 +18,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  */
 public final class JsonConvert {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(JsonConvert.class);
+
     public static final ObjectMapper mapper = new ObjectMapper()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
             .enable(SerializationFeature.INDENT_OUTPUT)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .registerModule(new JavaTimeModule());
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
 
     /**
      * Deserializes a Json string into an object of given class.

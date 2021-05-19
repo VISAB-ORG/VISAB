@@ -3,7 +3,7 @@ package org.visab.processing.starter.model;
 import org.visab.processing.IStatistics;
 
 public class DefaultStatistics implements IStatistics {
-    
+
     private String json;
     private String game;
 

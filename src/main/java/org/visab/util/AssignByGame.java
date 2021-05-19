@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.visab.processing.IMapImage;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.IStatistics;
-import org.visab.processing.IMapImage;
-import org.visab.repository.IVISABFile;
 import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.cbrshooter.CBRShooterMapImage;
@@ -15,6 +16,7 @@ import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.processing.starter.DefaultFile;
 import org.visab.processing.starter.DefaultSessionListener;
 import org.visab.processing.starter.model.DefaultStatistics;
+import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
@@ -29,7 +31,9 @@ import org.visab.processing.starter.model.DefaultStatistics;
  */
 public final class AssignByGame {
 
-    // TODO: Load this from yaml file
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(AssignByGame.class);
+
     public static final List<String> ALLOWED_GAMES = new ArrayList<>() {
         {
             add(CBR_SHOOTER_STRING);

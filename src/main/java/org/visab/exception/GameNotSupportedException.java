@@ -15,6 +15,6 @@ public class GameNotSupportedException extends Exception {
     }
 
     public GameNotSupportedException(String message) {
-	super(message);
+        super(message);
     }
 }

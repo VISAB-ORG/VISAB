@@ -3,6 +3,8 @@ package org.visab.processing.cbrshooter;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
@@ -16,6 +18,9 @@ import org.visab.util.AssignByGame;
  */
 public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage> {
 
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
+
     private CBRShooterFile CBRShooterFile;
 
     public CBRShooterListener(UUID sessionId) {
@@ -25,9 +30,9 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public void onSessionClosed() {
         if (repo.saveFile(CBRShooterFile, sessionId.toString()))
-            System.out.println("Saved file in repository!");
+            logger.info("Saved file in repository!");
         else
-            System.out.print("Couldent save file in repository!");
+            logger.info("Couldn't save file in repository!");
     }
 
     @Override
@@ -39,14 +44,13 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
         CBRShooterFile.getStatistics().add(statistics);
 
-        // TODO: log this instead
-        System.out.println(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
-                getSessionId(), CBRShooterFile.getStatistics().size()));
+        logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
+                CBRShooterFile.getStatistics().size()));
     }
 
     @Override
     public void processMapImage(CBRShooterMapImage mapImage) {
         // TODO Auto-generated method stub
-        
+
     }
 }

@@ -4,17 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
 import org.visab.newgui.workspace.model.FileRow;
+import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -34,8 +31,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.TransferMode;
-
-import org.visab.util.VISABUtil;
 
 // TODO: Add error message when adding file fails
 public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>

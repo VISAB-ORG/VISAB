@@ -1,5 +1,15 @@
 package org.visab.processing.cbrshooter.model;
 
+/**
+ * Renamed from "StatisticsForPathViewer to ShooterDataRepresentation
+ * 
+ * Represents all information that is contained in a message string sent from
+ * the unity game to VISAB.
+ * 
+ * @author VISAB 1.0 Group
+ *
+ */
+
 public class ShooterDataRepresentation {
 
     private String ammuPosition;
@@ -37,7 +47,7 @@ public class ShooterDataRepresentation {
      * Default-Konstruktor, der fuer die JSON Serialisierung.
      */
     public ShooterDataRepresentation() {
-	this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
     }
 
     /**
@@ -46,118 +56,118 @@ public class ShooterDataRepresentation {
      * Die Parameter sind die Strings der Membervariablen.
      */
     public ShooterDataRepresentation(String coordinatesCBRBot, String coordinatesScriptBot, String healthScriptBot,
-	    String healthCBRBot, String weaponScriptBot, String weaponCBRBot, String statisticCBRBot,
-	    String statisticScriptBot, String nameScriptBot, String nameCBRBot, String planCBRBot,
-	    String weaponMagAmmuCBRBot, String weaponMagAmmuScriptBot, String healthPosition, String weaponPosition,
-	    String ammuPosition, String roundCounter, String planScriptBot) {
-	this.coordinatesCBRBot = coordinatesCBRBot;
-	this.coordinatesScriptBot = coordinatesScriptBot;
-	this.healthCBRBot = healthCBRBot;
-	this.healthScriptBot = healthScriptBot;
-	this.weaponCBRBot = weaponCBRBot;
-	this.weaponScriptBot = weaponScriptBot;
-	this.statisticCBRBot = statisticCBRBot;
-	this.statisticScriptBot = statisticScriptBot;
-	this.nameCBRBot = nameCBRBot;
-	this.nameScriptBot = nameScriptBot;
-	this.planCBRBot = planCBRBot;
-	this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
-	this.weaponMagAmmuScriptBot = weaponMagAmmuScriptBot;
-	this.healthPosition = healthPosition;
-	this.ammuPosition = ammuPosition;
-	this.weaponPosition = weaponPosition;
-	this.roundCounter = roundCounter;
-	this.planScriptBot = planScriptBot;
+            String healthCBRBot, String weaponScriptBot, String weaponCBRBot, String statisticCBRBot,
+            String statisticScriptBot, String nameScriptBot, String nameCBRBot, String planCBRBot,
+            String weaponMagAmmuCBRBot, String weaponMagAmmuScriptBot, String healthPosition, String weaponPosition,
+            String ammuPosition, String roundCounter, String planScriptBot) {
+        this.coordinatesCBRBot = coordinatesCBRBot;
+        this.coordinatesScriptBot = coordinatesScriptBot;
+        this.healthCBRBot = healthCBRBot;
+        this.healthScriptBot = healthScriptBot;
+        this.weaponCBRBot = weaponCBRBot;
+        this.weaponScriptBot = weaponScriptBot;
+        this.statisticCBRBot = statisticCBRBot;
+        this.statisticScriptBot = statisticScriptBot;
+        this.nameCBRBot = nameCBRBot;
+        this.nameScriptBot = nameScriptBot;
+        this.planCBRBot = planCBRBot;
+        this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
+        this.weaponMagAmmuScriptBot = weaponMagAmmuScriptBot;
+        this.healthPosition = healthPosition;
+        this.ammuPosition = ammuPosition;
+        this.weaponPosition = weaponPosition;
+        this.roundCounter = roundCounter;
+        this.planScriptBot = planScriptBot;
     }
 
     public String getAmmuPosition() {
-	return ammuPosition;
+        return ammuPosition;
     }
 
     public String getCoordinatesCBRBot() {
-	return coordinatesCBRBot;
+        return coordinatesCBRBot;
     }
 
     public String getCoordinatesScriptBot() {
-	return coordinatesScriptBot;
+        return coordinatesScriptBot;
     }
 
     public String getHealthCBRBot() {
-	return healthCBRBot;
+        return healthCBRBot;
     }
 
     /**
-     * Getter und Setter Methoden für die Membervariablen
+     * Getter und Setter Methoden fï¿½r die Membervariablen
      *
      */
 
     public String getHealthPosition() {
-	return healthPosition;
+        return healthPosition;
     }
 
     public String getHealthScriptBot() {
-	return healthScriptBot;
+        return healthScriptBot;
     }
 
     public String getNameCBRBot() {
-	return nameCBRBot;
+        return nameCBRBot;
     }
 
     public String getNameScriptBot() {
-	return nameScriptBot;
+        return nameScriptBot;
     }
 
     public String getPlanCBRBot() {
-	return planCBRBot;
+        return planCBRBot;
     }
 
     public String getPlanScriptBot() {
-	return planScriptBot;
+        return planScriptBot;
     }
 
     public String getRoundCounterPosition() {
-	return roundCounter;
+        return roundCounter;
     }
 
     public String getStatisticCBRBot() {
-	return statisticCBRBot;
+        return statisticCBRBot;
     }
 
     public String getStatisticScriptBot() {
-	return statisticScriptBot;
+        return statisticScriptBot;
     }
 
     public String getWeaponCBRBot() {
-	return weaponCBRBot;
+        return weaponCBRBot;
     }
 
     public String getWeaponMagAmmuCBRBot() {
-	return weaponMagAmmuCBRBot;
+        return weaponMagAmmuCBRBot;
     }
 
     public String getWeaponMagAmmuScriptBot() {
-	return weaponMagAmmuScriptBot;
+        return weaponMagAmmuScriptBot;
     }
 
     public String getWeaponPosition() {
-	return weaponPosition;
+        return weaponPosition;
     }
 
     public String getWeaponScriptBot() {
-	return weaponScriptBot;
+        return weaponScriptBot;
     }
 
     @Override
     public String toString() {
-	return "StatisticsForPathViewer [coordinatesCBRBot=" + coordinatesCBRBot + "]" + "[coordinatesScriptBot = "
-		+ coordinatesScriptBot + "]" + "[healthScriptBot = " + healthScriptBot + "]" + "[healthCBRBot = "
-		+ healthCBRBot + "]" + "[weaponScriptBot = " + weaponScriptBot + "]" + "[weaponCBRBot = " + weaponCBRBot
-		+ "]" + "[statisticScriptBot = " + statisticScriptBot + "]" + "[statisticCBRBot = " + statisticCBRBot
-		+ "]" + "[nameScriptBot = " + nameScriptBot + "]" + "[nameCBRBot = " + nameCBRBot + "]"
-		+ "[planCBRBot = " + planCBRBot + "]" + "[weaponMagAmmuCBRBot = " + weaponMagAmmuCBRBot + "]"
-		+ "[weaponMagAmmuScriptBot = " + weaponMagAmmuScriptBot + "]" + "[healthPosition = " + healthPosition
-		+ "]" + "[weaponPosition = " + weaponPosition + "]" + "[ammuPosition = " + ammuPosition + "]"
-		+ "[roundCounter = " + roundCounter + "]" + "[planScriptBot = " + planScriptBot + "]";
+        return "StatisticsForPathViewer [coordinatesCBRBot=" + coordinatesCBRBot + "]" + "[coordinatesScriptBot = "
+                + coordinatesScriptBot + "]" + "[healthScriptBot = " + healthScriptBot + "]" + "[healthCBRBot = "
+                + healthCBRBot + "]" + "[weaponScriptBot = " + weaponScriptBot + "]" + "[weaponCBRBot = " + weaponCBRBot
+                + "]" + "[statisticScriptBot = " + statisticScriptBot + "]" + "[statisticCBRBot = " + statisticCBRBot
+                + "]" + "[nameScriptBot = " + nameScriptBot + "]" + "[nameCBRBot = " + nameCBRBot + "]"
+                + "[planCBRBot = " + planCBRBot + "]" + "[weaponMagAmmuCBRBot = " + weaponMagAmmuCBRBot + "]"
+                + "[weaponMagAmmuScriptBot = " + weaponMagAmmuScriptBot + "]" + "[healthPosition = " + healthPosition
+                + "]" + "[weaponPosition = " + weaponPosition + "]" + "[ammuPosition = " + ammuPosition + "]"
+                + "[roundCounter = " + roundCounter + "]" + "[planScriptBot = " + planScriptBot + "]";
     }
 
 }

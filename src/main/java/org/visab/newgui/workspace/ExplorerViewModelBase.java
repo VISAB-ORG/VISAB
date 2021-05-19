@@ -182,7 +182,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
         var selectedRow = getSelectedFileRow();
         if (selectedRow != null && selectedRow != baseFile) {
             var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
-            
+
             if (basicRepo.renameFile(selectedRow.getAbsolutePath(), newFilePath)) {
                 // Remove the current fileRow
                 removeFileRow(selectedRow.getParentDir(), selectedRow);

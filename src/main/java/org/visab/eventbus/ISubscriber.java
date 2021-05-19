@@ -1,9 +1,8 @@
 package org.visab.eventbus;
 
 /**
- * The ISubscriber interface that all subscribers have to implement.
- * This interface is needed, since so that the EventBus can publish the exact
- * event.
+ * The ISubscriber interface that all subscribers have to implement. This
+ * interface is needed, since so that the EventBus can publish the exact event.
  *
  * @author moritz
  *

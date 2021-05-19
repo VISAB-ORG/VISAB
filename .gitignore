@@ -1,3 +1,5 @@
+logs/
+
 .vscode/
 *.iml
 .idea/
@@ -7,6 +9,8 @@
 .metadata/
 .classpath
 /data/
+
+**visablogs/
 
 # Generic Eclispe .gitignore
 /bin/

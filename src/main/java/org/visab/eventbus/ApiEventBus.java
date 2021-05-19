@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The ApiEventBus, used for notifying subscribers of new messages to the api.
  * Subscribers will be notified, when their subscribed event occurs.
@@ -13,6 +16,9 @@ import java.util.Map;
  *
  */
 public class ApiEventBus {
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(ApiEventBus.class);
 
     private Map<String, ArrayList<ISubscriber<? extends IEvent>>> subscribers = new HashMap<>();
 
