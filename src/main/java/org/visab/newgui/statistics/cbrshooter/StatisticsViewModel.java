@@ -1,10 +1,9 @@
 package org.visab.newgui.statistics.cbrshooter;
 
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
-import org.visab.newgui.statistics.cbrshooter.model.StatisticsRow;
 import org.visab.processing.ILiveViewable;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +13,9 @@ import javafx.collections.ObservableList;
  * technically sufficient, due to the packaging
  * (org.visab.newgui.statistics.cbrshooter.StatisticsViewModel !=
  * org.visab.newgui.statistics.someothegame.StatisticsViewModel)
+ * 
+ * TODO: Create a abstract base class from this example, once vanessa is done
+ * with the view
  */
 public class StatisticsViewModel extends ViewModelBase implements ILiveViewModel<CBRShooterStatistics> {
 
@@ -27,9 +29,10 @@ public class StatisticsViewModel extends ViewModelBase implements ILiveViewModel
     }
 
     public StatisticsViewModel(ILiveViewable<CBRShooterStatistics> listener) {
-        listener.addViewModel(this);
         isLive = true;
         isActive = true;
+
+        listener.addViewModel(this);
 
         // Add all the already received statistics
         for (var statistics : listener.getReceivedStatistics())

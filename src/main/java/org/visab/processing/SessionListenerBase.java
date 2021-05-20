@@ -10,6 +10,7 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.generalmodelchangeme.IStatistics;
 import org.visab.repository.DatabaseRepository;
 
 /**

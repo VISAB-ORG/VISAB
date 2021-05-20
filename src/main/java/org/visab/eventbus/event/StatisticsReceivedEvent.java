@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.processing.IStatistics;
+import org.visab.generalmodelchangeme.IStatistics;
 
 /**
  * The StatisticsReceivedEvent, that occurs when new statistics are received by
