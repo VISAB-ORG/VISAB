@@ -1,18 +1,17 @@
 package org.visab.generalmodelchangeme.starter;
 
-import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.processing.IMapImage;
 
-public class DefaultStatistics implements IStatistics {
+public class DefaultMapImage implements IMapImage {
 
     private String json;
     private String game;
 
-    public DefaultStatistics(String game, String json) {
+    public DefaultMapImage(String game, String json) {
         this.game = game;
         this.json = json;
     }
 
-    @Override
     public String getGame() {
         return game;
     }
