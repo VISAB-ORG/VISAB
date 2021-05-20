@@ -4,6 +4,9 @@ import org.visab.repository.DatabaseRepository;
 import org.visab.repository.IVISABFile;
 import org.visab.util.VISABUtil;
 
+/**
+ * The DatabaseManager that is used for deleting/adding/removing VISAB files.
+ */
 public class DatabaseManager {
 
     public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");

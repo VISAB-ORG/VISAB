@@ -10,6 +10,10 @@ import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.DynamicMapping;
 import org.visab.workspace.config.model.MappingConfig;
 
+/**
+ * The ConfigManager that is used for loading and modifying settings and dynamic
+ * mappings.
+ */
 public class ConfigManager {
 
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
@@ -29,7 +33,14 @@ public class ConfigManager {
         return this.mapping.getMappings();
     }
 
-    public boolean changeMapping(String game, MappingConfig newMapping) {
+    /**
+     * Replaces an existing mapping with a new Mapping
+     * 
+     * @param game       The game to replace the mapping of
+     * @param newMapping The new mapping
+     * @return True if successful
+     */
+    public boolean replaceMapping(String game, MappingConfig newMapping) {
         var mappingCopy = new ArrayList<MappingConfig>(mapping.getMappings());
         for (int i = 0; i < mappingCopy.size(); i++) {
             var mapping = mappingCopy.get(i);
@@ -44,6 +55,12 @@ public class ConfigManager {
         return false;
     }
 
+    /**
+     * Gets the mapping for a given game
+     * 
+     * @param game The game to get the mapping for
+     * @return The mapping if mappings contained it, null else
+     */
     public MappingConfig getMapping(String game) {
         Optional<MappingConfig> optional = getMappings().stream().filter(x -> x.getGame().equals(game)).findFirst();
 
@@ -52,6 +69,12 @@ public class ConfigManager {
         return null;
     }
 
+    /**
+     * Adds a mapping to the mappings
+     * 
+     * @param newMapping The mapping to add
+     * @return True if successful
+     */
     public boolean addMapping(MappingConfig newMapping) {
         if (getMapping(newMapping.getGame()) == null) {
             getMappings().add(newMapping);
@@ -62,14 +85,30 @@ public class ConfigManager {
         return false;
     }
 
+    /**
+     * Removes a mapping by game from the mappings
+     * 
+     * @param game The game to remove the mapping for
+     * @return True if successful
+     */
     public boolean removeMapping(String game) {
         return getMappings().removeIf(x -> x.getGame().equals(game));
     }
 
+    /**
+     * Removes a mappign from the mappings.
+     * 
+     * @return True if successful
+     */
     public boolean removeMapping(MappingConfig mapping) {
         return getMappings().remove(mapping);
     }
 
+    /**
+     * Loads the mappings from the filesystem using the repository.
+     * 
+     * @return True if successful
+     */
     private boolean loadMapping() {
         var mapping = repo.loadMapping(null);
         if (mapping == null) {

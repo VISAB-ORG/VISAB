@@ -1,5 +1,9 @@
 package org.visab.workspace.config.model;
 
+/**
+ * Pojo representing a MappingConfiguration. Each of these fields has the fully
+ * qualifying name of the class to initialize / deserialize into as their value.
+ */
 public class MappingConfig {
 
     private String game;
