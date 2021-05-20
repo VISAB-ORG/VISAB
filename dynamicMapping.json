@@ -1,7 +1,7 @@
 {
-    "configurations": [
+    "mappings": [
         {
-            "name": "CBRShooter",
+            "game": "CBRShooter",
             "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
             "statistics": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics",
             "file": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile",
