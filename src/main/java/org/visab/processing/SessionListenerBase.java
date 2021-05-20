@@ -94,7 +94,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      */
     protected LocalTime lastReceived = LocalTime.now();
 
-    protected DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
+    protected DatabaseManager manager = Workspace.instance.getDatabaseManager();
 
     protected UUID sessionId;
 

@@ -13,7 +13,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
 
     // TODO: This could also just use the Manager instead. Have to see if we want
     // that.
-    private DatabaseRepository repo = Workspace.getInstance().getDatabaseManager().getRepository();
+    private DatabaseRepository repo = Workspace.instance.getDatabaseManager().getRepository();
 
     public DatabaseViewModel() {
         super(DatabaseManager.DATABASE_PATH);
