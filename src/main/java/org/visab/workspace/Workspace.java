@@ -1,5 +1,7 @@
 package org.visab.workspace;
 
+import org.visab.workspace.config.ConfigManager;
+
 public class Workspace {
 
     private ConfigManager configManager;
