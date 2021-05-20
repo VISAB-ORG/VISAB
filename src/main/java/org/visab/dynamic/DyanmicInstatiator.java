@@ -13,7 +13,9 @@ import org.visab.processing.starter.DefaultSessionListener;
 
 public class DyanmicInstatiator {
 
-    public DyanmicInstatiator() {
+    public static final DyanmicInstatiator instance = new DyanmicInstatiator();
+
+    private DyanmicInstatiator() {
     }
 
     // TODO: This is loaded from the workspace (saved under ViewMapping or a
@@ -34,7 +36,7 @@ public class DyanmicInstatiator {
         return sessionListener;
     }
 
-    public static Object instatiateClass(String className, Object... params) {
+    public Object instatiateClass(String className, Object... params) {
         // Start by getting the right constructor
         var constructors = getConstructors(className);
 

@@ -13,13 +13,15 @@ import org.visab.util.JsonConvert;
 
 public class DynamicSerializer {
 
-    // TODO: This is loaded from the workspace (saved under ViewMapping or a
+    // TODO: This is accessed from the workspace (saved under ViewMapping or a
     // different name)
     public Map<String, String> statisticsMap = new HashMap<>();
     public Map<String, String> visabFileMap = new HashMap<>();
     public Map<String, String> imageMap = new HashMap<>();
 
-    public DynamicSerializer() {
+    public static final DynamicSerializer instance = new DynamicSerializer();
+
+    private DynamicSerializer() {
     }
 
     public IVISABFile deserializeVISABFile(String json, String game) {
