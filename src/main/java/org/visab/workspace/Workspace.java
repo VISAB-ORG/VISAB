@@ -19,6 +19,9 @@ public class Workspace {
 
     private LogManager logManager;
 
+    /**
+     * Singelton instance
+     */
     public static final Workspace instance = new Workspace();
 
     /**
