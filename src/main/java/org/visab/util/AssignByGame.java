@@ -6,17 +6,17 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.processing.IMapImage;
+import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.generalmodelchangeme.IVISABFile;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
+import org.visab.generalmodelchangeme.starter.DefaultFile;
+import org.visab.generalmodelchangeme.starter.DefaultStatistics;
+import org.visab.processing.IImage;
 import org.visab.processing.ISessionListener;
-import org.visab.processing.IStatistics;
-import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
-import org.visab.processing.cbrshooter.CBRShooterMapImage;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
-import org.visab.processing.starter.DefaultFile;
 import org.visab.processing.starter.DefaultSessionListener;
-import org.visab.processing.starter.model.DefaultStatistics;
-import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
@@ -86,7 +86,7 @@ public final class AssignByGame {
      * @param game The game
      * @return The statistics object
      */
-    public static final IMapImage getDeserializedMapImage(String json, String game) {
+    public static final IImage getDeserializedImage(String json, String game) {
         switch (game) {
         case CBR_SHOOTER_STRING:
             return JsonConvert.deserializeJson(json, CBRShooterMapImage.class);
@@ -102,7 +102,7 @@ public final class AssignByGame {
      * @param sessionId The sessionId for the Listener to listen to
      * @return The SessionListener object
      */
-    public static final ISessionListener<? extends IStatistics> getListenerInstanceByGame(String game, UUID sessionId) {
+    public static final ISessionListener<?> getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
         case CBR_SHOOTER_STRING:
             return new CBRShooterListener(sessionId);

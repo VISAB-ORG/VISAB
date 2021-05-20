@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "CBRShooter",
+            "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
+            "statistics": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics",
+            "file": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile",
+            "image": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage"
+        }
+    ]
+}

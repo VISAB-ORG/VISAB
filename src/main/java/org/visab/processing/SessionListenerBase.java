@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.UUID;
 
 import org.visab.api.WebApi;
-import org.visab.eventbus.IEvent;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.generalmodelchangeme.IStatistics;
 import org.visab.repository.DatabaseRepository;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.Workspace;
@@ -102,7 +102,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      * List of all subscribers. All subscribers in this list will be unsubscribed on
      * the SessionClosedEvent.
      */
-    protected List<ISubscriber<? extends IEvent>> subscribers = new ArrayList<>();
+    protected List<ISubscriber<?>> subscribers = new ArrayList<>();
 
     public SessionListenerBase(String game, UUID sessionId) {
         this.game = game;

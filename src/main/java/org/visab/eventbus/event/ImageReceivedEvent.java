@@ -2,20 +2,20 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.processing.IMapImage;
+import org.visab.processing.IImage;
 
-public class MapImageReceivedEvent extends EventBase {
+public class ImageReceivedEvent extends EventBase {
 
-    private IMapImage mapImage;
+    private IImage mapImage;
     private String game;
 
-    public MapImageReceivedEvent(UUID sessionId, String game, IMapImage mapImage) {
+    public ImageReceivedEvent(UUID sessionId, String game, IImage mapImage) {
         super(sessionId);
         this.game = game;
         this.mapImage = mapImage;
     }
 
-    public IMapImage getImage() {
+    public IImage getImage() {
         return this.mapImage;
     }
 

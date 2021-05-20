@@ -1,5 +1,7 @@
 package org.visab.repository;
 
+import org.visab.generalmodelchangeme.IVISABFile;
+import org.visab.generalmodelchangeme.VISABFileBase;
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
 

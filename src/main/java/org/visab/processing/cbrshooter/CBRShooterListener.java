@@ -5,9 +5,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
+import org.visab.util.StringFormat;
 
 /**
  * The CBRShooterListener class, that is responsible for listening information
@@ -44,12 +47,12 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
         CBRShooterFile.getStatistics().add(statistics);
 
-        logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
-                CBRShooterFile.getStatistics().size()));
+        logger.debug(StringFormat.niceString("[Game: {0}, SessionId: {1}] has {2} entries now", getGame(),
+                getSessionId(), CBRShooterFile.getStatistics().size()));
     }
 
     @Override
-    public void processMapImage(CBRShooterMapImage mapImage) {
+    public void processImage(CBRShooterMapImage mapImage) {
         // TODO Auto-generated method stub
 
     }

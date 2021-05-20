@@ -1,18 +1,17 @@
-package org.visab.processing.starter.model;
+package org.visab.generalmodelchangeme.starter;
 
-import org.visab.processing.IStatistics;
+import org.visab.processing.IImage;
 
-public class DefaultStatistics implements IStatistics {
+public class DefaultImage implements IImage {
 
     private String json;
     private String game;
 
-    public DefaultStatistics(String game, String json) {
+    public DefaultImage(String game, String json) {
         this.game = game;
         this.json = json;
     }
 
-    @Override
     public String getGame() {
         return game;
     }
@@ -20,4 +19,5 @@ public class DefaultStatistics implements IStatistics {
     public String getJson() {
         return json;
     }
+
 }
