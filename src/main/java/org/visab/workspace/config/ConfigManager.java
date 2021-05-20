@@ -15,6 +15,9 @@ public class ConfigManager {
     private DynamicMapping mapping;
 
     public ConfigManager() {
+        // TODO: Load settings first, so that they can be used for mapping
+        // initialization. Important in case we decide to make it customizable where to
+        // save your mappings.
         loadMapping();
     }
 
@@ -64,9 +67,14 @@ public class ConfigManager {
     }
 
     private boolean loadMapping() {
-        // Load using repository
+        var mapping = repo.loadMapping(null);
+        if (mapping == null) {
+            // TOOD: Raise some exception or do error handeling
+        } else {
+            this.mapping = mapping;
+        }
 
-        return false;
+        return mapping != null;
     }
 
 }
