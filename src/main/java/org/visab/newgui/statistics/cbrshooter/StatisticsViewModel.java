@@ -3,6 +3,7 @@ package org.visab.newgui.statistics.cbrshooter;
 import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
+import org.visab.newgui.statistics.cbrshooter.model.StatisticsRow;
 import org.visab.processing.ILiveViewable;
 
 import javafx.collections.FXCollections;
@@ -39,9 +40,9 @@ public class StatisticsViewModel extends ViewModelBase implements ILiveViewModel
             overviewStatistics.add(mapToRow(statistics));
     }
 
-    public ObservablePropety<Boolean> getIsActive() {
-
-    }
+    // public ObservablePropety<Boolean> getIsActive() {
+    //
+    // }
 
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
