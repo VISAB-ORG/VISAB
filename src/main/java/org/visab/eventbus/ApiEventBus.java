@@ -20,7 +20,7 @@ public class ApiEventBus {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(ApiEventBus.class);
 
-    private Map<String, ArrayList<ISubscriber<? extends IEvent>>> subscribers = new HashMap<>();
+    private Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
 
     public <TEvent extends IEvent> void publish(TEvent event) {
         var eventType = event.getClass().getSimpleName().toString();
@@ -34,7 +34,7 @@ public class ApiEventBus {
         }
     }
 
-    public void subscribe(ISubscriber<? extends IEvent> subscriber) {
+    public void subscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
         if (!subscribers.containsKey(eventType))
@@ -42,7 +42,7 @@ public class ApiEventBus {
         subscribers.get(eventType).add(subscriber);
     }
 
-    public void unsubscribe(ISubscriber<? extends IEvent> subscriber) {
+    public void unsubscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
         if (subscribers.containsKey(eventType))
@@ -62,7 +62,7 @@ public class ApiEventBus {
      */
     @SuppressWarnings("unchecked")
     private <TEvent extends IEvent> List<ISubscriber<TEvent>> castSubscribers(
-            List<ISubscriber<? extends IEvent>> uncastedSubscribers) {
+            List<ISubscriber<?>> uncastedSubscribers) {
         var casted = new ArrayList<ISubscriber<TEvent>>();
 
         for (var sub : uncastedSubscribers)
