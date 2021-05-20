@@ -2,8 +2,9 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
+import org.visab.generalmodelchangeme.starter.DefaultFile;
+import org.visab.generalmodelchangeme.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
-import org.visab.processing.starter.model.DefaultStatistics;
 
 /**
  * This is a session listener default class, used for when games are allowed

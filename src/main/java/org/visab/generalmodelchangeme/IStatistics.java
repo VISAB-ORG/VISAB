@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.generalmodelchangeme;
 
 /**
  * The interface, that all statistic POJOs have to implement. IStatistic POJOs

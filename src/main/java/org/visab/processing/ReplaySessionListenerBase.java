@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.visab.api.WebApi;
 import org.visab.eventbus.event.MapImageReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.generalmodelchangeme.IStatistics;
 
 /**
  *

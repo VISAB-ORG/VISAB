@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.generalmodelchangeme;
 
 import java.time.LocalDateTime;
 

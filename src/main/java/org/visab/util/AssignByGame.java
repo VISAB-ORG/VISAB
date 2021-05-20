@@ -6,17 +6,17 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.generalmodelchangeme.IVISABFile;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
+import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
+import org.visab.generalmodelchangeme.starter.DefaultFile;
+import org.visab.generalmodelchangeme.starter.DefaultStatistics;
 import org.visab.processing.IMapImage;
 import org.visab.processing.ISessionListener;
-import org.visab.processing.IStatistics;
-import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
-import org.visab.processing.cbrshooter.CBRShooterMapImage;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
-import org.visab.processing.starter.DefaultFile;
 import org.visab.processing.starter.DefaultSessionListener;
-import org.visab.processing.starter.model.DefaultStatistics;
-import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
