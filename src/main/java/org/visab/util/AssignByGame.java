@@ -13,7 +13,7 @@ import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
 import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.generalmodelchangeme.starter.DefaultFile;
 import org.visab.generalmodelchangeme.starter.DefaultStatistics;
-import org.visab.processing.IMapImage;
+import org.visab.processing.IImage;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.cbrshooter.CBRShooterListener;
 import org.visab.processing.starter.DefaultSessionListener;
@@ -86,7 +86,7 @@ public final class AssignByGame {
      * @param game The game
      * @return The statistics object
      */
-    public static final IMapImage getDeserializedMapImage(String json, String game) {
+    public static final IImage getDeserializedImage(String json, String game) {
         switch (game) {
         case CBR_SHOOTER_STRING:
             return JsonConvert.deserializeJson(json, CBRShooterMapImage.class);

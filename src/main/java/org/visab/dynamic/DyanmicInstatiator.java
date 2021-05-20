@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.dynamic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.visab.processing.ISessionListener;
 import org.visab.processing.starter.DefaultSessionListener;
 
 public class DyanmicInstatiator {

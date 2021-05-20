@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.dynamic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,9 @@ import java.util.Map;
 import org.visab.generalmodelchangeme.IStatistics;
 import org.visab.generalmodelchangeme.IVISABFile;
 import org.visab.generalmodelchangeme.starter.DefaultFile;
-import org.visab.generalmodelchangeme.starter.DefaultMapImage;
+import org.visab.generalmodelchangeme.starter.DefaultImage;
 import org.visab.generalmodelchangeme.starter.DefaultStatistics;
+import org.visab.processing.IImage;
 import org.visab.util.JsonConvert;
 
 public class DynamicSerializer {
@@ -34,17 +35,17 @@ public class DynamicSerializer {
         return visabFile;
     }
 
-    public IMapImage deserializeMapImage(String json, String game) {
-        var className = statisticsMap.getOrDefault(game, "");
+    public IImage deserializeImage(String json, String game) {
+        var className = imageMap.getOrDefault(game, "");
 
-        IMapImage mapImage = null;
+        IImage image = null;
         if (className.isBlank()) {
-            mapImage = new DefaultMapImage(game, json);
+            image = new DefaultImage(game, json);
         } else {
-            mapImage = this.<IMapImage>tryDeserialize(className, json);
+            image = this.<IImage>tryDeserialize(className, json);
         }
 
-        return mapImage;
+        return image;
     }
 
     public IStatistics deserializeStatistics(String json, String game) {

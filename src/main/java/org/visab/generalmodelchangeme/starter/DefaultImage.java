@@ -1,13 +1,13 @@
 package org.visab.generalmodelchangeme.starter;
 
-import org.visab.processing.IMapImage;
+import org.visab.processing.IImage;
 
-public class DefaultMapImage implements IMapImage {
+public class DefaultImage implements IImage {
 
     private String json;
     private String game;
 
-    public DefaultMapImage(String game, String json) {
+    public DefaultImage(String game, String json) {
         this.game = game;
         this.json = json;
     }
