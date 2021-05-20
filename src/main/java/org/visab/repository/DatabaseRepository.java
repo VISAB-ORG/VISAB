@@ -2,7 +2,6 @@ package org.visab.repository;
 
 import org.visab.util.AssignByGame;
 import org.visab.util.JsonConvert;
-import org.visab.util.Settings;
 
 /**
  * Class for saving and loading VISAB files from VISABs database.
@@ -12,9 +11,8 @@ import org.visab.util.Settings;
  */
 public class DatabaseRepository extends RepositoryBase {
 
-    public DatabaseRepository() {
-        // TODO: Get from somewhere else
-        super(Settings.DATA_PATH);
+    public DatabaseRepository(String databasePath) {
+        super(databasePath);
     }
 
     /**

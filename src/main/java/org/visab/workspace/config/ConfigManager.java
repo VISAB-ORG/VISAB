@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.visab.repository.ConfigRepository;
+import org.visab.util.VISABUtil;
+import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.DynamicMapping;
 import org.visab.workspace.config.model.MappingConfig;
 
 public class ConfigManager {
 
-    private ConfigRepository repo;
+    public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
+
+    private ConfigRepository repo = new ConfigRepository(CONFIG_PATH);
 
     private DynamicMapping mapping;
 

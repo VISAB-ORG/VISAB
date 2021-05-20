@@ -20,7 +20,7 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultStatistic
 
     @Override
     public void onSessionClosed() {
-        repo.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString());
     }
 
     @Override

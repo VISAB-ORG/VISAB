@@ -4,8 +4,8 @@ import org.visab.workspace.config.model.DynamicMapping;
 
 public class ConfigRepository extends RepositoryBase {
 
-    public ConfigRepository() {
-        super("TODO:");
+    public ConfigRepository(String configPath) {
+        super(configPath);
     }
 
     public DynamicMapping loadMapping(String name) {

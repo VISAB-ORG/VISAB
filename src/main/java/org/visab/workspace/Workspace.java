@@ -1,8 +1,12 @@
 package org.visab.workspace;
 
+import org.visab.util.VISABUtil;
 import org.visab.workspace.config.ConfigManager;
 
 public class Workspace {
+
+    public static final String WORKSPACE_PATH = VISABUtil.combinePath(VISABUtil.getRunningJarRootDirPath(),
+            "workspace");
 
     private ConfigManager configManager;
 
@@ -13,6 +17,9 @@ public class Workspace {
     private static Workspace instance;
 
     private Workspace() {
+        configManager = new ConfigManager();
+        databaseManager = new DatabaseManager();
+        logManager = new LogManager();
     }
 
     public static Workspace getInstance() {
