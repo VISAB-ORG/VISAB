@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
+import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.util.AssignByGame;
@@ -54,7 +55,8 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        var event = new StatisticsReceivedEvent(sessionId, game, AssignByGame.getDeserializedStatistics(json, game));
+        var event = new StatisticsReceivedEvent(sessionId, game,
+                DynamicSerializer.instance.deserializeStatistics(json, game));
         publish(event);
 
         return getOkResponse("Statistics received.");

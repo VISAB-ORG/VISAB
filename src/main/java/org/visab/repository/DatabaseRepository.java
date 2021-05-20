@@ -1,5 +1,6 @@
 package org.visab.repository;
 
+import org.visab.dynamic.DynamicSerializer;
 import org.visab.generalmodelchangeme.IVISABFile;
 import org.visab.generalmodelchangeme.VISABFileBase;
 import org.visab.util.AssignByGame;
@@ -56,7 +57,7 @@ public class DatabaseRepository extends RepositoryBase {
     public <T extends IVISABFile> T loadVISABFileByPath(String filePath, String game) {
         var json = readFileContents(filePath);
 
-        var file = AssignByGame.getDeserializedFile(json, game);
+        var file = DynamicSerializer.instance.deserializeVISABFile(json, game);
 
         return file != null ? (T) file : null;
     }

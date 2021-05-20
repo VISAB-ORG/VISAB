@@ -13,6 +13,8 @@ import org.visab.workspace.config.model.MappingConfig;
 /**
  * The ConfigManager that is used for loading and modifying settings and dynamic
  * mappings.
+ * 
+ * TODO: Allowed games has to be added to settings.
  */
 public class ConfigManager {
 
@@ -26,7 +28,7 @@ public class ConfigManager {
         // TODO: Load settings first, so that they can be used for mapping
         // initialization. Important in case we decide to make it customizable where to
         // save your mappings.
-        loadMapping();
+        loadDynamicMapping();
     }
 
     public List<MappingConfig> getMappings() {
@@ -109,13 +111,24 @@ public class ConfigManager {
      * 
      * @return True if successful
      */
-    private boolean loadMapping() {
-        var mapping = repo.loadMapping(null);
-        if (mapping == null) {
-            // TOOD: Raise some exception or do error handeling
-        } else {
-            this.mapping = mapping;
-        }
+    private boolean loadDynamicMapping() {
+        // TODO: Load from file!
+        var cbrMapping = new MappingConfig();
+        cbrMapping.setGame("CBRShooter");
+        cbrMapping.setListener("org.visab.processing.cbrshooter.CBRShooterListener");
+        cbrMapping.setStatistics("org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics");
+        cbrMapping.setFile("org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile");
+        cbrMapping.setImage("org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage");
+
+        var mapping = new DynamicMapping();
+        mapping.getMappings().add(cbrMapping);
+
+        /*
+         * var mapping = repo.loadMapping(null); if (mapping == null) { // TOOD: Raise
+         * some exception or do error handeling } else { this.mapping = mapping; }
+         */
+
+        this.mapping = mapping;
 
         return mapping != null;
     }
