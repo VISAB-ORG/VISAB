@@ -1,7 +1,5 @@
 package org.visab.newgui.statistics.cbrshooter.model;
 
-import org.visab.generalmodelchangeme.cbrshooter.Vector2;
-
 public class CBRShooterStatisticsRow {
 
     private Vector2 playerOnePosition;

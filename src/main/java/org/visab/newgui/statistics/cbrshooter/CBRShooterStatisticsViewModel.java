@@ -4,6 +4,7 @@ import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
+import org.visab.newgui.statistics.cbrshooter.model.Vector2;
 import org.visab.processing.ILiveViewable;
 
 import javafx.collections.FXCollections;
@@ -45,7 +46,8 @@ public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiv
     }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
-        return new CBRShooterStatisticsRow(statistics.getScriptPlayer().getPosition());
+        var position = statistics.getScriptPlayer().getPosition();
+        return new CBRShooterStatisticsRow(new Vector2(position.getX(), position.getY()));
     }
 
     public ObservableList<CBRShooterStatisticsRow> getOverviewStatistics() {
