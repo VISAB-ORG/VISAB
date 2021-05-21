@@ -1,6 +1,6 @@
-package org.visab.generalmodelchangeme.starter;
+package org.visab.globalmodel.starter;
 
-import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.globalmodel.IStatistics;
 
 public class DefaultStatistics implements IStatistics {
 

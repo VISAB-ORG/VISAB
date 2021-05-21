@@ -2,21 +2,9 @@ package org.visab.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.generalmodelchangeme.IStatistics;
-import org.visab.generalmodelchangeme.IVISABFile;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
-import org.visab.generalmodelchangeme.starter.DefaultFile;
-import org.visab.generalmodelchangeme.starter.DefaultStatistics;
-import org.visab.processing.IImage;
-import org.visab.processing.ISessionListener;
-import org.visab.processing.cbrshooter.CBRShooterListener;
-import org.visab.processing.starter.DefaultSessionListener;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding

@@ -2,8 +2,8 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
-import org.visab.generalmodelchangeme.starter.DefaultFile;
-import org.visab.generalmodelchangeme.starter.DefaultStatistics;
+import org.visab.globalmodel.starter.DefaultFile;
+import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
 
 /**

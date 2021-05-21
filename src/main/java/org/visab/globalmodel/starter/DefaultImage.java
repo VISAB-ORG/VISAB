@@ -1,4 +1,4 @@
-package org.visab.generalmodelchangeme.starter;
+package org.visab.globalmodel.starter;
 
 import org.visab.processing.IImage;
 

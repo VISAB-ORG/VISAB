@@ -1,9 +1,9 @@
-package org.visab.generalmodelchangeme.cbrshooter;
+package org.visab.globalmodel.cbrshooter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.generalmodelchangeme.VISABFileBase;
+import org.visab.globalmodel.VISABFileBase;
 import org.visab.util.AssignByGame;
 
 public class CBRShooterFile extends VISABFileBase {
