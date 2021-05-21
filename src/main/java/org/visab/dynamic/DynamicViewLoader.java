@@ -26,6 +26,7 @@ public class DynamicViewLoader {
      * @param game The game to load a statistics view instance for
      * @return The ViewTupel if successful, throws exception else
      */
+    @SuppressWarnings("unchecked")
     public ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(String game) {
         // TODO: get classname from somewhere
         var className = "org.visab.newgui.statistics.CBRShooterStatisticsView";
@@ -40,7 +41,6 @@ public class DynamicViewLoader {
             // return FluentViewLoader.fxmlView();
             return null;
         } else {
-            @SuppressWarnings("unchecked")
             var _class = (Class<? extends FxmlView<? extends ViewModel>>) tryGetClass(className);
 
             return FluentViewLoader.fxmlView(_class).load();
