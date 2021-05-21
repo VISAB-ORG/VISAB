@@ -65,7 +65,7 @@ public class DatabaseRepository extends RepositoryBase {
      * Loads a VISABFileBase object from a given path
      * 
      * @param filePath The path to the file
-     * @return The VISABFileBase
+     * @return The VISABFileBase object
      */
     public VISABFileBase loadBaseFile(String filePath) {
         var json = readFileContents(filePath);
@@ -74,7 +74,7 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Saves a file to the repository
+     * Saves a file to the database
      *
      * @param visabFile The file to save
      * @param fileName  The name of the file
@@ -87,9 +87,6 @@ public class DatabaseRepository extends RepositoryBase {
         createMissingDirectories(fileDir);
 
         var filePath = combinePath(fileDir, fileName);
-        // If file has no extension, make it .visab2
-        if (!filePath.contains("."))
-            filePath += ".visab2";
 
         return writeToFile(filePath, json);
     }

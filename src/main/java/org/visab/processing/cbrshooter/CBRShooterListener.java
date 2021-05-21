@@ -31,10 +31,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionClosed() {
-        if (manager.saveFile(CBRShooterFile, sessionId.toString()))
-            logger.info("Saved file in repository!");
-        else
-            logger.info("Couldn't save file in repository!");
+        manager.saveFile(CBRShooterFile, sessionId.toString());
     }
 
     @Override
