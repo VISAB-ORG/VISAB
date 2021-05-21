@@ -9,7 +9,6 @@ import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.eventbus.ApiEventBus;
-import org.visab.processing.SessionListenerAdministration;
 import org.visab.processing.SessionListenerFactory;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -63,6 +62,7 @@ public class WebApi extends RouterNanoHTTPD {
         SessionListenerFactory.instance.stopFactory();
         watchdog.stopTimeoutLoop();
         this.stop();
+        logger.info("Stopped WebApi & SessionListenerFactory & Session TimeoutLoop");
     }
 
     @Override
@@ -70,6 +70,7 @@ public class WebApi extends RouterNanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         SessionListenerFactory.instance.startFactory();
         watchdog.StartTimeoutLoop();
+        logger.info("Started WebApi & SessionListenerFactory & Session TimeoutLoop");
     }
 
 }
