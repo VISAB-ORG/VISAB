@@ -22,20 +22,41 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);
 
     public void addListener(UUID sessionId, String game) {
-        // TODO: This is more of a sanity check, that can be removed when deploying
-        if (SessionListenerAdministration.getSessionListener(sessionId) == null) {
-            var newListener = AssignByGame.getListenerInstanceByGame(game, sessionId);
-            SessionListenerAdministration.addListener(newListener);
-            // Notify the listener that the session started
-            newListener.onSessionStarted();
-        } else {
-            logger.debug("TRIED TO ADD SAME UUID SESSION!!!");
+        var newListener = AssignByGame.getListenerInstanceByGame(game, sessionId);
+        SessionListenerAdministration.addListener(newListener);
+        // Notify the listener that the session started
+        newListener.onSessionStarted();
+    }
+
+    private boolean isStarted;
+
+    /**
+     * Starts the Factory by adding it to the EventBus
+     */
+    public void startFactory() {
+        if (!isStarted) {
+            WebApi.getEventBus().subscribe(this);
+            isStarted = true;
         }
     }
 
-    public SessionListenerFactory() {
+    /**
+     * Stops the factory, by unsubscribing it from the eventbus
+     */
+    public void stopFactory() {
+        if (isStarted) {
+            WebApi.getEventBus().unsubscribe(this);
+            isStarted = false;
+        }
+    }
+
+    /**
+     * Singleton instance
+     */
+    public static final SessionListenerFactory instance = new SessionListenerFactory();
+
+    private SessionListenerFactory() {
         super(SessionOpenedEvent.class);
-        WebApi.getEventBus().subscribe(this);
     }
 
     @Override

@@ -17,12 +17,6 @@ import org.apache.logging.log4j.Logger;
  */
 public final class SessionListenerAdministration {
 
-    private static SessionListenerFactory listenerFactory;
-
-    public static SessionListenerFactory getListenerFactory() {
-        return listenerFactory;
-    }
-
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerAdministration.class);
 
@@ -59,9 +53,5 @@ public final class SessionListenerAdministration {
     // TODO: Remove gracefully?
     public static void removeListener(ISessionListener<?> listener) {
         activeListeners.remove(listener);
-    }
-
-    public static void initializeFactory() {
-        listenerFactory = new SessionListenerFactory();
     }
 }

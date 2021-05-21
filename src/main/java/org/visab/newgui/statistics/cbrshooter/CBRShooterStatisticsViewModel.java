@@ -55,6 +55,7 @@ public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiv
     @Override
     public void notifySessionClosed() {
         isActive = false;
+        // TODO: Render some future "who won" graphs an such
     }
 
 }

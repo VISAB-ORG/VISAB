@@ -21,4 +21,8 @@ public class Vector2 {
         this.y = y;
     }
 
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
 }

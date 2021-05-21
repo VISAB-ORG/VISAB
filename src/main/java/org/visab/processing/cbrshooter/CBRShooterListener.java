@@ -58,6 +58,8 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
         logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
                 file.getStatistics().size()));
+
+        notifyStatisticsAdded(statistics);
     }
 
     @Override
