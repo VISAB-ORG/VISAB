@@ -1,6 +1,6 @@
 package org.visab.workspace;
 
-import org.visab.generalmodelchangeme.IVISABFile;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.repository.DatabaseRepository;
 import org.visab.util.VISABUtil;
 

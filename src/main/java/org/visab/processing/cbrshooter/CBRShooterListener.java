@@ -1,6 +1,5 @@
 package org.visab.processing.cbrshooter;
 
-import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;

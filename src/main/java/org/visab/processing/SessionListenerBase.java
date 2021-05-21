@@ -11,7 +11,6 @@ import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.globalmodel.IStatistics;
-import org.visab.repository.DatabaseRepository;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.Workspace;
 
