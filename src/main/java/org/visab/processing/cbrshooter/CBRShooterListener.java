@@ -38,6 +38,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionClosed() {
+        // TODO: This logging should be done in the workspace
         if (repo.saveFile(file, sessionId.toString()))
             logger.info("Saved file in repository!");
         else

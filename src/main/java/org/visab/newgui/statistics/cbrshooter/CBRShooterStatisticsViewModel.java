@@ -3,33 +3,32 @@ package org.visab.newgui.statistics.cbrshooter;
 import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
-import org.visab.newgui.statistics.cbrshooter.model.StatisticsRow;
+import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
 import org.visab.processing.ILiveViewable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * TODO: Do we name this Class CBRShooterStatisticsViewModel? Current name is
- * technically sufficient, due to the packaging
- * (org.visab.newgui.statistics.cbrshooter.StatisticsViewModel !=
- * org.visab.newgui.statistics.someothegame.StatisticsViewModel)
- * 
  * TODO: Create a abstract base class from this example, once vanessa is done
  * with the view
  */
-public class StatisticsViewModel extends ViewModelBase implements ILiveViewModel<CBRShooterStatistics> {
+public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiveViewModel<CBRShooterStatistics> {
 
     private boolean isActive;
 
     private boolean isLive;
 
-    private ObservableList<StatisticsRow> overviewStatistics = FXCollections.observableArrayList();
+    private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
 
-    public StatisticsViewModel() {
+    public CBRShooterStatisticsViewModel() {
     }
 
-    public StatisticsViewModel(ILiveViewable<CBRShooterStatistics> listener) {
+    public boolean supportsLiveViewing() {
+        return this instanceof ILiveViewModel;
+    }
+
+    public void initiateLiveView(ILiveViewable<CBRShooterStatistics> listener) {
         isLive = true;
         isActive = true;
 
@@ -40,20 +39,16 @@ public class StatisticsViewModel extends ViewModelBase implements ILiveViewModel
             overviewStatistics.add(mapToRow(statistics));
     }
 
-    // public ObservablePropety<Boolean> getIsActive() {
-    //
-    // }
-
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
         overviewStatistics.add(mapToRow(newStatistics));
     }
 
-    private StatisticsRow mapToRow(CBRShooterStatistics statistics) {
-        return new StatisticsRow(statistics.getScriptPlayer().getPosition());
+    private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
+        return new CBRShooterStatisticsRow(statistics.getScriptPlayer().getPosition());
     }
 
-    public ObservableList<StatisticsRow> getOverviewStatistics() {
+    public ObservableList<CBRShooterStatisticsRow> getOverviewStatistics() {
         return overviewStatistics;
     }
 
