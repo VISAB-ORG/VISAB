@@ -1,4 +1,4 @@
-package org.visab.generalmodelchangeme.cbrshooter;
+package org.visab.globalmodel.cbrshooter;
 
 public class PlayerInformation {
 

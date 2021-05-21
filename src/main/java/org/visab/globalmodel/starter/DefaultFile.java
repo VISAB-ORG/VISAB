@@ -1,9 +1,9 @@
-package org.visab.generalmodelchangeme.starter;
+package org.visab.globalmodel.starter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.generalmodelchangeme.VISABFileBase;
+import org.visab.globalmodel.VISABFileBase;
 
 public class DefaultFile extends VISABFileBase {
 
