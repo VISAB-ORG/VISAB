@@ -5,8 +5,10 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
 import org.visab.util.AssignByGame;
 
 /**

@@ -6,17 +6,17 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.IStatistics;
+import org.visab.globalmodel.IVISABFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.starter.DefaultFile;
+import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.IMapImage;
 import org.visab.processing.ISessionListener;
-import org.visab.processing.IStatistics;
-import org.visab.processing.cbrshooter.CBRShooterFile;
 import org.visab.processing.cbrshooter.CBRShooterListener;
-import org.visab.processing.cbrshooter.CBRShooterMapImage;
-import org.visab.processing.cbrshooter.model.CBRShooterStatistics;
-import org.visab.processing.starter.DefaultFile;
 import org.visab.processing.starter.DefaultSessionListener;
-import org.visab.processing.starter.model.DefaultStatistics;
-import org.visab.repository.IVISABFile;
 
 /**
  * Class responsible for game (-string) based class instantiation. When adding
@@ -102,7 +102,7 @@ public final class AssignByGame {
      * @param sessionId The sessionId for the Listener to listen to
      * @return The SessionListener object
      */
-    public static final ISessionListener<? extends IStatistics> getListenerInstanceByGame(String game, UUID sessionId) {
+    public static final ISessionListener<?> getListenerInstanceByGame(String game, UUID sessionId) {
         switch (game) {
         case CBR_SHOOTER_STRING:
             return new CBRShooterListener(sessionId);

@@ -1,6 +1,6 @@
-package org.visab.processing.cbrshooter.model;
+package org.visab.globalmodel.cbrshooter;
 
-import org.visab.processing.IStatistics;
+import org.visab.globalmodel.IStatistics;
 
 /**
  * The CBRShooterStatistics class, representing the information given by the

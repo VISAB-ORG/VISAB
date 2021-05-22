@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.globalmodel;
 
 import java.time.LocalDateTime;
 

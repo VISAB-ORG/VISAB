@@ -1,4 +1,4 @@
-package org.visab.processing.cbrshooter;
+package org.visab.globalmodel.cbrshooter;
 
 import org.visab.processing.IMapImage;
 
