@@ -116,9 +116,9 @@ public class ConfigManager {
         var cbrMapping = new MappingConfig();
         cbrMapping.setGame("CBRShooter");
         cbrMapping.setListener("org.visab.processing.cbrshooter.CBRShooterListener");
-        cbrMapping.setStatistics("org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics");
-        cbrMapping.setFile("org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile");
-        cbrMapping.setImage("org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage");
+        cbrMapping.setStatistics("org.visab.globalmodel.cbrshooter.CBRShooterStatistics");
+        cbrMapping.setFile("org.visab.globalmodel.cbrshooter.CBRShooterFile");
+        cbrMapping.setImage("org.visab.globalmodel.cbrshooter.CBRShooterMapImage");
 
         var mapping = new DynamicMapping();
         mapping.getMappings().add(cbrMapping);
