@@ -24,7 +24,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     public void addListener(UUID sessionId, String game) {
         // TODO: This is more of a sanity check, that can be removed when deploying
         if (SessionListenerAdministration.getSessionListener(sessionId) == null) {
-            var newListener = DyanmicInstatiator.instance.instantiateSessionListener(game, sessionId);
+            var newListener = DyanmicInstatiator.instantiateSessionListener(game, sessionId);
             SessionListenerAdministration.addListener(newListener);
             // Notify the listener that the session started
             newListener.onSessionStarted();

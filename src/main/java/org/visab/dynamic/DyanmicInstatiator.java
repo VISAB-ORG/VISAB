@@ -17,17 +17,9 @@ import org.visab.workspace.Workspace;
  * The DyanmicInstatiator using which objects can be instantiates from a fully
  * classified class name. Is used for creating SessionListener instances.
  */
-public class DyanmicInstatiator {
+public final class DyanmicInstatiator {
 
-    /**
-     * Singelton instance
-     */
-    public static final DyanmicInstatiator instance = new DyanmicInstatiator();
-
-    private Logger logger = LogManager.getLogger(DyanmicInstatiator.class);
-
-    private DyanmicInstatiator() {
-    }
+    private static Logger logger = LogManager.getLogger(DyanmicInstatiator.class);
 
     /**
      * Instantiates a SessionListener based on the dynamic mappings configuration.
@@ -39,7 +31,7 @@ public class DyanmicInstatiator {
      *         runtime, since it proves a fatal error for the system and makes it
      *         unuseable.
      */
-    public ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
+    public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
 
         var mapping = Workspace.instance.getConfigManager().getMapping(game);
@@ -65,7 +57,7 @@ public class DyanmicInstatiator {
      * @param params    The constructor parameters
      * @return An instance of the class if successful, null else
      */
-    public Object instatiateClass(String className, Object... params) {
+    public static Object instatiateClass(String className, Object... params) {
         // Start by getting the right constructor
         var constructors = getConstructors(className);
 
@@ -120,7 +112,7 @@ public class DyanmicInstatiator {
      *                  constructors of
      * @return A list of the constructors
      */
-    private List<Constructor<?>> getConstructors(String className) {
+    private static List<Constructor<?>> getConstructors(String className) {
         var constructors = new ArrayList<Constructor<?>>();
 
         try {

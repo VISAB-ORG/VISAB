@@ -56,7 +56,7 @@ public class DatabaseRepository extends RepositoryBase {
     public <T extends IVISABFile> T loadVISABFileByPath(String filePath, String game) {
         var json = readFileContents(filePath);
 
-        var file = DynamicSerializer.instance.deserializeVISABFile(json, game);
+        var file = DynamicSerializer.deserializeVISABFile(json, game);
 
         return file != null ? (T) file : null;
     }
