@@ -13,11 +13,11 @@ public class Workspace {
     public static final String WORKSPACE_PATH = VISABUtil.combinePath(VISABUtil.getRunningJarRootDirPath(),
             "workspace");
 
-    private ConfigManager configManager;
+    private ConfigManager configManager = new ConfigManager();
 
-    private DatabaseManager databaseManager;
+    private DatabaseManager databaseManager = new DatabaseManager();
 
-    private LogManager logManager;
+    private LogManager logManager = new LogManager();
 
     /**
      * Singelton instance
@@ -28,9 +28,6 @@ public class Workspace {
      * For singelton
      */
     private Workspace() {
-        configManager = new ConfigManager();
-        databaseManager = new DatabaseManager();
-        logManager = new LogManager();
     }
 
     public ConfigManager getConfigManager() {

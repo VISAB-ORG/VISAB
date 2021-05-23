@@ -16,7 +16,7 @@ public abstract class RepositoryBase {
         this.baseDirectory = baseDirectory;
 
         // Create the base directory if it doesn't exist.
-        new File(baseDirectory).mkdirs();
+        createMissingDirectories(baseDirectory);
     }
 
     /**

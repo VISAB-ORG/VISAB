@@ -12,11 +12,15 @@ import org.visab.util.VISABUtil;
  */
 public class DatabaseManager {
 
-    private Logger logger = LogManager.getLogger(DatabaseManager.class);
+    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
 
     public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
 
-    private DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
+    // TODO: Somehow DATABASE_PATH is null on this call. Since static variables are
+    // initialized the first time the class if references (would be new
+    // DatabaseManager() here), I dont know how this is possible at all.
+    private DatabaseRepository repo = new DatabaseRepository(
+            VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database"));
 
     public DatabaseRepository getRepository() {
         return repo;
