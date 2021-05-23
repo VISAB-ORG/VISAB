@@ -74,7 +74,6 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
-        WebApi.instance.getEventBus().subscribe(this);
     }
 
     /**

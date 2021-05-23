@@ -184,7 +184,7 @@ public class GUIMain extends Application {
      */
     private void startApiServer() {
         try {
-            WebApi.instance.start();
+            WebApi.getInstance().start();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -224,6 +224,6 @@ public class GUIMain extends Application {
      */
     @Override
     public void stop() {
-        WebApi.instance.shutdown();
+        WebApi.getInstance().shutdown();
     }
 }

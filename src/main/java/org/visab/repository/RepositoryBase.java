@@ -8,10 +8,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * The base repository that all repositories should inherit from. Used for any
+ * IO operations inside of VISAB. If you need to import any java IO libs in non
+ * repository classes, you are likely doing it wrong. Create a specific
+ * repository instead or check if there isnt a repositry implementation that
+ * supports your wanted action.
+ */
 public abstract class RepositoryBase {
 
     protected String baseDirectory;
 
+    /**
+     * @param baseDirectory The repositories base directory used for relative
+     *                      methods
+     */
     public RepositoryBase(String baseDirectory) {
         this.baseDirectory = baseDirectory;
 
@@ -20,35 +31,27 @@ public abstract class RepositoryBase {
     }
 
     /**
+     * Returns the path to the base directory.
+     * 
+     * @return The base directory
+     */
+    public String getBaseDirectory() {
+        return this.baseDirectory;
+    }
+
+    /**
      * Renames a file at a given path to
      * 
      * @param filePath    The path to the file to rename
      * @param newFilePath The new path for the file
-     * @return True if file was renamed succesfully, false else
+     * @return True if file was renamed succesfully
      */
     public boolean renameFile(String filePath, String newFilePath) {
-        var deletedCurrent = false;
-        var createdNew = false;
-
         var file = loadFile(filePath);
 
         var newFile = new File(newFilePath);
 
-        // TODO: According to stackoverflow doesnt work sometimes
         return file.renameTo(newFile);
-
-        /*
-         * var content = readFileContents(filePath);
-         * 
-         * if (file.exists()) { deletedCurrent = file.delete();
-         * 
-         * if (deletedCurrent) createdNew = writeToFile(newFilePath, content);
-         * 
-         * // Otherwise reverse it. if (deletedCurrent & !createdNew)
-         * writeToFile(filePath, content); }
-         * 
-         * return deletedCurrent && createdNew;
-         */
     }
 
     /**
@@ -66,7 +69,7 @@ public abstract class RepositoryBase {
      * Creates missing directorie for a given file path
      * 
      * @param filePath The file path
-     * @return True if directories were created, false else
+     * @return True if directories were created
      */
     public boolean createMissingDirectories(String filePath) {
         return new File(filePath).mkdirs();
@@ -103,7 +106,7 @@ public abstract class RepositoryBase {
      *
      * @param filePath The path to the file
      * @param content  The content of the file
-     * @return True if file was successfully written, false else
+     * @return True if file was successfully written
      */
     public boolean writeToFile(String filePath, String content) {
         var file = new File(filePath);
@@ -124,7 +127,7 @@ public abstract class RepositoryBase {
      * Deletes a file at a given path
      *
      * @param filePath The path of the file to delete
-     * @return True if deleted, false else
+     * @return True if deleted
      */
     public boolean deleteFile(String filePath) {
         var file = new File(filePath);
@@ -136,10 +139,10 @@ public abstract class RepositoryBase {
     }
 
     /**
-     * Deletes a folder and all its contents
+     * Recursively deletes a folder and all its contents
      * 
      * @param folder The folder to delete
-     * @return True if fully deleted, false else
+     * @return True if everything was deleted
      */
     public boolean deleteFolder(File folder) {
         var files = folder.listFiles();
@@ -158,11 +161,11 @@ public abstract class RepositoryBase {
     }
 
     /**
-     * Writes to a file with a path relative to the base directory
+     * [CONVENIENCE] Writes to a file with to a path relative to the base directory
      * 
      * @param content      The content to write to the file
      * @param relativePath The relative path of the file
-     * @return True if successfully saved, false else
+     * @return True if successfully saved
      */
     public boolean writeToFileRelative(String content, String relativePath) {
         var filePath = combinePath(baseDirectory, relativePath);
@@ -171,7 +174,7 @@ public abstract class RepositoryBase {
     }
 
     /**
-     * Loads a file with a path relative to the base directory
+     * [CONVENIENCE] Loads a file with a path relative to the base directory
      * 
      * @param relativePath The relative path of the file
      * @return The loaded file

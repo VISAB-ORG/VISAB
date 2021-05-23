@@ -3,6 +3,7 @@ package org.visab.newgui.workspace.database;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.visab.globalmodel.VISABFileBase;
 import org.visab.newgui.workspace.ExplorerViewModelBase;
 import org.visab.newgui.workspace.model.FileRow;
 import org.visab.repository.DatabaseRepository;
@@ -30,7 +31,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
             var fileName = file.getName();
 
             var json = repo.readFileContents(file.getAbsolutePath());
-            var asBaseFile = repo.loadBaseFile(file.getAbsolutePath());
+            var asBaseFile = repo.loadBaseVISABFile(file.getAbsolutePath());
 
             // Save the new file in database
             var savePath = repo.combinePath(asBaseFile.getGame(), fileName);

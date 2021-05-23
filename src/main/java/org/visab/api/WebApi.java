@@ -8,7 +8,6 @@ import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
-import org.visab.eventbus.ApiEventBus;
 import org.visab.processing.SessionListenerFactory;
 import org.visab.util.Settings;
 
@@ -30,20 +29,27 @@ public class WebApi extends RouterNanoHTTPD {
     /**
      * Singelton instance
      */
-    public static final WebApi instance = new WebApi();
+    private static WebApi instance;
+
+    /**
+     * Gets the singelton instance
+     * 
+     * @return The instance
+     */
+    public static WebApi getInstance() {
+        if (instance == null)
+            instance = new WebApi();
+
+        return instance;
+    }
 
     private WebApi() {
         super(Settings.API_PORT);
         addMappings();
     }
 
-    private ApiEventBus apiEventBus = new ApiEventBus();
     private SessionWatchdog watchdog = new SessionWatchdog();
     private SessionListenerFactory listenerFactory = new SessionListenerFactory();
-
-    public ApiEventBus getEventBus() {
-        return this.apiEventBus;
-    }
 
     public SessionWatchdog getSessionWatchdog() {
         return this.watchdog;
@@ -76,7 +82,7 @@ public class WebApi extends RouterNanoHTTPD {
         listenerFactory.stopFactory();
         watchdog.stopTimeoutLoop();
         this.stop();
-        logger.info("Stopped WebApi & SessionListenerFactory & Session TimeoutLoop");
+        logger.info("Stopped WebApi & SessionListenerFactory & Session TimeoutLoop.");
     }
 
     /**
@@ -87,7 +93,7 @@ public class WebApi extends RouterNanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         listenerFactory.startFactory();
         watchdog.StartTimeoutLoop();
-        logger.info("Started WebApi & SessionListenerFactory & Session TimeoutLoop");
+        logger.info("Started WebApi & SessionListenerFactory & Session TimeoutLoop.");
     }
 
 }

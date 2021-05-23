@@ -10,6 +10,29 @@ import org.visab.workspace.config.ConfigManager;
  */
 public class Workspace {
 
+    /**
+     * Singelton instance
+     */
+    public static Workspace instance;
+
+    /**
+     * Gets the singelton instance
+     * 
+     * @return The singelton instance
+     */
+    public static Workspace getInstance() {
+        if (instance == null)
+            instance = new Workspace();
+
+        return instance;
+    }
+
+    /**
+     * For singelton
+     */
+    private Workspace() {
+    }
+
     public static final String WORKSPACE_PATH = VISABUtil.combinePath(VISABUtil.getRunningJarRootDirPath(),
             "workspace");
 
@@ -18,17 +41,6 @@ public class Workspace {
     private DatabaseManager databaseManager = new DatabaseManager();
 
     private LogManager logManager = new LogManager();
-
-    /**
-     * Singelton instance
-     */
-    public static final Workspace instance = new Workspace();
-
-    /**
-     * For singelton
-     */
-    private Workspace() {
-    }
 
     public ConfigManager getConfigManager() {
         return this.configManager;

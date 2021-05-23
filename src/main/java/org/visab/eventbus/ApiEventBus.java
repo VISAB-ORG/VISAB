@@ -17,8 +17,25 @@ import org.apache.logging.log4j.Logger;
  */
 public class ApiEventBus {
 
+    /**
+     * Singelton instance
+     */
+    private static ApiEventBus instance;
+
+    /**
+     * Gets the singelton instance
+     * 
+     * @return The instance
+     */
+    public static ApiEventBus getInstance() {
+        if (instance == null)
+            instance = new ApiEventBus();
+
+        return instance;
+    }
+
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(ApiEventBus.class);
+    private Logger logger = LogManager.getLogger(ApiEventBus.class);
 
     /**
      * The current subscribers.
@@ -53,7 +70,10 @@ public class ApiEventBus {
 
         if (!subscribers.containsKey(eventType))
             subscribers.put(eventType, new ArrayList<ISubscriber<?>>());
-        subscribers.get(eventType).add(subscriber);
+
+        // Only add if not already subscribed
+        if (!subscribers.get(eventType).contains(subscriber))
+            subscribers.get(eventType).add(subscriber);
     }
 
     /**

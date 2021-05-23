@@ -5,9 +5,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
-import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.util.AssignByGame;
@@ -67,6 +67,6 @@ public class MapController extends HTTPControllerBase implements IPublisher<Imag
 
     @Override
     public void publish(ImageReceivedEvent event) {
-        WebApi.instance.getEventBus().publish(event);
+        ApiEventBus.getInstance().publish(event);
     }
 }

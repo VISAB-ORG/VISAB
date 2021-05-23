@@ -36,7 +36,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * Handler for adding new files via drag and drop or dialog
      *
      * @param file The file to be added
-     * @return True if file was added, false else
+     * @return True if file was added
      */
     public abstract boolean addFile(File file);
 

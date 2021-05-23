@@ -38,7 +38,7 @@ public class DatabaseManager {
         if (!fileName.contains("."))
             fileName += ".visab2";
 
-        var success = repo.saveFile(file, fileName);
+        var success = repo.saveFileDB(file, fileName);
 
         if (success)
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
@@ -56,7 +56,7 @@ public class DatabaseManager {
      * @return True if successful
      */
     public boolean deleteFile(String fileName, String game) {
-        var success = repo.deleteFileByName(fileName, game);
+        var success = repo.deleteVISABFileDB(fileName, game);
 
         if (success)
             logger.info(StringFormat.niceString("Deleted {0} of {1} from database", fileName, game));

@@ -345,7 +345,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      * Checks if a file has an allowed file extension
      * 
      * @param file The file to check
-     * @return True if allowed, false else
+     * @return True if allowed
      */
     private boolean hasAllowedExtension(File file) {
         for (var extension : getAllowedExtensions()) {

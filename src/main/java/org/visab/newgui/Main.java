@@ -14,12 +14,12 @@ public class Main {
     }
 
     public static void shutdownWebApi() {
-        WebApi.instance.shutdown();
+        WebApi.getInstance().shutdown();
     }
 
     private static void startWebApi() {
         try {
-            WebApi.instance.start();
+            WebApi.getInstance().start();
         } catch (IOException e) {
             e.printStackTrace();
         }

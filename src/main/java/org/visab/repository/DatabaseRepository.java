@@ -6,9 +6,7 @@ import org.visab.globalmodel.VISABFileBase;
 import org.visab.util.JsonConvert;
 
 /**
- * Class for saving and loading VISAB files from VISABs database.
- *
- * @author moritz
+ * A repository for saving and loading VISAB files from VISABs database.
  *
  */
 public class DatabaseRepository extends RepositoryBase {
@@ -18,42 +16,42 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Deletes a file of a give game with a given name
+     * Deletes a file from the database.
      *
      * @param game     The game of the file
      * @param fileName The name of the file
-     * @return True if deleted, false else
+     * @return True if deleted
      */
-    public boolean deleteFileByName(String fileName, String game) {
+    public boolean deleteVISABFileDB(String fileName, String game) {
         var filePath = combinePath(baseDirectory, game, fileName);
 
         return deleteFile(filePath);
     }
 
     /**
-     * Loads a VISABFile file from the repository
+     * Loads a VISABFile file from the database.
      *
      * @param <T>      The type of the file
      * @param game     The game of the file
      * @param fileName The name of the file
-     * @return
+     * @return The VISABFile
      */
-    public <T extends IVISABFile> T loadVISABFile(String fileName, String game) {
+    public <T extends IVISABFile> T loadVISABFileDB(String fileName, String game) {
         var filePath = combinePath(baseDirectory, game, fileName);
 
-        return this.<T>loadVISABFileByPath(game, filePath);
+        return this.<T>loadVISABFile(game, filePath);
     }
 
     /**
-     * Loads a file from a given path
+     * Loads a VISABFile from a given path.
      *
      * @param <T>      The type of the file
      * @param game     The game of the file
      * @param filePath The path to the file
-     * @return
+     * @return The VISABFile
      */
     @SuppressWarnings("unchecked")
-    public <T extends IVISABFile> T loadVISABFileByPath(String filePath, String game) {
+    public <T extends IVISABFile> T loadVISABFile(String filePath, String game) {
         var json = readFileContents(filePath);
 
         var file = DynamicSerializer.deserializeVISABFile(json, game);
@@ -62,25 +60,25 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Loads a VISABFileBase object from a given path
+     * Loads a VISABFileBase from a given path.
      * 
      * @param filePath The path to the file
-     * @return The VISABFileBase object
+     * @return The VISABFileBase
      */
-    public VISABFileBase loadBaseFile(String filePath) {
+    public VISABFileBase loadBaseVISABFile(String filePath) {
         var json = readFileContents(filePath);
 
         return JsonConvert.deserializeJson(json, VISABFileBase.class);
     }
 
     /**
-     * Saves a file to the database
+     * Saves a file to the database.
      *
      * @param visabFile The file to save
      * @param fileName  The name of the file
-     * @return True if successfully saved, false else
+     * @return True if successfully saved
      */
-    public boolean saveFile(IVISABFile visabFile, String fileName) {
+    public boolean saveFileDB(IVISABFile visabFile, String fileName) {
         var json = JsonConvert.serializeObject(visabFile);
 
         var fileDir = combinePath(baseDirectory, visabFile.getGame());

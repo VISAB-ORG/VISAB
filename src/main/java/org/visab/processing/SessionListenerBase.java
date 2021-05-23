@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
@@ -63,7 +63,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
                 // Unsubscribe all subscribers
                 for (var sub : subscribers)
-                    WebApi.instance.getEventBus().unsubscribe(sub);
+                    ApiEventBus.getInstance().unsubscribe(sub);
 
                 isActive = false;
                 onSessionClosed();
@@ -88,8 +88,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
                 var statistics = event.getStatistics();
                 if (statistics == null)
-                    // TODO: Log here!
-                    logger.info("Received Statistics was null!");
+                    writeLog(Level.INFO, "Received Statistics was null!");
                 else
                     processStatistics((TStatistics) statistics);
             }
@@ -130,9 +129,6 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
         var statisticsSubscriber = new StatisticsSubscriber();
         var sessionClosedSubscriber = new SessionClosedSubscriber();
-
-        WebApi.instance.getEventBus().subscribe(statisticsSubscriber);
-        WebApi.instance.getEventBus().subscribe(sessionClosedSubscriber);
 
         subscribers.add(statisticsSubscriber);
         subscribers.add(sessionClosedSubscriber);

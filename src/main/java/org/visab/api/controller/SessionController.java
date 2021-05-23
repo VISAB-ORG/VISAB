@@ -43,7 +43,7 @@ public class SessionController extends HTTPControllerBase {
         if (!SessionWatchdog.isSessionActive(sessionId))
             return getOkResponse("Session was already closed!");
 
-        WebApi.instance.getSessionWatchdog().closeSession(sessionId, false);
+        WebApi.getInstance().getSessionWatchdog().closeSession(sessionId, false);
 
         return getOkResponse("Closed the session!");
     }
@@ -124,7 +124,7 @@ public class SessionController extends HTTPControllerBase {
         if (SessionWatchdog.isSessionActive(sessionId))
             return getBadRequestResponse("Session already active!");
 
-        WebApi.instance.getSessionWatchdog().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
+        WebApi.getInstance().getSessionWatchdog().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
                 httpSession.getRemoteHostName());
 
         return getOkResponse("Session added.");

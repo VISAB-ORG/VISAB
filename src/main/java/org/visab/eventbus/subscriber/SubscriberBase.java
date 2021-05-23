@@ -1,5 +1,6 @@
 package org.visab.eventbus.subscriber;
 
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.IEvent;
 import org.visab.eventbus.ISubscriber;
 
@@ -17,6 +18,7 @@ public abstract class SubscriberBase<TEvent extends IEvent> implements ISubscrib
      */
     public SubscriberBase(Class<TEvent> eventClass) {
         this.subscribedEventType = eventClass.getSimpleName();
+        ApiEventBus.getInstance().subscribe(this);
     }
 
     @Override

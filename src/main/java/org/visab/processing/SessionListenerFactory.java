@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
 import org.visab.dynamic.DyanmicInstatiator;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 
@@ -45,7 +45,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
      */
     public void startFactory() {
         if (!isStarted) {
-            WebApi.instance.getEventBus().subscribe(this);
+            ApiEventBus.getInstance().subscribe(this);
             isStarted = true;
         }
     }
@@ -55,7 +55,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
      */
     public void stopFactory() {
         if (isStarted) {
-            WebApi.instance.getEventBus().unsubscribe(this);
+            ApiEventBus.getInstance().unsubscribe(this);
             isStarted = false;
         }
     }
