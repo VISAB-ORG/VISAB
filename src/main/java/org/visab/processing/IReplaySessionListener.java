@@ -1,14 +1,14 @@
 package org.visab.processing;
 
-public interface IReplaySessionListener<TStatistics, TMapImage> {
+public interface IReplaySessionListener<TStatistics, TImage> {
 
     /**
      * Called upon reciving map images for the current session. Is only called if
-     * the received MapImage object was not null.
+     * the received Image object was not null.
      * 
-     * @param mapImage The received MapImage object
+     * @param image The received Image object
      */
-    void processMapImage(TMapImage mapImage);
+    void processImage(TImage image);
 
     /**
      * Called upon reciving statistics for the current session. Is only called if
