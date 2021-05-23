@@ -1,10 +1,9 @@
 package org.visab.repository;
 
-import org.visab.generalmodelchangeme.IVISABFile;
-import org.visab.generalmodelchangeme.VISABFileBase;
-import org.visab.util.AssignByGame;
+import org.visab.dynamic.DynamicSerializer;
+import org.visab.globalmodel.IVISABFile;
+import org.visab.globalmodel.VISABFileBase;
 import org.visab.util.JsonConvert;
-import org.visab.util.Settings;
 
 /**
  * Class for saving and loading VISAB files from VISABs database.
@@ -14,9 +13,8 @@ import org.visab.util.Settings;
  */
 public class DatabaseRepository extends RepositoryBase {
 
-    public DatabaseRepository() {
-        // TODO: Get from somewhere else
-        super(Settings.DATA_PATH);
+    public DatabaseRepository(String databasePath) {
+        super(databasePath);
     }
 
     /**
@@ -58,7 +56,7 @@ public class DatabaseRepository extends RepositoryBase {
     public <T extends IVISABFile> T loadVISABFileByPath(String filePath, String game) {
         var json = readFileContents(filePath);
 
-        var file = AssignByGame.getDeserializedFile(json, game);
+        var file = DynamicSerializer.deserializeVISABFile(json, game);
 
         return file != null ? (T) file : null;
     }
@@ -67,7 +65,7 @@ public class DatabaseRepository extends RepositoryBase {
      * Loads a VISABFileBase object from a given path
      * 
      * @param filePath The path to the file
-     * @return The VISABFileBase
+     * @return The VISABFileBase object
      */
     public VISABFileBase loadBaseFile(String filePath) {
         var json = readFileContents(filePath);
@@ -76,7 +74,7 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Saves a file to the repository
+     * Saves a file to the database
      *
      * @param visabFile The file to save
      * @param fileName  The name of the file
@@ -89,9 +87,6 @@ public class DatabaseRepository extends RepositoryBase {
         createMissingDirectories(fileDir);
 
         var filePath = combinePath(fileDir, fileName);
-        // If file has no extension, make it .visab2
-        if (!filePath.contains("."))
-            filePath += ".visab2";
 
         return writeToFile(filePath, json);
     }

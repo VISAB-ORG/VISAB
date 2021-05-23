@@ -1,6 +1,6 @@
 package org.visab.newgui.statistics.cbrshooter;
 
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;

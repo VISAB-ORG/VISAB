@@ -10,8 +10,9 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.generalmodelchangeme.IStatistics;
-import org.visab.repository.DatabaseRepository;
+import org.visab.globalmodel.IStatistics;
+import org.visab.workspace.DatabaseManager;
+import org.visab.workspace.Workspace;
 
 /**
  * The base SessionListener class, that should be implemented by all session
@@ -91,7 +92,8 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      * The time at which the last statistics object was received for the session.
      */
     protected LocalTime lastReceived = LocalTime.now();
-    protected DatabaseRepository repo = new DatabaseRepository();
+
+    protected DatabaseManager manager = Workspace.instance.getDatabaseManager();
 
     protected UUID sessionId;
 

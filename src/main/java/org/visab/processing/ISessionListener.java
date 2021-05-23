@@ -3,7 +3,7 @@ package org.visab.processing;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.globalmodel.IStatistics;
 
 /**
  * The ISessionListener interface, that all SessionListeners have to implement.

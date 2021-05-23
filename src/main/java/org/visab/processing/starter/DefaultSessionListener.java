@@ -2,8 +2,8 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
-import org.visab.generalmodelchangeme.starter.DefaultFile;
-import org.visab.generalmodelchangeme.starter.DefaultStatistics;
+import org.visab.globalmodel.starter.DefaultFile;
+import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
 
 /**
@@ -21,7 +21,7 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultStatistic
 
     @Override
     public void onSessionClosed() {
-        repo.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString());
     }
 
     @Override

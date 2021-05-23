@@ -7,8 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
+import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.IPublisher;
-import org.visab.eventbus.event.MapImageReceivedEvent;
+import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -22,7 +23,7 @@ import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
  * @author moritz
  *
  */
-public class MapController extends HTTPControllerBase implements IPublisher<MapImageReceivedEvent> {
+public class MapController extends HTTPControllerBase implements IPublisher<ImageReceivedEvent> {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(MapController.class);
@@ -35,10 +36,10 @@ public class MapController extends HTTPControllerBase implements IPublisher<MapI
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return receiveMapImage(session);
+        return receiveImage(session);
     }
 
-    private Response receiveMapImage(IHTTPSession httpSession) {
+    private Response receiveImage(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
@@ -58,14 +59,14 @@ public class MapController extends HTTPControllerBase implements IPublisher<MapI
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        var event = new MapImageReceivedEvent(sessionId, game, AssignByGame.getDeserializedMapImage(json, game));
+        var event = new ImageReceivedEvent(sessionId, game, DynamicSerializer.deserializeImage(json, game));
         publish(event);
 
         return getOkResponse("Received Unity map images.");
     }
 
     @Override
-    public void publish(MapImageReceivedEvent event) {
+    public void publish(ImageReceivedEvent event) {
         WebApi.instance.getEventBus().publish(event);
     }
 }

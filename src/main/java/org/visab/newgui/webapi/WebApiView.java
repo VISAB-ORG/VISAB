@@ -3,7 +3,7 @@ package org.visab.newgui.webapi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView;
 import org.visab.newgui.webapi.model.SessionTableRow;
 import org.visab.processing.ILiveViewable;

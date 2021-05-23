@@ -1,19 +1,19 @@
 package org.visab.processing.cbrshooter;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage;
-import org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.AssignByGame;
+import org.visab.util.StringFormat;
 
 /**
  * The CBRShooterListener class, that is responsible for listening information
@@ -38,13 +38,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionClosed() {
-        // TODO: This logging should be done in the workspace
-        if (repo.saveFile(file, sessionId.toString()))
-            logger.info("Saved file in repository!");
-        else
-            logger.info("Couldn't save file in repository!");
-
-        notifySessionClosed();
+        manager.saveFile(file, sessionId.toString());
     }
 
     @Override
@@ -56,14 +50,14 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
-        logger.debug(MessageFormat.format("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(), getSessionId(),
-                file.getStatistics().size()));
+        logger.debug(StringFormat.niceString("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
+                getSessionId(), file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }
 
     @Override
-    public void processMapImage(CBRShooterMapImage mapImage) {
+    public void processImage(CBRShooterMapImage mapImage) {
         // TODO Auto-generated method stub
     }
 

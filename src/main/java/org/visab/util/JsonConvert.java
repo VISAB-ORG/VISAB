@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
- * Class for serializing and deserializing objects / json files.
+ * Class for serializing objects and deserializing json files.
  *
  * @author moritz
  *

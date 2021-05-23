@@ -1,23 +1,22 @@
 package org.visab.newgui.workspace.database;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import org.visab.newgui.workspace.ExplorerViewModelBase;
 import org.visab.newgui.workspace.model.FileRow;
 import org.visab.repository.DatabaseRepository;
-import org.visab.util.VISABUtil;
+import org.visab.workspace.DatabaseManager;
+import org.visab.workspace.Workspace;
 
 public class DatabaseViewModel extends ExplorerViewModelBase {
 
-    // TODO: Have this somewhere else but still static
-    private static final String DATABASE_DIR = Path.of(VISABUtil.getRunningJarRootDirPath(), "database").toString();
-
-    private DatabaseRepository repo = new DatabaseRepository();
+    // TODO: This could also just use the Manager instead. Have to see if we want
+    // that.
+    private DatabaseRepository repo = Workspace.instance.getDatabaseManager().getRepository();
 
     public DatabaseViewModel() {
-        super(DATABASE_DIR);
+        super(DatabaseManager.DATABASE_PATH);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,17 @@ public final class VISABUtil {
         var pathToJar = runningJarFile.getAbsolutePath();
 
         return pathToJar.replace(runningJarFile.getName(), "");
+    }
+
+    /**
+     * Combines path strings to one string
+     * 
+     * @param path The base path
+     * @param more The paths to add
+     * @return The combined path
+     */
+    public static String combinePath(String path, String... more) {
+        return Path.of(path, more).toString();
     }
 
     public static String readFile(String filePath) {

@@ -1,6 +1,6 @@
 package org.visab.newgui.statistics;
 
-import org.visab.generalmodelchangeme.IStatistics;
+import org.visab.globalmodel.IStatistics;
 
 public interface ILiveViewModel<TStatistics extends IStatistics> {
 

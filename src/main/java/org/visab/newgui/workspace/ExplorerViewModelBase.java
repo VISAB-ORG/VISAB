@@ -19,7 +19,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
     protected FileRow baseFile;
 
-    private BasicRepository basicRepo = new BasicRepository("");
+    private BasicRepository basicRepo;
 
     /**
      * This violates MVVM, but its the only way we can consistently have the
@@ -29,8 +29,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
     public ExplorerViewModelBase(String baseDirPath) {
         this.baseDirPath = baseDirPath;
-
-        basicRepo.createMissingDirectories(baseDirPath);
+        basicRepo = new BasicRepository(baseDirPath);
     }
 
     /**
