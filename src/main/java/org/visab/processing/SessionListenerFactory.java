@@ -22,6 +22,15 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);
 
     /**
+     * Whether the factory is started
+     */
+    private boolean isStarted;
+
+    public SessionListenerFactory() {
+        super(SessionOpenedEvent.class);
+    }
+
+    /**
      * Instantiates a new listener based on the given game and adds it to the
      * SessionListenerAdministration.
      * 
@@ -35,10 +44,10 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
         newListener.onSessionStarted();
     }
 
-    /**
-     * Whether the factory is started
-     */
-    private boolean isStarted;
+    @Override
+    public void notify(SessionOpenedEvent event) {
+        addListener(event.getSessionId(), event.getGame());
+    }
 
     /**
      * Starts the Factory by subscribing it to the EventBus
@@ -58,14 +67,5 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
             ApiEventBus.getInstance().unsubscribe(this);
             isStarted = false;
         }
-    }
-
-    public SessionListenerFactory() {
-        super(SessionOpenedEvent.class);
-    }
-
-    @Override
-    public void notify(SessionOpenedEvent event) {
-        addListener(event.getSessionId(), event.getGame());
     }
 }

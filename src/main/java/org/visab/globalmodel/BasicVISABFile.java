@@ -22,24 +22,19 @@ public class BasicVISABFile implements IVISABFile {
         this.game = game;
     }
 
+    @Override
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
+    @Override
     public String getFileFormatVersion() {
         return formatVersion;
     }
 
+    @Override
     public String getGame() {
         return game;
-    }
-
-    public void setGame(String game) {
-        this.game = game;
-    }
-
-    public void setFileFormatVersion(String version) {
-        this.formatVersion = version;
     }
 
     /**
@@ -47,6 +42,14 @@ public class BasicVISABFile implements IVISABFile {
      */
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public void setFileFormatVersion(String version) {
+        this.formatVersion = version;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
     }
 
 }

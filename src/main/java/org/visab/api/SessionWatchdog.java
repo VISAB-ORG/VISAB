@@ -39,57 +39,23 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
     private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
     }
 
-    // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
-
     /**
      * The currently active tranmission sessions.
      */
     private Map<UUID, String> activeSessions = new HashMap<>();
+
+    private SessionClosedPublisher closedPublisher = new SessionClosedPublisher();
+
+    // Logger needs .class for each class to use for log traces
+    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
+
+    private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
 
     /**
      * Contains the last time statistics data was sent from the transmission
      * session. Used for closing sessions via timeout.
      */
     private Map<UUID, LocalTime> sessionSentTimes = new HashMap<>();
-
-    /**
-     * Returns a copy of the currently active sessions. Warning: Returns a copy, not
-     * the reference so dont try modifying this.
-     *
-     * @return A Map of the currently active transmission sessions and their
-     *         respective games
-     */
-    public Map<UUID, String> getActiveSessions() {
-        return new HashMap<UUID, String>(activeSessions);
-    }
-
-    /**
-     * Gets the corresponding game for a given sessionId.
-     * 
-     * @param sessionId The sessionId
-     * @return The game if session is active, "" else
-     */
-    public String getGame(UUID sessionId) {
-        if (activeSessions.containsKey(sessionId))
-            return activeSessions.get(sessionId);
-
-        return "";
-    }
-
-    /**
-     * Gets whether a transmission session is active.
-     * 
-     * @param sessionId The sessionId to check
-     * @return True if session is active
-     */
-    public boolean isSessionActive(UUID sessionId) {
-        return activeSessions.containsKey(sessionId);
-    }
-
-    private SessionClosedPublisher closedPublisher = new SessionClosedPublisher();
-
-    private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
 
     private boolean shouldCheckTimeouts;
 
@@ -131,6 +97,40 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
         // Publish the SessionClosedEvent event
         closedPublisher.publish(new SessionClosedEvent(sessionId, closedByTimeout));
+    }
+
+    /**
+     * Returns a copy of the currently active sessions. Warning: Returns a copy, not
+     * the reference so dont try modifying this.
+     *
+     * @return A Map of the currently active transmission sessions and their
+     *         respective games
+     */
+    public Map<UUID, String> getActiveSessions() {
+        return new HashMap<UUID, String>(activeSessions);
+    }
+
+    /**
+     * Gets the corresponding game for a given sessionId.
+     * 
+     * @param sessionId The sessionId
+     * @return The game if session is active, "" else
+     */
+    public String getGame(UUID sessionId) {
+        if (activeSessions.containsKey(sessionId))
+            return activeSessions.get(sessionId);
+
+        return "";
+    }
+
+    /**
+     * Gets whether a transmission session is active.
+     * 
+     * @param sessionId The sessionId to check
+     * @return True if session is active
+     */
+    public boolean isSessionActive(UUID sessionId) {
+        return activeSessions.containsKey(sessionId);
     }
 
     @Override

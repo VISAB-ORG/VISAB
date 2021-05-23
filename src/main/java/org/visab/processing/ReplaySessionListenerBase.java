@@ -2,7 +2,6 @@ package org.visab.processing;
 
 import java.util.UUID;
 
-import org.visab.api.WebApi;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.globalmodel.IImage;

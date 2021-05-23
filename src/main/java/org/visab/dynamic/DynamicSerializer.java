@@ -21,31 +21,6 @@ public final class DynamicSerializer {
     private static Logger logger = LogManager.getLogger(DynamicSerializer.class);
 
     /**
-     * Deserialize a json string into a VISAB file.
-     * 
-     * @param json The json to deserialize
-     * @param game The game for which to deserialize a file
-     * @return An IVISABFile object if successful, throws exception if not
-     *         successful
-     */
-    public static IVISABFile deserializeVISABFile(String json, String game) {
-        var className = "";
-
-        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping != null && mapping.getFile() != null)
-            className = mapping.getFile();
-
-        IVISABFile visabFile = null;
-        if (className.isBlank()) {
-            visabFile = (IVISABFile) JsonConvert.deserializeJson(json, DefaultFile.class);
-        } else {
-            visabFile = DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
-        }
-
-        return visabFile;
-    }
-
-    /**
      * Deserialize a json string into a IImage.
      * 
      * @param json The json to deserialize
@@ -95,6 +70,40 @@ public final class DynamicSerializer {
     }
 
     /**
+     * Deserialize a json string into a VISAB file.
+     * 
+     * @param json The json to deserialize
+     * @param game The game for which to deserialize a file
+     * @return An IVISABFile object if successful, throws exception if not
+     *         successful
+     */
+    public static IVISABFile deserializeVISABFile(String json, String game) {
+        var className = "";
+
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
+        if (mapping != null && mapping.getFile() != null)
+            className = mapping.getFile();
+
+        IVISABFile visabFile = null;
+        if (className.isBlank()) {
+            visabFile = JsonConvert.deserializeJson(json, DefaultFile.class);
+        } else {
+            visabFile = DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
+        }
+
+        return visabFile;
+    }
+
+    public static void main(String[] args) {
+        var dyna = new DynamicSerializer();
+        var json = "{\"creationDate\" : [ 2021, 5, 10, 18, 13, 52, 770199300 ],\"game\" : \"CBRShooter\"}";
+
+        var stats = DynamicSerializer.deserializeStatistics(json, "CBRShooter");
+
+        stats.getGame();
+    }
+
+    /**
      * Attempts to deserialize a json string into an object of class T.
      * 
      * @param <T>       The type to deserialize into
@@ -132,14 +141,5 @@ public final class DynamicSerializer {
         }
 
         return _class;
-    }
-
-    public static void main(String[] args) {
-        var dyna = new DynamicSerializer();
-        var json = "{\"creationDate\" : [ 2021, 5, 10, 18, 13, 52, 770199300 ],\"game\" : \"CBRShooter\"}";
-
-        var stats = dyna.deserializeStatistics(json, "CBRShooter");
-
-        stats.getGame();
     }
 }

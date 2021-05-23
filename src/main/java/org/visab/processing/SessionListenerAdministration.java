@@ -17,10 +17,20 @@ import org.apache.logging.log4j.Logger;
  */
 public final class SessionListenerAdministration {
 
+    private static List<ISessionListener<?>> activeListeners = new ArrayList<>();
+
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerAdministration.class);
 
-    private static List<ISessionListener<?>> activeListeners = new ArrayList<>();
+    /**
+     * Adds a listener to the list of active listeners. Should only be called by the
+     * SessionListenerFactory.
+     * 
+     * @param listener The listener to add
+     */
+    protected static void addListener(ISessionListener<?> listener) {
+        activeListeners.add(listener);
+    }
 
     /**
      * Returns a copy of the currently active listeners. Warning: Does not return
@@ -31,6 +41,16 @@ public final class SessionListenerAdministration {
      */
     public static List<ISessionListener<?>> getActiveListeners() {
         return new ArrayList<ISessionListener<?>>(activeListeners);
+    }
+
+    /**
+     * Returns a copy of the currently active listeners filtered by their game.
+     * 
+     * @param game The game of which to get the listeners
+     * @return The list of listeners
+     */
+    public static List<ISessionListener<?>> getActiveListeners(String game) {
+        return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
     }
 
     /**
@@ -46,26 +66,6 @@ public final class SessionListenerAdministration {
         }
 
         return null;
-    }
-
-    /**
-     * Returns a copy of the currently active listeners filtered by their game.
-     * 
-     * @param game The game of which to get the listeners
-     * @return The list of listeners
-     */
-    public static List<ISessionListener<?>> getActiveListeners(String game) {
-        return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
-    }
-
-    /**
-     * Adds a listener to the list of active listeners. Should only be called by the
-     * SessionListenerFactory.
-     * 
-     * @param listener The listener to add
-     */
-    protected static void addListener(ISessionListener<?> listener) {
-        activeListeners.add(listener);
     }
 
     /**

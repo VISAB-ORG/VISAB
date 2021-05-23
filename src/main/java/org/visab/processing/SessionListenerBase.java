@@ -30,24 +30,6 @@ import org.visab.workspace.Workspace;
 public abstract class SessionListenerBase<TStatistics extends IStatistics> implements ISessionListener<TStatistics> {
 
     /**
-     * The logger. TODO: Check if this shows the inheriting class (I believe it
-     * should).
-     */
-    protected Logger logger = LogManager.getLogger(this.getClass());
-
-    /**
-     * Writes to the log using a prefix containing session information.
-     * 
-     * @param logLevel The logLevel of the message to log
-     * @param message  The message to log
-     */
-    protected void writeLog(Level logLevel, String message) {
-        var prefix = StringFormat.niceString("[{0}: {1}]> ", game, sessionId);
-
-        logger.log(logLevel, prefix + message);
-    }
-
-    /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
      */
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
@@ -111,6 +93,12 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     protected LocalTime lastReceived = LocalTime.now();
 
     /**
+     * The logger. TODO: Check if this shows the inheriting class (I believe it
+     * should).
+     */
+    protected Logger logger = LogManager.getLogger(this.getClass());
+
+    /**
      * The DatabaseManager used for saving files.
      */
     protected DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
@@ -162,4 +150,16 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
     @Override
     public abstract void processStatistics(TStatistics statistics);
+
+    /**
+     * Writes to the log using a prefix containing session information.
+     * 
+     * @param logLevel The logLevel of the message to log
+     * @param message  The message to log
+     */
+    protected void writeLog(Level logLevel, String message) {
+        var prefix = StringFormat.niceString("[{0}: {1}]> ", game, sessionId);
+
+        logger.log(logLevel, prefix + message);
+    }
 }

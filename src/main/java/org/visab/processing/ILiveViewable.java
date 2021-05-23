@@ -30,14 +30,14 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
     List<TStatistics> getReceivedStatistics();
 
     /**
+     * Notifies the observing ViewModels that the session was closed.
+     */
+    void notifySessionClosed();
+
+    /**
      * Notifies the observing ViewModels that statistics were added.
      * 
      * @param addedStatistics The added statistics
      */
     void notifyStatisticsAdded(TStatistics addedStatistics);
-
-    /**
-     * Notifies the observing ViewModels that the session was closed.
-     */
-    void notifySessionClosed();
 }

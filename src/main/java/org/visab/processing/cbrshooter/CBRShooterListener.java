@@ -30,36 +30,12 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
 
-    private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
-
     private CBRShooterFile file;
+
+    private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
         super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
-    }
-
-    @Override
-    public void onSessionClosed() {
-        manager.saveFile(file, sessionId.toString());
-    }
-
-    @Override
-    public void onSessionStarted() {
-        file = new CBRShooterFile();
-    }
-
-    @Override
-    public void processStatistics(CBRShooterStatistics statistics) {
-        file.getStatistics().add(statistics);
-
-        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
-
-        notifyStatisticsAdded(statistics);
-    }
-
-    @Override
-    public void processImage(CBRShooterMapImage mapImage) {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -77,16 +53,40 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
+    public void notifySessionClosed() {
+        for (var viewModel : viewModels)
+            viewModel.notifySessionClosed();
+
+        viewModels.clear();
+    }
+
+    @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
             viewModel.notifyStatisticsAdded(addedStatistics);
     }
 
     @Override
-    public void notifySessionClosed() {
-        for (var viewModel : viewModels)
-            viewModel.notifySessionClosed();
+    public void onSessionClosed() {
+        manager.saveFile(file, sessionId.toString());
+    }
 
-        viewModels.clear();
+    @Override
+    public void onSessionStarted() {
+        file = new CBRShooterFile();
+    }
+
+    @Override
+    public void processImage(CBRShooterMapImage mapImage) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void processStatistics(CBRShooterStatistics statistics) {
+        file.getStatistics().add(statistics);
+
+        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
+
+        notifyStatisticsAdded(statistics);
     }
 }

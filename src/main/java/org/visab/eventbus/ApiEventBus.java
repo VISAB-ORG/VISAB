@@ -43,6 +43,25 @@ public class ApiEventBus {
     private Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
 
     /**
+     * Casts the subscribers to their concrete EventType. If this throws an error,
+     * your subscriber class was passed the wrong event class at initialization.
+     * 
+     * @param <TEvent>            The type of event to cast to
+     * @param uncastedSubscribers The uncasted subscribers
+     * @return A list of subscribers casted to TEvent
+     */
+    @SuppressWarnings("unchecked")
+    private <TEvent extends IEvent> List<ISubscriber<TEvent>> castSubscribers(
+            List<ISubscriber<?>> uncastedSubscribers) {
+        var casted = new ArrayList<ISubscriber<TEvent>>();
+
+        for (var sub : uncastedSubscribers)
+            casted.add((ISubscriber<TEvent>) sub);
+
+        return casted;
+    }
+
+    /**
      * Notifies all subscribers that are subscribed to TEvent of the given event.
      * 
      * @param <TEvent> The type of the event
@@ -88,24 +107,5 @@ public class ApiEventBus {
             subscribers.get(eventType).remove(subscriber);
         else
             logger.warn("Tried to remove subscriber that wasnt subscribed.");
-    }
-
-    /**
-     * Casts the subscribers to their concrete EventType. If this throws an error,
-     * your subscriber class was passed the wrong event class at initialization.
-     * 
-     * @param <TEvent>            The type of event to cast to
-     * @param uncastedSubscribers The uncasted subscribers
-     * @return A list of subscribers casted to TEvent
-     */
-    @SuppressWarnings("unchecked")
-    private <TEvent extends IEvent> List<ISubscriber<TEvent>> castSubscribers(
-            List<ISubscriber<?>> uncastedSubscribers) {
-        var casted = new ArrayList<ISubscriber<TEvent>>();
-
-        for (var sub : uncastedSubscribers)
-            casted.add((ISubscriber<TEvent>) sub);
-
-        return casted;
     }
 }

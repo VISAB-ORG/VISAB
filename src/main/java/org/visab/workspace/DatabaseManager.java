@@ -12,15 +12,33 @@ import org.visab.util.VISABUtil;
  */
 public class DatabaseManager {
 
-    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
-
     public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
+
+    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
 
     // TODO: Somehow DATABASE_PATH is null on this call. Since static variables are
     // initialized the first time the class if references (would be new
     // DatabaseManager() here), I dont know how this is possible at all.
     private DatabaseRepository repo = new DatabaseRepository(
             VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database"));
+
+    /**
+     * Deletes a VISAB file from the database
+     * 
+     * @param fileName The name of the file
+     * @param game     The game of the file
+     * @return True if successful
+     */
+    public boolean deleteFile(String fileName, String game) {
+        var success = repo.deleteVISABFileDB(fileName, game);
+
+        if (success)
+            logger.info(StringFormat.niceString("Deleted {0} of {1} from database", fileName, game));
+        else
+            logger.error(StringFormat.niceString("Failed to delete {0} of {1} in database", fileName, game));
+
+        return success;
+    }
 
     public DatabaseRepository getRepository() {
         return repo;
@@ -44,24 +62,6 @@ public class DatabaseManager {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
         else
             logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
-
-        return success;
-    }
-
-    /**
-     * Deletes a VISAB file from the database
-     * 
-     * @param fileName The name of the file
-     * @param game     The game of the file
-     * @return True if successful
-     */
-    public boolean deleteFile(String fileName, String game) {
-        var success = repo.deleteVISABFileDB(fileName, game);
-
-        if (success)
-            logger.info(StringFormat.niceString("Deleted {0} of {1} from database", fileName, game));
-        else
-            logger.error(StringFormat.niceString("Failed to delete {0} of {1} in database", fileName, game));
 
         return success;
     }

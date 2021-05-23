@@ -3,7 +3,6 @@ package org.visab.api;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +33,26 @@ public final class WebApiHelper {
     }
 
     /**
+     * Extracts a json string from the body of a Http session.
+     * 
+     * @param session The session to get the body of
+     * @return The json string if successful, "" else
+     */
+    public static final String extractJsonBody(IHTTPSession session) {
+        var json = "";
+        try {
+            var writeInto = new HashMap<String, String>();
+            session.parseBody(writeInto);
+            json = writeInto.get("postData");
+        } catch (IOException | ResponseException e) {
+            e.printStackTrace();
+            json = "";
+        }
+
+        return json;
+    }
+
+    /**
      * Extracts the sessionId from the headers of a Http request.
      * 
      * @param headers The headers
@@ -55,26 +74,6 @@ public final class WebApiHelper {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    /**
-     * Extracts a json string from the body of a Http session.
-     * 
-     * @param session The session to get the body of
-     * @return The json string if successful, "" else
-     */
-    public static final String extractJsonBody(IHTTPSession session) {
-        var json = "";
-        try {
-            var writeInto = new HashMap<String, String>();
-            session.parseBody(writeInto);
-            json = writeInto.get("postData");
-        } catch (IOException | ResponseException e) {
-            e.printStackTrace();
-            json = "";
-        }
-
-        return json;
     }
 
 }

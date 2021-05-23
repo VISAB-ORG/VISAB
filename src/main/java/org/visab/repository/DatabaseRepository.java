@@ -1,8 +1,8 @@
 package org.visab.repository;
 
 import org.visab.dynamic.DynamicSerializer;
-import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.BasicVISABFile;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.util.JsonConvert;
 
 /**
@@ -29,17 +29,15 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Loads a VISABFile file from the database.
-     *
-     * @param <T>      The type of the file
-     * @param game     The game of the file
-     * @param fileName The name of the file
-     * @return The VISABFile
+     * Loads a BasicVISABFile from a given path.
+     * 
+     * @param filePath The path to the file
+     * @return The BasicVISABFile
      */
-    public <T extends IVISABFile> T loadVISABFileDB(String fileName, String game) {
-        var filePath = combinePath(baseDirectory, game, fileName);
+    public BasicVISABFile loadBasicVISABFile(String filePath) {
+        var json = readFileContents(filePath);
 
-        return this.<T>loadVISABFile(game, filePath);
+        return JsonConvert.deserializeJson(json, BasicVISABFile.class);
     }
 
     /**
@@ -60,15 +58,17 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Loads a BasicVISABFile from a given path.
-     * 
-     * @param filePath The path to the file
-     * @return The BasicVISABFile
+     * Loads a VISABFile file from the database.
+     *
+     * @param <T>      The type of the file
+     * @param game     The game of the file
+     * @param fileName The name of the file
+     * @return The VISABFile
      */
-    public BasicVISABFile loadBasicVISABFile(String filePath) {
-        var json = readFileContents(filePath);
+    public <T extends IVISABFile> T loadVISABFileDB(String fileName, String game) {
+        var filePath = combinePath(baseDirectory, game, fileName);
 
-        return JsonConvert.deserializeJson(json, BasicVISABFile.class);
+        return this.<T>loadVISABFile(game, filePath);
     }
 
     /**

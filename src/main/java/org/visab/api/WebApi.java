@@ -23,13 +23,13 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
  */
 public class WebApi extends RouterNanoHTTPD {
 
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(WebApi.class);
-
     /**
      * Singelton instance
      */
     private static WebApi instance;
+
+    // Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(WebApi.class);
 
     /**
      * Gets the singelton instance
@@ -43,20 +43,12 @@ public class WebApi extends RouterNanoHTTPD {
         return instance;
     }
 
+    private SessionListenerFactory listenerFactory = new SessionListenerFactory();
+
+    private SessionWatchdog watchdog = new SessionWatchdog();
     private WebApi() {
         super(Settings.API_PORT);
         addMappings();
-    }
-
-    private SessionWatchdog watchdog = new SessionWatchdog();
-    private SessionListenerFactory listenerFactory = new SessionListenerFactory();
-
-    public SessionWatchdog getSessionWatchdog() {
-        return this.watchdog;
-    }
-
-    public SessionListenerFactory getListenerFactory() {
-        return this.listenerFactory;
     }
 
     /**
@@ -73,6 +65,14 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("send/statistics", StatisticsController.class);
         addRoute("send/map", MapController.class);
         addRoute("games", GameSupportController.class);
+    }
+
+    public SessionListenerFactory getListenerFactory() {
+        return this.listenerFactory;
+    }
+
+    public SessionWatchdog getSessionWatchdog() {
+        return this.watchdog;
     }
 
     /**

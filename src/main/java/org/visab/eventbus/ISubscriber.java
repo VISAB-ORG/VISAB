@@ -11,18 +11,18 @@ package org.visab.eventbus;
 public interface ISubscriber<TEvent extends IEvent> {
 
     /**
+     * Gets the subscribed events simple name.
+     * 
+     * @return The subscribed events simple name
+     */
+    String getSubscribedEventType();
+
+    /**
      * Called when a TEvent is published at the EventBus subscribed to. The
      * subscriber is notified with the concrete event.
      * 
      * @param event THe event published to the EventBus
      */
     void notify(TEvent event);
-
-    /**
-     * Gets the subscribed events simple name.
-     * 
-     * @return The subscribed events simple name
-     */
-    String getSubscribedEventType();
 
 }
