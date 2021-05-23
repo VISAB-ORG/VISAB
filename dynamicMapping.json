@@ -3,9 +3,9 @@
         {
             "game": "CBRShooter",
             "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
-            "statistics": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterStatistics",
-            "file": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterFile",
-            "image": "org.visab.generalmodelchangeme.cbrshooter.CBRShooterMapImage"
+            "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
+            "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
+            "image": "org.visab.globalmodel.cbrshooter.CBRShooterMapImage"
         }
     ]
 }
