@@ -20,8 +20,17 @@ public class ApiEventBus {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(ApiEventBus.class);
 
+    /**
+     * The current subscribers.
+     */
     private Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
 
+    /**
+     * Notifies all subscribers that are subscribed to TEvent of the given event.
+     * 
+     * @param <TEvent> The type of the event
+     * @param event    The event that subscribers will be notified with
+     */
     public <TEvent extends IEvent> void publish(TEvent event) {
         var eventType = event.getClass().getSimpleName().toString();
 
@@ -34,6 +43,11 @@ public class ApiEventBus {
         }
     }
 
+    /**
+     * Adds a subscriber to the busses subscribers.
+     * 
+     * @param subscriber The subscriber to add
+     */
     public void subscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
@@ -42,14 +56,18 @@ public class ApiEventBus {
         subscribers.get(eventType).add(subscriber);
     }
 
+    /**
+     * Removes a subscriber from the busses subscribers.
+     * 
+     * @param subscriber The subscriber to remove
+     */
     public void unsubscribe(ISubscriber<?> subscriber) {
         var eventType = subscriber.getSubscribedEventType();
 
         if (subscribers.containsKey(eventType))
             subscribers.get(eventType).remove(subscriber);
-        else {
-            // Throw some exception
-        }
+        else
+            logger.warn("Tried to remove subscriber that wasnt subscribed.");
     }
 
     /**
