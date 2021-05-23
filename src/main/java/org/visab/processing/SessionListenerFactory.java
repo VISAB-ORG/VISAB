@@ -10,8 +10,8 @@ import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 
 /**
- * The SessionListenerFactory that will create new SessionListeners whenever a
- * new transmission session is opened.
+ * The SessionListenerFactory that will instantiate new SessionListeners
+ * whenever a new transmission session is opened at the WebApi.
  *
  * @author moritz
  *
@@ -21,6 +21,13 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);
 
+    /**
+     * Instantiates a new listener based on the given game and adds it to the
+     * SessionListenerAdministration.
+     * 
+     * @param sessionId The sessionId
+     * @param game      The game for which to instantiate a listener
+     */
     public void addListener(UUID sessionId, String game) {
         var newListener = DyanmicInstatiator.instantiateSessionListener(game, sessionId);
         SessionListenerAdministration.addListener(newListener);
@@ -28,10 +35,13 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
         newListener.onSessionStarted();
     }
 
+    /**
+     * Whether the factory is started
+     */
     private boolean isStarted;
 
     /**
-     * Starts the Factory by adding it to the EventBus
+     * Starts the Factory by subscribing it to the EventBus
      */
     public void startFactory() {
         if (!isStarted) {
@@ -41,7 +51,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
     }
 
     /**
-     * Stops the factory, by unsubscribing it from the eventbus
+     * Stops the factory by unsubscribing it from the eventbus
      */
     public void stopFactory() {
         if (isStarted) {

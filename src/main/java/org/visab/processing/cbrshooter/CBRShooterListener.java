@@ -16,8 +16,9 @@ import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
 
 /**
- * The CBRShooterListener class, that is responsible for listening information
- * sent by the CBRShooter game and creating files of that information.
+ * The CBRShooterListener class, that is responsible for listening to
+ * information sent by the CBRShooter game and creating files of that
+ * information.
  *
  * @author moritz
  *

@@ -5,35 +5,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.globalmodel.IStatistics;
+import org.visab.util.StringFormat;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.Workspace;
 
 /**
  * The base SessionListener class, that should be implemented by all session
- * listeners. TODO: Should have their own logger instance or configuration, such
- * that they will always write their identification (sessionid + game) before
- * messages
+ * listeners.
  * 
- * @author moritz
- *
  * @param <TStatistics> The statistics type, that will be processed by the
  *                      listener
+ * @author moritz
+ *
  */
 public abstract class SessionListenerBase<TStatistics extends IStatistics> implements ISessionListener<TStatistics> {
 
     /**
+     * The logger. TODO: Check if this shows the inheriting class (I believe it
+     * should).
+     */
+    protected Logger logger = LogManager.getLogger(this.getClass());
+
+    /**
+     * Writes to the log using a prefix containing session information.
+     * 
+     * @param logLevel The logLevel of the message to log
+     * @param message  The message to log
+     */
+    protected void writeLog(Level logLevel, String message) {
+        var prefix = StringFormat.niceString("[{0}: {1}]> ");
+
+        logger.log(logLevel, prefix + message);
+    }
+
+    /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
-     * This has to be a nested class, due to implementing two generic
-     * Interfaces/Classes not being allowed.
-     *
-     * @author moritz
-     *
      */
     private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
 
@@ -46,6 +61,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
             if (event.getSessionId().equals(sessionId)) {
                 SessionListenerAdministration.removeListener(SessionListenerBase.this);
 
+                // Unsubscribe all subscribers
                 for (var sub : subscribers)
                     WebApi.instance.getEventBus().unsubscribe(sub);
 
@@ -57,11 +73,6 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
     /**
      * The StatisticsSubscriber, that subscribes to the StatisticsReceivedEvent.
-     * This has to be a nested class, due to implementing two generic
-     * Interfaces/Classes not being allowed.
-     *
-     * @author moritz
-     *
      */
     private class StatisticsSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
 
@@ -78,14 +89,21 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
                 var statistics = event.getStatistics();
                 if (statistics == null)
                     // TODO: Log here!
-                    System.out.println("Received Statistics was null!");
+                    logger.info("Received Statistics was null!");
                 else
                     processStatistics((TStatistics) statistics);
             }
         }
     }
 
+    /**
+     * The game of the listener.
+     */
     protected String game;
+
+    /**
+     * Whether the listener is still actively listening to events.
+     */
     protected boolean isActive = true;
 
     /**
@@ -93,6 +111,9 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      */
     protected LocalTime lastReceived = LocalTime.now();
 
+    /**
+     * The DatabaseManager used for saving files.
+     */
     protected DatabaseManager manager = Workspace.instance.getDatabaseManager();
 
     protected UUID sessionId;
@@ -143,11 +164,6 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     @Override
     public abstract void onSessionStarted();
 
-    /**
-     * Called upon reciving statistics for the current session. Is only called if
-     * the received statistics object was not null.
-     * 
-     * @param statistics A TStatistics object
-     */
+    @Override
     public abstract void processStatistics(TStatistics statistics);
 }

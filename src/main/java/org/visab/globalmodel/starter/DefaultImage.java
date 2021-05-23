@@ -1,6 +1,6 @@
 package org.visab.globalmodel.starter;
 
-import org.visab.processing.IImage;
+import org.visab.globalmodel.IImage;
 
 public class DefaultImage implements IImage {
 

@@ -1,6 +1,6 @@
 package org.visab.globalmodel.cbrshooter;
 
-import org.visab.processing.IImage;
+import org.visab.globalmodel.IImage;
 
 public class CBRShooterMapImage implements IImage {
 

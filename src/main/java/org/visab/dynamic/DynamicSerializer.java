@@ -2,12 +2,12 @@ package org.visab.dynamic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultImage;
 import org.visab.globalmodel.starter.DefaultStatistics;
-import org.visab.processing.IImage;
 import org.visab.util.JsonConvert;
 import org.visab.workspace.Workspace;
 

@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.processing.IImage;
+import org.visab.globalmodel.IImage;
 
 public class ImageReceivedEvent extends EventBase {
 
