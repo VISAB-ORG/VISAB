@@ -13,7 +13,7 @@ public class Workspace {
     /**
      * Singelton instance
      */
-    public static Workspace instance;
+    private static Workspace instance;
 
     /**
      * Gets the singelton instance

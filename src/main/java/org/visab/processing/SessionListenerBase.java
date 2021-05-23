@@ -113,7 +113,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     /**
      * The DatabaseManager used for saving files.
      */
-    protected DatabaseManager manager = Workspace.instance.getDatabaseManager();
+    protected DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
 
     protected UUID sessionId;
 

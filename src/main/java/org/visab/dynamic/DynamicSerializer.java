@@ -31,7 +31,7 @@ public final class DynamicSerializer {
     public static IVISABFile deserializeVISABFile(String json, String game) {
         var className = "";
 
-        var mapping = Workspace.instance.getConfigManager().getMapping(game);
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getFile() != null)
             className = mapping.getFile();
 
@@ -55,7 +55,7 @@ public final class DynamicSerializer {
     public static IImage deserializeImage(String json, String game) {
         var className = "";
 
-        var mapping = Workspace.instance.getConfigManager().getMapping(game);
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getImage() != null)
             className = mapping.getImage();
 
@@ -80,7 +80,7 @@ public final class DynamicSerializer {
     public static IStatistics deserializeStatistics(String json, String game) {
         var className = "";
 
-        var mapping = Workspace.instance.getConfigManager().getMapping(game);
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getStatistics() != null)
             className = mapping.getStatistics();
 

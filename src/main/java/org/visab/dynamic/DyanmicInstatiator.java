@@ -34,7 +34,7 @@ public final class DyanmicInstatiator {
     public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
 
-        var mapping = Workspace.instance.getConfigManager().getMapping(game);
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getListener() != null)
             className = mapping.getListener();
 
