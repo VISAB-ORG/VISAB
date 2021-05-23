@@ -70,7 +70,8 @@ public class SessionController extends HTTPControllerBase {
         if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             sessionStatus = new SessionStatus(false, sessionId, null);
         else
-            sessionStatus = new SessionStatus(true, sessionId, WebApi.getInstance().getSessionWatchdog().getGame(sessionId));
+            sessionStatus = new SessionStatus(true, sessionId,
+                    WebApi.getInstance().getSessionWatchdog().getGame(sessionId));
 
         return getJsonResponse(sessionStatus);
     }
@@ -78,7 +79,7 @@ public class SessionController extends HTTPControllerBase {
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
         var endpointAdress = uriResource.getUri().replace("session/", "");
-        
+
         // Decide handlers based on uri
         switch (endpointAdress) {
         case "open":

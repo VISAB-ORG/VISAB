@@ -4,8 +4,8 @@ import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
 
 /**
- * The IReplaySessionListener interface extending the ISessionListener interface by
- * the functionality of processing received IImage objects.
+ * The IReplaySessionListener interface extending the ISessionListener interface
+ * by the functionality of processing received IImage objects.
  * 
  * @param <TStatistics> The type of the statistics that will be processed by the
  *                      listener
