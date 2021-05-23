@@ -56,7 +56,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
         var event = new StatisticsReceivedEvent(sessionId, game,
-                DynamicSerializer.instance.deserializeStatistics(json, game));
+                DynamicSerializer.deserializeStatistics(json, game));
         publish(event);
 
         return getOkResponse("Statistics received.");

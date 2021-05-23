@@ -59,7 +59,7 @@ public class MapController extends HTTPControllerBase implements IPublisher<Imag
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        var event = new ImageReceivedEvent(sessionId, game, DynamicSerializer.instance.deserializeImage(json, game));
+        var event = new ImageReceivedEvent(sessionId, game, DynamicSerializer.deserializeImage(json, game));
         publish(event);
 
         return getOkResponse("Received Unity map images.");
