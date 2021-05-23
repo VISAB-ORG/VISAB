@@ -2,7 +2,10 @@ package org.visab.globalmodel;
 
 import java.time.LocalDateTime;
 
-public class VISABFileBase implements IVISABFile {
+/**
+ * The basic VISABFile that holds all meta information required by IVISABFile.
+ */
+public class BasicVISABFile implements IVISABFile {
 
     protected LocalDateTime creationDate = LocalDateTime.now();
     protected String formatVersion;
@@ -11,10 +14,10 @@ public class VISABFileBase implements IVISABFile {
     /**
      * Used for deserialization
      */
-    public VISABFileBase() {
+    public BasicVISABFile() {
     }
 
-    public VISABFileBase(String game, String fileFormatVersion) {
+    public BasicVISABFile(String game, String fileFormatVersion) {
         this.formatVersion = fileFormatVersion;
         this.game = game;
     }

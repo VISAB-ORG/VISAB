@@ -2,7 +2,7 @@ package org.visab.repository;
 
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.globalmodel.VISABFileBase;
+import org.visab.globalmodel.BasicVISABFile;
 import org.visab.util.JsonConvert;
 
 /**
@@ -60,15 +60,15 @@ public class DatabaseRepository extends RepositoryBase {
     }
 
     /**
-     * Loads a VISABFileBase from a given path.
+     * Loads a BasicVISABFile from a given path.
      * 
      * @param filePath The path to the file
-     * @return The VISABFileBase
+     * @return The BasicVISABFile
      */
-    public VISABFileBase loadBaseVISABFile(String filePath) {
+    public BasicVISABFile loadBasicVISABFile(String filePath) {
         var json = readFileContents(filePath);
 
-        return JsonConvert.deserializeJson(json, VISABFileBase.class);
+        return JsonConvert.deserializeJson(json, BasicVISABFile.class);
     }
 
     /**
