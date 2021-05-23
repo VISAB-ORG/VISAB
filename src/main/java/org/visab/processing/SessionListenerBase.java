@@ -42,7 +42,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
      * @param message  The message to log
      */
     protected void writeLog(Level logLevel, String message) {
-        var prefix = StringFormat.niceString("[{0}: {1}]> ");
+        var prefix = StringFormat.niceString("[{0}: {1}]> ", game, sessionId);
 
         logger.log(logLevel, prefix + message);
     }

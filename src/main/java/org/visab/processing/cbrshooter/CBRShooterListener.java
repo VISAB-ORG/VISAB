@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
@@ -51,8 +52,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
-        logger.debug(StringFormat.niceString("[Game: {0}, SessionId: {1}] has {2} entries now.", getGame(),
-                getSessionId(), file.getStatistics().size()));
+        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }
