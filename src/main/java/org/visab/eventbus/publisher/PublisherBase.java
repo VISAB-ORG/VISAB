@@ -15,7 +15,7 @@ public class PublisherBase<TEvent extends IEvent> implements IPublisher<TEvent> 
 
     @Override
     public void publish(TEvent event) {
-        WebApi.getEventBus().publish(event);
+        WebApi.instance.getEventBus().publish(event);
     }
 
 }

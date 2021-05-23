@@ -35,7 +35,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
      */
     public void startFactory() {
         if (!isStarted) {
-            WebApi.getEventBus().subscribe(this);
+            WebApi.instance.getEventBus().subscribe(this);
             isStarted = true;
         }
     }
@@ -45,17 +45,12 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
      */
     public void stopFactory() {
         if (isStarted) {
-            WebApi.getEventBus().unsubscribe(this);
+            WebApi.instance.getEventBus().unsubscribe(this);
             isStarted = false;
         }
     }
 
-    /**
-     * Singleton instance
-     */
-    public static final SessionListenerFactory instance = new SessionListenerFactory();
-
-    private SessionListenerFactory() {
+    public SessionListenerFactory() {
         super(SessionOpenedEvent.class);
     }
 

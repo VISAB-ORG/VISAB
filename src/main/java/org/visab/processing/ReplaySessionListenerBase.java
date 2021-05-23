@@ -37,7 +37,7 @@ public abstract class ReplaySessionListenerBase<TStatistics extends IStatistics,
         super(game, sessionId);
 
         var mapImageSubscriber = new UnityMapImageSubscriber();
-        WebApi.getEventBus().subscribe(mapImageSubscriber);
+        WebApi.instance.getEventBus().subscribe(mapImageSubscriber);
         subscribers.add(mapImageSubscriber);
     }
 

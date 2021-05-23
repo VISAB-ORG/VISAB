@@ -46,7 +46,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
                 SessionListenerAdministration.removeListener(SessionListenerBase.this);
 
                 for (var sub : subscribers)
-                    WebApi.getEventBus().unsubscribe(sub);
+                    WebApi.instance.getEventBus().unsubscribe(sub);
 
                 isActive = false;
                 onSessionClosed();
@@ -108,8 +108,8 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
         var statisticsSubscriber = new StatisticsSubscriber();
         var sessionClosedSubscriber = new SessionClosedSubscriber();
 
-        WebApi.getEventBus().subscribe(statisticsSubscriber);
-        WebApi.getEventBus().subscribe(sessionClosedSubscriber);
+        WebApi.instance.getEventBus().subscribe(statisticsSubscriber);
+        WebApi.instance.getEventBus().subscribe(sessionClosedSubscriber);
 
         subscribers.add(statisticsSubscriber);
         subscribers.add(sessionClosedSubscriber);

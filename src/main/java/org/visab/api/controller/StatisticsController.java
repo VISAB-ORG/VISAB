@@ -62,7 +62,7 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 
     @Override
     public final void publish(StatisticsReceivedEvent event) {
-        WebApi.getEventBus().publish(event);
+        WebApi.instance.getEventBus().publish(event);
     }
 
 }

@@ -8,14 +8,9 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.ViewTuple;
 
-public class DynamicViewLoader {
+public final class DynamicViewLoader {
 
-    private Logger logger = LogManager.getLogger(DynamicViewLoader.class);
-
-    /**
-     * Singelton instance
-     */
-    public static final DynamicViewLoader instance = new DynamicViewLoader();
+    private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
     /**
      * Returns a ViewTupel consisting of the View aswell as the corresponding
@@ -27,7 +22,7 @@ public class DynamicViewLoader {
      * @return The ViewTupel if successful, throws exception else
      */
     @SuppressWarnings("unchecked")
-    public ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(String game) {
+    public static ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(String game) {
         // TODO: get classname from somewhere
         var className = "org.visab.newgui.statistics.CBRShooterStatisticsView";
 
@@ -53,7 +48,7 @@ public class DynamicViewLoader {
      * @param className The fully classified class name
      * @return The Class<?> object if successful, null else
      */
-    private Class<?> tryGetClass(String className) {
+    private static Class<?> tryGetClass(String className) {
         Class<?> _class = null;
 
         try {

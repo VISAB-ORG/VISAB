@@ -66,6 +66,6 @@ public class MapController extends HTTPControllerBase implements IPublisher<MapI
 
     @Override
     public void publish(MapImageReceivedEvent event) {
-        WebApi.getEventBus().publish(event);
+        WebApi.instance.getEventBus().publish(event);
     }
 }
