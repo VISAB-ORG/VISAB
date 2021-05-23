@@ -19,50 +19,71 @@ import org.visab.util.Settings;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
- * to the current sessions and checks them for timeout. Publishes the
- * SessionOpenedEvent and SessionClosedEvent to the Eventbus.
+ * to the current transmission sessions and checks them for timeout. Publishes
+ * the SessionOpenedEvent and SessionClosedEvent to the Eventbus.
  *
  * @author moritz
  *
  */
 public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
+    /**
+     * The SessionClosedPublisher that publishes the SessionClosedEvent
+     */
     private class SessionClosedPublisher extends PublisherBase<SessionClosedEvent> {
     }
 
+    /**
+     * The SessionOpenedPublisher that publishes the SessionOpenedEvent
+     */
     private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
     }
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(SessionWatchdog.class);
-
-    private static Map<UUID, String> activeSessions = new HashMap<>();
+    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
 
     /**
-     * Contains the last times statistics data was sent for the respective session.
-     * Used for closing sessions via timeout.
+     * The currently active tranmission sessions.
      */
-    private static Map<UUID, LocalTime> statisticsSentTimes = new HashMap<>();
+    private Map<UUID, String> activeSessions = new HashMap<>();
 
     /**
-     * Returns the currently active sessions. Warning: Returns a copy, not the
-     * reference so don't try modifying this.
+     * Contains the last time statistics data was sent from the transmission
+     * session. Used for closing sessions via timeout.
+     */
+    private Map<UUID, LocalTime> sessionSentTimes = new HashMap<>();
+
+    /**
+     * Returns a copy of the currently active sessions. Warning: Returns a copy, not
+     * the reference so dont try modifying this.
      *
      * @return A Map of the currently active transmission sessions and their
      *         respective games
      */
-    public static Map<UUID, String> getActiveSessions() {
+    public Map<UUID, String> getActiveSessions() {
         return new HashMap<UUID, String>(activeSessions);
     }
 
-    public static String getGame(UUID sessionId) {
+    /**
+     * Gets the corresponding game for a given sessionId.
+     * 
+     * @param sessionId The sessionId
+     * @return The game if session is active, "" else
+     */
+    public String getGame(UUID sessionId) {
         if (activeSessions.containsKey(sessionId))
             return activeSessions.get(sessionId);
 
         return "";
     }
 
-    public static boolean isSessionActive(UUID sessionId) {
+    /**
+     * Gets whether a transmission session is active.
+     * 
+     * @param sessionId The sessionId to check
+     * @return True if session is active
+     */
+    public boolean isSessionActive(UUID sessionId) {
         return activeSessions.containsKey(sessionId);
     }
 
@@ -70,7 +91,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
     private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
 
-    private boolean checkTimeouts = true;
+    private boolean shouldCheckTimeouts;
 
     public SessionWatchdog() {
         super(StatisticsReceivedEvent.class);
@@ -84,7 +105,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
     private void checkSessionTimeouts() {
         // Make a copy because of potential modification during iteration
         var entries = new ArrayList<Entry<UUID, LocalTime>>();
-        entries.addAll(statisticsSentTimes.entrySet());
+        entries.addAll(sessionSentTimes.entrySet());
 
         for (var entry : entries) {
             var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
@@ -95,11 +116,18 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         }
     }
 
+    /**
+     * Closes a given session and publishes a SessionClosedEvent.
+     * 
+     * @param sessionId       The sessionId to remove the transmission session of
+     * @param closedByTimeout Whether the session was closed from the timeout loop
+     *                        or by api call
+     */
     public void closeSession(UUID sessionId, boolean closedByTimeout) {
         activeSessions.remove(sessionId);
 
         // Also remove the session from timeout check
-        statisticsSentTimes.remove(sessionId);
+        sessionSentTimes.remove(sessionId);
 
         // Publish the SessionClosedEvent event
         closedPublisher.publish(new SessionClosedEvent(sessionId, closedByTimeout));
@@ -107,9 +135,17 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
     @Override
     public void notify(StatisticsReceivedEvent event) {
-        statisticsSentTimes.put(event.getSessionId(), LocalTime.now());
+        sessionSentTimes.put(event.getSessionId(), LocalTime.now());
     }
 
+    /**
+     * Opens a new transmission session and publishes a SessionOpenedEvent.
+     * 
+     * @param sessionId            The sessionId to open a session for
+     * @param game                 The game of the session
+     * @param remoteCallerIp       The ip of the device that made the api call
+     * @param remoteCallerHostName The hostname of the device that made the api call
+     */
     public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
         activeSessions.put(sessionId, game);
 
@@ -120,12 +156,14 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
     }
 
     /**
-     * Starts the infinite timeout checking loop on a different thread.
+     * Starts the infinite timeout checking loop on a different thread. Can only be
+     * terminated by calling stopTimeoutLoop.
      */
     public void StartTimeoutLoop() {
+        shouldCheckTimeouts = true;
         new Thread(() -> {
             try {
-                while (checkTimeouts) {
+                while (shouldCheckTimeouts) {
                     checkSessionTimeouts();
                     Thread.sleep(1000);
                 }
@@ -135,8 +173,11 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         }).start();
     }
 
+    /**
+     * Stops the timeout loop
+     */
     public void stopTimeoutLoop() {
-        checkTimeouts = false;
+        shouldCheckTimeouts = false;
     }
 
 }

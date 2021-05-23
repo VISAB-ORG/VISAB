@@ -11,7 +11,7 @@ import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
- * Controller for getting the games supported by VISAB
+ * Api Controller for getting the games supported by VISAB.
  *
  * @author moritz
  *

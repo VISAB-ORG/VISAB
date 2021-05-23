@@ -76,7 +76,7 @@ public class WebApi extends RouterNanoHTTPD {
     }
 
     /**
-     * Shutdown the WebApi, SessionListenerFactory and SessionWatchdog
+     * Shutsdown the WebApi, SessionListenerFactory and SessionWatchdog
      */
     public void shutdown() {
         listenerFactory.stopFactory();

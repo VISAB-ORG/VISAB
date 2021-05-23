@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.api.model.SessionStatus;
@@ -29,10 +28,10 @@ public class SessionController extends HTTPControllerBase {
     private static Logger logger = LogManager.getLogger(SessionController.class);
 
     /**
-     * Closes a transmission session.
-     *
-     * @param httpSession
-     * @return
+     * Handler for closing a transmission session.
+     * 
+     * @param httpSession The Http session
+     * @return A Http response
      */
     private Response closeSession(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
@@ -40,7 +39,7 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!SessionWatchdog.isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             return getOkResponse("Session was already closed!");
 
         WebApi.getInstance().getSessionWatchdog().closeSession(sessionId, false);
@@ -49,10 +48,10 @@ public class SessionController extends HTTPControllerBase {
     }
 
     /**
-     * Gets the status of a given session.
-     *
-     * @param httpSession
-     * @return
+     * Handler for getting transmission session status.
+     * 
+     * @param httpSession The Http session
+     * @return A Http response
      */
     private Response getSessionStatus(IHTTPSession httpSession) {
         var parameters = httpSession.getParameters();
@@ -68,10 +67,10 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse("Could not parse uuid!");
 
         SessionStatus sessionStatus;
-        if (!SessionWatchdog.isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             sessionStatus = new SessionStatus(false, sessionId, null);
         else
-            sessionStatus = new SessionStatus(true, sessionId, SessionWatchdog.getGame(sessionId));
+            sessionStatus = new SessionStatus(true, sessionId, WebApi.getInstance().getSessionWatchdog().getGame(sessionId));
 
         return getJsonResponse(sessionStatus);
     }
@@ -79,6 +78,8 @@ public class SessionController extends HTTPControllerBase {
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
         var endpointAdress = uriResource.getUri().replace("session/", "");
+        
+        // Decide handlers based on uri
         switch (endpointAdress) {
         case "open":
             return openSession(httpSession);
@@ -90,7 +91,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(SessionWatchdog.getActiveSessions());
+            return getJsonResponse(WebApi.getInstance().getSessionWatchdog().getActiveSessions());
 
         default:
             return getNotFoundResponse(uriResource);
@@ -103,10 +104,10 @@ public class SessionController extends HTTPControllerBase {
     }
 
     /**
-     * Opens a new session.
-     *
-     * @param httpSession
-     * @return
+     * Handler for opening a new tranmission session.
+     * 
+     * @param httpSession The Http session
+     * @return A Http response
      */
     private Response openSession(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
@@ -121,7 +122,7 @@ public class SessionController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (SessionWatchdog.isSessionActive(sessionId))
+        if (WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             return getBadRequestResponse("Session already active!");
 
         WebApi.getInstance().getSessionWatchdog().openSession(sessionId, game, httpSession.getRemoteIpAddress(),

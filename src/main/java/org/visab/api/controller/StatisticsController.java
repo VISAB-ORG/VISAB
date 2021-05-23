@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.SessionWatchdog;
+import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.ApiEventBus;
@@ -36,13 +36,23 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
+        return receiveStatistics(httpSession);
+    }
+
+    /**
+     * Handler for reciving statistics.
+     * 
+     * @param httpSession The Http session
+     * @return A Http response
+     */
+    private Response receiveStatistics(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!SessionWatchdog.isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             return getBadRequestResponse("Session was already closed!");
 
         if (game == "")
