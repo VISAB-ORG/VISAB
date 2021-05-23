@@ -14,15 +14,14 @@ public final class DynamicViewLoader {
 
     /**
      * Returns a ViewTupel consisting of the View aswell as the corresponding
-     * 
-     * 
-     * ViewModel
+     * ViewModel.
      * 
      * @param game The game to load a statistics view instance for
      * @return The ViewTupel if successful, throws exception else
      */
     @SuppressWarnings("unchecked")
-    public static ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(String game) {
+    public static ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(
+            String game) {
         // TODO: get classname from somewhere
         var className = "org.visab.newgui.statistics.CBRShooterStatisticsView";
 
@@ -43,7 +42,7 @@ public final class DynamicViewLoader {
     }
 
     /**
-     * Tries to get a Class<?> object for a given class name
+     * Tries to get a Class<?> object for a given class name.
      * 
      * @param className The fully classified class name
      * @return The Class<?> object if successful, null else

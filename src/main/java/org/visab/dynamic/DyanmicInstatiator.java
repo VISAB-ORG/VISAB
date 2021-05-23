@@ -106,7 +106,7 @@ public final class DyanmicInstatiator {
     }
 
     /**
-     * Gets the constructors for a given class name
+     * Gets the constructors for a given class name.
      * 
      * @param className The fully classified class name of the class to get the
      *                  constructors of

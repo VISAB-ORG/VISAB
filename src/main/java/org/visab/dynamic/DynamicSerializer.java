@@ -21,7 +21,7 @@ public final class DynamicSerializer {
     private static Logger logger = LogManager.getLogger(DynamicSerializer.class);
 
     /**
-     * Deserialize a json string into a VISAB file
+     * Deserialize a json string into a VISAB file.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
@@ -46,7 +46,7 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Deserialize a json string into a IImage
+     * Deserialize a json string into a IImage.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a image
@@ -70,7 +70,7 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Deserialize a json string into a IStatistics
+     * Deserialize a json string into a IStatistics.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
@@ -95,7 +95,7 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Attempts to deserialize a json string into an object of class T
+     * Attempts to deserialize a json string into an object of class T.
      * 
      * @param <T>       The type to deserialize into
      * @param className The fully classified class name of the type
@@ -116,7 +116,7 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Tries to get a Class<?> object for a given class name
+     * Tries to get a Class<?> object for a given class name.
      * 
      * @param className The fully classified class name
      * @return The Class<?> object if successful, null else
