@@ -39,7 +39,7 @@
                            <children>
                               <Button fx:id="openFileFromWorkspaceButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" stylesheets="@../../../../../resources/template_style.css" text="Open" textFill="WHITE">
                                  <styleClass>
-                                    <String fx:value="upload-button" />
+                                    <String fx:value="button" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                               </Button>
@@ -63,7 +63,7 @@
                               <Insets />
                            </opaqueInsets>
                         </TextField>
-                        <Button fx:id="uploadDraggedFileButton" alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="66.0" styleClass="upload-button" stylesheets="@../../../../../resources/template_style.css" text="Upload" textFill="WHITE">
+                        <Button fx:id="uploadDraggedFileButton" alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="66.0" stylesheets="@../../../../../resources/template_style.css" text="Upload" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="3.0" />
                            </HBox.margin>
@@ -84,7 +84,7 @@
                               <Insets left="20.0" right="20.0" top="10.0" />
                            </HBox.margin>
                            <styleClass>
-                              <String fx:value="browseFile-button" />
+                              <String fx:value="button" />
                               <String fx:value="shadow" />
                            </styleClass>
                         </Button>
@@ -103,7 +103,7 @@
                      <children>
                         <ImageView fitHeight="307.0" fitWidth="273.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../Desktop/Uni/Master/VISAB/Logo_2.png" />
+                              <Image url="@../../../../../resources/img/visabLogo.png" />
                            </image>
                            <HBox.margin>
                               <Insets top="20.0" />
@@ -138,7 +138,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+                              <Image url="@../../../../../resources/img/home_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -147,7 +147,7 @@
                            <graphic>
                               <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+                                    <Image url="@../../../../../resources/img/home_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -162,7 +162,7 @@
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+                                    <Image url="@../../../../../resources/img/settings_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic></MenuItem>
@@ -175,7 +175,7 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+                              <Image url="@../../../../../resources/img/settings_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -184,7 +184,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+                              <Image url="@../../../../../resources/img/about_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -193,7 +193,7 @@
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+                                    <Image url="@../../../../../resources/img/about_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -204,7 +204,7 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+                              <Image url="@../../../../../resources/img/help_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -213,7 +213,7 @@
                            <graphic>
                               <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+                                    <Image url="@../../../../../resources/img/help_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
