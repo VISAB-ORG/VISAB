@@ -1,0 +1,41 @@
+.menu-bar {
+	-fx-background-color: #4472C4;
+	 -fx-text-fill: white;
+}
+
+.browseFile-button {
+	-fx-background-color: #4472C4;
+	-fx-background-radius: 10;
+}
+
+.listView_box {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 10;
+}
+
+.drag-box {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 10;
+}
+
+.upload-button{
+	-fx-background-color: #4472C4;
+	-fx-background-radius: 10;
+}
+
+.transparent {
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.right-bar {
+	-fx-background-color: #D3D3D3;
+}
+
+.left-bar {
+	-fx-background-color: #D3D3D3;
+}
+
+.shadow{
+	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
+}
+
