@@ -35,7 +35,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
 
             // Save the new file in database
             var savePath = repo.combinePath(basicFile.getGame(), fileName);
-            wasSaved = repo.writeToFileRelative(json, savePath);
+            wasSaved = repo.writeToFileRelative(savePath, json);
 
             // Add to the tree if saved succesfully
             if (wasSaved) {

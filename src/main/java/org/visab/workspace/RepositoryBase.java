@@ -117,7 +117,7 @@ public abstract class RepositoryBase implements IRepository {
     }
 
     @Override
-    public boolean writeToFileRelative(String content, String relativePath) {
+    public boolean writeToFileRelative(String relativePath, String content) {
         var filePath = combinePath(baseDirectory, relativePath);
 
         return writeToFile(filePath, content);

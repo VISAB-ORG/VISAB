@@ -94,10 +94,10 @@ public interface IRepository {
     /**
      * [CONVENIENCE] Writes to a file with to a path relative to the base directory
      * 
-     * @param content      The content to write to the file
      * @param relativePath The relative path of the file
+     * @param content      The content to write to the file
      * @return True if successfully saved
      */
-    boolean writeToFileRelative(String content, String relativePath);
+    boolean writeToFileRelative(String relativePath, String content);
 
 }
