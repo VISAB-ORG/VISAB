@@ -138,7 +138,11 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
+<<<<<<< HEAD
                               <Image url="@../../../../../resources/img/home_icon.png" />
+=======
+                              <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                            </image>
                         </ImageView>
                      </graphic>
@@ -147,7 +151,11 @@
                            <graphic>
                               <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+<<<<<<< HEAD
                                     <Image url="@../../../../../resources/img/home_icon.png" />
+=======
+                                    <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                                  </image>
                               </ImageView>
                            </graphic>
@@ -162,7 +170,11 @@
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+<<<<<<< HEAD
                                     <Image url="@../../../../../resources/img/settings_icon.png" />
+=======
+                                    <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                                  </image>
                               </ImageView>
                            </graphic></MenuItem>
@@ -175,7 +187,11 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
+<<<<<<< HEAD
                               <Image url="@../../../../../resources/img/settings_icon.png" />
+=======
+                              <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                            </image>
                         </ImageView>
                      </graphic>
@@ -184,7 +200,11 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
+<<<<<<< HEAD
                               <Image url="@../../../../../resources/img/about_icon.png" />
+=======
+                              <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                            </image>
                         </ImageView>
                      </graphic>
@@ -193,7 +213,11 @@
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+<<<<<<< HEAD
                                     <Image url="@../../../../../resources/img/about_icon.png" />
+=======
+                                    <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                                  </image>
                               </ImageView>
                            </graphic>
@@ -204,7 +228,11 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
+<<<<<<< HEAD
                               <Image url="@../../../../../resources/img/help_icon.png" />
+=======
+                              <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                            </image>
                         </ImageView>
                      </graphic>
@@ -213,7 +241,11 @@
                            <graphic>
                               <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+<<<<<<< HEAD
                                     <Image url="@../../../../../resources/img/help_icon.png" />
+=======
+                                    <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+>>>>>>> Modified GUI - new colour scheme.
                                  </image>
                               </ImageView>
                            </graphic>

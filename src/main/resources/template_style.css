@@ -1,5 +1,4 @@
 .menu-bar {
-<<<<<<< HEAD
 	-fx-background-color: #12213a;
 	-fx-text-fill: #FFFFFF;
 }
@@ -23,16 +22,19 @@
 	-fx-background-radius: 5;
 }
 
-.browseFile-button {
+.button {
 	-fx-background-color: #12213a;
-=======
-	-fx-background-color: #4472C4;
-	 -fx-text-fill: white;
+	-fx-background-radius: 10;
 }
 
-.browseFile-button {
-	-fx-background-color: #4472C4;
->>>>>>> Improved GUI Layout icl. CSS.
+.delete-button {
+	-fx-border-color: #12213a;
+	-fx-border-radius: 10;
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.upload-button {
+	-fx-background-color: #1e3762;
 	-fx-background-radius: 10;
 }
 
@@ -43,15 +45,6 @@
 
 .drag-box {
 	-fx-background-color: #FFFFFF;
-	-fx-background-radius: 10;
-}
-
-.upload-button{
-<<<<<<< HEAD
-	-fx-background-color: #12213a;
-=======
-	-fx-background-color: #4472C4;
->>>>>>> Improved GUI Layout icl. CSS.
 	-fx-background-radius: 10;
 }
 
@@ -70,8 +63,3 @@
 .shadow{
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
 }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> Improved GUI Layout icl. CSS.
