@@ -23,6 +23,8 @@ import javafx.scene.control.TableView;
  *
  * @author VISAB 1.0 and 2.0 group
  */
+
+// @TODO rename this cunt
 public final class VISABUtil {
 
     // Logger needs .class for each class to use for log traces
