@@ -6,7 +6,7 @@ import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.workspace.model.FileRow;
-import org.visab.repository.BasicRepository;
+import org.visab.workspace.BasicRepository;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;

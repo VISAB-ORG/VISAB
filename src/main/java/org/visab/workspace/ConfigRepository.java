@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.workspace;
 
 import org.visab.workspace.config.model.DynamicMapping;
 

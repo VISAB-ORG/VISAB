@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.workspace;
 
 public class LogRepository extends RepositoryBase {
 

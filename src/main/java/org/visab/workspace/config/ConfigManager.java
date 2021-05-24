@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.visab.repository.ConfigRepository;
 import org.visab.util.VISABUtil;
+import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.DynamicMapping;
 import org.visab.workspace.config.model.MappingConfig;
