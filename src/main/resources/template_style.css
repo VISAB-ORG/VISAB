@@ -1,10 +1,24 @@
 .menu-bar {
-	-fx-background-color: #4472C4;
-	 -fx-text-fill: white;
+	-fx-background-color: #12213a;
+	-fx-text-fill: #FFFFFF;
+}
+
+.context-menu {
+    -fx-background-color: #1f3761;
+	-fx-background-radius: 5;
+}
+
+.menu-item .label {
+	-fx-text-fill: #FFFFFF;
+}
+
+.menu:hover, .menu:focused, .menu-item:focused {
+    -fx-background-color: #ff5c33;
+	-fx-background-radius: 5;
 }
 
 .browseFile-button {
-	-fx-background-color: #4472C4;
+	-fx-background-color: #12213a;
 	-fx-background-radius: 10;
 }
 
@@ -19,7 +33,7 @@
 }
 
 .upload-button{
-	-fx-background-color: #4472C4;
+	-fx-background-color: #12213a;
 	-fx-background-radius: 10;
 }
 
@@ -38,4 +52,5 @@
 .shadow{
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
 }
+
 
