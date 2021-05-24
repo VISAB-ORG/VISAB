@@ -38,147 +38,147 @@ public class TableEntryStatisticsVisab {
     private String weaponScriptBot;
 
     public String getAmmuPosition() {
-	return ammuPosition;
+        return ammuPosition;
     }
 
     public String getCoordinatesCBRBot() {
-	return coordinatesCBRBot;
+        return coordinatesCBRBot;
     }
 
     public String getCoordinatesScriptBot() {
-	return coordinatesScriptBot;
+        return coordinatesScriptBot;
     }
 
     public int getFrame() {
-	return frame;
+        return frame;
     }
 
     public String getHealthCBRBot() {
-	return healthCBRBot;
+        return healthCBRBot;
     }
 
     public String getHealthPosition() {
-	return healthPosition;
+        return healthPosition;
     }
 
     public String getHealthScriptBot() {
-	return healthScriptBot;
+        return healthScriptBot;
     }
 
     public String getNameCBRBot() {
-	return nameCBRBot;
+        return nameCBRBot;
     }
 
     public String getNameScriptBot() {
-	return nameScriptBot;
+        return nameScriptBot;
     }
 
     public String getPlanCBRBot() {
-	return planCBRBot;
+        return planCBRBot;
     }
 
     public String getRoundCounter() {
-	return roundCounter;
+        return roundCounter;
     }
 
     public String getStatisticsCBRBot() {
-	return statisticsCBRBot;
+        return statisticsCBRBot;
     }
 
     public String getStatisticScriptBot() {
-	return statisticScriptBot;
+        return statisticScriptBot;
     }
 
     public String getWeaponCBRBot() {
-	return weaponCBRBot;
+        return weaponCBRBot;
     }
 
     public String getWeaponMagAmmuCBRBot() {
-	return weaponMagAmmuCBRBot;
+        return weaponMagAmmuCBRBot;
     }
 
     public String getWeaponMagAmmuScriptBot() {
-	return weaponMagAmmuScriptBot;
+        return weaponMagAmmuScriptBot;
     }
 
     public String getWeaponPosition() {
-	return weaponPosition;
+        return weaponPosition;
     }
 
     public String getWeaponScriptBot() {
-	return weaponScriptBot;
+        return weaponScriptBot;
     }
 
     public void setAmmuPosition(String ammuPosition) {
-	this.ammuPosition = ammuPosition;
+        this.ammuPosition = ammuPosition;
     }
 
     public void setCoordinatesCBRBot(String coordinatesCBRBot) {
-	this.coordinatesCBRBot = coordinatesCBRBot;
+        this.coordinatesCBRBot = coordinatesCBRBot;
     }
 
     public void setCoordinatesScriptBot(String coordinatesScriptBot) {
-	this.coordinatesScriptBot = coordinatesScriptBot;
+        this.coordinatesScriptBot = coordinatesScriptBot;
     }
 
     public void setFrame(int frame) {
-	this.frame = frame;
+        this.frame = frame;
     }
 
     public void setHealthCBRBot(String healthCBRBot) {
-	this.healthCBRBot = healthCBRBot;
+        this.healthCBRBot = healthCBRBot;
     }
 
     public void setHealthPosition(String healthPosition) {
-	this.healthPosition = healthPosition;
+        this.healthPosition = healthPosition;
     }
 
     public void setHealthScriptBot(String healthScriptBot) {
-	this.healthScriptBot = healthScriptBot;
+        this.healthScriptBot = healthScriptBot;
     }
 
     public void setNameCBRBot(String nameCBRBot) {
-	this.nameCBRBot = nameCBRBot;
+        this.nameCBRBot = nameCBRBot;
     }
 
     public void setNameScriptBot(String nameScriptBot) {
-	this.nameScriptBot = nameScriptBot;
+        this.nameScriptBot = nameScriptBot;
     }
 
     public void setPlanCBRBot(String planCBRBot) {
-	this.planCBRBot = planCBRBot;
+        this.planCBRBot = planCBRBot;
     }
 
     public void setRoundCounter(String roundCounter) {
-	this.roundCounter = roundCounter;
+        this.roundCounter = roundCounter;
     }
 
     public void setStatisticsCBRBot(String statisticsCBRBot) {
-	this.statisticsCBRBot = statisticsCBRBot;
+        this.statisticsCBRBot = statisticsCBRBot;
     }
 
     public void setStatisticsScriptBot(String statisticScriptBot) {
-	this.statisticScriptBot = statisticScriptBot;
+        this.statisticScriptBot = statisticScriptBot;
     }
 
     public void setWeaponCBRBot(String weaponCBRBot) {
-	this.weaponCBRBot = weaponCBRBot;
+        this.weaponCBRBot = weaponCBRBot;
     }
 
     public void setWeaponMagAmmuCBRBot(String weaponMagAmmuCBRBot) {
-	this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
+        this.weaponMagAmmuCBRBot = weaponMagAmmuCBRBot;
     }
 
     public void setWeaponMagAmmuScriptBot(String weaponMagAmmuScriptBot) {
-	this.weaponMagAmmuScriptBot = weaponMagAmmuScriptBot;
+        this.weaponMagAmmuScriptBot = weaponMagAmmuScriptBot;
     }
 
     public void setWeaponPosition(String weaponPosition) {
-	this.weaponPosition = weaponPosition;
+        this.weaponPosition = weaponPosition;
     }
 
     public void setWeaponScriptBot(String weaponScriptBot) {
-	this.weaponScriptBot = weaponScriptBot;
+        this.weaponScriptBot = weaponScriptBot;
     }
 
 }
