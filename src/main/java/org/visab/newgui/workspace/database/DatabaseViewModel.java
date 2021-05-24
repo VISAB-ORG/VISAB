@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.newgui.workspace.ExplorerViewModelBase;
 import org.visab.newgui.workspace.model.FileRow;
-import org.visab.repository.DatabaseRepository;
 import org.visab.workspace.DatabaseManager;
+import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
 
 public class DatabaseViewModel extends ExplorerViewModelBase {
