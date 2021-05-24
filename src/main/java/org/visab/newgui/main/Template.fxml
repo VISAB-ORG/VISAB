@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -112,7 +113,7 @@
                   </HBox>
                   <VBox alignment="TOP_CENTER" prefHeight="127.0" prefWidth="300.0">
                      <children>
-                        <Label text="Your tool to visualize agent behavior from different games." textFill="#4472c4">
+                        <Label text="Your tool to visualize agent behavior from different games." textFill="#2a5394">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
@@ -131,34 +132,101 @@
             </VBox>
          </center>
          <top>
-            <MenuBar stylesheets="@../../../../../resources/template_style.css" BorderPane.alignment="CENTER">
+            <MenuBar id="menuBar" fx:id="menuBar" prefHeight="38.0" prefWidth="600.0" styleClass="menu-item" stylesheets="@../../../../../resources/template_style.css" BorderPane.alignment="CENTER">
               <menus>
-                <Menu mnemonicParsing="false" text="Home">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="API Dashboard">
+                <Menu fx:id="homeMenu" mnemonicParsing="false" style="-fx-text-fill: white;">
+                     <graphic>
+                        <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <Menu fx:id="homeMenu1" mnemonicParsing="false" style="-fx-text-fill: white;" text="Home">
+                           <graphic>
+                              <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Downloads/126572-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Menu>
                      </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Settings">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                     </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="About">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
+                  <Menu fx:id="apiMenu" mnemonicParsing="false" text="API Dashboard" />
+                  <Menu fx:id="apiMenu1" mnemonicParsing="false" text="Workspace" />
+                  <Menu fx:id="settingsMenu" mnemonicParsing="false">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Settings">
+                           <graphic>
+                              <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                        <MenuItem mnemonicParsing="false" text="dark mode">
+                           <graphic>
+                              <ToggleButton mnemonicParsing="false" selected="true" text="on" />
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                     <graphic>
+                        <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../Downloads/753919-64.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Menu>
+                <Menu fx:id="aboutMenu" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <items>
+                        <Menu fx:id="aboutMenu1" mnemonicParsing="false" text="About">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Downloads/2639839-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Menu>
+                     </items>
+                </Menu>
+                <Menu fx:id="helpMenu" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <items>
+                        <Menu fx:id="helpMenu1" mnemonicParsing="false" text="Help">
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../Downloads/211674-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Menu>
+                     </items>
                 </Menu>
               </menus>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
             </MenuBar>
          </top>
       </BorderPane>
