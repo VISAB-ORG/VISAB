@@ -63,7 +63,11 @@ public abstract class RepositoryBase implements IRepository {
         return folder.delete();
     }
 
-    @Override
+    /**
+     * Returns the path to the base directory.
+     * 
+     * @return The base directory
+     */
     public String getBaseDirectory() {
         return this.baseDirectory;
     }
@@ -73,7 +77,12 @@ public abstract class RepositoryBase implements IRepository {
         return new File(filePath);
     }
 
-    @Override
+    /**
+     * [CONVENIENCE] Loads a file with a path relative to the base directory
+     * 
+     * @param relativePath The relative path of the file
+     * @return The loaded file
+     */
     public File loadFileRelative(String relativePath) {
         var filePath = combinePath(baseDirectory, relativePath);
 
@@ -116,7 +125,13 @@ public abstract class RepositoryBase implements IRepository {
         return true;
     }
 
-    @Override
+    /**
+     * [CONVENIENCE] Writes to a file with to a path relative to the base directory
+     * 
+     * @param relativePath The relative path of the file
+     * @param content      The content to write to the file
+     * @return True if successfully saved
+     */
     public boolean writeToFileRelative(String relativePath, String content) {
         var filePath = combinePath(baseDirectory, relativePath);
 
