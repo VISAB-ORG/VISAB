@@ -10,5 +10,10 @@ import java.util.UUID;
  */
 public interface IEvent {
 
+    /**
+     * Gets the transmission sessions sessionId by which the event was caused.
+     * 
+     * @return The transmission sessions sessionId
+     */
     UUID getSessionId();
 }

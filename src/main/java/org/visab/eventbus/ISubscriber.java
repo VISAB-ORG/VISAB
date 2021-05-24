@@ -2,7 +2,7 @@ package org.visab.eventbus;
 
 /**
  * The ISubscriber interface that all subscribers have to implement. This
- * interface is needed, since so that the EventBus can publish the exact event.
+ * interface is needed, so that the EventBus can publish the exact event.
  *
  * @author moritz
  *
@@ -10,8 +10,19 @@ package org.visab.eventbus;
  */
 public interface ISubscriber<TEvent extends IEvent> {
 
-    void notify(TEvent event);
-
+    /**
+     * Gets the subscribed events simple name.
+     * 
+     * @return The subscribed events simple name
+     */
     String getSubscribedEventType();
+
+    /**
+     * Called when a TEvent is published at the EventBus subscribed to. The
+     * subscriber is notified with the concrete event.
+     * 
+     * @param event THe event published to the EventBus
+     */
+    void notify(TEvent event);
 
 }

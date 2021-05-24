@@ -29,7 +29,7 @@
                         <TreeItemPropertyValueFactory property="lastModified" />
                     </cellValueFactory>
                 </TreeTableColumn>
-                <TreeTableColumn prefWidth="75.0" text="Size in KB">
+                <TreeTableColumn fx:id="sizeColumn" prefWidth="75.0" text="Size in KB">
                     <cellValueFactory>
                         <TreeItemPropertyValueFactory property="size" />
                     </cellValueFactory>

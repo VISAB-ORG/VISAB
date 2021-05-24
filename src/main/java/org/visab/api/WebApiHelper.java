@@ -3,7 +3,6 @@ package org.visab.api;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,26 +22,22 @@ public final class WebApiHelper {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(WebApiHelper.class);
 
+    /**
+     * Extracts the game from the headers of a Http request.
+     * 
+     * @param headers The headers
+     * @return The game if key was found in headers, "" else
+     */
     public static final String extractGame(Map<String, String> headers) {
         return headers.containsKey("game") ? headers.get("game") : "";
     }
 
-    public static final UUID extractSessionId(Map<String, String> headers) {
-        return headers.containsKey("sessionid") ? tryParseUUID(headers.get("sessionid")) : null;
-    }
-
-    public static final Entry<UUID, String> extractSessionIdAndGame(Map<String, String> headers) {
-        return Map.entry(extractSessionId(headers), extractGame(headers));
-    }
-
-    public static final UUID tryParseUUID(String UUIDString) {
-        try {
-            return UUID.fromString(UUIDString);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
+    /**
+     * Extracts a json string from the body of a Http session.
+     * 
+     * @param session The session to get the body of
+     * @return The json string if successful, "" else
+     */
     public static final String extractJsonBody(IHTTPSession session) {
         var json = "";
         try {
@@ -55,6 +50,30 @@ public final class WebApiHelper {
         }
 
         return json;
+    }
+
+    /**
+     * Extracts the sessionId from the headers of a Http request.
+     * 
+     * @param headers The headers
+     * @return The sessionId if key was found in headers, null else
+     */
+    public static final UUID extractSessionId(Map<String, String> headers) {
+        return headers.containsKey("sessionid") ? tryParseUUID(headers.get("sessionid")) : null;
+    }
+
+    /**
+     * Parses a UUID from a given string.
+     * 
+     * @param UUIDString The string to parse
+     * @return The UUID if successfully parsed, null else
+     */
+    public static final UUID tryParseUUID(String UUIDString) {
+        try {
+            return UUID.fromString(UUIDString);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

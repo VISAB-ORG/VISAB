@@ -40,8 +40,6 @@ public class GUIMain extends Application {
 
     private Stage primaryStage;
 
-    private WebApi webApi;
-
     public void aboutWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(GUIMain.class.getResource(ABOUT_FXML_PATH));
@@ -186,8 +184,7 @@ public class GUIMain extends Application {
      */
     private void startApiServer() {
         try {
-            webApi = new WebApi(Settings.API_PORT);
-            webApi.start();
+            WebApi.getInstance().start();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -227,6 +224,6 @@ public class GUIMain extends Application {
      */
     @Override
     public void stop() {
-        webApi.shutdown();
+        WebApi.getInstance().shutdown();
     }
 }

@@ -2,8 +2,12 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.processing.IImage;
+import org.visab.globalmodel.IImage;
 
+/**
+ * The ImageReceivedEvent, that occurs when images are received by the VISAB
+ * api.
+ */
 public class ImageReceivedEvent extends EventBase {
 
     private IImage mapImage;

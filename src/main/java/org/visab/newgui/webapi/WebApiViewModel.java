@@ -80,7 +80,7 @@ public class WebApiViewModel extends ViewModelBase {
     public Command getCloseSessionCommand() {
         return runnableCommand(() -> {
             if (selectedSessionRow.get() != null)
-                WebApi.getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
+                WebApi.getInstance().getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
         });
     }
 
@@ -89,9 +89,9 @@ public class WebApiViewModel extends ViewModelBase {
     }
 
     public void initialize() {
-        WebApi.getEventBus().subscribe(new SessionOpenedSubscriber());
-        WebApi.getEventBus().subscribe(new StatisticsReceivedSubscriber());
-        WebApi.getEventBus().subscribe(new SessionClosedSubscriber());
+        new SessionOpenedSubscriber();
+        new StatisticsReceivedSubscriber();
+        new SessionClosedSubscriber();
     }
 
     /**

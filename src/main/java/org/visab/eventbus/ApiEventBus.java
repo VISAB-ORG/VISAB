@@ -17,40 +17,30 @@ import org.apache.logging.log4j.Logger;
  */
 public class ApiEventBus {
 
+    /**
+     * Singelton instance
+     */
+    private static ApiEventBus instance;
+
+    /**
+     * Gets the singelton instance
+     * 
+     * @return The instance
+     */
+    public static ApiEventBus getInstance() {
+        if (instance == null)
+            instance = new ApiEventBus();
+
+        return instance;
+    }
+
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(ApiEventBus.class);
+    private Logger logger = LogManager.getLogger(ApiEventBus.class);
 
+    /**
+     * The current subscribers.
+     */
     private Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
-
-    public <TEvent extends IEvent> void publish(TEvent event) {
-        var eventType = event.getClass().getSimpleName().toString();
-
-        if (subscribers.containsKey(eventType)) {
-            // Make a copy, since the subscribers list will be modified if the event is of
-            // type SessionClosedEvent.
-            var _subscribers = this.<TEvent>castSubscribers(subscribers.get(eventType));
-            for (var sub : _subscribers)
-                sub.notify(event);
-        }
-    }
-
-    public void subscribe(ISubscriber<?> subscriber) {
-        var eventType = subscriber.getSubscribedEventType();
-
-        if (!subscribers.containsKey(eventType))
-            subscribers.put(eventType, new ArrayList<ISubscriber<?>>());
-        subscribers.get(eventType).add(subscriber);
-    }
-
-    public void unsubscribe(ISubscriber<?> subscriber) {
-        var eventType = subscriber.getSubscribedEventType();
-
-        if (subscribers.containsKey(eventType))
-            subscribers.get(eventType).remove(subscriber);
-        else {
-            // Throw some exception
-        }
-    }
 
     /**
      * Casts the subscribers to their concrete EventType. If this throws an error,
@@ -69,5 +59,53 @@ public class ApiEventBus {
             casted.add((ISubscriber<TEvent>) sub);
 
         return casted;
+    }
+
+    /**
+     * Notifies all subscribers that are subscribed to TEvent of the given event.
+     * 
+     * @param <TEvent> The type of the event
+     * @param event    The event that subscribers will be notified with
+     */
+    public <TEvent extends IEvent> void publish(TEvent event) {
+        var eventType = event.getClass().getSimpleName().toString();
+
+        if (subscribers.containsKey(eventType)) {
+            // Make a copy, since the subscribers list will be modified if the event is of
+            // type SessionClosedEvent.
+            var _subscribers = this.<TEvent>castSubscribers(subscribers.get(eventType));
+            for (var sub : _subscribers)
+                sub.notify(event);
+        }
+    }
+
+    /**
+     * Adds a subscriber to the busses subscribers.
+     * 
+     * @param subscriber The subscriber to add
+     */
+    public void subscribe(ISubscriber<?> subscriber) {
+        var eventType = subscriber.getSubscribedEventType();
+
+        if (!subscribers.containsKey(eventType))
+            subscribers.put(eventType, new ArrayList<ISubscriber<?>>());
+
+        // Only add if not already subscribed
+        if (!subscribers.get(eventType).contains(subscriber))
+            subscribers.get(eventType).add(subscriber);
+    }
+
+    /**
+     * Removes a subscriber from the busses subscribers.
+     * 
+     * @param subscriber The subscriber to remove
+     */
+    public void unsubscribe(ISubscriber<?> subscriber) {
+        var eventType = subscriber.getSubscribedEventType();
+
+        if (subscribers.containsKey(eventType))
+            subscribers.get(eventType).remove(subscriber);
+        else
+            logger.warn("Tried to remove subscriber that wasnt subscribed.");
     }
 }

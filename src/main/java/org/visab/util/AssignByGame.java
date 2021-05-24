@@ -7,13 +7,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Class responsible for game (-string) based class instantiation. When adding
- * new SessionListeners or Statistics types, this class has to be extended.
- * Methods in this class return the abstract interface of the instantiated
- * objects.
+ * TODO: Remove completely Class responsible for game (-string) based class
+ * instantiation. When adding new SessionListeners or Statistics types, this
+ * class has to be extended. Methods in this class return the abstract interface
+ * of the instantiated objects.
  *
- * TODO: Add default implementations TODO: Try catch return null on deployment
- * 
  * @author moritz
  *
  */

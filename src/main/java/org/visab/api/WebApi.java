@@ -8,8 +8,8 @@ import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
-import org.visab.eventbus.ApiEventBus;
-import org.visab.processing.SessionListenerAdministration;
+import org.visab.processing.SessionListenerFactory;
+import org.visab.util.Settings;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -23,26 +23,32 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
  */
 public class WebApi extends RouterNanoHTTPD {
 
+    /**
+     * Singelton instance
+     */
+    private static WebApi instance;
+
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(WebApi.class);
 
-    private static ApiEventBus apiEventBus = new ApiEventBus();
-    private static SessionWatchdog watchdog = new SessionWatchdog();
+    /**
+     * Gets the singelton instance
+     * 
+     * @return The instance
+     */
+    public static WebApi getInstance() {
+        if (instance == null)
+            instance = new WebApi();
 
-    public static ApiEventBus getEventBus() {
-        return apiEventBus;
+        return instance;
     }
 
-    public static SessionWatchdog getSessionWatchdog() {
-        return watchdog;
-    }
+    private SessionListenerFactory listenerFactory = new SessionListenerFactory();
 
-    public WebApi(int port) {
-        super(port);
+    private SessionWatchdog watchdog = new SessionWatchdog();
+    private WebApi() {
+        super(Settings.API_PORT);
         addMappings();
-
-        // Add the SessionListenerFactory as subscriber of eventbus.
-        SessionListenerAdministration.initializeFactory();
     }
 
     /**
@@ -61,15 +67,33 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("games", GameSupportController.class);
     }
 
-    public void shutdown() {
-        watchdog.stopTimeoutLoop();
-        this.stop();
+    public SessionListenerFactory getListenerFactory() {
+        return this.listenerFactory;
     }
 
+    public SessionWatchdog getSessionWatchdog() {
+        return this.watchdog;
+    }
+
+    /**
+     * Shutsdown the WebApi, SessionListenerFactory and SessionWatchdog
+     */
+    public void shutdown() {
+        listenerFactory.stopFactory();
+        watchdog.stopTimeoutLoop();
+        this.stop();
+        logger.info("Stopped WebApi & SessionListenerFactory & Session TimeoutLoop.");
+    }
+
+    /**
+     * Starts the WebApi, SessionListenerFactory, SessionWatchdog
+     */
     @Override
     public void start() throws IOException {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        listenerFactory.startFactory();
         watchdog.StartTimeoutLoop();
+        logger.info("Started WebApi & SessionListenerFactory & Session TimeoutLoop.");
     }
 
 }

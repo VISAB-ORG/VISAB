@@ -31,6 +31,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.TransferMode;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 // TODO: Add error message when adding file fails
 public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
@@ -64,6 +66,12 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      */
     @FXML
     TreeTableColumn<FileRow, LocalDateTime> modifiedColumn;
+
+    /**
+     * The file size column of the explorer view
+     */
+    @FXML
+    TreeTableColumn<FileRow, Long> sizeColumn;
 
     /**
      * The button to remove the currently selected item
@@ -235,26 +243,26 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
                 var row = getTreeTableRow();
                 var fileRow = row.getItem();
 
-                // Set text
-                if (!empty && fileRow != null)
-                    setText(fileRow.isDirectory() ? item + "/" : item);
-                else
+                if (empty || fileRow == null) {
                     setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                setText(fileRow.isDirectory() ? item + "/" : item);
 
                 // Set graphics
-                if (!empty && fileRow != null) {
-                    if (fileRow.getName().endsWith(".visab2"))
-                        setGraphic(visabFile);
-                    else if (fileRow.isDirectory() && row.getTreeItem().isExpanded()) {
-                        setGraphic(folderOpen);
-                        getTreeTableView().refresh();
-                    } else if (fileRow.isDirectory() && !row.getTreeItem().isExpanded()) {
-                        setGraphic(folderClosed);
-                        getTreeTableView().refresh();
-                    } else
-                        setGraphic(file);
-                } else
-                    setGraphic(null);
+                if (fileRow.getName().endsWith(".visab2")) {
+                    setGraphic(visabFile);
+                } else if (fileRow.isDirectory() && row.getTreeItem().isExpanded()) {
+                    setGraphic(folderOpen);
+                    getTreeTableView().refresh();
+                } else if (fileRow.isDirectory() && !row.getTreeItem().isExpanded()) {
+                    setGraphic(folderClosed);
+                    getTreeTableView().refresh();
+                } else {
+                    setGraphic(file);
+                }
             }
         });
 
@@ -268,10 +276,33 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
                 super.updateItem(item, empty);
 
                 var fileRow = getTreeTableRow().getItem();
-                if (!empty && fileRow != null) {
-                    var formattedTime = fileRow.getLastModified().format(formatter);
-                    setText(formattedTime);
+
+                if (empty || fileRow == null) {
+                    setText(null);
+                    return;
                 }
+
+                var formattedTime = fileRow.getLastModified().format(formatter);
+                setText(formattedTime);
+            }
+        });
+
+        // Set nice size formatting
+        sizeColumn.setCellFactory(x -> new TreeTableCell<>() {
+
+            final NumberFormat germanNumberFormat = NumberFormat.getInstance(Locale.GERMAN);
+
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setText(null);
+                    return;
+                }
+
+                var inKb = item / 1000;
+                setText(germanNumberFormat.format(inKb) + " KB");
             }
         });
     }
@@ -314,7 +345,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      * Checks if a file has an allowed file extension
      * 
      * @param file The file to check
-     * @return True if allowed, false else
+     * @return True if allowed
      */
     private boolean hasAllowedExtension(File file) {
         for (var extension : getAllowedExtensions()) {

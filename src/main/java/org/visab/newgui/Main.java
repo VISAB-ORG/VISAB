@@ -3,13 +3,10 @@ package org.visab.newgui;
 import java.io.IOException;
 
 import org.visab.api.WebApi;
-import org.visab.util.Settings;
 
 import javafx.application.Application;
 
 public class Main {
-
-    private static WebApi webApi;
 
     public static void main(String[] args) {
         new Thread(() -> Application.launch(AppMain.class)).start();
@@ -17,13 +14,12 @@ public class Main {
     }
 
     public static void shutdownWebApi() {
-        webApi.shutdown();
+        WebApi.getInstance().shutdown();
     }
 
     private static void startWebApi() {
         try {
-            webApi = new WebApi(Settings.API_PORT);
-            webApi.start();
+            WebApi.getInstance().start();
         } catch (IOException e) {
             e.printStackTrace();
         }

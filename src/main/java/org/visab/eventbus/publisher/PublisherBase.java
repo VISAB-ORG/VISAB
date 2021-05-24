@@ -1,6 +1,6 @@
 package org.visab.eventbus.publisher;
 
-import org.visab.api.WebApi;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.IEvent;
 import org.visab.eventbus.IPublisher;
 
@@ -15,7 +15,7 @@ public class PublisherBase<TEvent extends IEvent> implements IPublisher<TEvent> 
 
     @Override
     public void publish(TEvent event) {
-        WebApi.getEventBus().publish(event);
+        ApiEventBus.getInstance().publish(event);
     }
 
 }

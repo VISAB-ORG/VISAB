@@ -22,6 +22,27 @@ public final class DyanmicInstatiator {
     private static Logger logger = LogManager.getLogger(DyanmicInstatiator.class);
 
     /**
+     * Gets the constructors for a given class name.
+     * 
+     * @param className The fully classified class name of the class to get the
+     *                  constructors of
+     * @return A list of the constructors
+     */
+    private static List<Constructor<?>> getConstructors(String className) {
+        var constructors = new ArrayList<Constructor<?>>();
+
+        try {
+            for (var ctor : Class.forName(className).getConstructors())
+                constructors.add(ctor);
+        } catch (SecurityException | ClassNotFoundException e) {
+            logger.warn(StringFormat.niceString("Failed to get constructors for {0}", className));
+            e.printStackTrace();
+        }
+
+        return constructors;
+    }
+
+    /**
      * Instantiates a SessionListener based on the dynamic mappings configuration.
      * 
      * @param game      The game to instantiate a listener of
@@ -34,7 +55,7 @@ public final class DyanmicInstatiator {
     public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
 
-        var mapping = Workspace.instance.getConfigManager().getMapping(game);
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getListener() != null)
             className = mapping.getListener();
 
@@ -105,32 +126,11 @@ public final class DyanmicInstatiator {
         return instance;
     }
 
-    /**
-     * Gets the constructors for a given class name
-     * 
-     * @param className The fully classified class name of the class to get the
-     *                  constructors of
-     * @return A list of the constructors
-     */
-    private static List<Constructor<?>> getConstructors(String className) {
-        var constructors = new ArrayList<Constructor<?>>();
-
-        try {
-            for (var ctor : Class.forName(className).getConstructors())
-                constructors.add(ctor);
-        } catch (SecurityException | ClassNotFoundException e) {
-            logger.warn(StringFormat.niceString("Failed to get constructors for {0}", className));
-            e.printStackTrace();
-        }
-
-        return constructors;
-    }
-
     public static void main(String[] args) {
         var cbrListenerName = "org.visab.processing.cbrshooter.CBRShooterListener";
         var dyna = new DyanmicInstatiator();
 
-        var listener = dyna.instantiateSessionListener("CBRShooter", UUID.randomUUID());
+        var listener = DyanmicInstatiator.instantiateSessionListener("CBRShooter", UUID.randomUUID());
 
         var uuid = listener.getSessionId();
     }

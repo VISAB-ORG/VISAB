@@ -3,9 +3,9 @@ package org.visab.globalmodel.starter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.globalmodel.VISABFileBase;
+import org.visab.globalmodel.BasicVISABFile;
 
-public class DefaultFile extends VISABFileBase {
+public class DefaultFile extends BasicVISABFile {
 
     /**
      * Used for deserialization

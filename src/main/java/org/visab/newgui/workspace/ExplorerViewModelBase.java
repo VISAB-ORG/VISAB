@@ -36,7 +36,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * Handler for adding new files via drag and drop or dialog
      *
      * @param file The file to be added
-     * @return True if file was added, false else
+     * @return True if file was added
      */
     public abstract boolean addFile(File file);
 
@@ -85,7 +85,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     protected FileRow getFileRow(File file, FileRow parentDir) {
         var name = file.getName();
         var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
+        var size = FileSizeHelper.size(file.toPath());
         var fullPath = file.getAbsolutePath();
         var isDirectory = file.isDirectory();
 
@@ -167,7 +167,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
             var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
-            var size = FileSizeHelper.size(file.toPath()) / 1000L; // In kb
+            var size = FileSizeHelper.size(file.toPath());
 
             fileRow.setLastModifies(lastModified);
             fileRow.setSize(size);

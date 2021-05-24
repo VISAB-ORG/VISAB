@@ -4,10 +4,10 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.SessionWatchdog;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.util.AssignByGame;
@@ -39,6 +39,12 @@ public class MapController extends HTTPControllerBase implements IPublisher<Imag
         return receiveImage(session);
     }
 
+    /**
+     * Handler for reciving images.
+     * 
+     * @param httpSession The Http session
+     * @return A Http response
+     */
     private Response receiveImage(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
@@ -52,7 +58,7 @@ public class MapController extends HTTPControllerBase implements IPublisher<Imag
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (!SessionWatchdog.isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
             return getBadRequestResponse("Session was closed!");
 
         var json = WebApiHelper.extractJsonBody(httpSession);
@@ -67,6 +73,6 @@ public class MapController extends HTTPControllerBase implements IPublisher<Imag
 
     @Override
     public void publish(ImageReceivedEvent event) {
-        WebApi.getEventBus().publish(event);
+        ApiEventBus.getInstance().publish(event);
     }
 }
