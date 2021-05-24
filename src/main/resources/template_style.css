@@ -1,4 +1,5 @@
 .menu-bar {
+<<<<<<< HEAD
 	-fx-background-color: #12213a;
 	-fx-text-fill: #FFFFFF;
 }
@@ -24,6 +25,14 @@
 
 .browseFile-button {
 	-fx-background-color: #12213a;
+=======
+	-fx-background-color: #4472C4;
+	 -fx-text-fill: white;
+}
+
+.browseFile-button {
+	-fx-background-color: #4472C4;
+>>>>>>> Improved GUI Layout icl. CSS.
 	-fx-background-radius: 10;
 }
 
@@ -38,7 +47,11 @@
 }
 
 .upload-button{
+<<<<<<< HEAD
 	-fx-background-color: #12213a;
+=======
+	-fx-background-color: #4472C4;
+>>>>>>> Improved GUI Layout icl. CSS.
 	-fx-background-radius: 10;
 }
 
@@ -58,4 +71,7 @@
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Improved GUI Layout icl. CSS.
