@@ -28,7 +28,7 @@ public class TableEntryStatisticsVisab {
 
     private String statisticsCBRBot;
 
-    private String statisticsScriptBot;
+    private String statisticScriptBot;
     private String weaponCBRBot;
 
     private String weaponMagAmmuCBRBot;
@@ -85,8 +85,8 @@ public class TableEntryStatisticsVisab {
         return statisticsCBRBot;
     }
 
-    public String getStatisticsScriptBot() {
-        return statisticsScriptBot;
+    public String getStatisticScriptBot() {
+        return statisticScriptBot;
     }
 
     public String getWeaponCBRBot() {
@@ -157,8 +157,8 @@ public class TableEntryStatisticsVisab {
         this.statisticsCBRBot = statisticsCBRBot;
     }
 
-    public void setStatisticsScriptBot(String statisticsScriptBot) {
-        this.statisticsScriptBot = statisticsScriptBot;
+    public void setStatisticsScriptBot(String statisticScriptBot) {
+        this.statisticScriptBot = statisticScriptBot;
     }
 
     public void setWeaponCBRBot(String weaponCBRBot) {
