@@ -12,6 +12,11 @@
 	-fx-text-fill: #FFFFFF;
 }
 
+.menu-button:showing {
+	-fx-background-color: #ff5c33;
+	-fx-background-radius: 5;
+}
+
 .menu:hover, .menu:focused, .menu-item:focused {
     -fx-background-color: #ff5c33;
 	-fx-background-radius: 5;
