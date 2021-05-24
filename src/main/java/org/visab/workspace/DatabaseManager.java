@@ -3,7 +3,6 @@ package org.visab.workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.repository.DatabaseRepository;
 import org.visab.util.StringFormat;
 import org.visab.util.VISABUtil;
 

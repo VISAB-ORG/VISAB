@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.workspace;
 
 /**
  * A basic repository class.

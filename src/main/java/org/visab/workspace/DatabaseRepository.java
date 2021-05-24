@@ -1,4 +1,4 @@
-package org.visab.repository;
+package org.visab.workspace;
 
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
