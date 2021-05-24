@@ -1,4 +1,6 @@
 logs/
+# Mac specific
+**/.DS_Store
 
 .vscode/
 *.iml
