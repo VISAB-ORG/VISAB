@@ -21,8 +21,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
 
@@ -83,8 +85,38 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
         sessionTable.setItems(viewModel.getSessions());
         viewModel.selectedSessionRowProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
 
-        // When the selectedTableRowProperty changes in the viewModel we need to update
-        // the table
-        // viewModel.setOnSelect(vm -> contactTable.getSelectionModel().select(vm));
+        // TODO:
+        // initializeSessionTablePresentation();
+    }
+
+    private void initializeSessionTablePresentation() {
+        // https://stackoverflow.com/questions/20350099/programmatically-change-the-tableview-row-appearance
+        sessionTable.setRowFactory(new Callback<TableView<SessionTableRow>, TableRow<SessionTableRow>>() {
+
+            @Override
+            public TableRow<SessionTableRow> call(TableView<SessionTableRow> param) {
+                var row = new TableRow<SessionTableRow>() {
+
+                    @Override
+                    protected void updateItem(SessionTableRow row, boolean empty) {
+                        // TODO: CSS classes should be kept in a static file
+                        if (empty || row == null)
+                            return;
+
+                        if (row.getIsActive()) {
+                            getStyleClass().remove("sessionRowInactive");
+                            getStyleClass().add("sessionRowActive");
+                            // Add some style class for active row.
+                        } else {
+                            // Add some style class for inactive row.
+                            getStyleClass().remove("sessionRowActive");
+                            getStyleClass().add("sessionRowInactive");
+                        }
+                    }
+                };
+
+                return row;
+            }
+        });
     }
 }
