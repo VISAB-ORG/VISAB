@@ -4,27 +4,35 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
         extends StatisticsViewModelBase<TFile> implements ILiveViewModel<TStatistics> {
 
     /**
-     * Whether the current views corresponding transmission session is still active
+     * Whether the current listeners corresponding transmission session is still
+     * active.
      */
-    protected boolean isActive;
+    protected BooleanProperty liveSessionActiveProperty = new SimpleBooleanProperty(false);
 
     /**
+     * Whether the current listeners corresponding transmission session is still
+     * active.
      * 
-     * Initializer for live view. Docks into the given listener and invokes
-     * notifyStatisticsAdded for all statistics of the listener.
-     * 
-     * @param listener The listener to dock onto
+     * @return The boolean property
      */
+    public BooleanProperty liveSessionActiveProperty() {
+        return liveSessionActiveProperty;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public void initialize(ILiveViewable<? extends IStatistics> listener) {
         var concreteListener = (ILiveViewable<TStatistics>) listener;
 
-        isLive = true;
-        isActive = true;
+        isLiveViewProperty.set(true);
+        liveSessionActiveProperty.set(true);
 
         // dock onto listener
         concreteListener.addViewModel(this);
