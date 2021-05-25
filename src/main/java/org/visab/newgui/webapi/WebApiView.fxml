@@ -84,11 +84,6 @@
                         <PropertyValueFactory property="lastReceived" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="30.0" text="IsActive">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="isActive" />
-                    </cellValueFactory>
-                </TableColumn>
             </columns>
         </TableView>
         <Label alignment="CENTER" prefHeight="47.0" prefWidth="600.0" text="Session Overview">
