@@ -27,10 +27,6 @@ import javafx.scene.chart.PieChart.Data;
  */
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
-    private boolean isActive;
-
-    private boolean isLive;
-
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
 
     private List<PlayerPlanOccurance> planOccurances = new ArrayList<>();
@@ -97,7 +93,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     @Override
     public void notifySessionClosed() {
-        isActive = false;
+        liveSessionActiveProperty.set(false);
         // TODO: Render some future "who won" graphs an such
     }
 
