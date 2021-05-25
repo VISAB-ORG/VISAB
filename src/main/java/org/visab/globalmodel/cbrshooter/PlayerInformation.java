@@ -15,8 +15,27 @@ public class PlayerInformation {
 
     private String weapon;
 
+    private boolean isCBR;
+    private boolean isHumanControlled;
+
     public int getHealth() {
         return health;
+    }
+
+    public boolean getIsCBR() {
+        return isCBR;
+    }
+
+    public void setIsCBR(boolean isCBR) {
+        this.isCBR = isCBR;
+    }
+
+    public boolean getIsHumanControlled() {
+        return isHumanControlled;
+    }
+
+    public void setIsHumanControlled(boolean isHumanControlled) {
+        this.isHumanControlled = isHumanControlled;
     }
 
     public int getMagazineAmmunition() {

@@ -1,5 +1,8 @@
 package org.visab.globalmodel.cbrshooter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.visab.globalmodel.IStatistics;
 
 /**
@@ -12,7 +15,7 @@ import org.visab.globalmodel.IStatistics;
 public class CBRShooterStatistics implements IStatistics {
 
     private Vector2 ammunitionPosition;
-    private PlayerInformation CBRPlayer;
+    private List<PlayerInformation> players = new ArrayList<>();
     private String game;
     private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
@@ -20,15 +23,14 @@ public class CBRShooterStatistics implements IStatistics {
     private boolean isWeaponCollected;
     private int round;
     private float roundTime;
-    private PlayerInformation scriptPlayer;
     private Vector2 weaponPosition;
 
     public Vector2 getAmmunitionPosition() {
         return ammunitionPosition;
     }
 
-    public PlayerInformation getCBRPlayer() {
-        return CBRPlayer;
+    public List<PlayerInformation> getPlayers() {
+        return players;
     }
 
     @Override
@@ -60,20 +62,12 @@ public class CBRShooterStatistics implements IStatistics {
         return roundTime;
     }
 
-    public PlayerInformation getScriptPlayer() {
-        return scriptPlayer;
-    }
-
     public Vector2 getWeaponPosition() {
         return weaponPosition;
     }
 
     public void setAmmunitionPosition(Vector2 ammunitionPosition) {
         this.ammunitionPosition = ammunitionPosition;
-    }
-
-    public void setCBRPlayer(PlayerInformation cBRPlayer) {
-        CBRPlayer = cBRPlayer;
     }
 
     public void setGame(String game) {
@@ -102,10 +96,6 @@ public class CBRShooterStatistics implements IStatistics {
 
     public void setRoundTime(float roundTime) {
         this.roundTime = roundTime;
-    }
-
-    public void setScriptPlayer(PlayerInformation scriptPlayer) {
-        this.scriptPlayer = scriptPlayer;
     }
 
     public void setWeaponPosition(Vector2 weaponPosition) {
