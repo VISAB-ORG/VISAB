@@ -23,7 +23,7 @@ public final class DynamicViewLoader {
     public static ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsView(
             String game) {
         // TODO: get classname from somewhere
-        var className = "org.visab.newgui.statistics.CBRShooterStatisticsView";
+        var className = "org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView";
 
         if (className == null) {
             // Log
