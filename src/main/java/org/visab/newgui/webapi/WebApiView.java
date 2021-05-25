@@ -56,7 +56,7 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
                 var listener = SessionListenerAdministration.getSessionListener(selectedRow.getSessionId());
 
                 if (listener instanceof ILiveViewable<?>) {
-                    vM.initiateLiveView((ILiveViewable<CBRShooterStatistics>) listener);
+                    vM.initialize((ILiveViewable<CBRShooterStatistics>) listener);
                 }
             }
             var stage = new Stage();
