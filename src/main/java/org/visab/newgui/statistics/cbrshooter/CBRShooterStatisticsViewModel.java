@@ -1,5 +1,8 @@
 package org.visab.newgui.statistics.cbrshooter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.statistics.ILiveViewModel;
@@ -9,6 +12,7 @@ import org.visab.processing.ILiveViewable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart.Data;
 
 /**
  * TODO: Create a abstract base class from this example, once vanessa is done
@@ -22,7 +26,15 @@ public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiv
 
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
 
+    private PlanOccurance planOccurance = new PlanOccurance();
+
+    private ObservableList<Data> planUsageCBR = FXCollections.observableArrayList();
+
     public CBRShooterStatisticsViewModel() {
+    }
+
+    public ObservableList<Data> getPlanUsageCBR() {
+        return planUsageCBR;
     }
 
     public boolean supportsLiveViewing() {
@@ -42,7 +54,35 @@ public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiv
 
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
+        System.out.println("HI");
+        updatePlanUsage(newStatistics);
         overviewStatistics.add(mapToRow(newStatistics));
+    }
+
+    // TODO: This could posssible take the current round timer into consideration
+    // also.
+    private void updatePlanUsage(CBRShooterStatistics newStatistics) {
+        var cbrPlayer = newStatistics.getCBRPlayer();
+        var cbrPlan = cbrPlayer.getPlan();
+
+        var occuranceCbr = planOccurance.getCBR();
+        if (!occuranceCbr.containsKey(cbrPlan))
+            occuranceCbr.put(cbrPlan, 1);
+        else
+            occuranceCbr.put(cbrPlan, occuranceCbr.get(cbrPlan) + 1);
+
+        // Update chart data
+        if (!planUsageCBR.stream().filter(x -> x.getName().equals(cbrPlan)).findAny().isPresent()) {
+            planUsageCBR.add(new Data(cbrPlan, 1));
+        } else {
+            for (var data : planUsageCBR) {
+                if (data.getName().equals(cbrPlan))
+                    data.setPieValue(occuranceCbr.get(cbrPlan) + 1);
+            }
+        }
+
+        // TODO: For script guy
+
     }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {

@@ -23,7 +23,7 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
     void addViewModel(ILiveViewModel<TStatistics> viewModel);
 
     /**
-     * Returns a list of all statistics that were added till now.
+     * Returns a copy of all statistics that were added till now.
      * 
      * @return The list of received statistics
      */
