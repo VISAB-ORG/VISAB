@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.statistics.ILiveViewModel;
+import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
 import org.visab.newgui.statistics.StatisticsViewModelBase;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
 import org.visab.newgui.statistics.cbrshooter.model.PlayerPlanOccurance;
@@ -23,8 +25,7 @@ import javafx.scene.chart.PieChart.Data;
  * TODO: Create a abstract base class from this example, once vanessa is done
  * with the view
  */
-public class CBRShooterStatisticsViewModel extends StatisticsViewModelBase
-        implements ILiveViewModel<CBRShooterStatistics> {
+public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private boolean isActive;
 
@@ -44,32 +45,6 @@ public class CBRShooterStatisticsViewModel extends StatisticsViewModelBase
 
     public ObservableList<Data> getPlanUsageScript() {
         return planUsageScript;
-    }
-
-    /**
-     * Initializer for non live view
-     * 
-     * @param file The file to present
-     */
-    public void initialize(CBRShooterFile file) {
-    }
-
-    /**
-     * 
-     * Initializer for live view
-     * 
-     * @param listener The listener to dock onto
-     */
-    public void initialize(ILiveViewable<CBRShooterStatistics> listener) {
-        isLive = true;
-        isActive = true;
-
-        // dock onto listener
-        listener.addViewModel(this);
-
-        // Notify for all the already received statistics
-        for (var statistics : listener.getReceivedStatistics())
-            notifyStatisticsAdded(statistics);
     }
 
     @Override

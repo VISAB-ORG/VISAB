@@ -3,7 +3,11 @@ package org.visab.newgui.webapi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.visab.dynamic.DynamicViewLoader;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.newgui.statistics.ILiveViewModel;
+import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
+import org.visab.newgui.statistics.StatisticsViewModelBase;
 import org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView;
 import org.visab.newgui.webapi.model.SessionTableRow;
 import org.visab.processing.ILiveViewable;
@@ -47,22 +51,24 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
     public void openLiveView() {
         var selectedRow = sessionTable.getSelectionModel().getSelectedItem();
         if (selectedRow != null) {
-            // TODO: Get these views dynamically via DynamicViewLoad or sth
-            var viewTupel = FluentViewLoader.fxmlView(CBRShooterStatisticsView.class).load();
+            var listener = SessionListenerAdministration.getSessionListener(selectedRow.getSessionId());
+
+            var viewTupel = DynamicViewLoader.loadStatisticsView(selectedRow.getGame());
             var root = viewTupel.getView();
+            var VM = (StatisticsViewModelBase<?>) viewTupel.getViewModel();
 
-            var vM = viewTupel.getViewModel();
-            if (vM.supportsLiveViewing()) {
-                var listener = SessionListenerAdministration.getSessionListener(selectedRow.getSessionId());
+            if (VM.supportsLiveViewing() && listener instanceof ILiveViewable<?>) {
+                var liveListener = (ILiveViewable<?>) listener;
+                var liveVM = (LiveStatisticsViewModelBase<?, ?>) VM;
 
-                if (listener instanceof ILiveViewable<?>) {
-                    vM.initialize((ILiveViewable<CBRShooterStatistics>) listener);
-                }
+                liveVM.initialize(liveListener);
+
+                // Set the Ui
+                var stage = new Stage();
+                stage.setTitle("Statistics Window test");
+                stage.setScene(new Scene(root));
+                stage.show();
             }
-            var stage = new Stage();
-            stage.setTitle("Statistics Window test");
-            stage.setScene(new Scene(root));
-            stage.show();
         }
     }
 
