@@ -18,7 +18,10 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     TableView<CBRShooterStatisticsRow> overviewTable;
 
     @FXML
-    PieChart planUsage;
+    PieChart planUsageCBR;
+
+    @FXML
+    PieChart planUsageScript;
 
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
@@ -26,10 +29,10 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        planUsage.setData(viewModel.getPlanUsageCBR());
-
+        planUsageCBR.setData(viewModel.getPlanUsageCBR());
+        planUsageScript.setData(viewModel.getPlanUsageScript());
+        // TODO: remove this
         overviewTable.setItems(viewModel.getOverviewStatistics());
-
     }
 
 }
