@@ -86,7 +86,7 @@ public class CBRShooterStatisticsViewModel extends ViewModelBase implements ILiv
     }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
-        var position = statistics.getScriptPlayer().getPosition();
+        var position = statistics.getPlayers().get(0).getPosition();
         return new CBRShooterStatisticsRow(new Vector2(position.getX(), position.getY()));
     }
 
