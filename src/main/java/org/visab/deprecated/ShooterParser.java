@@ -1,4 +1,4 @@
-package org.visab.processing.cbrshooter;
+package org.visab.deprecated;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.cbrshooter.ShooterDataRepresentation;
-import org.visab.processing.AbstractParser;
 
 /**
  * This class is responsible for parsing JSON data from Unity into visab-format.
@@ -16,6 +14,7 @@ import org.visab.processing.AbstractParser;
  * @author leonr
  *
  */
+@Deprecated
 public class ShooterParser extends AbstractParser {
 
     // Logger needs .class for each class to use for log traces
