@@ -174,22 +174,7 @@ public class GUIMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        startApiServer();
         mainWindow();
-    }
-
-    /**
-     * Starts the WebApi. Does nothing if another WebApi instance is currently
-     * running on the Default port.
-     */
-    private void startApiServer() {
-        try {
-            WebApi.getInstance().start();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return;
     }
 
     public void statisticsWindow() throws URISyntaxException {
