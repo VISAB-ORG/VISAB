@@ -6,9 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.UUID;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.workspace.model.ExplorerFile;
+import org.visab.util.VISABUtil;
 import org.visab.workspace.BasicRepository;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -60,12 +62,19 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     }
 
     /**
-     * Command for adding new files via drag and drop or dialog.
+     * Command for adding new files via dialog.
      *
-     * @param file The file to be added
      * @return The command
      */
-    public abstract Command addFileCommand(File file);
+    public abstract Command addFileCommand();
+
+    /**
+     * Adds a file to the files.
+     * 
+     * @param file The file to add
+     * @return True if file added
+     */
+    public abstract boolean addFile(File file);
 
     /**
      * Recursively changes the absolute path of all children of the given Explorer
@@ -87,9 +96,9 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     }
 
     /**
-     * A command to delete the currenlty selected ExplorerFile
+     * A command to delete the currenlty selected ExplorerFile.
      *
-     * @return The command to delete the currently selected ExplorerFile
+     * @return The command
      */
     public Command deleteFileCommand() {
         if (deleteFileCommand == null) {
@@ -105,6 +114,44 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
         return deleteFileCommand;
     }
 
+    private Command showInExplorerCommand;
+
+    /**
+     * A command to show the selected file in the os explorer.
+     * 
+     * @return The command
+     */
+    public Command showInExplorerCommand() {
+        if (showInExplorerCommand == null) {
+            showInExplorerCommand = runnableCommand(() -> {
+                var selectedFile = getSelectedFile();
+                try {
+                    switch (VISABUtil.getOS()) {
+                    case WINDOWS:
+                        var osCommand = "explorer.exe " + baseDirPath;
+                        if (selectedFile != null)
+                            osCommand = "explorer.exe /select," + selectedFile.getAbsolutePath();
+
+                        Runtime.getRuntime().exec(osCommand);
+                        break;
+                    default:
+                        System.out.println("Opening explorer not supported for non windows OS.");
+                        break;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        return showInExplorerCommand;
+    }
+
+    /**
+     * Gets the path of the base directory of the ExplorerViewModel
+     * 
+     * @return The path to the base directory
+     */
     public String getBaseDirPath() {
         return this.baseDirPath;
     }
@@ -187,12 +234,14 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * Gets a command for renaming the currenlty selected file to the given new
      * name.
      *
-     * @param newName The new name for file.
      * @return The command
      */
-    public Command renameSelectedFileCommand(String newName) {
+    public Command renameFileCommand() {
         if (renameSelectedFileCommand == null) {
             renameSelectedFileCommand = runnableCommand(() -> {
+                // TODO: Get via dialog
+                var newName = UUID.randomUUID().toString();
+
                 var selectedRow = getSelectedFile();
                 if (selectedRow != null && selectedRow != baseFile) {
                     var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
@@ -229,7 +278,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      * @param file The file to updates the size for
      * @param add  The size to add to the current size
      */
-    private void updateFileSize(ExplorerFile file, long add) {
+    protected void updateFileSize(ExplorerFile file, long add) {
         file.setSize(file.getSize() + add);
 
         var parentFile = file.getParentDir();

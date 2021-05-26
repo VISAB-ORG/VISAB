@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.newgui.workspace.ExplorerViewModelBase;
 import org.visab.newgui.workspace.model.ExplorerFile;
+import org.visab.util.StreamUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
+
+import de.saxsys.mvvmfx.utils.commands.Command;
 
 public class DatabaseViewModel extends ExplorerViewModelBase {
 
@@ -22,61 +25,63 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
 
     @Override
     public boolean addFile(File file) {
-        if (file.isDirectory())
-            return false;
+        if (file.isDirectory()) {
+            for (var _file : file.listFiles())
+                if (!addFile(_file))
+                    return false;
+        } else {
+            try {
+                var fileName = file.getName();
 
-        var wasSaved = false;
-        try {
-            // Read in the file as VISAB file
-            var fileName = file.getName();
+                // TODO:
+                if (!file.getName().endsWith(".visab2"))
+                    return false;
 
-            var json = repo.readFileContents(file.getAbsolutePath());
-            var basicFile = repo.loadBasicVISABFile(file.getAbsolutePath());
+                var json = repo.readFileContents(file.getAbsolutePath());
+                var basicFile = repo.loadBasicVISABFile(file.getAbsolutePath());
 
-            // Save the new file in database
-            var savePath = repo.combinePath(basicFile.getGame(), fileName);
-            wasSaved = repo.writeToFileRelative(savePath, json);
+                var savePath = repo.combinePath(basicFile.getGame(), fileName);
+                // Save the new file in database
+                if (repo.writeToFileRelative(savePath, json)) {
+                    var visabFile = repo.loadFileRelative(savePath);
 
-            // Add to the tree if saved succesfully
-            if (wasSaved) {
-                var savedFile = repo.loadFileRelative(savePath);
-
-                // If a new dir was created, add as child of rootFile
-                var game = basicFile.getGame();
-                if (!baseFile.getFiles().stream().anyMatch(x -> x.getName().equals(game))) {
-                    var newDir = repo.loadFileRelative(game);
-                    var row = getExplorerFile(newDir, baseFile);
-                    baseFile.getFiles().add(row);
-                }
-
-                // Add the file as a child of the dir in rootFile
-                for (var fileRow : baseFile.getFiles()) {
-                    if (fileRow.getName().equals(game)) {
-
-                        // Make copy since we might modify fileRow.getFiles()
-                        var currentFiles = new ArrayList<File>(fileRow.getFiles());
-
-                        // Remove potentially existing files with the same name
-                        for (var childFile : currentFiles) {
-                            if (childFile.getName().equals(fileName))
-                                fileRow.getFiles().remove(childFile);
-                        }
-
-                        var newFileRow = getExplorerFile(savedFile, fileRow);
-                        fileRow.getFiles().add(newFileRow);
-
-                        // Finally update the file information for the parent directories
-                        updateDirectoryInformation(newFileRow);
-
-                        break;
+                    // If dir for game does not exist yet, add it
+                    var game = basicFile.getGame();
+                    if (!StreamUtil.contains(baseFile.getFiles(), x -> x.getName().equals(game))) {
+                        var newDir = repo.loadFileRelative(game);
+                        var row = getExplorerFile(newDir, baseFile);
+                        baseFile.getFiles().add(row);
                     }
+
+                    var gameFile = StreamUtil.firstOrNull(baseFile.getFiles(), x -> x.getName().equals(game));
+
+                    // Remove existing files with the same name
+                    var existingFile = StreamUtil.contains(gameFile.getFiles(), x -> x.getName().equals(fileName));
+                    if (existingFile) {
+                        var existingFiles = new ArrayList<ExplorerFile>(gameFile.getFiles());
+                        for (var exisiting : existingFiles) {
+                            if (exisiting.getName().equals(fileName))
+                                removeExplorerFile(exisiting, gameFile);
+                        }
+                    }
+
+                    // Finally create the new ExplorerFile
+                    var newExplorerFile = getExplorerFile(visabFile, gameFile);
+                    gameFile.getFiles().add(newExplorerFile);
+                    updateFileSize(gameFile, newExplorerFile.getSize());
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            wasSaved = false;
         }
 
-        return wasSaved;
+        return true;
+    }
+
+    @Override
+    public Command addFileCommand() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

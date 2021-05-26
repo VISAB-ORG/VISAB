@@ -15,12 +15,6 @@ import javafx.stage.Stage;
 public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
 
     @Override
-    protected List<String> getAllowedExtensions() {
-        // TODO: Only allow visab2 for now
-        return List.of(".visab2");
-    }
-
-    @Override
     protected void afterInitialize(URL location, ResourceBundle resources) {
     }
 
@@ -33,9 +27,5 @@ public class DatabaseView extends ExplorerViewBase<DatabaseViewModel> {
         for (var file : files)
             addFile(file);
     }
-
-    @Override
-    protected boolean addOnlyFiles() {
-        return true;
-    }
+    
 }

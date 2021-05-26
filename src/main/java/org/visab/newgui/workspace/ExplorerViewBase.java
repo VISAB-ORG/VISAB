@@ -74,43 +74,31 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     TreeTableColumn<ExplorerFile, Long> sizeColumn;
 
     /**
-     * The button to remove the currently selected item
-     */
-    @FXML
-    Button removeButton;
-
-    /**
-     * The button to add files
-     */
-    @FXML
-    Button addButton;
-
-    /**
-     * Button for showing the currently selected file in explorer
-     */
-    @FXML
-    Button showInExplorerButton;
-
-    /**
      * Button for fully refreshing the explorer view
      */
     @FXML
     Button refreshButton;
-
-    /**
-     * Button for renaming the currently selected file
-     */
-    @FXML
-    Button renameButton;
 
     @FXML
     public void deleteFileAction() {
         viewModel.deleteFileCommand().execute();
     }
 
-    /**
-     * The ViewModel
-     */
+    @FXML
+    public void showInExplorerAction() {
+        viewModel.showInExplorerCommand().execute();
+    }
+
+    @FXML
+    public void renameFileAction() {
+        viewModel.renameFileCommand().execute();
+    }
+
+    @FXML
+    public void addFilesAction() {
+        viewModel.addFileCommand().execute();
+    }
+
     @InjectViewModel
     protected TViewModel viewModel;
 
@@ -119,24 +107,18 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         initializeExplorerPresentation();
         refreshExplorerView();
 
-        addButton.setOnAction(e -> addFileDialog(e));
-        showInExplorerButton.setOnAction(e -> showInExplorer(e));
+        // Refresh view completely
         refreshButton.setOnAction(e -> refreshExplorerView());
 
-        // TODO: Show some dialog I guess
-        renameButton.setOnAction(e -> viewModel.renameSelectedFile(UUID.randomUUID().toString()));
-
+        // Drag and drop
         explorerView.setOnDragOver(e -> handleDragOver(e));
         explorerView.setOnDragDropped(e -> handleFilesDropped(e));
 
+        // CTRL + C & CTRL + V & Delete
         initializeKeyCombinations();
 
-        // MVVM
+        // Selected tree item
         viewModel.selectedExplorerFileProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
-
-        // TODO: I still hate this. Look for different solution at some point
-        removeCommand = viewModel.deleteFileCommand();
-        removeButton.disableProperty().bind(removeCommand.notExecutableProperty());
 
         afterInitialize(location, resources);
     }
@@ -157,7 +139,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
 
                 if (hasFiles) {
                     for (var file : clipboard.getFiles())
-                        addFile(file);
+                        viewModel.addFile(file);
                 }
             }
         });
@@ -167,25 +149,6 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
             if (viewModel.getSelectedFile() != null)
                 deleteFileAction();
         });
-    }
-
-    private void showInExplorer(ActionEvent e) {
-        try {
-            switch (VISABUtil.getOS()) {
-            case WINDOWS:
-                var command = "explorer.exe " + viewModel.getBaseDirPath();
-                if (viewModel.getSelectedFile() != null)
-                    command = "explorer.exe /select," + viewModel.getSelectedFile().getAbsolutePath();
-
-                Runtime.getRuntime().exec(command);
-                break;
-            default:
-                System.out.println("Opening explorer not supported for non windows OS.");
-                break;
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     /**
@@ -210,7 +173,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         explorerView.setRoot(rootItem);
 
         // If there arent that many files, expand some more nodes
-        var expandUntil = 25;
+        var expandUntil = 15;
         for (var child : rootItem.getChildren()) {
             if (expandUntil - child.getChildren().size() >= 0) {
                 child.setExpanded(true);
@@ -303,7 +266,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     }
 
     /**
-     * Handler for adding files via drag and drop
+     * Handler for adding files via drag and drop.
      * 
      * @param e The DragEvent
      */
@@ -312,58 +275,15 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         var hasFiles = db.hasFiles();
 
         if (hasFiles) {
-            for (var file : db.getFiles())
-                addFile(file);
+            for (var file : db.getFiles()) {
+                // Call add file on the viewmodel
+                viewModel.addFile(file);
+            }
         }
 
         e.setDropCompleted(hasFiles);
         e.consume();
     }
-
-    /**
-     * Recursively adds a file to the viewModel. If the file is a directory, adds
-     * all the directories files instead.
-     * 
-     * @param file The file to add
-     */
-    protected void addFile(File file) {
-        if (file.isDirectory() && addOnlyFiles()) {
-            for (var _file : file.listFiles())
-                addFile(_file);
-        } else if (file.isDirectory() && !addOnlyFiles())
-            addFile(file);
-        else if (hasAllowedExtension(file))
-            viewModel.addFile(file);
-    }
-
-    /**
-     * Checks if a file has an allowed file extension
-     * 
-     * @param file The file to check
-     * @return True if allowed
-     */
-    private boolean hasAllowedExtension(File file) {
-        for (var extension : getAllowedExtensions()) {
-            if (file.getName().contains(extension))
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Dialog for adding files
-     * 
-     * @param e The ActionEvent
-     */
-    protected abstract void addFileDialog(ActionEvent e);
-
-    /**
-     * The allowed file extensions for drag and drop
-     * 
-     * @return A list of the allowed extensions
-     */
-    protected abstract List<String> getAllowedExtensions();
 
     /**
      * Called directly after initialize is done
@@ -372,13 +292,4 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      * @param resources Forwarded from initialize
      */
     protected abstract void afterInitialize(URL location, ResourceBundle resources);
-
-    /**
-     * Identicates, whether folders added via drag and drop and ctrl+v should pass
-     * its contents instead of the folder itself to the viewModels addFile method
-     * 
-     * @return True if contents should be passed instead of the folder, false if
-     *         folders can be passed
-     */
-    protected abstract boolean addOnlyFiles();
 }
