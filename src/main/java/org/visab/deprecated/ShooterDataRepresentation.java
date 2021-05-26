@@ -1,4 +1,4 @@
-package org.visab.globalmodel.cbrshooter;
+package org.visab.deprecated;
 
 /**
  * Renamed from "StatisticsForPathViewer to ShooterDataRepresentation
@@ -9,7 +9,7 @@ package org.visab.globalmodel.cbrshooter;
  * @author VISAB 1.0 Group
  *
  */
-
+@Deprecated
 public class ShooterDataRepresentation {
 
     private String ammuPosition;
