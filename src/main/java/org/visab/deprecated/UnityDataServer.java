@@ -11,8 +11,6 @@ import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.deprecated.AbstractParser;
-import org.visab.deprecated.ShooterParser;
 
 /**
  *
@@ -23,6 +21,7 @@ import org.visab.deprecated.ShooterParser;
  * @author leonr
  *
  */
+@Deprecated
 public class UnityDataServer {
 
     // Logger needs .class for each class to use for log traces

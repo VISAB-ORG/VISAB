@@ -13,6 +13,7 @@ import com.google.gson.Gson;
  * @author leonr
  *
  */
+@Deprecated
 public abstract class AbstractParser {
 
     /**

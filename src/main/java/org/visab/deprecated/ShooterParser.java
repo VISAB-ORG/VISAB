@@ -15,6 +15,7 @@ import org.visab.globalmodel.cbrshooter.ShooterDataRepresentation;
  * @author leonr
  *
  */
+@Deprecated
 public class ShooterParser extends AbstractParser {
 
     // Logger needs .class for each class to use for log traces
