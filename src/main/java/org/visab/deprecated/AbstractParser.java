@@ -1,4 +1,4 @@
-package org.visab.processing;
+package org.visab.deprecated;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package org.visab.communication;
+package org.visab.deprecated;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.processing.AbstractParser;
-import org.visab.processing.cbrshooter.ShooterParser;
+import org.visab.deprecated.AbstractParser;
+import org.visab.deprecated.ShooterParser;
 
 /**
  *

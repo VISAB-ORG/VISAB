@@ -1,4 +1,4 @@
-package org.visab.processing.cbrshooter;
+package org.visab.deprecated;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.cbrshooter.ShooterDataRepresentation;
-import org.visab.processing.AbstractParser;
 
 /**
  * This class is responsible for parsing JSON data from Unity into visab-format.
