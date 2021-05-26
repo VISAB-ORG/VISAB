@@ -70,7 +70,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionClosed() {
-        manager.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString(), sessionId);
     }
 
     @Override
