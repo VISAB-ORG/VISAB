@@ -1,7 +1,7 @@
 package org.visab.workspace;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,11 @@ public class DatabaseManager {
 
     public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
 
-    private Map<UUID, String> savedFileNames = new HashMap<>();
+    /**
+     * A list of files that were recently saved via SessionListeners or Database
+     * Workspace View.
+     */
+    private List<SavedFileInformation> savedFiles = new ArrayList<>();
 
     private static Logger logger = LogManager.getLogger(DatabaseManager.class);
 
@@ -28,13 +32,18 @@ public class DatabaseManager {
             VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database"));
 
     /**
-     * Returns the file name of a saved file for a given sessionId.
+     * Returns the fileName for a sessionId.
      * 
      * @param sessionId The sessionId
      * @return The fileName if found, "" else
      */
-    public String getSavedFileName(UUID sessionId) {
-        return savedFileNames.getOrDefault(sessionId, "");
+    public String getSessionFileName(UUID sessionId) {
+        for (var saveInfo : savedFiles) {
+            if (saveInfo.isSavedByListener() && saveInfo.getSessionId().equals(sessionId))
+                return saveInfo.getFileName();
+        }
+
+        return "";
     }
 
     /**
@@ -79,7 +88,8 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves a VISAB file without adding it to the list of saved files.
+     * Saves a VISAB file. When calling from SessionListeners, use the overload
+     * containing the sessionId.
      * 
      * @param file     The file to save
      * @param fileName The name of the file
@@ -92,16 +102,19 @@ public class DatabaseManager {
 
         var success = repo.saveFileDB(file, fileName);
 
-        if (success)
+        if (success) {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
-        else
+            savedFiles.add(new SavedFileInformation(fileName, file.getGame()));
+        } else {
             logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
-
+        }
+        
         return success;
     }
 
     /**
-     * Saves a VISAB file and adds it to the list of saved files.
+     * Saves a VISAB file. This method should be called by SessionListeners, so that
+     * newly saved files can be accessed by sessionId.
      * 
      * @param file      The file to save
      * @param fileName  The name of the file
@@ -113,11 +126,12 @@ public class DatabaseManager {
         if (!fileName.contains("."))
             fileName += ".visab2";
 
-        var success = saveFile(file, fileName);
+        var success = repo.saveFileDB(file, fileName);
         if (success) {
-            savedFileNames.put(sessionId, fileName);
-            logger.debug(
-                    StringFormat.niceString("Added {0} of {1} to the list of saved files.", fileName, file.getGame()));
+            logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
+            savedFiles.add(new SavedFileInformation(fileName, file.getGame(), sessionId));
+        } else {
+            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
         }
 
         return success;
