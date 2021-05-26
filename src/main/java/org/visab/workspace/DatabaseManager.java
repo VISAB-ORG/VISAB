@@ -80,9 +80,9 @@ public class DatabaseManager {
         var file = repo.<T>loadVISABFileDB(fileName, game);
 
         if (file != null)
-            logger.info(StringFormat.niceString("Deleted {0} of {1} from database", fileName, game));
+            logger.info(StringFormat.niceString("Loaded {0} of {1} from database", fileName, game));
         else
-            logger.error(StringFormat.niceString("Failed to delete {0} of {1} in database", fileName, game));
+            logger.error(StringFormat.niceString("Failed to load {0} of {1} in database", fileName, game));
 
         return file;
     }

@@ -1,15 +1,20 @@
 package org.visab.newgui.webapi;
 
 import java.time.LocalTime;
-import java.util.UUID;
 
 import org.visab.api.WebApi;
+import org.visab.dynamic.DynamicViewTupleLoader;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.webapi.model.SessionTableRow;
+import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
+import org.visab.newgui.statistics.StatisticsViewModelBase;
+import org.visab.newgui.webapi.model.SessionInformation;
+import org.visab.processing.ILiveViewable;
+import org.visab.processing.SessionListenerAdministration;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
@@ -30,7 +35,6 @@ public class WebApiViewModel extends ViewModelBase {
             for (var row : sessions) {
                 if (row.getSessionId().equals(event.getSessionId())) {
                     row.setIsActive(false);
-                    notifySessionRowUpdate(event.getSessionId());
                     break;
                 }
             }
@@ -46,7 +50,7 @@ public class WebApiViewModel extends ViewModelBase {
 
         @Override
         public void notify(SessionOpenedEvent event) {
-            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now(),
+            var newRow = new SessionInformation(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now(),
                     event.getRemoteCallerIp(), event.getRemoteCallerHostName());
 
             sessions.add(newRow);
@@ -65,7 +69,6 @@ public class WebApiViewModel extends ViewModelBase {
             for (var row : sessions) {
                 if (row.getSessionId().equals(event.getSessionId())) {
                     row.setLastReceived(LocalTime.now());
-                    notifySessionRowUpdate(event.getSessionId());
                     break;
                 }
             }
@@ -73,45 +76,90 @@ public class WebApiViewModel extends ViewModelBase {
 
     }
 
-    private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
+    private ObjectProperty<SessionInformation> selectedSession = new SimpleObjectProperty<>();
 
-    private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
+    private ObservableList<SessionInformation> sessions = FXCollections.observableArrayList();
 
-    public Command getCloseSessionCommand() {
-        return runnableCommand(() -> {
-            if (selectedSessionRow.get() != null)
-                WebApi.getInstance().getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
-        });
+    private Command closeSessionCommand;
+
+    public Command closeSessionCommand() {
+        if (closeSessionCommand == null) {
+            closeSessionCommand = runnableCommand(() -> {
+                if (selectedSession.get() != null && selectedSession.get().getIsActive())
+                    WebApi.getInstance().getSessionWatchdog().closeSession(selectedSession.get().getSessionId(), false);
+            });
+        }
+
+        return closeSessionCommand;
     }
 
-    public ObservableList<SessionTableRow> getSessions() {
-        return sessions;
+    private Command openLiveViewCommand;
+
+    public Command openLiveViewCommand() {
+        if (openLiveViewCommand == null) {
+            openLiveViewCommand = runnableCommand(() -> {
+                if (selectedSession != null && selectedSession.get().getIsActive())
+                    openLiveView();
+                else if (selectedSession != null)
+                    openView();
+            });
+        }
+
+        return openLiveViewCommand;
+    }
+
+    private void openLiveView() {
+        var sessionInfo = selectedSession.get();
+
+        var listener = SessionListenerAdministration.getSessionListener(sessionInfo.getSessionId());
+        if (listener != null) {
+            var viewTupel = DynamicViewTupleLoader.loadStatisticsView(sessionInfo.getGame());
+            var root = viewTupel.getView();
+
+            var vm = (StatisticsViewModelBase<?>) viewTupel.getViewModel();
+            if (vm.supportsLiveViewing() && listener instanceof ILiveViewable<?>) {
+                var liveListener = (ILiveViewable<?>) listener;
+                var liveVm = (LiveStatisticsViewModelBase<?, ?>) vm;
+
+                liveVm.initialize(liveListener);
+
+                openWindow(root, "TODO - LIVE");
+            }
+        }
+    }
+
+    private void openView() {
+        var dbManager = Workspace.getInstance().getDatabaseManager();
+        var sessionInfo = selectedSession.get();
+
+        var fileName = dbManager.getSessionFileName(sessionInfo.getSessionId());
+        if (!fileName.isBlank()) {
+            var file = dbManager.loadFile(fileName, sessionInfo.getGame());
+            if (file != null) {
+                var viewTupel = DynamicViewTupleLoader.loadStatisticsView(sessionInfo.getGame());
+                var root = viewTupel.getView();
+                var vm = (StatisticsViewModelBase<?>) viewTupel.getViewModel();
+
+                // Initialize the ViewModel with the loaded file
+                vm.initialize(file);
+
+                openWindow(root, "TODO - NOT LIVE");
+            }
+        }
     }
 
     public void initialize() {
+        // TODO: Do we have to unsubscribe these?
         new SessionOpenedSubscriber();
         new StatisticsReceivedSubscriber();
         new SessionClosedSubscriber();
     }
 
-    /**
-     * Notifies the View, that a property of a SessionTableRow was updated
-     */
-    private void notifySessionRowUpdate(UUID sessionId) {
-        for (int i = 0; i < sessions.size(); i++) {
-            var row = sessions.get(i);
-            if (row.getSessionId().equals(sessionId)) {
-                sessions.set(i, row);
-                break;
-            }
-        }
+    public ObjectProperty<SessionInformation> selectedSessionProperty() {
+        return selectedSession;
     }
 
-    public ObjectProperty<SessionTableRow> selectedSessionRowProperty() {
-        return selectedSessionRow;
-    }
-
-    public ObservableList<SessionTableRow> sessionsProperty() {
+    public ObservableList<SessionInformation> getSessions() {
         return sessions;
     }
 

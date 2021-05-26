@@ -8,9 +8,9 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.ViewTuple;
 
-public final class DynamicViewLoader {
+public final class DynamicViewTupleLoader {
 
-    private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
+    private static Logger logger = LogManager.getLogger(DynamicViewTupleLoader.class);
 
     /**
      * Returns a ViewTupel consisting of the View aswell as the corresponding
