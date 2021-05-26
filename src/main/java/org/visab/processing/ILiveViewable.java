@@ -7,7 +7,7 @@ import org.visab.newgui.statistics.ILiveViewModel;
 
 /**
  * The ILiveViewable interface, that all live viewable SessionListeners have to
- * implement. ILiveViewables can have a multitude of ILiveViewModel that as
+ * implement. ILiveViewables can have a multitude of ILiveViewModel as
  * observers.
  * 
  * @param <TStatistics> The statistics type received and added by the listener
