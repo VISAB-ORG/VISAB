@@ -17,9 +17,9 @@ import org.visab.workspace.Workspace;
  * The DyanmicInstatiator using which objects can be instantiates from a fully
  * classified class name. Is used for creating SessionListener instances.
  */
-public final class DyanmicInstatiator {
+public final class DynamicInstatiator {
 
-    private static Logger logger = LogManager.getLogger(DyanmicInstatiator.class);
+    private static Logger logger = LogManager.getLogger(DynamicInstatiator.class);
 
     /**
      * Gets the constructors for a given class name.
@@ -128,9 +128,9 @@ public final class DyanmicInstatiator {
 
     public static void main(String[] args) {
         var cbrListenerName = "org.visab.processing.cbrshooter.CBRShooterListener";
-        var dyna = new DyanmicInstatiator();
+        var dyna = new DynamicInstatiator();
 
-        var listener = DyanmicInstatiator.instantiateSessionListener("CBRShooter", UUID.randomUUID());
+        var listener = DynamicInstatiator.instantiateSessionListener("CBRShooter", UUID.randomUUID());
 
         var uuid = listener.getSessionId();
     }

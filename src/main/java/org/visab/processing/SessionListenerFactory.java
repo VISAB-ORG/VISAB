@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.dynamic.DyanmicInstatiator;
+import org.visab.dynamic.DynamicInstatiator;
 import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
@@ -38,7 +38,7 @@ public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
      * @param game      The game for which to instantiate a listener
      */
     public void addListener(UUID sessionId, String game) {
-        var newListener = DyanmicInstatiator.instantiateSessionListener(game, sessionId);
+        var newListener = DynamicInstatiator.instantiateSessionListener(game, sessionId);
         SessionListenerAdministration.addListener(newListener);
         // Notify the listener that the session started
         newListener.onSessionStarted();
