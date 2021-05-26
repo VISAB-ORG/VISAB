@@ -24,9 +24,9 @@
                         <TreeItemPropertyValueFactory property="name" />
                     </cellValueFactory>
                 </TreeTableColumn>
-                <TreeTableColumn fx:id="modifiedColumn" prefWidth="150.0" text="Last modified">
+                <TreeTableColumn fx:id="creationDateColumn" prefWidth="150.0" text="Last modified">
                     <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="lastModified" />
+                        <TreeItemPropertyValueFactory property="creationDate" />
                     </cellValueFactory>
                 </TreeTableColumn>
                 <TreeTableColumn fx:id="sizeColumn" prefWidth="75.0" text="Size in KB">
@@ -48,7 +48,7 @@
             </rowConstraints>
             <children>
                 <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add Files" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#removeAction" text="Delete file" GridPane.rowIndex="1" />
+                <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteFileAction" text="Delete file" GridPane.rowIndex="1" />
                 <Button fx:id="showInExplorerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Show in explorer" />
             <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Refresh" GridPane.columnIndex="1" />
             <Button fx:id="renameButton" mnemonicParsing="false" text="Rename" GridPane.columnIndex="2" />

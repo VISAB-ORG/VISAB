@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.newgui.workspace.ExplorerViewModelBase;
-import org.visab.newgui.workspace.model.FileRow;
+import org.visab.newgui.workspace.model.ExplorerFile;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
@@ -45,7 +45,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
                 var game = basicFile.getGame();
                 if (!baseFile.getFiles().stream().anyMatch(x -> x.getName().equals(game))) {
                     var newDir = repo.loadFileRelative(game);
-                    var row = getFileRow(newDir, baseFile);
+                    var row = getExplorerFile(newDir, baseFile);
                     baseFile.getFiles().add(row);
                 }
 
@@ -54,7 +54,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
                     if (fileRow.getName().equals(game)) {
 
                         // Make copy since we might modify fileRow.getFiles()
-                        var currentFiles = new ArrayList<FileRow>(fileRow.getFiles());
+                        var currentFiles = new ArrayList<File>(fileRow.getFiles());
 
                         // Remove potentially existing files with the same name
                         for (var childFile : currentFiles) {
@@ -62,7 +62,7 @@ public class DatabaseViewModel extends ExplorerViewModelBase {
                                 fileRow.getFiles().remove(childFile);
                         }
 
-                        var newFileRow = getFileRow(savedFile, fileRow);
+                        var newFileRow = getExplorerFile(savedFile, fileRow);
                         fileRow.getFiles().add(newFileRow);
 
                         // Finally update the file information for the parent directories

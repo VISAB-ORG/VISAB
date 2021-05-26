@@ -1,11 +1,14 @@
 package org.visab.newgui.workspace;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.workspace.model.FileRow;
+import org.visab.newgui.workspace.model.ExplorerFile;
 import org.visab.workspace.BasicRepository;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -17,15 +20,19 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
 
     protected String baseDirPath;
 
-    protected FileRow baseFile;
+    protected ExplorerFile baseFile;
 
     private BasicRepository basicRepo;
 
+    private Command deleteFileCommand;
+
+    private Command renameSelectedFileCommand;
+
     /**
      * This violates MVVM, but its the only way we can consistently have the
-     * currently seletecd item in the ViewModel
+     * currently seletecd file in the ViewModel.
      */
-    private ObjectProperty<TreeItem<FileRow>> selectedFileRow = new SimpleObjectProperty<>();
+    private ObjectProperty<TreeItem<ExplorerFile>> selectedExplorerFile = new SimpleObjectProperty<>();
 
     public ExplorerViewModelBase(String baseDirPath) {
         this.baseDirPath = baseDirPath;
@@ -33,26 +40,69 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     }
 
     /**
-     * Handler for adding new files via drag and drop or dialog
+     * Recursively adds files to a given ExplorerFile.
      *
-     * @param file The file to be added
-     * @return True if file was added
+     * @param explorerFile The ExplorerFile to add files to
      */
-    public abstract boolean addFile(File file);
+    protected void addChildFiles(ExplorerFile explorerFile) {
+        if (explorerFile.isDirectory()) {
+            var files = basicRepo.loadFile(explorerFile.getAbsolutePath()).listFiles();
+            for (var file : files) {
+                var newExplorerFile = getExplorerFile(file, explorerFile);
+
+                // Add to parents files
+                explorerFile.getFiles().add(newExplorerFile);
+
+                if (newExplorerFile.isDirectory())
+                    addChildFiles(newExplorerFile);
+            }
+        }
+    }
 
     /**
-     * A command to delete the currenlty selected file row
+     * Command for adding new files via drag and drop or dialog.
      *
-     * @return The command to delete the currently selected file row
+     * @param file The file to be added
+     * @return The command
+     */
+    public abstract Command addFileCommand(File file);
+
+    /**
+     * Recursively changes the absolute path of all children of the given Explorer
+     * file by replacing the oldName with the replacement.
+     *
+     * @param file    The file to whose children to change all paths for.
+     * @param oldName The old name of the parent file
+     * @param newName The new name of the parent file
+     */
+    private void changeChildrenAbsolutePath(ExplorerFile parentFile, String oldName, String newName) {
+        for (var file : parentFile.getFiles()) {
+            var newAbsolutePath = file.getAbsolutePath().replace(oldName, newName);
+            file.setAbsolutePath(newAbsolutePath);
+
+            // Change for all children
+            if (file.isDirectory())
+                changeChildrenAbsolutePath(file, oldName, newName);
+        }
+    }
+
+    /**
+     * A command to delete the currenlty selected ExplorerFile
+     *
+     * @return The command to delete the currently selected ExplorerFile
      */
     public Command deleteFileCommand() {
-        return runnableCommand(() -> {
-            var selectedRow = getSelectedFileRow();
+        if (deleteFileCommand == null) {
+            deleteFileCommand = runnableCommand(() -> {
+                var selectedRow = getSelectedFile();
+                // Dont allow removing deleting base file
+                if (selectedRow != null && !selectedRow.getName().equals(baseFile.getName()))
+                    if (basicRepo.deleteFile(selectedRow.getAbsolutePath()))
+                        removeExplorerFile(selectedRow, baseFile);
+            });
+        }
 
-            if (selectedRow != null && !selectedRow.getName().equals(baseFile.getName()))
-                if (basicRepo.deleteFile(selectedRow.getAbsolutePath()))
-                    removeFileRow(baseFile, selectedRow);
-        });
+        return deleteFileCommand;
     }
 
     public String getBaseDirPath() {
@@ -60,71 +110,106 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     }
 
     /**
-     * Initializes the base file row item and subsequently returns it
+     * Initializes a ExplorerFile object from a given file.
      *
-     * @return The base file row item
+     * @param file The file to create a ExplorerFile of
+     * @return The created ExplorerFile
      */
-    public FileRow getFreshBaseFileRow() {
-        // Recursively set children
+    protected ExplorerFile getExplorerFile(File file, ExplorerFile parentDir) {
+        BasicFileAttributes attrs = null;
+        try {
+            attrs = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        var name = file.getName();
+        var creationDate = Instant.ofEpochMilli(attrs.creationTime().toMillis()).atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        var size = FileSizeHelper.size(file.toPath());
+        var fullPath = file.getAbsolutePath();
+        var isDirectory = file.isDirectory();
+
+        return new ExplorerFile(name, creationDate, size, fullPath, isDirectory, parentDir);
+    }
+
+    /**
+     * Initializes the baseFile and returns it
+     *
+     * @return The initialized baseFile
+     */
+    public ExplorerFile getFreshBaseFile() {
         var file = basicRepo.loadFile(baseDirPath);
-        var baseFile = getFileRow(file, null);
+        var baseFile = getExplorerFile(file, null);
 
         this.baseFile = baseFile;
 
-        setChildFiles(baseFile);
+        // Recursively add all child files
+        addChildFiles(baseFile);
 
         return baseFile;
     }
 
     /**
-     * Initializes a FileRow object from a given file
+     * Gets the currently selected ExplorerFile
      *
-     * @param file The file to create a FileRow of
-     * @return The FileRow
+     * @return The currently selected ExplorerFile if one is selected, null else
      */
-    protected FileRow getFileRow(File file, FileRow parentDir) {
-        var name = file.getName();
-        var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        var size = FileSizeHelper.size(file.toPath());
-        var fullPath = file.getAbsolutePath();
-        var isDirectory = file.isDirectory();
-
-        return new FileRow(name, lastModified, size, fullPath, isDirectory, parentDir);
-    }
-
-    /**
-     * Gets the currently selected file row
-     *
-     * @return The currently selected file row
-     */
-    protected FileRow getSelectedFileRow() {
-        if (selectedFileRow.get() != null)
-            return selectedFileRow.get().getValue();
+    protected ExplorerFile getSelectedFile() {
+        if (selectedExplorerFile.get() != null)
+            return selectedExplorerFile.get().getValue();
 
         return null;
     }
 
     /**
-     * Recursively removes a given FileRow from the file tree.
+     * Recursively removes a given ExplorerFile from the file tree. To remove a
+     * file, pass the file object and the baseFile.
      *
-     * @param parentRow The parent Row
-     * @param removeRow The row to remove
+     * @param fileToRemove The file to remove
+     * @param parentFile   The parent file
      */
-    protected void removeFileRow(FileRow parentRow, FileRow removeRow) {
-        if (parentRow == null)
-            return;
+    protected void removeExplorerFile(ExplorerFile fileToRemove, ExplorerFile parentFile) {
+        for (var childFile : parentFile.getFiles()) {
+            if (childFile == fileToRemove) {
+                parentFile.getFiles().remove(fileToRemove);
+                updateFileSize(fileToRemove, -fileToRemove.getSize());
 
-        for (var child : parentRow.getFiles()) {
-            if (child == removeRow) {
-                parentRow.getFiles().remove(child);
-                // Finally update the parent directories information
-                updateDirectoryInformation(child);
+                // updateDirectoryInformation(childFile);
                 return;
+            } else if (childFile.isDirectory()) {
+                removeExplorerFile(fileToRemove, childFile);
             }
-
-            if (child.isDirectory())
-                removeFileRow(child, removeRow);
         }
+    }
+
+    /**
+     * Gets a command for renaming the currenlty selected file to the given new
+     * name.
+     *
+     * @param newName The new name for file.
+     * @return The command
+     */
+    public Command renameSelectedFileCommand(String newName) {
+        if (renameSelectedFileCommand == null) {
+            renameSelectedFileCommand = runnableCommand(() -> {
+                var selectedRow = getSelectedFile();
+                if (selectedRow != null && selectedRow != baseFile) {
+                    var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
+                    if (basicRepo.renameFile(selectedRow.getAbsolutePath(), newFilePath)) {
+                        var oldName = selectedRow.getName();
+
+                        selectedRow.setName(newName);
+                        selectedRow.setAbsolutePath(newFilePath);
+
+                        if (selectedRow.isDirectory())
+                            changeChildrenAbsolutePath(selectedRow, oldName, newName);
+                    }
+                }
+            });
+        }
+
+        return renameSelectedFileCommand;
     }
 
     /**
@@ -133,75 +218,23 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      *
      * @return
      */
-    public ObjectProperty<TreeItem<FileRow>> selectedFileRowProperty() {
-        return selectedFileRow;
+    public ObjectProperty<TreeItem<ExplorerFile>> selectedExplorerFileProperty() {
+        return selectedExplorerFile;
     }
 
     /**
-     * Recursively sets files to a given FileRow
+     * Recursively updates the size of a given ExplorerFile by adding the given long
+     * to the file and its parent files.
      *
-     * @param fileRow The FileRow to add files to
+     * @param file The file to updates the size for
+     * @param add  The size to add to the current size
      */
-    protected void setChildFiles(FileRow fileRow) {
-        if (fileRow.isDirectory()) {
-            var files = basicRepo.loadFile(fileRow.getAbsolutePath()).listFiles();
-            for (var file : files) {
-                var row = getFileRow(file, fileRow);
-                fileRow.getFiles().add(row);
+    private void updateFileSize(ExplorerFile file, long add) {
+        file.setSize(file.getSize() + add);
 
-                if (row.isDirectory())
-                    setChildFiles(row);
-            }
-        }
-    }
-
-    /**
-     * Recursively updates the file information (last modified + size) of the given
-     * fileRow and all its parent directories
-     * 
-     * @param fileRow The fileRow to start from
-     */
-    protected void updateDirectoryInformation(FileRow fileRow) {
-        if (fileRow.isDirectory()) {
-            var file = basicRepo.loadFile(fileRow.getAbsolutePath());
-
-            var lastModified = Instant.ofEpochMilli(file.lastModified()).atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            var size = FileSizeHelper.size(file.toPath());
-
-            fileRow.setLastModifies(lastModified);
-            fileRow.setSize(size);
-        }
-
-        if (fileRow.getParentDir() != null)
-            updateDirectoryInformation(fileRow.getParentDir());
-    }
-
-    public boolean renameSelectedFile(String newName) {
-        var selectedRow = getSelectedFileRow();
-        if (selectedRow != null && selectedRow != baseFile) {
-            var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
-
-            if (basicRepo.renameFile(selectedRow.getAbsolutePath(), newFilePath)) {
-                // Remove the current fileRow
-                removeFileRow(selectedRow.getParentDir(), selectedRow);
-
-                var newFile = basicRepo.loadFile(newFilePath);
-                var newRow = getFileRow(newFile, selectedRow.getParentDir());
-
-                // Add the new fileRow
-                newRow.getParentDir().getFiles().add(newRow);
-
-                // Set the child files if the
-                if (newRow.isDirectory())
-                    setChildFiles(newRow);
-
-                return true;
-            }
-
-        }
-
-        return false;
+        var parentFile = file.getParentDir();
+        if (parentFile != null)
+            updateFileSize(parentFile, add);
     }
 
 }

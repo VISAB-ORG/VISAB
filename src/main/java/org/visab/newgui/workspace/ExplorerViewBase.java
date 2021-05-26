@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import org.visab.newgui.workspace.model.FileRow;
+import org.visab.newgui.workspace.model.ExplorerFile;
 import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -53,25 +53,25 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      * The explorer view
      */
     @FXML
-    TreeTableView<FileRow> explorerView;
+    TreeTableView<ExplorerFile> explorerView;
 
     /**
      * The file name column of the explorer view
      */
     @FXML
-    TreeTableColumn<FileRow, String> nameColumn;
+    TreeTableColumn<ExplorerFile, String> nameColumn;
 
     /**
-     * The last modified column of the explorer view
+     * The creation date column of the explorer view
      */
     @FXML
-    TreeTableColumn<FileRow, LocalDateTime> modifiedColumn;
+    TreeTableColumn<ExplorerFile, LocalDateTime> creationDateColumn;
 
     /**
      * The file size column of the explorer view
      */
     @FXML
-    TreeTableColumn<FileRow, Long> sizeColumn;
+    TreeTableColumn<ExplorerFile, Long> sizeColumn;
 
     /**
      * The button to remove the currently selected item
@@ -103,12 +103,9 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     @FXML
     Button renameButton;
 
-    /**
-     * The action to be executed when the removeButton is pressed
-     */
     @FXML
-    public void removeAction() {
-        removeCommand.execute();
+    public void deleteFileAction() {
+        viewModel.deleteFileCommand().execute();
     }
 
     /**
@@ -116,8 +113,6 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
      */
     @InjectViewModel
     protected TViewModel viewModel;
-
-    private Command removeCommand;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -137,7 +132,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         initializeKeyCombinations();
 
         // MVVM
-        viewModel.selectedFileRowProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
+        viewModel.selectedExplorerFileProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
 
         // TODO: I still hate this. Look for different solution at some point
         removeCommand = viewModel.deleteFileCommand();
@@ -156,7 +151,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         // CTRL + V pasting
         keyCombinations.put(new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN), () -> {
             // TODO: Do we require focussed?
-            if (explorerView.isFocused() && viewModel.getSelectedFileRow() != null) {
+            if (explorerView.isFocused() && viewModel.getSelectedFile() != null) {
                 var clipboard = Clipboard.getSystemClipboard();
                 var hasFiles = clipboard.getFiles() != null;
 
@@ -169,8 +164,8 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
 
         // DELETE removing selected file
         keyCombinations.put(new KeyCodeCombination(KeyCode.DELETE), () -> {
-            if (viewModel.getSelectedFileRow() != null)
-                removeAction();
+            if (viewModel.getSelectedFile() != null)
+                deleteFileAction();
         });
     }
 
@@ -179,8 +174,8 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
             switch (VISABUtil.getOS()) {
             case WINDOWS:
                 var command = "explorer.exe " + viewModel.getBaseDirPath();
-                if (viewModel.getSelectedFileRow() != null)
-                    command = "explorer.exe /select," + viewModel.getSelectedFileRow().getAbsolutePath();
+                if (viewModel.getSelectedFile() != null)
+                    command = "explorer.exe /select," + viewModel.getSelectedFile().getAbsolutePath();
 
                 Runtime.getRuntime().exec(command);
                 break;
@@ -210,8 +205,8 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     protected void refreshExplorerView() {
         explorerView.setRoot(null);
 
-        var root = viewModel.getFreshBaseFileRow();
-        var rootItem = new RecursiveTreeItem<FileRow>(root, x -> x.getFiles());
+        var root = viewModel.getFreshBaseFile();
+        var rootItem = new RecursiveTreeItem<ExplorerFile>(root, x -> x.getFiles());
         explorerView.setRoot(rootItem);
 
         // If there arent that many files, expand some more nodes
@@ -267,7 +262,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         });
 
         // Set gregorian time
-        modifiedColumn.setCellFactory(x -> new TreeTableCell<>() {
+        creationDateColumn.setCellFactory(x -> new TreeTableCell<>() {
 
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
@@ -275,14 +270,14 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
 
-                var fileRow = getTreeTableRow().getItem();
+                var explorerFile = getTreeTableRow().getItem();
 
-                if (empty || fileRow == null) {
+                if (empty || explorerFile == null) {
                     setText(null);
                     return;
                 }
 
-                var formattedTime = fileRow.getLastModified().format(formatter);
+                var formattedTime = explorerFile.getCreationDate().format(formatter);
                 setText(formattedTime);
             }
         });

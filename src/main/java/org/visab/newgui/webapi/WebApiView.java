@@ -4,16 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.dynamic.DynamicViewLoader;
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
 import org.visab.newgui.statistics.StatisticsViewModelBase;
-import org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView;
 import org.visab.newgui.webapi.model.SessionTableRow;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
 
-import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
