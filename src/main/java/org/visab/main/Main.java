@@ -54,16 +54,15 @@ public class Main {
 
             System.exit(1);
         }
-
-        // Start the respective mode based on CLI argument
+        
+        logger.info("Starting VISAB API HTTP server ...");
+        WebApi.getInstance().start();
+        
+        // Start the GUI additionally if desired
         if (mode.equals("gui")) {
-            // Starting the gui will aulso automatically spawn the API server
             logger.info("Starting VISAB as a GUI application.");
             new Thread(() -> Application.launch(GUIMain.class)).start();
 
-        } else {
-            logger.info("Starting VISAB as a headless (HTTP) server application ...");
-            WebApi.getInstance().start();
         }
     }
 
