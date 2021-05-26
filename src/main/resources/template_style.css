@@ -22,8 +22,19 @@
 	-fx-background-radius: 5;
 }
 
-.browseFile-button {
+.button {
 	-fx-background-color: #12213a;
+	-fx-background-radius: 10;
+}
+
+.delete-button {
+	-fx-border-color: #12213a;
+	-fx-border-radius: 10;
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.upload-button {
+	-fx-background-color: #1e3762;
 	-fx-background-radius: 10;
 }
 
@@ -34,11 +45,6 @@
 
 .drag-box {
 	-fx-background-color: #FFFFFF;
-	-fx-background-radius: 10;
-}
-
-.upload-button{
-	-fx-background-color: #12213a;
 	-fx-background-radius: 10;
 }
 
