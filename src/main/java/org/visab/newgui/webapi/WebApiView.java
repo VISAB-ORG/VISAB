@@ -35,7 +35,6 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
         viewModel.openLiveViewCommand().execute();
     }
 
-    // Called after the view is completely loaded
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         /*

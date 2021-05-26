@@ -39,11 +39,20 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
     /**
      * Initializer for non live view.
      * 
-     * @param file The file to present
+     * @param file The file to visualize
      */
     @SuppressWarnings("unchecked")
     public void initialize(IVISABFile file) {
         this.file = (TFile) file;
         isLiveViewProperty.set(false);
+
+        afterInitialize(this.file);
     }
+
+    /**
+     * Is called after initilization for non live view.
+     * 
+     * @param file The file that the view was initialized with.
+     */
+    public abstract void afterInitialize(TFile file);
 }

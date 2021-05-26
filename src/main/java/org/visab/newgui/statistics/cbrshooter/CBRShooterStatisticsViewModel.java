@@ -1,30 +1,19 @@
 package org.visab.newgui.statistics.cbrshooter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
-import org.visab.newgui.statistics.StatisticsViewModelBase;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
 import org.visab.newgui.statistics.cbrshooter.model.PlayerPlanOccurance;
 import org.visab.newgui.statistics.cbrshooter.model.Vector2;
-import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
 
-/**
- * TODO: Create a abstract base class from this example, once vanessa is done
- * with the view
- */
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
@@ -62,7 +51,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 occurances = new PlayerPlanOccurance(player.getName(), player.getIsCBR());
                 planOccurances.add(occurances);
             }
-
             occurances.incrementOccurance(plan);
 
             // Update our pie charts
@@ -95,6 +83,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     public void notifySessionClosed() {
         liveSessionActiveProperty.set(false);
         // TODO: Render some future "who won" graphs an such
+    }
+
+    @Override
+    public void afterInitialize(CBRShooterFile file) {
+        for (var statistics : file.getStatistics()) {
+            notifyStatisticsAdded(statistics);
+        }
     }
 
 }

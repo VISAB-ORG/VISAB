@@ -48,4 +48,6 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     @Override
     public abstract void notifySessionClosed();
 
+    @Override
+    public abstract void afterInitialize(TFile file);
 }
