@@ -8,6 +8,7 @@ import org.visab.util.VISABUtil;
 
 /**
  * The DatabaseManager that is used for deleting/adding/removing VISAB files.
+ * TODO: Check if file name already exists in list of saved files.
  */
 public class DatabaseManager {
 

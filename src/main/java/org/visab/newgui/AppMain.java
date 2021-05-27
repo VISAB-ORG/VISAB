@@ -1,6 +1,5 @@
 package org.visab.newgui;
 
-import org.visab.newgui.webapi.WebApiView;
 import org.visab.newgui.workspace.database.DatabaseView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
@@ -10,7 +9,11 @@ import javafx.stage.Stage;
 
 public class AppMain extends Application {
 
-    public static Stage primaryStage;
+    private static Stage primaryStage;
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {

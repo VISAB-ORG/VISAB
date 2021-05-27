@@ -1,17 +1,17 @@
 package org.visab.newgui.workspace;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
+import org.visab.newgui.AppMain;
 import org.visab.newgui.workspace.model.ExplorerFile;
-import org.visab.util.VISABUtil;
+import org.visab.workspace.BasicRepository;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -24,11 +24,13 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.TransferMode;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -37,7 +39,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         implements FxmlView<TViewModel>, Initializable {
 
     /**
-     * Graphics for FileView
+     * Graphics for FileView TOOD: Get theres from somewhere else I Suppose
      */
     private static final Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
 
@@ -89,17 +91,11 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
 
     @FXML
     public void renameFileAction() {
-        // Lazily set the parent window for dialogs
-        viewModel.getDialogHelper().setParentWindow(explorerView.getScene().getWindow());
-        
         viewModel.renameFileCommand().execute();
     }
 
     @FXML
     public void addFilesAction() {
-        // Lazily set the parent window for dialogs
-        viewModel.getDialogHelper().setParentWindow(explorerView.getScene().getWindow());
-
         viewModel.addFileCommand().execute();
     }
 
@@ -124,46 +120,15 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
         // Selected tree item
         viewModel.selectedExplorerFileProperty().bind(explorerView.getSelectionModel().selectedItemProperty());
 
+        // After the primaryStage.show() was called from AppMain.
+        // Has to be called here, because the elements we want to reference, are only
+        // loaded upon the stage being shown.
+        AppMain.getPrimaryStage().setOnShowing(e -> {
+            viewModel.getDialogHelper().setParentWindow(explorerView.getScene().getWindow());
+            initializeKeyCombinations();
+        });
+
         afterInitialize(location, resources);
-    }
-
-    /**
-     * Adds the KeyCombations. For now CTRL + V and DELETE are supported. TODO: Add
-     * these
-     */
-    private void initializeKeyCombinations() {
-        var keyCombinations = new HashMap<KeyCodeCombination, Runnable>();
-
-        // CTRL + V pasting
-        keyCombinations.put(new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN), () -> {
-            // TODO: Do we require focussed?
-            if (explorerView.isFocused() && viewModel.getSelectedFile() != null) {
-                var clipboard = Clipboard.getSystemClipboard();
-                var hasFiles = clipboard.getFiles() != null;
-
-                if (hasFiles) {
-                    for (var file : clipboard.getFiles())
-                        viewModel.addFile(file);
-                }
-            }
-        });
-
-        // DELETE removing selected file
-        keyCombinations.put(new KeyCodeCombination(KeyCode.DELETE), () -> {
-            if (viewModel.getSelectedFile() != null)
-                deleteFileAction();
-        });
-    }
-
-    /**
-     * Handler for file being dragged over
-     * 
-     * @param e The DragEvent
-     */
-    private void handleDragOver(DragEvent e) {
-        if (e.getGestureSource() != explorerView && e.getDragboard().hasFiles())
-            e.acceptTransferModes(TransferMode.MOVE);
-        e.consume();
     }
 
     /**
@@ -185,6 +150,86 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
             }
         }
 
+    }
+
+    /**
+     * Adds the KeyCombations. For now CTRL + V and DELETE are supported.
+     */
+    private void initializeKeyCombinations() {
+        var keyCombinations = new HashMap<KeyCodeCombination, Runnable>();
+
+        // CTRL + V pasting
+        keyCombinations.put(new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN), () -> {
+            // TODO: Do we require focussed?
+            if (explorerView.isFocused()) {
+                var clipboard = Clipboard.getSystemClipboard();
+                var hasFiles = clipboard.getFiles() != null;
+
+                if (hasFiles) {
+                    for (var file : clipboard.getFiles())
+                        viewModel.addFile(file);
+                }
+            }
+        });
+
+        // CTRL + C copying
+        keyCombinations.put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
+            // TODO: Do we require focussed?
+            if (explorerView.isFocused()) {
+                var selectedFile = viewModel.getSelectedFile();
+                if (selectedFile != null) {
+                    var file = new BasicRepository("").loadFile(selectedFile.getAbsolutePath());
+                    if (file != null) {
+                        var content = new HashMap<DataFormat, Object>();
+                        content.put(DataFormat.FILES, List.of(file));
+                        Clipboard.getSystemClipboard().setContent(content);
+                    }
+                }
+            }
+        });
+
+        // DELETE removing selected file
+        keyCombinations.put(new KeyCodeCombination(KeyCode.DELETE), () ->
+
+        {
+            if (explorerView.isFocused())
+                viewModel.deleteFileCommand().execute();
+        });
+
+        AppMain.getPrimaryStage().sceneProperty().addListener(x -> {
+            AppMain.getPrimaryStage().getScene().getAccelerators().putAll(keyCombinations);
+        });
+    }
+
+    /**
+     * Handler for file being dragged over
+     * 
+     * @param e The DragEvent
+     */
+    private void handleDragOver(DragEvent e) {
+        if (e.getGestureSource() != explorerView && e.getDragboard().hasFiles())
+            e.acceptTransferModes(TransferMode.MOVE);
+        e.consume();
+    }
+
+    /**
+     * Handler for adding files via drag and drop.
+     * 
+     * @param e The DragEvent
+     */
+    private void handleFilesDropped(DragEvent e) {
+        var db = e.getDragboard();
+        var hasFiles = db.hasFiles();
+
+        if (hasFiles) {
+            for (var file : db.getFiles()) {
+                // Call add file on the viewmodel
+                viewModel.addFile(file);
+            }
+        }
+
+        e.setDropCompleted(hasFiles);
+        e.consume();
     }
 
     /**
@@ -270,27 +315,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     }
 
     /**
-     * Handler for adding files via drag and drop.
-     * 
-     * @param e The DragEvent
-     */
-    private void handleFilesDropped(DragEvent e) {
-        var db = e.getDragboard();
-        var hasFiles = db.hasFiles();
-
-        if (hasFiles) {
-            for (var file : db.getFiles()) {
-                // Call add file on the viewmodel
-                viewModel.addFile(file);
-            }
-        }
-
-        e.setDropCompleted(hasFiles);
-        e.consume();
-    }
-
-    /**
-     * Called directly after initialize is done
+     * Called directly after initialize() is done
      * 
      * @param location  Forwarded from initialize
      * @param resources Forwarded from initialize
