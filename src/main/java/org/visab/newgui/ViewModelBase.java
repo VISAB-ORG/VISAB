@@ -1,5 +1,7 @@
 package org.visab.newgui;
 
+import org.visab.newgui.workspace.DialogHelper;
+
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -20,6 +22,22 @@ public abstract class ViewModelBase implements ViewModel {
                 runnable.run();
             }
         });
+    }
+
+    /**
+     * The DialogHelper that can be used to show dialogs from the viewmodel. To use
+     * the helper, you first have to set the parent window from the View by calling
+     * getDialogHelper().setParentWindow().
+     */
+    protected DialogHelper dialogHelper = new DialogHelper();
+
+    /**
+     * Gets the DialogHelper.
+     * 
+     * @return The DialogHelper
+     */
+    public DialogHelper getDialogHelper() {
+        return this.dialogHelper;
     }
 
 }

@@ -239,20 +239,21 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
     public Command renameFileCommand() {
         if (renameSelectedFileCommand == null) {
             renameSelectedFileCommand = runnableCommand(() -> {
-                // TODO: Get via dialog
-                var newName = UUID.randomUUID().toString();
+                var selectedFile = getSelectedFile();
+                if (selectedFile != null && selectedFile != baseFile) {
+                    var newName = dialogHelper.showInputDialog("New File Name:", "Rename File", selectedFile.getName());
 
-                var selectedRow = getSelectedFile();
-                if (selectedRow != null && selectedRow != baseFile) {
-                    var newFilePath = basicRepo.combinePath(selectedRow.getParentDir().getAbsolutePath(), newName);
-                    if (basicRepo.renameFile(selectedRow.getAbsolutePath(), newFilePath)) {
-                        var oldName = selectedRow.getName();
+                    if (newName != "") {
+                        var newFilePath = basicRepo.combinePath(selectedFile.getParentDir().getAbsolutePath(), newName);
+                        if (basicRepo.renameFile(selectedFile.getAbsolutePath(), newFilePath)) {
+                            var oldName = selectedFile.getName();
 
-                        selectedRow.setName(newName);
-                        selectedRow.setAbsolutePath(newFilePath);
+                            selectedFile.setName(newName);
+                            selectedFile.setAbsolutePath(newFilePath);
 
-                        if (selectedRow.isDirectory())
-                            changeChildrenAbsolutePath(selectedRow, oldName, newName);
+                            if (selectedFile.isDirectory())
+                                changeChildrenAbsolutePath(selectedFile, oldName, newName);
+                        }
                     }
                 }
             });

@@ -15,8 +15,6 @@ import org.visab.util.VISABUtil;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -91,11 +89,17 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
 
     @FXML
     public void renameFileAction() {
+        // Lazily set the parent window for dialogs
+        viewModel.getDialogHelper().setParentWindow(explorerView.getScene().getWindow());
+        
         viewModel.renameFileCommand().execute();
     }
 
     @FXML
     public void addFilesAction() {
+        // Lazily set the parent window for dialogs
+        viewModel.getDialogHelper().setParentWindow(explorerView.getScene().getWindow());
+
         viewModel.addFileCommand().execute();
     }
 
@@ -163,7 +167,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     }
 
     /**
-     * Fully refreshes the explorer view
+     * Fully refreshes the explorer view.
      */
     protected void refreshExplorerView() {
         explorerView.setRoot(null);
@@ -184,7 +188,7 @@ public abstract class ExplorerViewBase<TViewModel extends ExplorerViewModelBase>
     }
 
     /**
-     * Sets the graphics for the ExplorerView
+     * Sets the graphics for the ExplorerView.
      */
     private void initializeExplorerPresentation() {
         nameColumn.setCellFactory(x -> new TreeTableCell<>() {
