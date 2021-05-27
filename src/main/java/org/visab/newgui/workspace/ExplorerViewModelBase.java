@@ -241,7 +241,7 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
             renameSelectedFileCommand = runnableCommand(() -> {
                 var selectedFile = getSelectedFile();
                 if (selectedFile != null && selectedFile != baseFile) {
-                    var newName = dialogHelper.showInputDialog("New File Name:", "Rename File", selectedFile.getName());
+                    var newName = dialogHelper.showInputDialog("New File Name:", selectedFile.getName(), "Rename File");
 
                     if (newName != "") {
                         var newFilePath = basicRepo.combinePath(selectedFile.getParentDir().getAbsolutePath(), newName);
