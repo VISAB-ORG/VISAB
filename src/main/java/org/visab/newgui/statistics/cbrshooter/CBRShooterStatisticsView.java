@@ -28,7 +28,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         planUsageCBR.setData(viewModel.getPlanUsageCBR());
         planUsageScript.setData(viewModel.getPlanUsageScript());
         // TODO: remove this

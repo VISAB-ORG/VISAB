@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.UUID;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.workspace.model.ExplorerFile;

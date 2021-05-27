@@ -37,14 +37,6 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*
-         * closeSessionCommand = viewModel.closeSessionCommand();
-         * 
-         * // TODO: Understand this binding logic
-         * closeSessionButton.disableProperty().bind(closeSessionCommand.
-         * notExecutableProperty());
-         */
-
         sessionTable.setItems(viewModel.getSessions());
         viewModel.selectedSessionProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
 

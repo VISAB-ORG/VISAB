@@ -1,7 +1,6 @@
 package org.visab.newgui;
 
 import org.visab.newgui.webapi.WebApiView;
-import org.visab.newgui.workspace.database.DatabaseView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;

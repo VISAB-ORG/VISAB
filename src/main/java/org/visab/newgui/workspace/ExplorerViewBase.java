@@ -1,7 +1,5 @@
 package org.visab.newgui.workspace;
 
-import java.io.File;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.TransferMode;
 
+import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Locale;
 

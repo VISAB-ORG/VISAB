@@ -9,12 +9,7 @@ import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
-import org.visab.newgui.statistics.StatisticsViewModelBase;
 import org.visab.newgui.webapi.model.SessionInformation;
-import org.visab.processing.ILiveViewable;
-import org.visab.processing.SessionListenerAdministration;
-import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
