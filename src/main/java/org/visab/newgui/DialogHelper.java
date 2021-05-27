@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace;
+package org.visab.newgui;
 
 import java.io.File;
 import java.util.ArrayList;

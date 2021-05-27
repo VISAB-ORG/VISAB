@@ -1,7 +1,5 @@
 package org.visab.newgui;
 
-import org.visab.newgui.workspace.DialogHelper;
-
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
