@@ -68,7 +68,7 @@ public class DatabaseRepository extends RepositoryBase {
     public <T extends IVISABFile> T loadVISABFileDB(String fileName, String game) {
         var filePath = combinePath(baseDirectory, game, fileName);
 
-        return this.<T>loadVISABFile(game, filePath);
+        return this.<T>loadVISABFile(filePath, game);
     }
 
     /**

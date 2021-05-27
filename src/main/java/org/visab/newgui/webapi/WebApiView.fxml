@@ -84,6 +84,11 @@
                         <PropertyValueFactory property="lastReceived" />
                     </cellValueFactory>
                 </TableColumn>
+                <TableColumn prefWidth="150.0" text="Active">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="isActive" />
+                    </cellValueFactory>
+                </TableColumn>
             </columns>
         </TableView>
         <Label alignment="CENTER" prefHeight="47.0" prefWidth="600.0" text="Session Overview">
@@ -92,6 +97,6 @@
             </font>
         </Label>
         <Button fx:id="closeSessionButton" mnemonicParsing="false" onAction="#closeSessionAction" prefHeight="28.0" prefWidth="613.0" text="Close Session" GridPane.rowIndex="2" />
-        <Button fx:id="openLiveViewButton" mnemonicParsing="false" onAction="#openLiveView" text="Open LiveView"/>
+        <Button fx:id="openLiveViewButton" mnemonicParsing="false" onAction="#openLiveViewAction" text="Open LiveView"/>
     </children>
 </GridPane>

@@ -1,5 +1,6 @@
 package org.visab.newgui;
 
+import org.visab.newgui.webapi.WebApiView;
 import org.visab.newgui.workspace.database.DatabaseView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
@@ -22,8 +23,8 @@ public class AppMain extends Application {
 
         // mvvmfx magic
         // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
-        var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
-        // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
+        // var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
+        var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
         var root = viewTupel.getView();
         stage.setScene(new Scene(root));
         stage.show();
