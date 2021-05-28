@@ -1,0 +1,15 @@
+[
+    {
+        "game": "CBRShooter",
+        "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
+        "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
+        "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
+        "image": "org.visab.globalmodel.cbrshooter.CBRShooterMapImage",
+        "viewConfigurations": [
+            {
+                "identifier": "statistics",
+                "classPath": "org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView"
+            }
+        ]
+    }
+]

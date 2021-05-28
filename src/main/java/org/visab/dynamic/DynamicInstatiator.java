@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.exception.DynamicException;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.starter.DefaultSessionListener;
 import org.visab.util.StringFormat;
@@ -35,7 +36,7 @@ public final class DynamicInstatiator {
             for (var ctor : Class.forName(className).getConstructors())
                 constructors.add(ctor);
         } catch (SecurityException | ClassNotFoundException e) {
-            logger.warn(StringFormat.niceString("Failed to get constructors for {0}", className));
+            logger.warn(StringFormat.niceString("Failed to get constructors for {0}.", className));
             e.printStackTrace();
         }
 
@@ -48,9 +49,7 @@ public final class DynamicInstatiator {
      * @param game      The game to instantiate a listener of
      * @param sessionId The sessionId
      * @return A SessionListener object if successful, throws exception if not
-     *         succesful (cast failed). This exception shouldent be caught at
-     *         runtime, since it proves a fatal error for the system and makes it
-     *         unuseable.
+     *         succesful (cast failed).
      */
     public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
@@ -64,7 +63,8 @@ public final class DynamicInstatiator {
             // Instantiate a default listener
             sessionListener = new DefaultSessionListener(game, sessionId);
         } else {
-            sessionListener = (ISessionListener<?>) instatiateClass(className, sessionId);
+            var instance = instatiateClass(className, sessionId);
+            sessionListener = (ISessionListener<?>) instance;
         }
 
         return sessionListener;
@@ -108,9 +108,11 @@ public final class DynamicInstatiator {
             }
         }
 
+        // If there was not correct constructor found, throw exception
         if (correctConstructor == null) {
-            logger.warn(StringFormat.niceString("Couldent find a fitting constructor for {0}", className));
-            return null;
+            var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", className);
+            logger.fatal(message);
+            throw new DynamicException(message);
         }
 
         Object instance = null;
@@ -118,9 +120,13 @@ public final class DynamicInstatiator {
             instance = correctConstructor.newInstance(params);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
-            logger.fatal(StringFormat.niceString("Failed to create an instance of {0} using constructor {1}", className,
-                    correctConstructor));
-            e.printStackTrace();
+            // If instatiation via reflection fails eventhought constructor was found, throw
+            // exception
+            var message = StringFormat.niceString("Failed to create an instance of {0} using constructor {1}.",
+                    className, correctConstructor);
+
+            logger.fatal(message);
+            throw new DynamicException(message);
         }
 
         return instance;

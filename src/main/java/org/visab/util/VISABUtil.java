@@ -154,4 +154,22 @@ public final class VISABUtil {
         }
     }
 
+    /**
+     * Helper method for loading files from the resources/ directory. Converts a
+     * path relative to the resources/ directory to the full path at runtime.
+     * 
+     * @param path The path relative to the resources/ directory
+     * @return The full path at runtime
+     */
+    public static String getResourcePath(String path) {
+        if (!path.startsWith("/"))
+            path = "/" + path;
+
+        var fullPath = Main.class.getResource(path).getPath();
+        if (fullPath.startsWith("/"))
+            fullPath = fullPath.substring(1, fullPath.length());
+        
+        return fullPath;
+    }
+
 }
