@@ -4,11 +4,14 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
 import org.visab.newgui.statistics.StatisticsViewModelBase;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
+import org.visab.util.AssignByGame;
+import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
@@ -33,22 +36,21 @@ public final class DynamicViewLoader {
     @SuppressWarnings("unchecked")
     public static ViewTuple<? extends FxmlView<? extends ViewModel>, ? extends ViewModel> loadStatisticsViewTuple(
             String game) {
-        // TODO: get classname from somewhere
-        var className = "org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView";
+        var className = "";
 
-        if (className == null) {
-            // Log
-            return null;
-        }
+        var viewMapping = Workspace.getInstance().getConfigManager().getViewMapping(AssignByGame.CBR_SHOOTER_STRING,
+                "statistics");
+
+        if (viewMapping != null && viewMapping.getClassPath() != null)
+            className = viewMapping.getClassPath();
 
         if (className.isBlank()) {
             // TODO: load some standard statistics view
-            // return FluentViewLoader.fxmlView();
             return null;
         } else {
-            var _class = (Class<? extends FxmlView<? extends ViewModel>>) tryGetClass(className);
+            var viewClass = (Class<? extends FxmlView<? extends ViewModel>>) tryGetClass(className);
 
-            return FluentViewLoader.fxmlView(_class).load();
+            return FluentViewLoader.fxmlView(viewClass).load();
         }
     }
 
@@ -128,11 +130,17 @@ public final class DynamicViewLoader {
     private static Class<?> tryGetClass(String className) {
         Class<?> _class = null;
 
-        try {
-            _class = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            logger.fatal("Failed to find class for name {0}", className);
-            e.printStackTrace();
+        if (className != null && !className.isBlank()) {
+            try {
+                _class = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+
+                // If there was a class name given, but it couldent be resolved throw exception
+                var message = StringFormat.niceString("Failed to find class for name {0}.", className);
+                logger.fatal(message);
+                throw new DynamicException(message);
+            }
         }
 
         return _class;

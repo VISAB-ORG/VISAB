@@ -2,13 +2,13 @@ package org.visab.workspace.config;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.model.DynamicMapping;
 import org.visab.workspace.config.model.MappingConfig;
+import org.visab.workspace.config.model.ViewConfig;
 
 /**
  * The ConfigManager that is used for loading and modifying settings and dynamic
@@ -20,19 +20,21 @@ public class ConfigManager {
 
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
 
+    private static final String MAPPING_PATH = "classMapping.json";
+
     private ConfigRepository repo = new ConfigRepository(CONFIG_PATH);
 
-    private DynamicMapping mapping;
+    private List<MappingConfig> mappings;
 
     public ConfigManager() {
         // TODO: Load settings first, so that they can be used for mapping
         // initialization. Important in case we decide to make it customizable where to
         // save your mappings.
-        loadDynamicMapping();
+        loadMappings();
     }
 
     public List<MappingConfig> getMappings() {
-        return this.mapping.getMappings();
+        return this.mappings;
     }
 
     /**
@@ -43,12 +45,12 @@ public class ConfigManager {
      * @return True if successful
      */
     public boolean replaceMapping(String game, MappingConfig newMapping) {
-        var mappingCopy = new ArrayList<MappingConfig>(mapping.getMappings());
+        var mappingCopy = new ArrayList<MappingConfig>(mappings);
         for (int i = 0; i < mappingCopy.size(); i++) {
             var mapping = mappingCopy.get(i);
 
             if (mapping.getGame().equals(newMapping.getGame())) {
-                getMappings().set(i, newMapping);
+                mappings.set(i, newMapping);
 
                 return true;
             }
@@ -58,28 +60,24 @@ public class ConfigManager {
     }
 
     /**
-     * Gets the mapping for a given game
+     * Gets the mapping for a given game.
      * 
      * @param game The game to get the mapping for
      * @return The mapping if mappings contained it, null else
      */
     public MappingConfig getMapping(String game) {
-        Optional<MappingConfig> optional = getMappings().stream().filter(x -> x.getGame().equals(game)).findFirst();
-
-        if (!optional.isEmpty())
-            return optional.get();
-        return null;
+        return StreamUtil.firstOrNull(mappings, x -> x.getGame().equals(game));
     }
 
     /**
-     * Adds a mapping to the mappings
+     * Adds a mapping to the mappings.
      * 
      * @param newMapping The mapping to add
      * @return True if successful
      */
     public boolean addMapping(MappingConfig newMapping) {
         if (getMapping(newMapping.getGame()) == null) {
-            getMappings().add(newMapping);
+            mappings.add(newMapping);
 
             return true;
         }
@@ -88,13 +86,13 @@ public class ConfigManager {
     }
 
     /**
-     * Removes a mapping by game from the mappings
+     * Removes a mapping by game from the mappings.
      * 
      * @param game The game to remove the mapping for
      * @return True if successful
      */
     public boolean removeMapping(String game) {
-        return getMappings().removeIf(x -> x.getGame().equals(game));
+        return mappings.removeIf(x -> x.getGame().equals(game));
     }
 
     /**
@@ -103,34 +101,55 @@ public class ConfigManager {
      * @return True if successful
      */
     public boolean removeMapping(MappingConfig mapping) {
-        return getMappings().remove(mapping);
+        return mappings.remove(mapping);
+    }
+
+    /**
+     * Saves the mappings to the filesystem using the repository.
+     * 
+     * @return True if successfully saved
+     */
+    public boolean saveMappings() {
+        return repo.saveMappings(mappings, MAPPING_PATH);
     }
 
     /**
      * Loads the mappings from the filesystem using the repository.
      * 
-     * @return True if successful
+     * @return True if successfully loaded
      */
-    private boolean loadDynamicMapping() {
-        // TODO: Load from file!
-        var cbrMapping = new MappingConfig();
-        cbrMapping.setGame("CBRShooter");
-        cbrMapping.setListener("org.visab.processing.cbrshooter.CBRShooterListener");
-        cbrMapping.setStatistics("org.visab.globalmodel.cbrshooter.CBRShooterStatistics");
-        cbrMapping.setFile("org.visab.globalmodel.cbrshooter.CBRShooterFile");
-        cbrMapping.setImage("org.visab.globalmodel.cbrshooter.CBRShooterMapImage");
+    private boolean loadMappings() {
+        var loadedMappings = repo.loadMappings(MAPPING_PATH);
 
-        var mapping = new DynamicMapping();
-        mapping.getMappings().add(cbrMapping);
+        if (loadedMappings == null) {
+            // Load the default file. Save it to file system. Load again.
+            var defaultPath = VISABUtil.getResourcePath("/configs/classMapping_DEFAULT.json");
+            var defaultJson = repo.readFileContents(defaultPath);
+            repo.writeToFileRelative(MAPPING_PATH, defaultJson);
+            loadedMappings = repo.loadMappings(MAPPING_PATH);
+        }
+        this.mappings = loadedMappings;
 
-        /*
-         * var mapping = repo.loadMapping(null); if (mapping == null) { // TOOD: Raise
-         * some exception or do error handeling } else { this.mapping = mapping; }
-         */
+        return loadedMappings != null;
+    }
 
-        this.mapping = mapping;
+    /**
+     * Gets a view configuration of a game based on the views identifier.
+     * 
+     * Example usage: getViewMapping(CBRShooter, statistics);
+     * 
+     * @param game           The game to get the view configuration for
+     * @param viewIdentifier The identifier for the view
+     * @return The ViewConfig if found, null else
+     */
+    public ViewConfig getViewMapping(String game, String viewIdentifier) {
+        var mapping = getMapping(game);
+        if (mapping != null) {
+            return StreamUtil.firstOrNull(mapping.getViewConfigurations(),
+                    x -> x.getIdentifier().equals(viewIdentifier));
+        }
 
-        return mapping != null;
+        return null;
     }
 
 }
