@@ -55,6 +55,17 @@ public final class DynamicViewLoader {
     }
 
     /**
+     * Resolves and shows a given view.
+     * 
+     * @param <T>       The type of the View class
+     * @param viewClass The view class
+     */
+    public static <T extends FxmlView<? extends ViewModel>> void showView(Class<T> viewClass, String title) {
+        var viewTuple = FluentViewLoader.fxmlView(viewClass).load();
+        showWindow(viewTuple.getView(), title);
+    }
+
+    /**
      * Loads and shows a statistics view for the given game. The statistics view is
      * initialized with the given file.
      * 
