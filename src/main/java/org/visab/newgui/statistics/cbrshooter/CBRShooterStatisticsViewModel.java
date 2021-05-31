@@ -50,7 +50,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 playerPlanTime = new PlayerPlanTime(player.getName(), player.getIsCBR());
                 planTimes.add(playerPlanTime);
             }
-            
+
             // Increment the plan time
             playerPlanTime.incrementOccurance(plan, newStatistics.getRound(), newStatistics.getRoundTime());
 
@@ -75,20 +75,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             }
         }
     }
-
-    // private void updatePieChart(ObservableList<Data> planUsageList, String plan,
-    // double totalTime) {
-    // var data = StreamUtil.firstOrNull(planUsageList, x ->
-    // x.getName().equals(plan));
-
-    // if (data == null) {
-    // var newData = new Data(plan, totalTime);
-    // newData.pieValueProperty().bind()
-    // planUsageList.add(new Data(plan, totalTime));
-    // }
-    // else
-    // data.setPieValue(totalTime);
-    // }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
         var position = statistics.getPlayers().get(0).getPosition();
