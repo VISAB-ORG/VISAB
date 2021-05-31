@@ -41,37 +41,54 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
-            var plan = player.getPlan();
+            // If plan is "" substitute with No plan
+            var plan = player.getPlan().equals("") ? "No plan" : player.getPlan();
 
-            if (plan.trim().equals(""))
-                plan = "No plan";
-
-            // Update our plan occurances
-            PlayerPlanTime planTime = StreamUtil.firstOrNull(planTimes,
-                    x -> x.getPlayerName().equals(player.getName()));
-
-            if (planTime == null) {
-                planTime = new PlayerPlanTime(player.getName(), player.getIsCBR());
-                planTimes.add(planTime);
+            // If player plan time doesnt for player exist yet, add it.
+            var playerPlanTime = StreamUtil.firstOrNull(planTimes, x -> x.getPlayerName().equals(player.getName()));
+            if (playerPlanTime == null) {
+                playerPlanTime = new PlayerPlanTime(player.getName(), player.getIsCBR());
+                planTimes.add(playerPlanTime);
             }
-            planTime.incrementOccurance(plan, newStatistics.getRound(), newStatistics.getRoundTime());
+            
+            // Increment the plan time
+            playerPlanTime.incrementOccurance(plan, newStatistics.getRound(), newStatistics.getRoundTime());
 
-            // Update our pie charts
+            // Check if plan is new
+            var isNewPlan = false;
             if (player.getIsCBR())
-                updatePieChart(planUsageCBR, plan, planTime.getTotalTime(plan));
+                isNewPlan = !StreamUtil.contains(planUsageCBR, x -> x.getName().equals(plan));
             else
-                updatePieChart(planUsageScript, plan, planTime.getTotalTime(plan));
+                isNewPlan = !StreamUtil.contains(planUsageScript, x -> x.getName().equals(plan));
+
+            // If plan is newly added, add new data with bound value to observable list
+            if (isNewPlan) {
+                // Create new data
+                var data = new Data(plan, playerPlanTime.getTotalTime(plan));
+                data.pieValueProperty().bind(playerPlanTime.getTimeProperty(plan));
+
+                // Add to observable list
+                if (player.getIsCBR())
+                    planUsageCBR.add(data);
+                else
+                    planUsageScript.add(data);
+            }
         }
     }
 
-    private void updatePieChart(ObservableList<Data> planUsageList, String plan, double totalTime) {
-        var data = StreamUtil.firstOrNull(planUsageList, x -> x.getName().equals(plan));
+    // private void updatePieChart(ObservableList<Data> planUsageList, String plan,
+    // double totalTime) {
+    // var data = StreamUtil.firstOrNull(planUsageList, x ->
+    // x.getName().equals(plan));
 
-        if (data == null)
-            planUsageList.add(new Data(plan, totalTime));
-        else
-            data.setPieValue(totalTime);
-    }
+    // if (data == null) {
+    // var newData = new Data(plan, totalTime);
+    // newData.pieValueProperty().bind()
+    // planUsageList.add(new Data(plan, totalTime));
+    // }
+    // else
+    // data.setPieValue(totalTime);
+    // }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
         var position = statistics.getPlayers().get(0).getPosition();

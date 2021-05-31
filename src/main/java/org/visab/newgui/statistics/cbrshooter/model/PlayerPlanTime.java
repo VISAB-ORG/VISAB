@@ -3,6 +3,9 @@ package org.visab.newgui.statistics.cbrshooter.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class PlayerPlanTime {
 
     private String playerName;
@@ -10,10 +13,10 @@ public class PlayerPlanTime {
     private boolean isCBR;
 
     // Plan, total time of occurance
-    private Map<String, Double> occurance = new HashMap<>();
+    private Map<String, DoubleProperty> planTimes = new HashMap<>();
 
-    public Map<String, Double> getOccurance() {
-        return occurance;
+    public Map<String, DoubleProperty> getPlanTimes() {
+        return planTimes;
     }
 
     public PlayerPlanTime(String playerName, boolean isCBR) {
@@ -29,27 +32,33 @@ public class PlayerPlanTime {
     }
 
     public double getTotalTime(String plan) {
-        if (!occurance.containsKey(plan))
+        if (!planTimes.containsKey(plan))
             return 0.0;
         else
-            return occurance.get(plan);
+            return planTimes.get(plan).doubleValue();
     }
 
+    public DoubleProperty getTimeProperty(String plan) {
+        if (planTimes.containsKey(plan))
+            return planTimes.get(plan);
+
+        return null;
+    }
 
     private float lastRoundTime = 0;
     private int lastRound = 0;
 
     public void incrementOccurance(String plan, int round, float roundTime) {
-        if (!occurance.containsKey(plan))
-            occurance.put(plan, 0.0);
+        if (!planTimes.containsKey(plan))
+            planTimes.put(plan, new SimpleDoubleProperty(0.0));
 
         // If round changed, set last round time to 0
         if (lastRound != round)
             lastRoundTime = 0;
 
-        var passedTime = roundTime - lastRoundTime;
-        occurance.put(plan, occurance.get(plan) + passedTime);
-        
+        var timePassed = roundTime - lastRoundTime;
+        planTimes.get(plan).set(planTimes.get(plan).doubleValue() + timePassed);
+
         lastRound = round;
         lastRoundTime = roundTime;
     }
