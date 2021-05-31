@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace;
+package org.visab.newgui.workspace.database;
 
 import java.io.File;
 import java.io.IOException;

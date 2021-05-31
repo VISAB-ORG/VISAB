@@ -33,7 +33,7 @@
                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add Files" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#addFilesAction" />
                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteFileAction" text="Delete file" GridPane.rowIndex="1" />
                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Show in explorer" onAction="#showInExplorerAction" />
-                <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Refresh" GridPane.columnIndex="1" />
+                <Button onAction="#refreshFileExplorer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Refresh" GridPane.columnIndex="1" />
                 <Button mnemonicParsing="false" text="Rename" GridPane.columnIndex="2" onAction="#renameFileAction" />
             </children>
         </GridPane>
