@@ -6,7 +6,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
-import org.visab.newgui.statistics.cbrshooter.model.PlayerPlanOccurance;
+import org.visab.newgui.statistics.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.statistics.cbrshooter.model.Vector2;
 import org.visab.util.StreamUtil;
 
@@ -18,7 +18,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
 
-    private List<PlayerPlanOccurance> planOccurances = new ArrayList<>();
+    private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
     private ObservableList<Data> planUsageCBR = FXCollections.observableArrayList();
 
@@ -43,31 +43,34 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         for (var player : newStatistics.getPlayers()) {
             var plan = player.getPlan();
 
+            if (plan.trim().equals(""))
+                plan = "No plan";
+
             // Update our plan occurances
-            PlayerPlanOccurance occurances = StreamUtil.firstOrNull(planOccurances,
+            PlayerPlanTime planTime = StreamUtil.firstOrNull(planTimes,
                     x -> x.getPlayerName().equals(player.getName()));
 
-            if (occurances == null) {
-                occurances = new PlayerPlanOccurance(player.getName(), player.getIsCBR());
-                planOccurances.add(occurances);
+            if (planTime == null) {
+                planTime = new PlayerPlanTime(player.getName(), player.getIsCBR());
+                planTimes.add(planTime);
             }
-            occurances.incrementOccurance(plan);
+            planTime.incrementOccurance(plan, newStatistics.getRound(), newStatistics.getRoundTime());
 
             // Update our pie charts
             if (player.getIsCBR())
-                updatePieChart(planUsageCBR, plan, occurances.getOccurance(plan));
+                updatePieChart(planUsageCBR, plan, planTime.getTotalTime(plan));
             else
-                updatePieChart(planUsageScript, plan, occurances.getOccurance(plan));
+                updatePieChart(planUsageScript, plan, planTime.getTotalTime(plan));
         }
     }
 
-    private void updatePieChart(ObservableList<Data> planUsageList, String plan, int occurances) {
+    private void updatePieChart(ObservableList<Data> planUsageList, String plan, double totalTime) {
         var data = StreamUtil.firstOrNull(planUsageList, x -> x.getName().equals(plan));
 
         if (data == null)
-            planUsageList.add(new Data(plan, 1));
+            planUsageList.add(new Data(plan, totalTime));
         else
-            data.setPieValue(occurances);
+            data.setPieValue(totalTime);
     }
 
     private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {

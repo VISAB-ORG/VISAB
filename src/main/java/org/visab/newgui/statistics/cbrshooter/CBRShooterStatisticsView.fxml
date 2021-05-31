@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import org.visab.newgui.controls.CustomLabelPieChart?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView">
     <columnConstraints>
@@ -28,7 +29,7 @@
                 </TableColumn>
             </columns>
         </TableView>
-        <PieChart fx:id="planUsageCBR" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
-        <PieChart fx:id="planUsageScript" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <CustomLabelPieChart fx:id="planUsageCBR" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
+        <CustomLabelPieChart fx:id="planUsageScript" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </children>
 </GridPane>
