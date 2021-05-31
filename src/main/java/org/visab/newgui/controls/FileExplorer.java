@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace;
+package org.visab.newgui.controls;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import org.visab.newgui.workspace.model.ExplorerFile;
 import java.time.format.DateTimeFormatter;
 
-import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javafx.scene.control.TreeTableCell;
@@ -26,7 +24,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 
-public class ExplorerView extends TreeTableView<ExplorerFile> {
+public class FileExplorer extends TreeTableView<ExplorerFile> {
 
     /**
      * Graphics for FileView TOOD: Get theres from somewhere else I Suppose
@@ -45,13 +43,13 @@ public class ExplorerView extends TreeTableView<ExplorerFile> {
 
     TreeTableColumn<ExplorerFile, Long> sizeColumn = new TreeTableColumn<>();
 
-    public ExplorerView() {
+    public FileExplorer() {
         super();
         nameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<ExplorerFile, String>("name"));
         creationDateColumn
                 .setCellValueFactory(new TreeItemPropertyValueFactory<ExplorerFile, LocalDateTime>("creationDate"));
         sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<ExplorerFile, Long>("size"));
-        
+
         initColumnPresentation();
 
         getColumns().add(nameColumn);
@@ -89,7 +87,7 @@ public class ExplorerView extends TreeTableView<ExplorerFile> {
 
     private void handleKeyPressed(KeyEvent e) {
         // Handle pasting
-        if (pressedKeys.size() == 2 && pressedKeys.contains(KeyCode.V) && pressedKeys.contains(KeyCode.SHORTCUT)) {
+        if (pressedKeys.size() == 2 && pressedKeys.contains(KeyCode.V) && pressedKeys.contains(KeyCode.CONTROL)) {
             if (this.isFocused()) {
                 var clipboard = Clipboard.getSystemClipboard();
                 var hasFiles = clipboard.getFiles() != null;
@@ -104,7 +102,7 @@ public class ExplorerView extends TreeTableView<ExplorerFile> {
             return;
         }
 
-        if (pressedKeys.size() == 2 && pressedKeys.contains(KeyCode.C) && pressedKeys.contains(KeyCode.SHORTCUT)) {
+        if (pressedKeys.size() == 2 && pressedKeys.contains(KeyCode.C) && pressedKeys.contains(KeyCode.CONTROL)) {
             if (this.isFocused()) {
                 var selectedFile = getSelectionModel().selectedItemProperty().get();
                 if (selectedFile != null) {
@@ -118,16 +116,31 @@ public class ExplorerView extends TreeTableView<ExplorerFile> {
             }
             return;
         }
+
+        if (pressedKeys.size() == 1 && pressedKeys.contains(KeyCode.DELETE)) {
+            var selectedFile = getSelectionModel().selectedItemProperty().get();
+            if (selectedFile != null) {
+                for (var handler : removeSelectedHandlers)
+                    handler.apply(selectedFile.getValue());
+            }
+            return;
+        }
     }
 
-    private List<Function<File, Void>> fileAddedHandlers = new ArrayList<>();
+    private List<Function<File, Boolean>> fileAddedHandlers = new ArrayList<>();
 
-    public void addFileAddedHandler(Function<File, Void> handler) {
+    public void addFileAddedHandler(Function<File, Boolean> handler) {
         fileAddedHandlers.add(handler);
     }
 
+    private List<Function<ExplorerFile, Boolean>> removeSelectedHandlers = new ArrayList<>();
+
+    public void addRemoveFileHandler(Function<ExplorerFile, Boolean> handler) {
+        removeSelectedHandlers.add(handler);
+    }
+
     /**
-     * Handler for file being dragged over
+     * Handler for file being dragged over.
      * 
      * @param e The DragEvent
      */

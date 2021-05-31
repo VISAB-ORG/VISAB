@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.visab.dynamic.DynamicSerializer;
+import org.visab.newgui.controls.ExplorerFile;
 import org.visab.newgui.workspace.ExplorerViewModelBase;
-import org.visab.newgui.workspace.model.ExplorerFile;
 import org.visab.util.StreamUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;

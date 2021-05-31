@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.workspace.model.ExplorerFile;
+import org.visab.newgui.controls.ExplorerFile;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.BasicRepository;
 
@@ -99,18 +99,30 @@ public abstract class ExplorerViewModelBase extends ViewModelBase {
      *
      * @return The command
      */
-    public Command deleteFileCommand() {
+    public Command deleteSelectedFileCommand() {
         if (deleteFileCommand == null) {
             deleteFileCommand = runnableCommand(() -> {
-                var selectedRow = getSelectedFile();
+                var selectedFile = getSelectedFile();
                 // Dont allow removing deleting base file
-                if (selectedRow != null && !selectedRow.getName().equals(baseFile.getName()))
-                    if (basicRepo.deleteFile(selectedRow.getAbsolutePath()))
-                        removeExplorerFile(selectedRow, baseFile);
+                if (selectedFile != null && !selectedFile.getName().equals(baseFile.getName()))
+                    deleteFile(selectedFile);
             });
         }
 
         return deleteFileCommand;
+    }
+
+    /**
+     * Deletes a given explorer file.
+     */
+    public boolean deleteFile(ExplorerFile file) {
+        if (file != null && !file.getName().equals(baseFile.getName()))
+            if (basicRepo.deleteFile(file.getAbsolutePath())) {
+                removeExplorerFile(file, baseFile);
+                return true;
+            }
+            
+        return false;
     }
 
     private Command showInExplorerCommand;

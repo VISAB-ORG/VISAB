@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import org.visab.newgui.controls.FileExplorer?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.workspace.database.DatabaseView">
     <columnConstraints>
@@ -17,25 +18,7 @@
         <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TreeTableView fx:id="explorerView">
-            <columns>
-                <TreeTableColumn fx:id="nameColumn" prefWidth="400.0" text="Name">
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="name" />
-                    </cellValueFactory>
-                </TreeTableColumn>
-                <TreeTableColumn fx:id="creationDateColumn" prefWidth="150.0" text="Creation date">
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="creationDate" />
-                    </cellValueFactory>
-                </TreeTableColumn>
-                <TreeTableColumn fx:id="sizeColumn" prefWidth="75.0" text="Size in KB">
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="size" />
-                    </cellValueFactory>
-                </TreeTableColumn>
-            </columns>
-        </TreeTableView>
+        <FileExplorer fx:id="fileExplorer"/>
         <GridPane GridPane.columnIndex="1">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

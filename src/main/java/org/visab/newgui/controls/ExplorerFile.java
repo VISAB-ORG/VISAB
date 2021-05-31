@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace.model;
+package org.visab.newgui.controls;
 
 import java.time.LocalDateTime;
 

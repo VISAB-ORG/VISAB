@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace;
+package org.visab.newgui.controls;
 
 import java.util.List;
 import java.util.stream.Collectors;
