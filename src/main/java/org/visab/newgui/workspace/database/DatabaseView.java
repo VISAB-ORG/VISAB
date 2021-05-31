@@ -4,9 +4,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.AppMain;
-import org.visab.newgui.controls.ExplorerFile;
-import org.visab.newgui.controls.FileExplorer;
-import org.visab.newgui.controls.RecursiveTreeItem;
+import org.visab.newgui.control.ExplorerFile;
+import org.visab.newgui.control.FileExplorer;
+import org.visab.newgui.control.RecursiveTreeItem;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;

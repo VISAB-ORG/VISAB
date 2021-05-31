@@ -1,4 +1,4 @@
-package org.visab.newgui.controls;
+package org.visab.newgui.control;
 
 import java.util.Optional;
 import java.util.function.Function;

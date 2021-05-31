@@ -1,4 +1,4 @@
-package org.visab.newgui.controls;
+package org.visab.newgui.control;
 
 import java.time.LocalDateTime;
 

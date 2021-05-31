@@ -4,7 +4,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.controls.CustomLabelPieChart;
+import org.visab.newgui.control.CustomLabelPieChart;
 import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
 
 import de.saxsys.mvvmfx.FxmlView;

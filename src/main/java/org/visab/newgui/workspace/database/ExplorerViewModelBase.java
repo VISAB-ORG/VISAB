@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.controls.ExplorerFile;
+import org.visab.newgui.control.ExplorerFile;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.BasicRepository;
 
