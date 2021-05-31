@@ -50,7 +50,8 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
     }
 
     /**
-     * Is called after initilization for non live view.
+     * Is called after initilization from a file. What you would do here typically,
+     * is to read in the file into your view models datastrctures.
      * 
      * @param file The file that the view was initialized with.
      */
