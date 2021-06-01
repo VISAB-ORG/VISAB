@@ -1,5 +1,7 @@
 package org.visab.newgui.control;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -21,6 +23,12 @@ public class ReplayView extends ImageView {
      */
     public ReplayView(Image image) {
         super(image);
+    }
+
+    private BooleanProperty pausedProperty = new SimpleBooleanProperty(false);
+
+    public BooleanProperty pausedProperty() {
+        return pausedProperty;
     }
 
 }
