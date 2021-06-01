@@ -2,81 +2,100 @@ package org.visab.newgui.workspace.database;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.visab.globalmodel.BasicVISABFile;
-import org.visab.newgui.workspace.ExplorerViewModelBase;
-import org.visab.newgui.workspace.model.FileRow;
+import org.visab.dynamic.DynamicSerializer;
+import org.visab.newgui.control.ExplorerFile;
+import org.visab.util.StreamUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
 
+import de.saxsys.mvvmfx.utils.commands.Command;
+
 public class DatabaseViewModel extends ExplorerViewModelBase {
 
-    // TODO: This could also just use the Manager instead. Have to see if we want
-    // that.
-    private DatabaseRepository repo = Workspace.getInstance().getDatabaseManager().getRepository();
+    private DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
+
+    private DatabaseRepository repo = manager.getRepository();
 
     public DatabaseViewModel() {
         super(DatabaseManager.DATABASE_PATH);
     }
 
     @Override
-    public boolean addFile(File file) {
-        if (file.isDirectory())
-            return false;
+    public boolean addFile(File fileToAdd) {
+        if (fileToAdd.isDirectory()) {
+            for (var _file : fileToAdd.listFiles())
+                if (!addFile(_file))
+                    return false;
+        } else {
+            try {
+                var fileName = fileToAdd.getName();
+                // TODO:
+                if (!fileToAdd.getName().endsWith(".visab2"))
+                    return false;
 
-        var wasSaved = false;
-        try {
-            // Read in the file as VISAB file
-            var fileName = file.getName();
+                var json = repo.readFileContents(fileToAdd.getAbsolutePath());
+                // Load the basic file to find out the game.
+                var basicVISABFile = repo.loadBasicVISABFile(fileToAdd.getAbsolutePath());
+                var game = basicVISABFile.getGame();
+                var concreteVISABFile = DynamicSerializer.deserializeVISABFile(json, game);
 
-            var json = repo.readFileContents(file.getAbsolutePath());
-            var basicFile = repo.loadBasicVISABFile(file.getAbsolutePath());
+                // Save the new file in database
+                if (concreteVISABFile != null && manager.saveFile(concreteVISABFile, fileName)) {
+                    var relSavePath = repo.combinePath(game, fileName);
+                    // Load the java.nio.File object
+                    var file = repo.loadFileRelative(relSavePath);
 
-            // Save the new file in database
-            var savePath = repo.combinePath(basicFile.getGame(), fileName);
-            wasSaved = repo.writeToFileRelative(savePath, json);
-
-            // Add to the tree if saved succesfully
-            if (wasSaved) {
-                var savedFile = repo.loadFileRelative(savePath);
-
-                // If a new dir was created, add as child of rootFile
-                var game = basicFile.getGame();
-                if (!baseFile.getFiles().stream().anyMatch(x -> x.getName().equals(game))) {
-                    var newDir = repo.loadFileRelative(game);
-                    var row = getFileRow(newDir, baseFile);
-                    baseFile.getFiles().add(row);
-                }
-
-                // Add the file as a child of the dir in rootFile
-                for (var fileRow : baseFile.getFiles()) {
-                    if (fileRow.getName().equals(game)) {
-
-                        // Make copy since we might modify fileRow.getFiles()
-                        var currentFiles = new ArrayList<FileRow>(fileRow.getFiles());
-
-                        // Remove potentially existing files with the same name
-                        for (var childFile : currentFiles) {
-                            if (childFile.getName().equals(fileName))
-                                fileRow.getFiles().remove(childFile);
-                        }
-
-                        var newFileRow = getFileRow(savedFile, fileRow);
-                        fileRow.getFiles().add(newFileRow);
-
-                        // Finally update the file information for the parent directories
-                        updateDirectoryInformation(newFileRow);
-
-                        break;
+                    // If dir for game does not exist yet, add it
+                    if (!StreamUtil.contains(baseFile.getFiles(), x -> x.getName().equals(game))) {
+                        var newDir = repo.loadFileRelative(game);
+                        var row = getExplorerFile(newDir, baseFile);
+                        baseFile.getFiles().add(row);
                     }
+
+                    var gameFile = StreamUtil.firstOrNull(baseFile.getFiles(), x -> x.getName().equals(game));
+                    // Remove existing files with the same name
+                    var existingFile = StreamUtil.contains(gameFile.getFiles(), x -> x.getName().equals(fileName));
+                    if (existingFile) {
+                        var existingFiles = new ArrayList<ExplorerFile>(gameFile.getFiles());
+                        for (var exisiting : existingFiles) {
+                            if (exisiting.getName().equals(fileName))
+                                removeExplorerFile(exisiting, gameFile);
+                        }
+                    }
+
+                    // Finally create the new ExplorerFile
+                    var newExplorerFile = getExplorerFile(file, gameFile);
+                    gameFile.getFiles().add(newExplorerFile);
+                    updateFileSize(gameFile, newExplorerFile.getSize());
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            wasSaved = false;
         }
 
-        return wasSaved;
+        return true;
+    }
+
+    private Command addFileCommand;
+
+    @Override
+    public Command addFileCommand() {
+        if (addFileCommand == null) {
+            addFileCommand = runnableCommand(() -> {
+                var allowedExtensions = new HashMap<String, String>();
+                allowedExtensions.put("VISAB files", "*.visab2");
+
+                // This blocks until the dialog is canceled or accepted
+                var files = dialogHelper.showFileDialog(baseDirPath, allowedExtensions, "Add VISAB files");
+                for (var file : files)
+                    addFile(file);
+            });
+        }
+
+        return addFileCommand;
     }
 }
