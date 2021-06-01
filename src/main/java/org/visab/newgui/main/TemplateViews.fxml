@@ -135,6 +135,7 @@
               <tabs>
                 <Tab text="Replay View" />
                 <Tab text="Statistics View" />
+                  <Tab text="Case Base View" />
               </tabs>
             </TabPane>
          </center>
