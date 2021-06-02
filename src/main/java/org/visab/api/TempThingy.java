@@ -2,10 +2,7 @@ package org.visab.api;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,7 +15,7 @@ import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 import org.visab.util.StreamUtil;
 
 /**
@@ -120,7 +117,7 @@ public class TempThingy {
     public boolean isSessionActive(UUID sessionId) {
         var status = getStatus(sessionId);
 
-        return status == null ? false : status.getIsActive();
+        return status == null ? false : status.isActive();
     }
 
     public TransmissionSessionStatus getStatus(UUID sessionId) {
@@ -132,7 +129,7 @@ public class TempThingy {
     }
 
     public List<TransmissionSessionStatus> getActiveSessionStatuses() {
-        return statuses.stream().filter(x -> x.getIsActive()).collect(Collectors.toList());
+        return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
     }
 
     private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
@@ -147,10 +144,10 @@ public class TempThingy {
     private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
     }
 
-    protected SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
-    protected SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
-    protected StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
-    protected ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
+    private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
+    private SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
+    private StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
+    private ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
 
     /**
      * Publishes the given event to the ApiEventBus instance.
@@ -158,7 +155,7 @@ public class TempThingy {
      * @param <T>   The type of the event
      * @param event The event to publish
      */
-    public <T extends IApiEvent> void publish(T event) {
+    private <T extends IApiEvent> void publish(T event) {
         if (event instanceof SessionOpenedEvent)
             sessionOpenedPublisher.publish((SessionOpenedEvent) event);
         else if (event instanceof SessionClosedEvent)

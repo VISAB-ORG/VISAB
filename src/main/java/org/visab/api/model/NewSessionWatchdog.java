@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 import org.visab.util.Settings;
 
 public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
@@ -71,7 +71,7 @@ public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
      * @return True if should be timeouted
      */
     private boolean shouldTimeout(TransmissionSessionStatus status) {
-        if (!status.getIsActive())
+        if (!status.isActive())
             return false;
 
         var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();

@@ -3,7 +3,7 @@ package org.visab.eventbus.event;
 import java.util.UUID;
 
 import org.visab.eventbus.IApiEvent;
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 
 /**
  * A base api event class, that all api events should inherit from.

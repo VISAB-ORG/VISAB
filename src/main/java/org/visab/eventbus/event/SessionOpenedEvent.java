@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 
 /**
  * The SessionOpenedEvent that occurs when a new VISAB transmission session is

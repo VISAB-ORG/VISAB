@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class SessionStatus {
+public class TransmissionSessionStatus {
 
     private UUID sessionId;
     private String game;
@@ -27,9 +27,9 @@ public class SessionStatus {
     private String hostName;
     private String ip;
 
-    public SessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest, LocalTime sessionOpened,
-            LocalTime sessionClosed, int receivedStatistics, int receivedImages, int totalRequests, String hostName,
-            String ip) {
+    public TransmissionSessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest,
+            LocalTime sessionOpened, LocalTime sessionClosed, int receivedStatistics, int receivedImages,
+            int totalRequests, String hostName, String ip) {
         this.game = game;
         this.sessionId = sessionId;
         this.sessionOpened = sessionOpened;
@@ -68,28 +68,52 @@ public class SessionStatus {
         return this.isActiveProperty;
     }
 
+    public void setIsActive(boolean isActive) {
+        this.isActiveProperty.set(isActive);
+    }
+
+    public boolean isActive() {
+        return this.isActiveProperty.get();
+    }
+
     public ObjectProperty<LocalTime> lastRequestProperty() {
         return this.lastRequestProperty;
+    }
+
+    public LocalTime getLastRequest() {
+        return this.lastRequestProperty.get();
     }
 
     public ObjectProperty<LocalTime> sessionClosedProperty() {
         return this.sessionClosedProperty;
     }
 
+    public LocalTime getSessionClosed() {
+        return this.sessionClosedProperty.get();
+    }
+
     public IntegerProperty totalRequestsProperty() {
         return this.totalRequestsProperty;
+    }
+
+    public int getTotalRequests() {
+        return this.totalRequestsProperty.get();
     }
 
     public IntegerProperty receivedStatisticsProperty() {
         return this.receivedStatisticsProperty;
     }
 
+    public int getReceivedStatistics() {
+        return this.receivedStatisticsProperty.get();
+    }
+
     public IntegerProperty receivedImagesProperty() {
         return this.receivedImagesProperty;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.isActiveProperty.set(isActive);
+    public int getReceivedImages() {
+        return this.receivedImagesProperty.get();
     }
 
     public void setLastRequest(LocalTime lastRequest) {
@@ -110,10 +134,6 @@ public class SessionStatus {
 
     public void setTotalRequests(int amount) {
         this.totalRequestsProperty.set(amount);
-    }
-
-    public boolean isActive() {
-        return this.isActiveProperty.get();
     }
 
 }

@@ -3,7 +3,7 @@ package org.visab.eventbus.event;
 import java.util.UUID;
 
 import org.visab.globalmodel.IImage;
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 
 /**
  * The ImageReceivedEvent, that occurs when images are received by the VISAB

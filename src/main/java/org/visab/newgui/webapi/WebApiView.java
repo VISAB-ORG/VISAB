@@ -3,7 +3,7 @@ package org.visab.newgui.webapi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.webapi.model.SessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -20,7 +20,7 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
     private Button closeSessionButton;
 
     @FXML
-    private TableView<SessionStatus> sessionTable;
+    private TableView<TransmissionSessionStatus> sessionTable;
 
     @InjectViewModel
     private WebApiViewModel viewModel;
@@ -46,14 +46,14 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
 
     private void initializeSessionTablePresentation() {
         // https://stackoverflow.com/questions/20350099/programmatically-change-the-tableview-row-appearance
-        sessionTable.setRowFactory(new Callback<TableView<SessionStatus>, TableRow<SessionStatus>>() {
+        sessionTable.setRowFactory(new Callback<TableView<TransmissionSessionStatus>, TableRow<TransmissionSessionStatus>>() {
 
             @Override
-            public TableRow<SessionStatus> call(TableView<SessionStatus> param) {
-                var row = new TableRow<SessionStatus>() {
+            public TableRow<TransmissionSessionStatus> call(TableView<TransmissionSessionStatus> param) {
+                var row = new TableRow<TransmissionSessionStatus>() {
 
                     @Override
-                    protected void updateItem(SessionStatus row, boolean empty) {
+                    protected void updateItem(TransmissionSessionStatus row, boolean empty) {
                         // TODO: CSS classes should be kept in a static file
                         if (empty || row == null)
                             return;

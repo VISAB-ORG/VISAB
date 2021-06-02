@@ -8,10 +8,9 @@ import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.globalmodel.TransmissionSessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.webapi.model.SessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -32,9 +31,9 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
 
     private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
 
-    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
+    private ObservableList<TransmissionSessionStatus> sessionList = FXCollections.observableArrayList();
 
-    private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
+    private ObjectProperty<TransmissionSessionStatus> selectedSession = new SimpleObjectProperty<>();
 
     private Command closeSessionCommand;
 
@@ -65,7 +64,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         return openLiveViewCommand;
     }
 
-    public ObjectProperty<SessionStatus> selectedSessionProperty() {
+    public ObjectProperty<TransmissionSessionStatus> selectedSessionProperty() {
         return selectedSession;
     }
 
@@ -74,13 +73,13 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
 
         // Load in all existing session status from watchdog.
         for (var status : WebApi.getInstance().getTempThingy().getSessionStatuses())
-            sessionList.add(mapToSessionStatus(status));
+            sessionList.add(status);
 
         // Set active session count
         activeTransmissionSessions.set(WebApi.getInstance().getTempThingy().getActiveSessionStatuses().size());
     }
 
-    public ObservableList<SessionStatus> getSessionList() {
+    public ObservableList<TransmissionSessionStatus> getSessionList() {
         return sessionList;
     }
 
@@ -95,38 +94,23 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
 
         if (event instanceof SessionOpenedEvent) {
             activeTransmissionSessions.set(activeTransmissionSessions.get() + 1);
-            var mapped = mapToSessionStatus(status);
-            sessionList.add(mapped);
+            sessionList.add(status);
         } else if (event instanceof SessionClosedEvent) {
             activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
         }
 
         var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
         if (existing != null) {
-            existing.setIsActive(status.getIsActive());
+            existing.setIsActive(status.isActive());
             existing.setLastRequest(status.getLastRequest());
             existing.setReceivedImages(status.getReceivedImages());
             existing.setReceivedStatistics(status.getReceivedStatistics());
             existing.setSessionClosed(status.getSessionClosed());
             existing.setTotalRequests(status.getTotalRequests());
         } else {
-            logger.error("Received request non existant session status outside of session opened event.");
+            logger.error("Received request with non existant session status outside of session opened event.");
         }
 
     }
 
-    /**
-     * Mapps a TransmissionSessionStatus to a SessionStatus object.
-     * 
-     * @param status The status to map
-     * @return The SessionStatus object
-     */
-    private SessionStatus mapToSessionStatus(TransmissionSessionStatus status) {
-        var mappedStatus = new SessionStatus(status.getSessionId(), status.getGame(), status.getIsActive(),
-                status.getLastRequest(), status.getSessionOpened(), status.getSessionClosed(),
-                status.getReceivedStatistics(), status.getReceivedImages(), status.getTotalRequests(),
-                status.getHostName(), status.getIp());
-
-        return mappedStatus;
-    }
 }

@@ -2,7 +2,7 @@ package org.visab.eventbus;
 
 import java.util.UUID;
 
-import org.visab.globalmodel.TransmissionSessionStatus;
+import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 
 /**
  * The IApiEvent interface that all api events have to implement.
