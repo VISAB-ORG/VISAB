@@ -42,7 +42,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         if (closeSessionCommand == null) {
             closeSessionCommand = runnableCommand(() -> {
                 if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebApi.getInstance().getSessionWatchdog().closeSession(selectedSession.get().getSessionId(), false);
+                    WebApi.getInstance().getTempThingy().closeSession(selectedSession.get().getSessionId());
             });
         }
 
@@ -73,11 +73,11 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         ApiEventBus.getInstance().subscribe(this);
 
         // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getSessionWatchdog().getAllSessionStatus())
+        for (var status : WebApi.getInstance().getTempThingy().getSessionStatuses())
             sessionList.add(mapToSessionStatus(status));
 
         // Set active session count
-        activeTransmissionSessions.set(WebApi.getInstance().getSessionWatchdog().getActiveSessions().size());
+        activeTransmissionSessions.set(WebApi.getInstance().getTempThingy().getActiveSessionStatuses().size());
     }
 
     public ObservableList<SessionStatus> getSessionList() {

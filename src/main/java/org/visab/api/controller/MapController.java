@@ -54,14 +54,14 @@ public class MapController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
+        if (!WebApi.getInstance().getTempThingy().isSessionActive(sessionId))
             return getBadRequestResponse("Session was closed!");
 
         var json = WebApiHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionWatchdog().imageReceived(sessionId, game, json);
+        WebApi.getInstance().getTempThingy().receiveImage(sessionId, game, json);
 
         return getOkResponse("Received Unity map images.");
     }

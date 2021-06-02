@@ -8,6 +8,7 @@ import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
+import org.visab.api.model.NewSessionWatchdog;
 import org.visab.processing.SessionListenerFactory;
 import org.visab.util.Settings;
 
@@ -45,7 +46,10 @@ public class WebApi extends RouterNanoHTTPD {
 
     private SessionListenerFactory listenerFactory = new SessionListenerFactory();
 
-    private SessionWatchdog watchdog = new SessionWatchdog();
+    private TempThingy temp = new TempThingy();
+
+    private NewSessionWatchdog watchdog;
+
     private WebApi() {
         super(Settings.API_PORT);
         addMappings();
@@ -71,8 +75,8 @@ public class WebApi extends RouterNanoHTTPD {
         return this.listenerFactory;
     }
 
-    public SessionWatchdog getSessionWatchdog() {
-        return this.watchdog;
+    public TempThingy getTempThingy() {
+        return this.temp;
     }
 
     /**
@@ -90,6 +94,8 @@ public class WebApi extends RouterNanoHTTPD {
      */
     @Override
     public void start() throws IOException {
+        watchdog = new NewSessionWatchdog(temp.getSessionStatuses());
+
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         listenerFactory.startFactory();
         watchdog.StartTimeoutLoop();

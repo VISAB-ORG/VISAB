@@ -46,7 +46,7 @@ public class StatisticsController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
+        if (!WebApi.getInstance().getTempThingy().isSessionActive(sessionId))
             return getBadRequestResponse("Session was already closed!");
 
         if (game == "")
@@ -59,7 +59,7 @@ public class StatisticsController extends HTTPControllerBase {
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionWatchdog().statisticsReceived(sessionId, game, json);
+        WebApi.getInstance().getTempThingy().receiveStatistics(sessionId, game, json);
 
         return getOkResponse("Statistics received.");
     }
