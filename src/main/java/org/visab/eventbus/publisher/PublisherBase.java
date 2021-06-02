@@ -18,4 +18,7 @@ public class PublisherBase<TEvent extends IEvent> implements IPublisher<TEvent> 
         ApiEventBus.getInstance().publish(event);
     }
 
+    // TOOD: Maybe add publish on different thread since we dont know how much time
+    // subscribers will need.
+
 }

@@ -6,10 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
-import org.visab.dynamic.DynamicSerializer;
-import org.visab.eventbus.ApiEventBus;
-import org.visab.eventbus.IPublisher;
-import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -17,14 +13,12 @@ import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
- * The statistics controller, used for transmitting statistics data. Publishes a
- * StatisticsReceivedEvent if the received sessionId belongs to an active
- * sessions.
+ * The statistics controller, used for transmitting statistics data.
  *
  * @author moritz
  *
  */
-public class StatisticsController extends HTTPControllerBase implements IPublisher<StatisticsReceivedEvent> {
+public class StatisticsController extends HTTPControllerBase {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(StatisticsController.class);
@@ -65,15 +59,9 @@ public class StatisticsController extends HTTPControllerBase implements IPublish
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        var event = new StatisticsReceivedEvent(sessionId, game, DynamicSerializer.deserializeStatistics(json, game));
-        publish(event);
+        WebApi.getInstance().getSessionWatchdog().statisticsReceived(sessionId, game, json);
 
         return getOkResponse("Statistics received.");
-    }
-
-    @Override
-    public final void publish(StatisticsReceivedEvent event) {
-        ApiEventBus.getInstance().publish(event);
     }
 
 }

@@ -2,84 +2,64 @@ package org.visab.api;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.api.model.TransmissionSessionStatus;
+import org.visab.dynamic.DynamicSerializer;
+import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.publisher.PublisherBase;
-import org.visab.eventbus.subscriber.SubscriberBase;
 import org.visab.util.Settings;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
  * to the current transmission sessions and checks them for timeout. Publishes
- * the SessionOpenedEvent and SessionClosedEvent to the Eventbus.
+ * all api related events.
  *
  * @author moritz
  *
  */
-public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
+public class SessionWatchdog extends ApiEventPublisher {
 
-    /**
-     * The SessionClosedPublisher that publishes the SessionClosedEvent
-     */
-    private class SessionClosedPublisher extends PublisherBase<SessionClosedEvent> {
-    }
-
-    /**
-     * The SessionOpenedPublisher that publishes the SessionOpenedEvent
-     */
-    private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
-    }
+    // Logger needs .class for each class to use for log traces
+    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
 
     /**
      * The currently active tranmission sessions.
      */
     private Map<UUID, String> activeSessions = new HashMap<>();
 
-    private SessionClosedPublisher closedPublisher = new SessionClosedPublisher();
-
-    // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
-
-    private SessionOpenedPublisher openedPublisher = new SessionOpenedPublisher();
-
     /**
-     * Contains the last time statistics data was sent from the transmission
-     * session. Used for closing sessions via timeout.
+     * An overview of transmission session specific data. Used for closing sessions
+     * via timeout.
      */
-    private Map<UUID, LocalTime> sessionSentTimes = new HashMap<>();
+    private Map<UUID, TransmissionSessionStatus> sessionStatus = new HashMap<>();
 
     private boolean shouldCheckTimeouts;
 
-    public SessionWatchdog() {
-        super(StatisticsReceivedEvent.class);
-    }
-
     /**
-     * Checks whether one of the current sessions should be timeouted. If that is
-     * the case, removes the sessions from activeSessions and statisticsSentTimes.
-     * After that a SessionClosedEvent is published.
+     * Opens a new transmission session and publishes a SessionOpenedEvent.
+     * 
+     * @param sessionId            The sessionId to open a session for
+     * @param game                 The game of the session
+     * @param remoteCallerIp       The ip of the device that made the api call
+     * @param remoteCallerHostName The hostname of the device that made the api call
      */
-    private void checkSessionTimeouts() {
-        // Make a copy because of potential modification during iteration
-        var entries = new ArrayList<Entry<UUID, LocalTime>>();
-        entries.addAll(sessionSentTimes.entrySet());
+    public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
+        activeSessions.put(sessionId, game);
+        var status = new TransmissionSessionStatus(sessionId, game, true, LocalTime.now(), LocalTime.now(), null, 0, 0,
+                1);
+        sessionStatus.put(sessionId, status);
 
-        for (var entry : entries) {
-            var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
-            if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
-                var sessionId = entry.getKey();
-                closeSession(sessionId, true);
-            }
-        }
+        var event = new SessionOpenedEvent(sessionId, game, remoteCallerIp, remoteCallerHostName);
+
+        // Publish the SessionOpenedEvent
+        publish(event);
     }
 
     /**
@@ -92,11 +72,37 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
     public void closeSession(UUID sessionId, boolean closedByTimeout) {
         activeSessions.remove(sessionId);
 
-        // Also remove the session from timeout check
-        sessionSentTimes.remove(sessionId);
+        // Also disable the session from timeout check
+        var status = sessionStatus.get(sessionId);
+        status.setIsActive(false);
+        status.setLastRequest(LocalTime.now());
+        status.setTotalRequests(status.getTotalRequests() + 1);
 
         // Publish the SessionClosedEvent event
-        closedPublisher.publish(new SessionClosedEvent(sessionId, closedByTimeout));
+        publish(new SessionClosedEvent(sessionId, closedByTimeout));
+    }
+
+    public void imageReceived(UUID sessionId, String game, String imageJson) {
+        var event = new ImageReceivedEvent(sessionId, game, DynamicSerializer.deserializeImage(imageJson, game));
+        publish(event);
+
+        // Set the status
+        var status = sessionStatus.get(sessionId);
+        status.setReceivedImages(status.getReceivedImages() + 1);
+        status.setLastRequest(LocalTime.now());
+        status.setTotalRequests(status.getTotalRequests() + 1);
+    }
+
+    public void statisticsReceived(UUID sessionId, String game, String statisticsJson) {
+        var event = new StatisticsReceivedEvent(sessionId, game,
+                DynamicSerializer.deserializeStatistics(statisticsJson, game));
+        publish(event);
+
+        // Set the status
+        var status = sessionStatus.get(sessionId);
+        status.setReceivedImages(status.getReceivedStatistics() + 1);
+        status.setLastRequest(LocalTime.now());
+        status.setTotalRequests(status.getTotalRequests() + 1);
     }
 
     /**
@@ -133,26 +139,8 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         return activeSessions.containsKey(sessionId);
     }
 
-    @Override
-    public void notify(StatisticsReceivedEvent event) {
-        sessionSentTimes.put(event.getSessionId(), LocalTime.now());
-    }
-
-    /**
-     * Opens a new transmission session and publishes a SessionOpenedEvent.
-     * 
-     * @param sessionId            The sessionId to open a session for
-     * @param game                 The game of the session
-     * @param remoteCallerIp       The ip of the device that made the api call
-     * @param remoteCallerHostName The hostname of the device that made the api call
-     */
-    public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
-        activeSessions.put(sessionId, game);
-
-        var event = new SessionOpenedEvent(sessionId, game, remoteCallerIp, remoteCallerHostName);
-
-        // Publish the SessionOpenedEvent
-        openedPublisher.publish(event);
+    public TransmissionSessionStatus getStatus(UUID sessionId) {
+        return sessionStatus.get(sessionId);
     }
 
     /**
@@ -163,14 +151,33 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
         shouldCheckTimeouts = true;
         new Thread(() -> {
             try {
+                /**
+                 * Checks whether one of the current sessions should be timeouted. If that is
+                 * the case, removes the sessions from activeSessions and sessionRequestTimes.
+                 * After that a SessionClosedEvent is published.
+                 */
                 while (shouldCheckTimeouts) {
-                    checkSessionTimeouts();
+                    for (var status : sessionStatus.values()) {
+                        var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();
+
+                        // If nothing was sent yet (only session openend) wait 30 more seconds until
+                        // timeout.
+                        var timeoutSeconds = Settings.SESSION_TIMEOUT;
+                        if (status.getTotalRequests() == 1)
+                            timeoutSeconds = Settings.SESSION_TIMEOUT + 30;
+
+                        // Close session
+                        if (elapsedSeconds >= timeoutSeconds) {
+                            closeSession(status.getSessionId(), true);
+                        }
+                    }
                     Thread.sleep(1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
+
     }
 
     /**

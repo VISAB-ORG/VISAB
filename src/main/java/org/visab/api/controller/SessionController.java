@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
-import org.visab.api.model.SessionStatus;
 import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -66,14 +65,11 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Could not parse uuid!");
 
-        SessionStatus sessionStatus;
-        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
-            sessionStatus = new SessionStatus(false, sessionId, null);
+        var sessionStatus = WebApi.getInstance().getSessionWatchdog().getStatus(sessionId);
+        if (sessionStatus == null)
+            return getJsonResponse("");
         else
-            sessionStatus = new SessionStatus(true, sessionId,
-                    WebApi.getInstance().getSessionWatchdog().getGame(sessionId));
-
-        return getJsonResponse(sessionStatus);
+            return getJsonResponse(sessionStatus);
     }
 
     @Override
