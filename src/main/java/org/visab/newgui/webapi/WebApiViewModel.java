@@ -3,7 +3,9 @@ package org.visab.newgui.webapi;
 import java.time.LocalTime;
 
 import org.visab.api.WebApi;
+import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
@@ -18,20 +20,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class WebApiViewModel extends ViewModelBase {
-
-    private class ApiEventSubscriber extends ApiSubscriberBase<IApiEvent> {
-
-        public ApiEventSubscriber() {
-            super(IApiEvent.class);
-        }
-
-        @Override
-        public void notify(IApiEvent event) {
-            var status = event.getStatus();
-        }
-
-    }
+public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
 
     private class SessionClosedSubscriber extends ApiSubscriberBase<SessionClosedEvent> {
 
@@ -119,19 +108,27 @@ public class WebApiViewModel extends ViewModelBase {
         return openLiveViewCommand;
     }
 
-    public void initialize() {
-        // TODO: Do we have to unsubscribe these?
-        new SessionOpenedSubscriber();
-        new StatisticsReceivedSubscriber();
-        new SessionClosedSubscriber();
-    }
-
     public ObjectProperty<SessionInformation> selectedSessionProperty() {
         return selectedSession;
     }
 
+    public WebApiViewModel() {
+        ApiEventBus.getInstance().subscribe(this);
+    }
+
     public ObservableList<SessionInformation> getSessions() {
         return sessions;
+    }
+
+    @Override
+    public String getSubscribedEventType() {
+        return IApiEvent.class.getName();
+    }
+
+    @Override
+    public void notify(IApiEvent event) {
+        var status = event.getStatus();
+        System.out.println(status);
     }
 
 }

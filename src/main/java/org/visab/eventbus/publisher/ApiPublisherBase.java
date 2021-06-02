@@ -16,6 +16,11 @@ public class ApiPublisherBase<TEvent extends IApiEvent> implements IPublisher<TE
     @Override
     public void publish(TEvent event) {
         ApiEventBus.getInstance().publish(event);
+        // publishDifferentThread(event);
+    }
+
+    public void publishDifferentThread(TEvent event) {
+        new Thread(() -> ApiEventBus.getInstance()).start();
     }
 
     // TOOD: Maybe add publish on different thread since we dont know how much time

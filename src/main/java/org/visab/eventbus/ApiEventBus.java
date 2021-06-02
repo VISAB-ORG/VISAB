@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.util.VISABUtil;
 
 /**
  * The ApiEventBus, used for notifying subscribers of new messages to the api.
@@ -71,19 +72,21 @@ public class ApiEventBus {
     public <TEvent extends IApiEvent> void publish(TEvent event) {
         var concreteEventName = event.getClass().getName();
 
-        // Allow subscribers of interface event types (IApiEvent) to be notified of
-        // events implementing that interface.
-        var interfaceEventName = event.getClass().getInterfaces()[0].getName();
+        // Gets the name of the first interfaces that the event implements.
+        // We can safely assume that our event implements atleast IApiEvent due to the generic constrict.
+        var interfaceEventName = VISABUtil.getAllInterfaces(event.getClass()).get(0).getName();
 
+        // Notify concrete subscribers.
         if (subscribers.containsKey(concreteEventName)) {
             // Make a copy, since the subscribers list will be modified if the event is of
             // type SessionClosedEvent.
-            // Notify concrete subscribers.
             var concreteSubscribers = this.<TEvent>castSubscribers(subscribers.get(concreteEventName));
             for (var sub : concreteSubscribers)
                 sub.notify(event);
+        }
 
-            // Notify interface subscribers.
+        // Notify interface subscribers.
+        if (subscribers.containsKey(interfaceEventName)) {
             var interfaceSubscribers = this.<IApiEvent>castSubscribers(subscribers.get(interfaceEventName));
             for (var sub : interfaceSubscribers)
                 sub.notify(event);
