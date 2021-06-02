@@ -15,7 +15,7 @@ import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.publisher.PublisherBase;
 import org.visab.eventbus.subscriber.SubscriberBase;
-import org.visab.util.Settings;
+import org.visab.util.UserSettings;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
@@ -75,7 +75,7 @@ public class SessionWatchdog extends SubscriberBase<StatisticsReceivedEvent> {
 
         for (var entry : entries) {
             var elapsedSeconds = Duration.between(entry.getValue(), LocalTime.now()).toSeconds();
-            if (elapsedSeconds >= Settings.SESSION_TIMEOUT) {
+            if (elapsedSeconds >= UserSettings.getSessionTimeout()) {
                 var sessionId = entry.getKey();
                 closeSession(sessionId, true);
             }

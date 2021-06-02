@@ -3,7 +3,8 @@ package org.visab.api.controller;
 import java.util.Map;
 
 import org.visab.util.JsonConvert;
-import org.visab.util.Settings;
+import org.visab.util.SystemSettings;
+import org.visab.util.UserSettings;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -49,7 +50,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(Object o) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, JsonConvert.serializeObject(o));
+        return NanoHTTPD.newFixedLengthResponse(Status.OK, SystemSettings.JSON_MIME_TYPE, JsonConvert.serializeObject(o));
     }
 
     /**
@@ -59,7 +60,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(String json) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, Settings.JSON_MIME_TYPE, json);
+        return NanoHTTPD.newFixedLengthResponse(Status.OK, SystemSettings.JSON_MIME_TYPE, json);
     }
 
     /**
@@ -71,7 +72,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getNotFoundResponse(UriResource uriResource) {
-        var responseMessage = "404: Adress: " + Settings.WEB_API_BASE_ADDRESS + "/" + uriResource.getUri()
+        var responseMessage = "404: Adress: " + UserSettings.getWebApiHostName() + "/" + uriResource.getUri()
                 + " was not found.";
 
         return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
@@ -87,7 +88,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getNotFoundResponse(UriResource uriResource, String additionalMessage) {
-        var responseMessage = "Adress: " + Settings.WEB_API_BASE_ADDRESS + "/" + uriResource.getUri()
+        var responseMessage = "Adress: " + UserSettings.getWebApiHostName() + "/" + uriResource.getUri()
                 + " was not found." + "Additional info: [" + additionalMessage + "]";
 
         return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);

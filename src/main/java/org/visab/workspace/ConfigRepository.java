@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.visab.util.JsonConvert;
+import org.visab.util.SettingsObject;
 import org.visab.workspace.config.model.MappingConfig;
 
 public class ConfigRepository extends RepositoryBase {
@@ -41,6 +42,27 @@ public class ConfigRepository extends RepositoryBase {
             return writeToFileRelative(relativeSavePath, json);
         else
             return false;
+    }
+    
+    /**
+     * Loads the object of settings.
+     * 
+     * @param relativeSettingsPath The relative path to the settings file.
+     * @return The object of settings.
+     */
+    public SettingsObject loadSettingsObject(String relativeSettingsPath) {
+        String path = combinePath(baseDirectory, relativeSettingsPath);
+        String content = readFileContents(path);
+        
+        return JsonConvert.deserializeJson(content, SettingsObject.class);
+    }
+    
+    public void saveSettings(SettingsObject settingsObject, String relativeSavePath) {
+        String json = JsonConvert.serializeObject(settingsObject);
+        
+        if (json != "") {
+            writeToFileRelative(relativeSavePath, json);
+        }
     }
 
 }

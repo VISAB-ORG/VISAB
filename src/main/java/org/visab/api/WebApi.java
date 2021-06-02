@@ -9,7 +9,7 @@ import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.processing.SessionListenerFactory;
-import org.visab.util.Settings;
+import org.visab.util.UserSettings;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -47,7 +47,7 @@ public class WebApi extends RouterNanoHTTPD {
 
     private SessionWatchdog watchdog = new SessionWatchdog();
     private WebApi() {
-        super(Settings.API_PORT);
+        super(UserSettings.getApiPort());
         addMappings();
     }
 

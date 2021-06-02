@@ -138,9 +138,9 @@ public final class VISABUtil {
 
     public static void writeFileToDatabase(String fileName, String content) throws URISyntaxException {
 
-        File databaseDir = new File(Settings.DATA_PATH);
+        File databaseDir = new File(SystemSettings.DATA_PATH);
         databaseDir.mkdirs();
-        File saveIntoDatabase = new File(Settings.DATA_PATH + fileName);
+        File saveIntoDatabase = new File(SystemSettings.DATA_PATH + fileName);
 
         BufferedWriter writer;
         try {
