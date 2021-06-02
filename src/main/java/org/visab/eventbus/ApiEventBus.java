@@ -87,7 +87,7 @@ public class ApiEventBus {
 
         // Notify interface subscribers.
         if (subscribers.containsKey(interfaceEventName)) {
-            var interfaceSubscribers = this.<IApiEvent>castSubscribers(subscribers.get(interfaceEventName));
+            var interfaceSubscribers = this.<TEvent>castSubscribers(subscribers.get(interfaceEventName));
             for (var sub : interfaceSubscribers)
                 sub.notify(event);
         }

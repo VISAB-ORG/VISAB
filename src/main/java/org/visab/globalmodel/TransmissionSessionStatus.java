@@ -9,10 +9,12 @@ public class TransmissionSessionStatus {
     private boolean isActive;
     private LocalTime lastRequest;
     private String game;
+    private String hostName;
+    private String ip;
 
     public TransmissionSessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest,
             LocalTime sessionOpened, LocalTime sessionClosed, int receivedStatistics, int receivedImages,
-            int totalRequests) {
+            int totalRequests, String hostName, String ip) {
         this.game = game;
         this.sessionId = sessionId;
         this.isActive = isActive;
@@ -22,6 +24,16 @@ public class TransmissionSessionStatus {
         this.receivedStatistics = receivedStatistics;
         this.receivedImages = receivedImages;
         this.totalRequests = totalRequests;
+        this.hostName = hostName;
+        this.ip = ip;
+    }
+
+    public String getHostName() {
+        return this.hostName;
+    }
+
+    public String getIp() {
+        return this.ip;
     }
 
     private LocalTime sessionOpened;

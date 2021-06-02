@@ -2,7 +2,9 @@ package org.visab.api;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,10 +55,10 @@ public class SessionWatchdog extends ApiEventPublisher {
     public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
         activeSessions.put(sessionId, game);
         var status = new TransmissionSessionStatus(sessionId, game, true, LocalTime.now(), LocalTime.now(), null, 0, 0,
-                1);
+                1, remoteCallerHostName, remoteCallerIp);
         sessionStatus.put(sessionId, status);
 
-        var event = new SessionOpenedEvent(sessionId, status, game, remoteCallerIp, remoteCallerHostName);
+        var event = new SessionOpenedEvent(sessionId, status, game);
 
         // Publish the SessionOpenedEvent
         publish(event);
@@ -76,6 +78,7 @@ public class SessionWatchdog extends ApiEventPublisher {
         var status = sessionStatus.get(sessionId);
         status.setIsActive(false);
         status.setLastRequest(LocalTime.now());
+        status.setSessionClosed(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
         // Publish the SessionClosedEvent event
@@ -97,7 +100,7 @@ public class SessionWatchdog extends ApiEventPublisher {
     public void statisticsReceived(UUID sessionId, String game, String statisticsJson) {
         // Set the status
         var status = sessionStatus.get(sessionId);
-        status.setReceivedImages(status.getReceivedStatistics() + 1);
+        status.setReceivedStatistics(status.getReceivedStatistics() + 1);
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
@@ -144,6 +147,11 @@ public class SessionWatchdog extends ApiEventPublisher {
         return sessionStatus.get(sessionId);
     }
 
+    public List<TransmissionSessionStatus> getAllSessionStatus() {
+        // Decide if only return active here.
+        return new ArrayList<TransmissionSessionStatus>(sessionStatus.values());
+    }
+
     /**
      * Starts the infinite timeout checking loop on a different thread. Can only be
      * terminated by calling stopTimeoutLoop.
@@ -159,6 +167,7 @@ public class SessionWatchdog extends ApiEventPublisher {
                  */
                 while (shouldCheckTimeouts) {
                     for (var status : sessionStatus.values()) {
+                        System.out.println(status.getIsActive());
                         if (!status.getIsActive())
                             continue;
 
