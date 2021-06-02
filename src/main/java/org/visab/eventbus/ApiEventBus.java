@@ -51,7 +51,7 @@ public class ApiEventBus {
      * @return A list of subscribers casted to TEvent
      */
     @SuppressWarnings("unchecked")
-    private <TEvent extends IEvent> List<ISubscriber<TEvent>> castSubscribers(
+    private <TEvent extends IApiEvent> List<ISubscriber<TEvent>> castSubscribers(
             List<ISubscriber<?>> uncastedSubscribers) {
         var casted = new ArrayList<ISubscriber<TEvent>>();
 
@@ -63,18 +63,29 @@ public class ApiEventBus {
 
     /**
      * Notifies all subscribers that are subscribed to TEvent of the given event.
+     * Also notifies subscribers of the interface type IApiEvent.
      * 
      * @param <TEvent> The type of the event
      * @param event    The event that subscribers will be notified with
      */
-    public <TEvent extends IEvent> void publish(TEvent event) {
-        var eventType = event.getClass().getSimpleName().toString();
+    public <TEvent extends IApiEvent> void publish(TEvent event) {
+        var concreteEventName = event.getClass().getName();
 
-        if (subscribers.containsKey(eventType)) {
+        // Allow subscribers of interface event types (IApiEvent) to be notified of
+        // events implementing that interface.
+        var interfaceEventName = event.getClass().getInterfaces()[0].getName();
+
+        if (subscribers.containsKey(concreteEventName)) {
             // Make a copy, since the subscribers list will be modified if the event is of
             // type SessionClosedEvent.
-            var _subscribers = this.<TEvent>castSubscribers(subscribers.get(eventType));
-            for (var sub : _subscribers)
+            // Notify concrete subscribers.
+            var concreteSubscribers = this.<TEvent>castSubscribers(subscribers.get(concreteEventName));
+            for (var sub : concreteSubscribers)
+                sub.notify(event);
+
+            // Notify interface subscribers.
+            var interfaceSubscribers = this.<IApiEvent>castSubscribers(subscribers.get(interfaceEventName));
+            for (var sub : interfaceSubscribers)
                 sub.notify(event);
         }
     }

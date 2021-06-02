@@ -3,10 +3,11 @@ package org.visab.newgui.webapi;
 import java.time.LocalTime;
 
 import org.visab.api.WebApi;
+import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.webapi.model.SessionInformation;
@@ -19,7 +20,20 @@ import javafx.collections.ObservableList;
 
 public class WebApiViewModel extends ViewModelBase {
 
-    private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
+    private class ApiEventSubscriber extends ApiSubscriberBase<IApiEvent> {
+
+        public ApiEventSubscriber() {
+            super(IApiEvent.class);
+        }
+
+        @Override
+        public void notify(IApiEvent event) {
+            var status = event.getStatus();
+        }
+
+    }
+
+    private class SessionClosedSubscriber extends ApiSubscriberBase<SessionClosedEvent> {
 
         public SessionClosedSubscriber() {
             super(SessionClosedEvent.class);
@@ -37,7 +51,7 @@ public class WebApiViewModel extends ViewModelBase {
 
     }
 
-    private class SessionOpenedSubscriber extends SubscriberBase<SessionOpenedEvent> {
+    private class SessionOpenedSubscriber extends ApiSubscriberBase<SessionOpenedEvent> {
 
         public SessionOpenedSubscriber() {
             super(SessionOpenedEvent.class);
@@ -53,7 +67,7 @@ public class WebApiViewModel extends ViewModelBase {
 
     }
 
-    private class StatisticsReceivedSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
+    private class StatisticsReceivedSubscriber extends ApiSubscriberBase<StatisticsReceivedEvent> {
 
         public StatisticsReceivedSubscriber() {
             super(StatisticsReceivedEvent.class);
@@ -61,6 +75,8 @@ public class WebApiViewModel extends ViewModelBase {
 
         @Override
         public void notify(StatisticsReceivedEvent event) {
+            var status = WebApi.getInstance().getSessionWatchdog().getStatus(event.getSessionId());
+
             for (var row : sessions) {
                 if (row.getSessionId().equals(event.getSessionId())) {
                     row.setLastReceived(LocalTime.now());
@@ -68,7 +84,6 @@ public class WebApiViewModel extends ViewModelBase {
                 }
             }
         }
-
     }
 
     private ObjectProperty<SessionInformation> selectedSession = new SimpleObjectProperty<>();
@@ -95,7 +110,7 @@ public class WebApiViewModel extends ViewModelBase {
             openLiveViewCommand = runnableCommand(() -> {
                 if (selectedSession != null) {
                     var sessionInfo = selectedSession.get();
-                    
+
                     DynamicViewLoader.loadAndShowStatisticsViewLive(sessionInfo.getGame(), sessionInfo.getSessionId());
                 }
             });

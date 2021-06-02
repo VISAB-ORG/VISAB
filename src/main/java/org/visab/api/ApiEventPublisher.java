@@ -1,11 +1,11 @@
 package org.visab.api;
 
-import org.visab.eventbus.IEvent;
+import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.publisher.PublisherBase;
+import org.visab.eventbus.publisher.ApiPublisherBase;
 
 /**
  * The ApiEventPublisher is a multi publisher for all Api related events.
@@ -13,16 +13,16 @@ import org.visab.eventbus.publisher.PublisherBase;
  */
 public class ApiEventPublisher {
 
-    private class SessionOpenedPublisher extends PublisherBase<SessionOpenedEvent> {
+    private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
     }
 
-    private class SessionClosedPublisher extends PublisherBase<SessionClosedEvent> {
+    private class SessionClosedPublisher extends ApiPublisherBase<SessionClosedEvent> {
     }
 
-    private class StatisticsReceivedPublisher extends PublisherBase<StatisticsReceivedEvent> {
+    private class StatisticsReceivedPublisher extends ApiPublisherBase<StatisticsReceivedEvent> {
     }
 
-    private class ImageReceivedPublisher extends PublisherBase<ImageReceivedEvent> {
+    private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
     }
 
     protected SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
@@ -36,7 +36,7 @@ public class ApiEventPublisher {
      * @param <T>   The type of the event
      * @param event The event to publish
      */
-    public <T extends IEvent> void publish(T event) {
+    public <T extends IApiEvent> void publish(T event) {
         if (event instanceof SessionOpenedEvent)
             sessionOpenedPublisher.publish((SessionOpenedEvent) event);
         else if (event instanceof SessionClosedEvent)
@@ -46,7 +46,7 @@ public class ApiEventPublisher {
         else if (event instanceof ImageReceivedEvent)
             imageReceivedPublisher.publish((ImageReceivedEvent) event);
         else
-            throw new RuntimeException("Received unknown event type: " + event.getClass().getSimpleName() + "");
+            throw new RuntimeException("Received unknown event type: " + event.getClass().getName() + "");
     }
 
 }

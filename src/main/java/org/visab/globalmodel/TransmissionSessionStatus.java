@@ -1,4 +1,4 @@
-package org.visab.api.model;
+package org.visab.globalmodel;
 
 import java.time.LocalTime;
 import java.util.UUID;

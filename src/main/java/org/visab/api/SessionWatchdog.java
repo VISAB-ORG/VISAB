@@ -8,12 +8,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.model.TransmissionSessionStatus;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
+import org.visab.globalmodel.TransmissionSessionStatus;
 import org.visab.util.Settings;
 
 /**
@@ -56,7 +56,7 @@ public class SessionWatchdog extends ApiEventPublisher {
                 1);
         sessionStatus.put(sessionId, status);
 
-        var event = new SessionOpenedEvent(sessionId, game, remoteCallerIp, remoteCallerHostName);
+        var event = new SessionOpenedEvent(sessionId, status, game, remoteCallerIp, remoteCallerHostName);
 
         // Publish the SessionOpenedEvent
         publish(event);
@@ -79,30 +79,31 @@ public class SessionWatchdog extends ApiEventPublisher {
         status.setTotalRequests(status.getTotalRequests() + 1);
 
         // Publish the SessionClosedEvent event
-        publish(new SessionClosedEvent(sessionId, closedByTimeout));
+        publish(new SessionClosedEvent(sessionId, status, closedByTimeout));
     }
 
     public void imageReceived(UUID sessionId, String game, String imageJson) {
-        var event = new ImageReceivedEvent(sessionId, game, DynamicSerializer.deserializeImage(imageJson, game));
-        publish(event);
-
         // Set the status
         var status = sessionStatus.get(sessionId);
         status.setReceivedImages(status.getReceivedImages() + 1);
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
+
+        var event = new ImageReceivedEvent(sessionId, status, game,
+                DynamicSerializer.deserializeImage(imageJson, game));
+        publish(event);
     }
 
     public void statisticsReceived(UUID sessionId, String game, String statisticsJson) {
-        var event = new StatisticsReceivedEvent(sessionId, game,
-                DynamicSerializer.deserializeStatistics(statisticsJson, game));
-        publish(event);
-
         // Set the status
         var status = sessionStatus.get(sessionId);
         status.setReceivedImages(status.getReceivedStatistics() + 1);
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
+
+        var event = new StatisticsReceivedEvent(sessionId, status, game,
+                DynamicSerializer.deserializeStatistics(statisticsJson, game));
+        publish(event);
     }
 
     /**
@@ -158,6 +159,9 @@ public class SessionWatchdog extends ApiEventPublisher {
                  */
                 while (shouldCheckTimeouts) {
                     for (var status : sessionStatus.values()) {
+                        if (!status.getIsActive())
+                            continue;
+
                         var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();
 
                         // If nothing was sent yet (only session openend) wait 30 more seconds until

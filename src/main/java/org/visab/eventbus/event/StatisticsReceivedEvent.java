@@ -3,6 +3,7 @@ package org.visab.eventbus.event;
 import java.util.UUID;
 
 import org.visab.globalmodel.IStatistics;
+import org.visab.globalmodel.TransmissionSessionStatus;
 
 /**
  * The StatisticsReceivedEvent, that occurs when new statistics are received by
@@ -11,13 +12,13 @@ import org.visab.globalmodel.IStatistics;
  * @author moritz
  *
  */
-public class StatisticsReceivedEvent extends EventBase {
+public class StatisticsReceivedEvent extends ApiEventBase {
 
     private String game;
     private IStatistics statistics;
 
-    public StatisticsReceivedEvent(UUID sessionId, String game, IStatistics statistics) {
-        super(sessionId);
+    public StatisticsReceivedEvent(UUID sessionId, TransmissionSessionStatus status, String game, IStatistics statistics) {
+        super(sessionId, status);
         this.game = game;
         this.statistics = statistics;
     }

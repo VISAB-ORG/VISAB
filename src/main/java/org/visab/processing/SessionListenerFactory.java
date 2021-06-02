@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicInstatiator;
 import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.eventbus.subscriber.ApiSubscriberBase;
 
 /**
  * The SessionListenerFactory that will instantiate new SessionListeners
@@ -16,7 +16,7 @@ import org.visab.eventbus.subscriber.SubscriberBase;
  * @author moritz
  *
  */
-public class SessionListenerFactory extends SubscriberBase<SessionOpenedEvent> {
+public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent> {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);

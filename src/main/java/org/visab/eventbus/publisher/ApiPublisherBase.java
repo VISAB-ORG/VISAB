@@ -1,17 +1,17 @@
 package org.visab.eventbus.publisher;
 
 import org.visab.eventbus.ApiEventBus;
-import org.visab.eventbus.IEvent;
+import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.IPublisher;
 
 /**
- * The base publisher class, that all publishers should inherit from.
+ * The base publisher class, that all api event publishers should inherit from.
  *
  * @author moritz
  *
  * @param <TEvent> The event type that will be published
  */
-public class PublisherBase<TEvent extends IEvent> implements IPublisher<TEvent> {
+public class ApiPublisherBase<TEvent extends IApiEvent> implements IPublisher<TEvent> {
 
     @Override
     public void publish(TEvent event) {
