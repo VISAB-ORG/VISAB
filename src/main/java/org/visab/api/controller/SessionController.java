@@ -38,10 +38,10 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!WebApi.getInstance().getTempThingy().isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
             return getOkResponse("Session was already closed!");
 
-        WebApi.getInstance().getTempThingy().closeSession(sessionId);
+        WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
 
         return getOkResponse("Closed the session!");
     }
@@ -65,7 +65,7 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Could not parse uuid!");
 
-        var sessionStatus = WebApi.getInstance().getTempThingy().getStatus(sessionId);
+        var sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
         if (sessionStatus == null)
             return getJsonResponse("");
         else
@@ -88,7 +88,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(WebApi.getInstance().getTempThingy().getActiveSessionStatuses());
+            return getJsonResponse(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses());
 
         default:
             return getNotFoundResponse(uriResource);
@@ -119,10 +119,10 @@ public class SessionController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (WebApi.getInstance().getTempThingy().isSessionActive(sessionId))
+        if (WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
             return getBadRequestResponse("Session already active!");
 
-        WebApi.getInstance().getTempThingy().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
+        WebApi.getInstance().getSessionAdministration().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
                 httpSession.getRemoteHostName());
 
         return getOkResponse("Session added.");

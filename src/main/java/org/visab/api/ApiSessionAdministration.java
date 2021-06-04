@@ -15,7 +15,7 @@ import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
 
 /**
@@ -26,15 +26,15 @@ import org.visab.util.StreamUtil;
  * @author moritz
  *
  */
-public class TempThingy {
+public class ApiSessionAdministration {
 
     // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(TempThingy.class);
+    private Logger logger = LogManager.getLogger(ApiSessionAdministration.class);
 
     /**
      * An overview of transmission session specific data.
      */
-    private List<TransmissionSessionStatus> statuses = new ArrayList<>();
+    private List<SessionStatus> statuses = new ArrayList<>();
 
     /**
      * Opens a new transmission session and publishes a SessionOpenedEvent.
@@ -45,7 +45,7 @@ public class TempThingy {
      * @param remoteCallerHostName The hostname of the device that made the api call
      */
     public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
-        var status = new TransmissionSessionStatus(sessionId, game, true, LocalTime.now(), LocalTime.now(), null, 0, 0,
+        var status = new SessionStatus(sessionId, game, true, LocalTime.now(), LocalTime.now(), null, 0, 0,
                 1, remoteCallerHostName, remoteCallerIp);
         statuses.add(status);
 
@@ -120,15 +120,15 @@ public class TempThingy {
         return status == null ? false : status.isActive();
     }
 
-    public TransmissionSessionStatus getStatus(UUID sessionId) {
+    public SessionStatus getStatus(UUID sessionId) {
         return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));
     }
 
-    public List<TransmissionSessionStatus> getSessionStatuses() {
+    public List<SessionStatus> getSessionStatuses() {
         return statuses;
     }
 
-    public List<TransmissionSessionStatus> getActiveSessionStatuses() {
+    public List<SessionStatus> getActiveSessionStatuses() {
         return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
     }
 

@@ -3,7 +3,7 @@ package org.visab.eventbus.event;
 import java.util.UUID;
 
 import org.visab.globalmodel.IStatistics;
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 
 /**
  * The StatisticsReceivedEvent, that occurs when new statistics are received by
@@ -17,7 +17,7 @@ public class StatisticsReceivedEvent extends ApiEventBase {
     private String game;
     private IStatistics statistics;
 
-    public StatisticsReceivedEvent(UUID sessionId, TransmissionSessionStatus status, String game, IStatistics statistics) {
+    public StatisticsReceivedEvent(UUID sessionId, SessionStatus status, String game, IStatistics statistics) {
         super(sessionId, status);
         this.game = game;
         this.statistics = statistics;

@@ -8,15 +8,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 import org.visab.util.Settings;
 
-public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
+public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
 
     // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(NewSessionWatchdog.class);
+    private Logger logger = LogManager.getLogger(SessionWatchdog.class);
 
-    private List<TransmissionSessionStatus> statuses;
+    private List<SessionStatus> statuses;
 
     private boolean checkTimeouts;
 
@@ -26,7 +26,7 @@ public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
      *                        to. Lists added to this collection will be checked for
      *                        timeout.
      */
-    public NewSessionWatchdog(List<TransmissionSessionStatus> statusesReference) {
+    public SessionWatchdog(List<SessionStatus> statusesReference) {
         this.statuses = statusesReference;
     }
 
@@ -70,7 +70,7 @@ public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
      * @param status The status to check for timeout.
      * @return True if should be timeouted
      */
-    private boolean shouldTimeout(TransmissionSessionStatus status) {
+    private boolean shouldTimeout(SessionStatus status) {
         if (!status.isActive())
             return false;
 

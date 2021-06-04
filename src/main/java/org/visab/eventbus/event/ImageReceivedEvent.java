@@ -3,7 +3,7 @@ package org.visab.eventbus.event;
 import java.util.UUID;
 
 import org.visab.globalmodel.IImage;
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 
 /**
  * The ImageReceivedEvent, that occurs when images are received by the VISAB
@@ -14,7 +14,7 @@ public class ImageReceivedEvent extends ApiEventBase {
     private IImage mapImage;
     private String game;
 
-    public ImageReceivedEvent(UUID sessionId, TransmissionSessionStatus status, String game, IImage mapImage) {
+    public ImageReceivedEvent(UUID sessionId, SessionStatus status, String game, IImage mapImage) {
         super(sessionId, status);
         this.game = game;
         this.mapImage = mapImage;

@@ -8,9 +8,9 @@ import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
+import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -31,9 +31,9 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
 
     private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
 
-    private ObservableList<TransmissionSessionStatus> sessionList = FXCollections.observableArrayList();
+    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
 
-    private ObjectProperty<TransmissionSessionStatus> selectedSession = new SimpleObjectProperty<>();
+    private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
 
     private Command closeSessionCommand;
 
@@ -41,7 +41,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         if (closeSessionCommand == null) {
             closeSessionCommand = runnableCommand(() -> {
                 if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebApi.getInstance().getTempThingy().closeSession(selectedSession.get().getSessionId());
+                    WebApi.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
             });
         }
 
@@ -64,7 +64,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         return openLiveViewCommand;
     }
 
-    public ObjectProperty<TransmissionSessionStatus> selectedSessionProperty() {
+    public ObjectProperty<SessionStatus> selectedSessionProperty() {
         return selectedSession;
     }
 
@@ -72,14 +72,14 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         ApiEventBus.getInstance().subscribe(this);
 
         // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getTempThingy().getSessionStatuses())
+        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
             sessionList.add(status);
 
         // Set active session count
-        activeTransmissionSessions.set(WebApi.getInstance().getTempThingy().getActiveSessionStatuses().size());
+        activeTransmissionSessions.set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
     }
 
-    public ObservableList<TransmissionSessionStatus> getSessionList() {
+    public ObservableList<SessionStatus> getSessionList() {
         return sessionList;
     }
 

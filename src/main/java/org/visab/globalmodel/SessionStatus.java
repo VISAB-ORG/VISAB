@@ -1,4 +1,4 @@
-package org.visab.newgui.webapi.model;
+package org.visab.globalmodel;
 
 import java.time.LocalTime;
 import java.util.UUID;
@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class TransmissionSessionStatus {
+public class SessionStatus {
 
     private UUID sessionId;
     private String game;
@@ -27,7 +27,7 @@ public class TransmissionSessionStatus {
     private String hostName;
     private String ip;
 
-    public TransmissionSessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest,
+    public SessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest,
             LocalTime sessionOpened, LocalTime sessionClosed, int receivedStatistics, int receivedImages,
             int totalRequests, String hostName, String ip) {
         this.game = game;

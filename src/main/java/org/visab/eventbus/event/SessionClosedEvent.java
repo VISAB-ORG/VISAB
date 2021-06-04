@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 
 /**
  * The SessionClosedEvent, that occurs when a VISAB transmission session is
@@ -19,7 +19,7 @@ public class SessionClosedEvent extends ApiEventBase {
         return closedByTimeout;
     }
 
-    public SessionClosedEvent(UUID sessionId, TransmissionSessionStatus status, boolean closedByTimeout) {
+    public SessionClosedEvent(UUID sessionId, SessionStatus status, boolean closedByTimeout) {
         super(sessionId, status);
         this.closedByTimeout = closedByTimeout;
     }

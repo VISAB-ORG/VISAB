@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.newgui.webapi.model.TransmissionSessionStatus;
+import org.visab.globalmodel.SessionStatus;
 
 /**
  * The SessionOpenedEvent that occurs when a new VISAB transmission session is
@@ -15,7 +15,7 @@ public class SessionOpenedEvent extends ApiEventBase {
 
     private String game;
 
-    public SessionOpenedEvent(UUID sessionId, TransmissionSessionStatus status, String game) {
+    public SessionOpenedEvent(UUID sessionId, SessionStatus status, String game) {
         super(sessionId, status);
         this.game = game;
     }
