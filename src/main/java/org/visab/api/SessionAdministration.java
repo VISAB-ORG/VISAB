@@ -26,10 +26,10 @@ import org.visab.util.StreamUtil;
  * @author moritz
  *
  */
-public class ApiSessionAdministration {
+public class SessionAdministration {
 
     // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(ApiSessionAdministration.class);
+    private Logger logger = LogManager.getLogger(SessionAdministration.class);
 
     /**
      * An overview of transmission session specific data.

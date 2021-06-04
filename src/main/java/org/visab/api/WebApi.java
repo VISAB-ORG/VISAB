@@ -46,7 +46,7 @@ public class WebApi extends RouterNanoHTTPD {
 
     private SessionListenerFactory listenerFactory = new SessionListenerFactory();
 
-    private ApiSessionAdministration sessionAdministration = new ApiSessionAdministration();
+    private SessionAdministration sessionAdministration = new SessionAdministration();
 
     private SessionWatchdog watchdog;
 
@@ -71,7 +71,7 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("games", GameSupportController.class);
     }
 
-    public ApiSessionAdministration getSessionAdministration() {
+    public SessionAdministration getSessionAdministration() {
         return this.sessionAdministration;
     }
 
