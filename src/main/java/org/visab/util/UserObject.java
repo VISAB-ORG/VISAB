@@ -2,15 +2,13 @@ package org.visab.util;
 
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 /**
  * Creates a settings object with the settings from the settings.json file.
  * 
  * @author tim
  *
  */
-public class SettingsObject {
+public class UserObject {
     
     private int webApiPort;
     
@@ -24,7 +22,6 @@ public class SettingsObject {
      * Gets the webApiPort.
      * @return The port on which the web API is running on.
      */
-    @JsonGetter
     public int getWebApiPort() {
         return webApiPort;
     }
@@ -41,7 +38,6 @@ public class SettingsObject {
      * Gets the WebApiHostName.
      * @return The base address of the web api.
      */
-    @JsonGetter
     public String getWebApiHostName() {
         return webApiHostName + webApiPort;
     }
@@ -59,7 +55,6 @@ public class SettingsObject {
      * if no statistics were received.
      * @return The timeout of the session.
      */
-    @JsonGetter
     public int getSessionTimeout() {
         return sessionTimeout;
     }
@@ -75,7 +70,6 @@ public class SettingsObject {
      * Gets the allowed games.
      * @return The list of allowed games.
      */
-    @JsonGetter
     public ArrayList<String> getAllowedGames() {
         return allowedGames;
     }

@@ -3,7 +3,7 @@ package org.visab.workspace.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.visab.util.SettingsObject;
+import org.visab.util.UserObject;
 import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
@@ -29,7 +29,7 @@ public class ConfigManager {
 
     private List<MappingConfig> mappings;
     
-    private SettingsObject settings;
+    private UserObject settings;
 
     public ConfigManager() {
         loadSettings();
@@ -163,10 +163,9 @@ public class ConfigManager {
      * 
      * @return Object of the loaded settings.
      */
-    public SettingsObject loadSettings() {
-        SettingsObject loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+    public UserObject loadSettings() {
+        UserObject loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         
-        // TODO: fix NoSuchFileException when settings.json has to be create on workspace.
         if (loadedSettings == null) {
             String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
             String defaultSettings = repo.readFileContents(defaultPath);
@@ -183,8 +182,17 @@ public class ConfigManager {
      * 
      * @param settingsObject The object of the settings.
      */
-    public void saveSettings(SettingsObject settingsObject) {
+    public void saveSettings(UserObject settingsObject) {
         repo.saveSettings(settingsObject, SETTINGS_PATH);
+    }
+    
+    /**
+     * Getter for the UserSettings.
+     * 
+     * @return The settingsObject of the user settings.
+     */
+    public UserObject getSettings() {
+        return settings;
     }
 
 }

@@ -2,7 +2,7 @@ package org.visab.util;
 
 import java.util.ArrayList;
 
-import org.visab.workspace.config.ConfigManager;
+import org.visab.workspace.Workspace;
 
 /**
  * POJO for holding all settings in the project that can be configured by the user. 
@@ -13,20 +13,11 @@ import org.visab.workspace.config.ConfigManager;
 public class UserSettings {
 
     /**
-     * Gets an object of the settings set in the settings.json file.
-     * @return An object of the settings.
-     */
-    private static SettingsObject getSettingsObject() {
-        ConfigManager cm = new ConfigManager();
-        return cm.loadSettings();
-    }
-    
-    /**
      * Gets the webApiPort.
      * @return The port on which the API is running on.
      */
     public static int getApiPort() {
-        return getSettingsObject().getWebApiPort();
+        return Workspace.getInstance().getSettings().getWebApiPort();
     }
     
     /**
@@ -34,7 +25,7 @@ public class UserSettings {
      * @return The base address of the web api.
      */
     public static String getWebApiHostName() {
-        return getSettingsObject().getWebApiHostName();
+        return Workspace.getInstance().getSettings().getWebApiHostName();
     } 
     
     /**
@@ -43,7 +34,7 @@ public class UserSettings {
      * @return The timeout of the session.
      */
     public static int getSessionTimeout() {
-        return getSettingsObject().getSessionTimeout();
+        return Workspace.getInstance().getSettings().getSessionTimeout();
     }
     
     /**
@@ -51,11 +42,7 @@ public class UserSettings {
      * @return The list of allowed games.
      */
     public static ArrayList<String> getAllowedGames() {
-        return getSettingsObject().getAllowedGames();
-    }
-    
-    public void setWebbApiPort(int port) {
-        getSettingsObject().setWebApiPort(port);
+        return Workspace.getInstance().getSettings().getAllowedGames();
     }
 
 }
