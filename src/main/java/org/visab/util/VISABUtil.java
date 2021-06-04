@@ -9,7 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -168,8 +171,37 @@ public final class VISABUtil {
         var fullPath = Main.class.getResource(path).getPath();
         if (fullPath.startsWith("/"))
             fullPath = fullPath.substring(1, fullPath.length());
-        
+
         return fullPath;
+    }
+
+    /**
+     * Recursively gets all implemented interfaces for a class.
+     * 
+     * @param class_ The class to get the interfaces for.
+     * @return All implemented interfaces
+     */
+    public static List<Class<?>> getAllInterfaces(Class<?> class_) {
+        return getAllInterfaces(class_, new ArrayList<Class<?>>());
+    }
+
+    /**
+     * Recursively gets all implemented interfaces for a class.
+     * 
+     * @param class_ The class to get the interfaces for.
+     * @return All implemented interfaces
+     */
+    private static List<Class<?>> getAllInterfaces(Class<?> class_, List<Class<?>> list) {
+        var interfaces = class_.getInterfaces();
+        for (int i = 0; i < interfaces.length; i++) {
+            list.add(interfaces[i]);
+        }
+
+        var superClass = class_.getSuperclass();
+        if (superClass != null)
+            getAllInterfaces(superClass, list);
+
+        return list;
     }
 
 }
