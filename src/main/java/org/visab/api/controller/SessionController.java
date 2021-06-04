@@ -107,11 +107,7 @@ public class SessionController extends HTTPControllerBase {
      * @return A Http response
      */
     private Response openSession(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
-
-        if (sessionId == null)
-            return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
         if (game == "")
             return getBadRequestResponse("No game given!");
@@ -119,13 +115,13 @@ public class SessionController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session already active!");
+        // Create a new sessionId
+        var newSessionId = UUID.randomUUID();
 
-        WebApi.getInstance().getSessionAdministration().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
-                httpSession.getRemoteHostName());
+        WebApi.getInstance().getSessionAdministration().openSession(newSessionId, game,
+                httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
-        return getOkResponse("Session added.");
+        return getJsonResponse(newSessionId);
     }
 
 }
