@@ -39,7 +39,7 @@ public class UserObject {
      * @return The base address of the web api.
      */
     public String getWebApiHostName() {
-        return webApiHostName + webApiPort;
+        return webApiHostName;
     }
     
     /**

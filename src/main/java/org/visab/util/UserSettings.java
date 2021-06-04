@@ -44,5 +44,9 @@ public class UserSettings {
     public static ArrayList<String> getAllowedGames() {
         return Workspace.getInstance().getSettings().getAllowedGames();
     }
+    
+    public static void main(String[] args) {
+        UserObject obj = new UserObject();
+    }
 
 }
