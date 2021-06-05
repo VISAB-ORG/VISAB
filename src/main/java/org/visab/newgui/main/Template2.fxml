@@ -18,9 +18,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../../../../resources/template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #D3D3D3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../../resources/template_style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <MenuBar id="menuBar" fx:id="menuBar" styleClass="menu-item" stylesheets="@../../../../../resources/template_style.css" BorderPane.alignment="CENTER">
               <menus>
@@ -137,18 +137,18 @@
             </MenuBar>
          </top>
          <center>
-            <HBox prefHeight="600.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="400.0" prefWidth="300.0" style="-fx-border-color: #D3D3D3#D3D3D3;" styleClass="left-bar" stylesheets="@../../../../../resources/template_style.css" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="400.0" prefWidth="300.0" stylesheets="@../../../../../resources/template_style.css" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER" stylesheets="@../../../../../resources/template_style.css" VBox.vgrow="ALWAYS">
                            <children>
                               <ImageView fitHeight="249.0" fitWidth="309.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                                  <image>
                                     <Image url="@../../../../../resources/img/visabLogo.png" />
                                  </image>
                                  <HBox.margin>
-                                    <Insets top="30.0" />
+                                    <Insets left="3.0" top="10.0" />
                                  </HBox.margin>
                                  <viewport>
                                     <Rectangle2D />
@@ -156,14 +156,14 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <VBox alignment="TOP_CENTER" prefHeight="127.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                        <VBox alignment="TOP_CENTER" stylesheets="@../../../../../resources/template_style.css" VBox.vgrow="ALWAYS">
                            <children>
                               <Label prefHeight="0.0" prefWidth="266.0" text="Your tool to visualize agent behavior from different games." textFill="#2a5394">
                                  <font>
                                     <Font name="System Bold" size="11.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="15.0" />
+                                    <Insets top="10.0" />
                                  </VBox.margin>
                               </Label>
                               <Label text="We currently support FBS Shooter and Settlers of Catan, but more to come.">
@@ -181,9 +181,9 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="362.0" prefWidth="331.0" styleClass="right-bar" stylesheets="@../../../../../resources/template_style.css" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="362.0" prefWidth="331.0" stylesheets="@../../../../../resources/template_style.css" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="379.0" prefWidth="260.0" VBox.vgrow="ALWAYS">
+                        <VBox alignment="TOP_CENTER" prefHeight="379.0" prefWidth="260.0" stylesheets="@../../../../../resources/template_style.css" VBox.vgrow="ALWAYS">
                            <children>
                               <ListView fx:id="workspaceList" fixedCellSize="0.0" stylesheets="@../../../../../resources/template_style.css" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
@@ -216,7 +216,7 @@
                                     </Button>
                                     <Button fx:id="uploadDraggedFileButton1" alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="110.0" stylesheets="@../../../../../resources/template_style.css" text="Visualize" textFill="WHITE" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
-                                          <Insets left="9.0" top="5.0" />
+                                          <Insets bottom="25.0" left="9.0" top="5.0" />
                                        </HBox.margin>
                                        <styleClass>
                                           <String fx:value="button" />

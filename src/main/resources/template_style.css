@@ -1,3 +1,12 @@
+.body {
+	-fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #eeeeee, #9e9b9b);
+}
+.pane-left{
+	-fx-background-color:white;
+}
+.pane-right {
+	-fx-background-color: #1f3761;
+}
 .menu-bar {
 	-fx-background-color: #12213a;
 	-fx-text-fill: #FFFFFF;
@@ -52,13 +61,7 @@
 	-fx-background-color: rgba(0,0,0,0);
 }
 
-.right-bar {
-	-fx-background-color: #D3D3D3;
-}
 
-.left-bar {
-	-fx-background-color: #D3D3D3;
-}
 
 .shadow{
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
