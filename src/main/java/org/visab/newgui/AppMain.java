@@ -10,7 +10,11 @@ import javafx.stage.Stage;
 
 public class AppMain extends Application {
 
-    public static Stage primaryStage;
+    private static Stage primaryStage;
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -19,7 +23,7 @@ public class AppMain extends Application {
 
         // mvvmfx magic
         // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
-        // var viewTupel = FluentViewLoader.fxmlView(RepositoryView.class).load();
+        // var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
         var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
         var root = viewTupel.getView();
         stage.setScene(new Scene(root));

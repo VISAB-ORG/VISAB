@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.statistics.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
@@ -49,7 +50,8 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public List<CBRShooterStatistics> getReceivedStatistics() {
-        return file.getStatistics();
+        // Return a copy to avoid concurrent modification
+        return new ArrayList<CBRShooterStatistics>(file.getStatistics());
     }
 
     @Override
@@ -63,12 +65,12 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            viewModel.notifyStatisticsAdded(addedStatistics);
+            UiHelper.inovkeOnUiThread(() -> viewModel.notifyStatisticsAdded(addedStatistics));
     }
 
     @Override
     public void onSessionClosed() {
-        manager.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString(), sessionId);
     }
 
     @Override

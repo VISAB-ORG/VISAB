@@ -1,5 +1,8 @@
 package org.visab.workspace.config.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Pojo representing a MappingConfiguration. Each of these fields has the fully
  * qualifying name of the class to initialize / deserialize into as their value.
@@ -15,6 +18,8 @@ public class MappingConfig {
     private String file;
 
     private String image;
+
+    private List<ViewConfig> viewConfigurations = new ArrayList<>();
 
     /**
      * For deserialization
@@ -60,6 +65,10 @@ public class MappingConfig {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<ViewConfig> getViewConfigurations() {
+        return this.viewConfigurations;
     }
 
 }

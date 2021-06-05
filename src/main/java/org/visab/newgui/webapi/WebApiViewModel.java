@@ -1,118 +1,116 @@
 package org.visab.newgui.webapi;
 
-import java.time.LocalTime;
-import java.util.UUID;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
+import org.visab.eventbus.ApiEventBus;
+import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.globalmodel.SessionStatus;
+import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.webapi.model.SessionTableRow;
+import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class WebApiViewModel extends ViewModelBase {
+public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
 
-    private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
+    private Logger logger = LogManager.getLogger(WebApiViewModel.class);
 
-        public SessionClosedSubscriber() {
-            super(SessionClosedEvent.class);
+    private IntegerProperty activeTransmissionSessions = new SimpleIntegerProperty(0);
+
+    private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
+
+    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
+
+    private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
+
+    private Command closeSessionCommand;
+
+    public Command closeSessionCommand() {
+        if (closeSessionCommand == null) {
+            closeSessionCommand = runnableCommand(() -> {
+                if (selectedSession.get() != null && selectedSession.get().isActive())
+                    WebApi.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
+            });
         }
 
-        @Override
-        public void notify(SessionClosedEvent event) {
-            for (var row : sessions) {
-                if (row.getSessionId().equals(event.getSessionId())) {
-                    row.setIsActive(false);
-                    notifySessionRowUpdate(event.getSessionId());
-                    break;
+        return closeSessionCommand;
+    }
+
+    private Command openLiveViewCommand;
+
+    public Command openLiveViewCommand() {
+        if (openLiveViewCommand == null) {
+            openLiveViewCommand = runnableCommand(() -> {
+                if (selectedSession != null) {
+                    var sessionInfo = selectedSession.get();
+
+                    DynamicViewLoader.loadAndShowStatisticsViewLive(sessionInfo.getGame(), sessionInfo.getSessionId());
                 }
-            }
+            });
         }
 
+        return openLiveViewCommand;
     }
 
-    private class SessionOpenedSubscriber extends SubscriberBase<SessionOpenedEvent> {
+    public ObjectProperty<SessionStatus> selectedSessionProperty() {
+        return selectedSession;
+    }
 
-        public SessionOpenedSubscriber() {
-            super(SessionOpenedEvent.class);
+    public WebApiViewModel() {
+        ApiEventBus.getInstance().subscribe(this);
+
+        // Load in all existing session status from watchdog.
+        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
+            sessionList.add(status);
+
+        // Set active session count
+        activeTransmissionSessions.set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
+    }
+
+    public ObservableList<SessionStatus> getSessionList() {
+        return sessionList;
+    }
+
+    @Override
+    public String getSubscribedEventType() {
+        return IApiEvent.class.getName();
+    }
+
+    @Override
+    public void notify(IApiEvent event) {
+        var status = event.getStatus();
+
+        if (event instanceof SessionOpenedEvent) {
+            activeTransmissionSessions.set(activeTransmissionSessions.get() + 1);
+            sessionList.add(status);
+        } else if (event instanceof SessionClosedEvent) {
+            activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
         }
 
-        @Override
-        public void notify(SessionOpenedEvent event) {
-            var newRow = new SessionTableRow(event.getSessionId(), event.getGame(), LocalTime.now(), LocalTime.now(),
-                    event.getRemoteCallerIp(), event.getRemoteCallerHostName());
-
-            sessions.add(newRow);
+        var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
+        if (existing != null) {
+            existing.setIsActive(status.isActive());
+            existing.setLastRequest(status.getLastRequest());
+            existing.setReceivedImages(status.getReceivedImages());
+            existing.setReceivedStatistics(status.getReceivedStatistics());
+            existing.setSessionClosed(status.getSessionClosed());
+            existing.setTotalRequests(status.getTotalRequests());
+        } else {
+            logger.error("Received request with non existant session status outside of session opened event.");
         }
 
-    }
-
-    private class StatisticsReceivedSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
-
-        public StatisticsReceivedSubscriber() {
-            super(StatisticsReceivedEvent.class);
-        }
-
-        @Override
-        public void notify(StatisticsReceivedEvent event) {
-            for (var row : sessions) {
-                if (row.getSessionId().equals(event.getSessionId())) {
-                    row.setLastReceived(LocalTime.now());
-                    notifySessionRowUpdate(event.getSessionId());
-                    break;
-                }
-            }
-        }
-
-    }
-
-    private ObjectProperty<SessionTableRow> selectedSessionRow = new SimpleObjectProperty<>();
-
-    private ObservableList<SessionTableRow> sessions = FXCollections.observableArrayList();
-
-    public Command getCloseSessionCommand() {
-        return runnableCommand(() -> {
-            if (selectedSessionRow.get() != null)
-                WebApi.getInstance().getSessionWatchdog().closeSession(selectedSessionRow.get().getSessionId(), false);
-        });
-    }
-
-    public ObservableList<SessionTableRow> getSessions() {
-        return sessions;
-    }
-
-    public void initialize() {
-        new SessionOpenedSubscriber();
-        new StatisticsReceivedSubscriber();
-        new SessionClosedSubscriber();
-    }
-
-    /**
-     * Notifies the View, that a property of a SessionTableRow was updated
-     */
-    private void notifySessionRowUpdate(UUID sessionId) {
-        for (int i = 0; i < sessions.size(); i++) {
-            var row = sessions.get(i);
-            if (row.getSessionId().equals(sessionId)) {
-                sessions.set(i, row);
-                break;
-            }
-        }
-    }
-
-    public ObjectProperty<SessionTableRow> selectedSessionRowProperty() {
-        return selectedSessionRow;
-    }
-
-    public ObservableList<SessionTableRow> sessionsProperty() {
-        return sessions;
     }
 
 }

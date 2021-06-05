@@ -3,7 +3,7 @@ package org.visab.processing;
 import java.util.UUID;
 
 import org.visab.eventbus.event.ImageReceivedEvent;
-import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
 
@@ -21,7 +21,7 @@ public abstract class ReplaySessionListenerBase<TStatistics extends IStatistics,
     /**
      * The ImageSubscriber that subscribes to the ImageReceivedEvent
      */
-    private class ImageSubscriber extends SubscriberBase<ImageReceivedEvent> {
+    private class ImageSubscriber extends ApiSubscriberBase<ImageReceivedEvent> {
 
         public ImageSubscriber() {
             super(ImageReceivedEvent.class);

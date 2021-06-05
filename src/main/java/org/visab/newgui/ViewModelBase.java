@@ -22,4 +22,20 @@ public abstract class ViewModelBase implements ViewModel {
         });
     }
 
+    /**
+     * The DialogHelper that can be used to show dialogs from the viewmodel. To use
+     * the helper, you first have to set the parent window from the View by calling
+     * getDialogHelper().setParentWindow().
+     */
+    protected DialogHelper dialogHelper = new DialogHelper();
+
+    /**
+     * Gets the DialogHelper.
+     * 
+     * @return The DialogHelper
+     */
+    public DialogHelper getDialogHelper() {
+        return this.dialogHelper;
+    }
+
 }

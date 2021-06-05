@@ -61,12 +61,12 @@
                 </TableColumn>
                 <TableColumn prefWidth="150.0" text="HostName">
                     <cellValueFactory>
-                       <PropertyValueFactory property="remoteHostName" />
+                       <PropertyValueFactory property="hostName" />
                     </cellValueFactory>
                  </TableColumn>
                  <TableColumn text="IP" prefWidth="150.0">
                     <cellValueFactory>
-                       <PropertyValueFactory property="remoteIp" />
+                       <PropertyValueFactory property="ip" />
                     </cellValueFactory>
                  </TableColumn>
                 <TableColumn text="Game" prefWidth="150.0">
@@ -74,17 +74,37 @@
                         <PropertyValueFactory property="game" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="150.0" text="SessionStart">
+                <TableColumn prefWidth="150.0" text="SessionOpened">
                     <cellValueFactory>
-                        <PropertyValueFactory property="sessionStart" />
+                        <PropertyValueFactory property="sessionOpened" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="150.0" text="LastStatistics">
+                <TableColumn prefWidth="150.0" text="LastRequest">
                     <cellValueFactory>
-                        <PropertyValueFactory property="lastReceived" />
+                        <PropertyValueFactory property="lastRequest" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="30.0" text="IsActive">
+                <TableColumn prefWidth="150.0" text="SessionClosed">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="sessionClosed" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="ReceivedStatistics">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="receivedStatistics" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="ReceivedImages">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="receivedImages" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="RequestsTotal">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="totalRequests" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="SessionActive">
                     <cellValueFactory>
                         <PropertyValueFactory property="isActive" />
                     </cellValueFactory>
@@ -97,6 +117,6 @@
             </font>
         </Label>
         <Button fx:id="closeSessionButton" mnemonicParsing="false" onAction="#closeSessionAction" prefHeight="28.0" prefWidth="613.0" text="Close Session" GridPane.rowIndex="2" />
-        <Button fx:id="openLiveViewButton" mnemonicParsing="false" onAction="#openLiveView" text="Open LiveView"/>
+        <Button fx:id="openLiveViewButton" mnemonicParsing="false" onAction="#openLiveViewAction" text="Open LiveView"/>
     </children>
 </GridPane>

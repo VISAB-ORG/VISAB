@@ -3,82 +3,75 @@ package org.visab.newgui.webapi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView;
-import org.visab.newgui.webapi.model.SessionTableRow;
-import org.visab.processing.ILiveViewable;
-import org.visab.processing.SessionListenerAdministration;
+import org.visab.globalmodel.SessionStatus;
 
-import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
 
     @FXML
     private Button closeSessionButton;
 
-    private Command closeSessionCommand;
-
     @FXML
-    private TableView<SessionTableRow> sessionTable;
-
-    @FXML
-    Button openLiveViewButton;
+    private TableView<SessionStatus> sessionTable;
 
     @InjectViewModel
     private WebApiViewModel viewModel;
 
-    // TODO: Why is this needed? Can't we just bind directly and thats it?
     @FXML
     public void closeSessionAction() {
-        closeSessionCommand.execute();
+        viewModel.closeSessionCommand().execute();
     }
 
-    // TODO: Make this a viewmodel command?
     @FXML
-    public void openLiveView() {
-        var selectedRow = sessionTable.getSelectionModel().getSelectedItem();
-        if (selectedRow != null) {
-            // TODO: Get these views dynamically via DynamicViewLoad or sth
-            var viewTupel = FluentViewLoader.fxmlView(CBRShooterStatisticsView.class).load();
-            var root = viewTupel.getView();
-
-            var vM = viewTupel.getViewModel();
-            if (vM.supportsLiveViewing()) {
-                var listener = SessionListenerAdministration.getSessionListener(selectedRow.getSessionId());
-
-                if (listener instanceof ILiveViewable<?>) {
-                    vM.initiateLiveView((ILiveViewable<CBRShooterStatistics>) listener);
-                }
-            }
-            var stage = new Stage();
-            stage.setTitle("Statistics Window test");
-            stage.setScene(new Scene(root));
-            stage.show();
-        }
+    public void openLiveViewAction() {
+        viewModel.openLiveViewCommand().execute();
     }
 
-    // Called after the view is completely loaded
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        closeSessionCommand = viewModel.getCloseSessionCommand();
+        sessionTable.setItems(viewModel.getSessionList());
+        viewModel.selectedSessionProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
 
-        // TODO: Understand this binding logic
-        closeSessionButton.disableProperty().bind(closeSessionCommand.notExecutableProperty());
+        // TODO:
+        // initializeSessionTablePresentation();
+    }
 
-        sessionTable.setItems(viewModel.getSessions());
-        viewModel.selectedSessionRowProperty().bind(sessionTable.getSelectionModel().selectedItemProperty());
+    private void initializeSessionTablePresentation() {
+        // https://stackoverflow.com/questions/20350099/programmatically-change-the-tableview-row-appearance
+        sessionTable.setRowFactory(new Callback<TableView<SessionStatus>, TableRow<SessionStatus>>() {
 
-        // When the selectedTableRowProperty changes in the viewModel we need to update
-        // the table
-        // viewModel.setOnSelect(vm -> contactTable.getSelectionModel().select(vm));
+            @Override
+            public TableRow<SessionStatus> call(TableView<SessionStatus> param) {
+                var row = new TableRow<SessionStatus>() {
+
+                    @Override
+                    protected void updateItem(SessionStatus row, boolean empty) {
+                        // TODO: CSS classes should be kept in a static file
+                        if (empty || row == null)
+                            return;
+
+                        if (row.isActive()) {
+                            getStyleClass().remove("sessionRowInactive");
+                            getStyleClass().add("sessionRowActive");
+                            // Add some style class for active row.
+                        } else {
+                            // Add some style class for inactive row.
+                            getStyleClass().remove("sessionRowActive");
+                            getStyleClass().add("sessionRowInactive");
+                        }
+                    }
+                };
+
+                return row;
+            }
+        });
     }
 }
