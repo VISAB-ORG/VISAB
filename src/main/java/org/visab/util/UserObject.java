@@ -86,8 +86,11 @@ public class UserObject {
      */
     public void setSessionTimeout(int timeout) {
         if (this.sessionTimeout != 0) {
-            if (timeout != this.sessionTimeout) {
-                logger.info("Changed webApiPort from " + this.sessionTimeout + " to " + timeout + ".");
+            if (timeout == 0) {
+                logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
+                timeout = this.sessionTimeout;
+            } else if (timeout > 0 && timeout != this.sessionTimeout) {
+                logger.info("Changed sessionTimeout from " + this.sessionTimeout + "s to " + timeout + "s.");
             }
         }
         this.sessionTimeout = timeout;
