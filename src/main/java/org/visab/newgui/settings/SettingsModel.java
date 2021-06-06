@@ -1,4 +1,4 @@
-package org.visab.newgui.settings.model;
+package org.visab.newgui.settings;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import org.visab.workspace.Workspace;
  * @author tim
  *
  */
-public class Settings {
+public class SettingsModel {
 
     private int webApiPort;
 
@@ -26,7 +26,7 @@ public class Settings {
     /**
      * Constructor of the class. Initializes the settings.
      */
-    public Settings() {
+    public SettingsModel() {
         this.webApiPort = settings.getWebApiPort();
         this.webApiHostName = settings.getWebApiHostName();
         this.sessionTimeout = settings.getSessionTimeout();
