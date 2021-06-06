@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         new Thread(() -> Application.launch(AppMain.class)).start();
         startWebApi();
+       
     }
 
     public static void shutdownWebApi() {
