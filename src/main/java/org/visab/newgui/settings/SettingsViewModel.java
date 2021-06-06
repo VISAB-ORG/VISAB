@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.settings.model.Settings;
+
+import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * This class represents the viewmodel of the settings.
@@ -14,38 +17,47 @@ import org.visab.newgui.settings.model.Settings;
  */
 public class SettingsViewModel extends ViewModelBase {
     
-    private Settings settings = new Settings();
+    private SettingsModel settings = new SettingsModel();
+    
+    private StringProperty webApiPort = new SimpleStringProperty(String.valueOf(settings.getWebApiPort()));
+    
+    private StringProperty webApiHostName = new SimpleStringProperty(settings.getWebApiHostName());
+    
+    private StringProperty sessionTimeout = new SimpleStringProperty(String.valueOf(settings.getSessionTimeout()));
+    
+    private StringProperty allowedGames = new SimpleStringProperty(settings.getAllowedGames().toString().
+            replace("[", "").replace("]", "").replace(" ", ""));
     
     /**
-     * Converts the webApiPort to a String for the view.
-     * @return The webApiPort as String.
+     * The webApiPort for the view.
+     * @return The webApiPort as StringProperty.
      */
-    public String webApiPortProperty() {
-        return String.valueOf(settings.getWebApiPort());
+    public StringProperty webApiPortProperty() {
+        return webApiPort;
     }
     
     /**
      * The webApiHostName for the view.
-     * @return The webApiHostName as String.
+     * @return The webApiHostName as StringProperty.
      */
-    public String webApiHostNameProperty() {
-        return settings.getWebApiHostName();
+    public StringProperty webApiHostNameProperty() {
+        return webApiHostName;
     }
     
     /**
-     * Converts the sessionTimeout to a String for the view.
-     * @return The sessionTimeout as String.
+     * The sessionTimeout for view.
+     * @return The sessionTimeout as StringProperty.
      */
-    public String sessionTimeoutProperty() {
-        return String.valueOf(settings.getSessionTimeout());
+    public StringProperty sessionTimeoutProperty() {
+        return sessionTimeout;
     }
     
     /**
-     * Converts the allowedGames to a String for the view.
+     * The allowedGames for the view.
      * @return The allowedGames as String.
      */
-    public String allowedGamesProperty() {
-        return settings.getAllowedGames().toString().replace("[", "").replace("]", "").replace(" ", "");
+    public StringProperty allowedGamesProperty() {
+        return allowedGames;
     }
     
     /**
@@ -55,15 +67,18 @@ public class SettingsViewModel extends ViewModelBase {
      * @param timeout The sessionTimeout time.
      * @param games The games that are allowed.
      */
-    public void updateSettings(String port, String hostName, String timeout, String games) {
+    public Command updateSettingsCommand() {
         // converting the games String back to an ArrayList
-        ArrayList<String> gamesArrray = new ArrayList<String>(Arrays.asList(games.split(",")));
+        ArrayList<String> gamesArrray = new ArrayList<String>(Arrays.asList(allowedGames.get().split(",")));
         
         // updating and saving the settings
-        settings.updateWebApiPort(Integer.parseInt(port));
-        settings.updateWebApiHostName(hostName);
-        settings.updateSessionTimeout(Integer.parseInt(timeout));
+        settings.updateWebApiPort(Integer.parseInt(webApiPort.get()));
+        settings.updateWebApiHostName(webApiHostName.get());
+        settings.updateSessionTimeout(Integer.parseInt(sessionTimeout.get()));
         settings.updateAllowedGames(gamesArrray); 
-        settings.saveSettings();
+        
+        return runnableCommand(() -> {
+            settings.saveSettings();
+        });
     }
 }
