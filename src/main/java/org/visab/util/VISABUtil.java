@@ -166,8 +166,14 @@ public final class VISABUtil {
             path = "/" + path;
 
         var fullPath = Main.class.getResource(path).getPath();
-        if (fullPath.startsWith("/"))
-            fullPath = fullPath.substring(1, fullPath.length());
+        
+        var os = System.getProperty("os.name");
+        
+        // Unix file path needs the slash at beginning
+        if (os.startsWith("Windows")) {
+        	if (fullPath.startsWith("/"))
+        		fullPath = fullPath.substring(1, fullPath.length());
+        }
         
         return fullPath;
     }
