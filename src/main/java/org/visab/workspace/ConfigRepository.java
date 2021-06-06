@@ -1,5 +1,6 @@
 package org.visab.workspace;
 
+import java.io.File;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,10 +23,15 @@ public class ConfigRepository extends RepositoryBase {
      */
     public List<MappingConfig> loadMappings(String relativeMappingPath) {
         var path = combinePath(baseDirectory, relativeMappingPath);
-        var content = readFileContents(path);
-
-        return JsonConvert.deserializeJson(content, new TypeReference<List<MappingConfig>>() {
-        });
+        var mappingsFile = new File(path);
+        
+        if (mappingsFile.exists()) {
+        	var content = readFileContents(path);
+        	return JsonConvert.deserializeJson(content, new TypeReference<List<MappingConfig>>() {
+            });
+        } else {
+        	return null;
+        }
     }
 
     /**
@@ -51,10 +57,16 @@ public class ConfigRepository extends RepositoryBase {
      * @return The object of settings.
      */
     public UserObject loadSettingsObject(String relativeSettingsPath) {
-        String path = combinePath(baseDirectory, relativeSettingsPath);
-        String content = readFileContents(path);
+        var path = combinePath(baseDirectory, relativeSettingsPath);
+        var settingsFile = new File(path);
         
-        return JsonConvert.deserializeJson(content, UserObject.class);
+        if (settingsFile.exists()) {
+        	var content = readFileContents(path);
+        	return JsonConvert.deserializeJson(content, UserObject.class);	
+        } else {
+        	return null;
+        }
+        
     }
     
     public void saveSettings(UserObject settingsObject, String relativeSavePath) {
