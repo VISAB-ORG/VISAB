@@ -134,6 +134,7 @@ public class ConfigManager {
         var loadedMappings = repo.loadMappings(MAPPING_PATH);
 
         if (loadedMappings == null) {
+        	logger.info("User mappings do not exist yet, loading defaults.");
             // Load the default file. Save it to file system. Load again.
             var defaultPath = VISABUtil.getResourcePath("/configs/classMapping_DEFAULT.json");
             var defaultJson = repo.readFileContents(defaultPath);
@@ -171,7 +172,6 @@ public class ConfigManager {
      */
     public UserObject loadSettings() {
     	UserObject loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
-
         if (loadedSettings == null) {
         	logger.info("User settings do not exist yet, loading defaults.");
             String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
