@@ -11,5 +11,17 @@
                 "classPath": "org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView"
             }
         ]
+    }, {
+        "game": "Settlers",
+        "listener": "org.visab.processing.settlers.SettlersListener",
+        "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
+        "file": "org.visab.globalmodel.settlers.SettlersFile",
+        "image": "org.visab.globalmodel.settlers.SettlersMapImage",
+        "viewConfigurations": [
+            {
+                "identifier": "statistics",
+                "classPath": "org.visab.newgui.statistics.settlers.SettlersStatisticsView"
+            }
+        ]
     }
 ]
