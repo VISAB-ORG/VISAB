@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,9 +41,8 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
      */
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
-        viewModel.updateSettings(webApiPortField.getText(), webApiHostNameField.getText(), 
-                sessionTimeoutField.getText(), allowedGamesField.getText());
-        // TODO: should the settings view be closed when hte new settings are saved?
+        viewModel.updateSettingsCommand().execute();
+        // TODO: should the settings view be closed when the new settings are saved?
     }
     
     /**
@@ -53,12 +54,33 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
         // TODO: check if return button is needed or otherwise implemented
     }
     
+    /**
+     * Makes a inputField to a numericalField.
+     * @param inputField The inputField that should be a numericalField.
+     */
+    private void setInputFieldNumericOnly(TextField inputField) {
+        // force the field to be numeric only
+        inputField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    inputField.setText(newValue.replaceAll("[\\D]", ""));
+                }
+            }
+        });
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        webApiPortField.setText(viewModel.webApiPortProperty());
-        webApiHostNameField.setText(viewModel.webApiHostNameProperty());
-        sessionTimeoutField.setText(viewModel.sessionTimeoutProperty());
-        allowedGamesField.setText(viewModel.allowedGamesProperty());
+        webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
+        webApiHostNameField.textProperty().bindBidirectional(viewModel.webApiHostNameProperty());
+        sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
+        allowedGamesField.textProperty().bindBidirectional(viewModel.allowedGamesProperty());
+        
+        // sets the inputField as numericalField
+        setInputFieldNumericOnly(webApiPortField);
+        setInputFieldNumericOnly(sessionTimeoutField);
     }
 
 }
