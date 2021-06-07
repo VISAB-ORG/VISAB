@@ -57,8 +57,21 @@
 	-fx-background-color: rgba(0,0,0,0);
 }
 
-
-
 .shadow{
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
+}
+
+.tableview{
+	-fx-font-size: 8px;
+	-fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #9e9b9b, #eeeeee);
+	-fx-background-radius: 10;
+}
+
+.table-view .column-header {
+	-fx-background-color: #12213a;
+	-fx-background-radius: 2;
+}
+.table-view .column-header .label {
+	-fx-text-fill: #FFFFFF;
+	}
 }
