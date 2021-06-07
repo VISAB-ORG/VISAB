@@ -29,6 +29,8 @@ public class AppMain extends Application {
         // var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
         var viewTupel = FluentViewLoader.fxmlView(HomeView.class).load();
         var root = viewTupel.getView();
+        stage.setMinHeight(400);
+        stage.setMinWidth(600);
         stage.setScene(new Scene(root));
         stage.show();
      
