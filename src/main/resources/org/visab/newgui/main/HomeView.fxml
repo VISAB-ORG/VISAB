@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@/template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.main.HomeView">
+<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.main.HomeView">
    <children>
       <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -28,7 +28,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/img/home_icon.png" />
+                              <Image url="@../../../../img/home_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -37,7 +37,7 @@
                            <graphic>
                               <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@/img/home_icon.png" />
+                                    <Image url="@../../../../img/home_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -50,7 +50,7 @@
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@/img/apiDashboard_icon.png" />
+                                    <Image url="@../../../../img/apiDashboard_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -59,7 +59,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/img/apiDashboard_icon.png" />
+                              <Image url="@../../../../img/apiDashboard_icon.png" />
                            </image>
                         </ImageView>
                      </graphic></Menu>
@@ -69,7 +69,7 @@
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@/img/settings_icon.png" />
+                                    <Image url="@../../../../img/settings_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic></MenuItem>
@@ -82,7 +82,7 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/img/settings_icon.png" />
+                              <Image url="@../../../../img/settings_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -91,7 +91,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/img/about_icon.png" />
+                              <Image url="@../../../../img/about_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -100,7 +100,7 @@
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@/img/about_icon.png" />
+                                    <Image url="@../../../../img/about_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -111,7 +111,7 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/img/help_icon.png" />
+                              <Image url="@../../../../img/help_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -120,7 +120,7 @@
                            <graphic>
                               <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@/img/help_icon.png" />
+                                    <Image url="@../../../../img/help_icon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -145,7 +145,7 @@
                            <children>
                               <ImageView fitHeight="249.0" fitWidth="309.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                                  <image>
-                                    <Image url="@/img/visabLogo.png" />
+                                    <Image url="@../../../../img/visabLogo.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets left="3.0" top="10.0" />
