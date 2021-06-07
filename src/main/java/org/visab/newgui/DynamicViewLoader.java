@@ -116,7 +116,8 @@ public final class DynamicViewLoader {
             }
         }
     }
-
+ 
+    
     /**
      * Creates a window by creating a new stage and adding a scene of the parent to
      * it. Then shows it.
