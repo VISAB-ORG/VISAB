@@ -34,17 +34,13 @@
 .button {
 	-fx-background-color: #12213a;
 	-fx-background-radius: 10;
+	-fx-text-fill: #FFFFFF;
 }
 
 .delete-button {
 	-fx-border-color: #12213a;
 	-fx-border-radius: 10;
 	-fx-background-color: rgba(0,0,0,0);
-}
-
-.upload-button {
-	-fx-background-color: #1e3762;
-	-fx-background-radius: 10;
 }
 
 .listView_box {
