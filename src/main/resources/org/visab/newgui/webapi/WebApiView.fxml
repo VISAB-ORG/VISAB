@@ -61,70 +61,70 @@
                 </columnConstraints>
                 <rowConstraints>
                     <RowConstraints vgrow="SOMETIMES" />
-                    <RowConstraints vgrow="SOMETIMES" />
+                    <RowConstraints vgrow="ALWAYS" />
                     <RowConstraints vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <TableView fx:id="sessionTable" prefHeight="200.0" prefWidth="200.0" styleClass="tableview" GridPane.rowIndex="1">
+                    <TableView fx:id="sessionTable" prefHeight="272.0" prefWidth="580.0" styleClass="tableview" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn prefWidth="38.05433630943298" text="SessionId">
+                            <TableColumn maxWidth="100.0" minWidth="60.0" prefWidth="-1.0" text="SessionId">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionId" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="43.578636169433594" text="HostName">
+                            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="HostName">
                                 <cellValueFactory>
                                    <PropertyValueFactory property="hostName" />
                                 </cellValueFactory>
                              </TableColumn>
-                             <TableColumn prefWidth="25.767044067382812" text="IP">
+                             <TableColumn maxWidth="-1.0" minWidth="43.0" prefWidth="-1.0" text="IP">
                                 <cellValueFactory>
                                    <PropertyValueFactory property="ip" />
                                 </cellValueFactory>
                              </TableColumn>
-                            <TableColumn minWidth="1.299652099609375" prefWidth="31.801109313964844" text="Game">
+                            <TableColumn maxWidth="-1.0" minWidth="45.0" prefWidth="-1.0" text="Game">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="game" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="62.934661865234375" text="SessionOpened">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionOpened">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionOpened" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="60.80113220214844" text="LastRequest">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="LastRequest">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="lastRequest" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="64.98431396484375" text="SessionClosed">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionClosed">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionClosed" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="69.56808471679688" text="ReceivedStatistics">
+                            <TableColumn maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" text="ReceivedStatistics">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="receivedStatistics" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="62.068145751953125" text="ReceivedImages">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="ReceivedImages">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="receivedImages" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="60.20166015625" text="RequestsTotal">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="RequestsTotal">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="totalRequests" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="96.37521362304688" minWidth="-1.0" prefWidth="55.86920166015625" text="SessionActive">
+                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionActive">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="isActive" />
                                 </cellValueFactory>
                             </TableColumn>
                         </columns>
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                      </GridPane.margin>
                     </TableView>
                     <Label alignment="CENTER" prefHeight="47.0" prefWidth="600.0" text="Session Overview">
@@ -132,9 +132,9 @@
                             <Font size="25.0" />
                         </font>
                     </Label>
-                    <Button fx:id="closeSessionButton" mnemonicParsing="false" onAction="#closeSessionAction" prefHeight="28.0" prefWidth="613.0" text="Close Session" GridPane.rowIndex="2">
+                    <Button fx:id="closeSessionButton" mnemonicParsing="false" onAction="#closeSessionAction" prefHeight="28.0" prefWidth="613.0" text="Close Session" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                      </GridPane.margin></Button>
                     <Button fx:id="openLiveViewButton" mnemonicParsing="false" onAction="#openLiveViewAction" text="Open LiveView">
                      <GridPane.margin>
