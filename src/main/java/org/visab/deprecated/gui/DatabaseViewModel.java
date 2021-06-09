@@ -1,4 +1,4 @@
-package org.visab.newgui.workspace.database;
+package org.visab.deprecated.gui;
 
 import java.io.File;
 import java.util.ArrayList;
