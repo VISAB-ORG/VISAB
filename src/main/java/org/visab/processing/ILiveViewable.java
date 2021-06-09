@@ -3,7 +3,7 @@ package org.visab.processing;
 import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
-import org.visab.newgui.statistics.ILiveViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 
 /**
  * The ILiveViewable interface, that all live viewable SessionListeners have to

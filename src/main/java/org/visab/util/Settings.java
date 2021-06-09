@@ -16,7 +16,7 @@ public final class Settings {
     // TODO: This should instead be set manually by the user.
     // TODO: Should it thought? Maybe just make it general. It can be edited using
     // the repository view anyway.
-    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/database/";
+    public static final String DATA_PATH = VISABUtil.getRunningJarRootDirPath() + "/workspace/database/";
     public static final String CSS_PATH = "/application.css";
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
