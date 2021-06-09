@@ -23,11 +23,12 @@ public final class AssignByGame {
     public static final List<String> ALLOWED_GAMES = new ArrayList<>() {
         {
             add(CBR_SHOOTER_STRING);
+            add(SETTLERS_OF_CATAN_STRING);
         }
     };
 
     public static final String CBR_SHOOTER_STRING = "CBRShooter";
-    public static final String SETTLERS_OF_CATAN_STRING = "SettlersOfCatan";
+    public static final String SETTLERS_OF_CATAN_STRING = "Settlers";
 
     public static final boolean gameIsSupported(String game) {
         return ALLOWED_GAMES.contains(game);
