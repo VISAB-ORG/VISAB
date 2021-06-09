@@ -12,7 +12,7 @@ import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.subscriber.SubscriberBase;
+import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.globalmodel.IStatistics;
 import org.visab.util.StringFormat;
 import org.visab.workspace.DatabaseManager;
@@ -32,7 +32,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
      */
-    private class SessionClosedSubscriber extends SubscriberBase<SessionClosedEvent> {
+    private class SessionClosedSubscriber extends ApiSubscriberBase<SessionClosedEvent> {
 
         public SessionClosedSubscriber() {
             super(SessionClosedEvent.class);
@@ -56,7 +56,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     /**
      * The StatisticsSubscriber, that subscribes to the StatisticsReceivedEvent.
      */
-    private class StatisticsSubscriber extends SubscriberBase<StatisticsReceivedEvent> {
+    private class StatisticsSubscriber extends ApiSubscriberBase<StatisticsReceivedEvent> {
 
         public StatisticsSubscriber() {
             super(StatisticsReceivedEvent.class);

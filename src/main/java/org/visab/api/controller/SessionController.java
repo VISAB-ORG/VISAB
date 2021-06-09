@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
-import org.visab.api.model.SessionStatus;
 import org.visab.util.AssignByGame;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -39,10 +38,10 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
+        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
             return getOkResponse("Session was already closed!");
 
-        WebApi.getInstance().getSessionWatchdog().closeSession(sessionId, false);
+        WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
 
         return getOkResponse("Closed the session!");
     }
@@ -66,14 +65,11 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Could not parse uuid!");
 
-        SessionStatus sessionStatus;
-        if (!WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
-            sessionStatus = new SessionStatus(false, sessionId, null);
+        var sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
+        if (sessionStatus == null)
+            return getJsonResponse("");
         else
-            sessionStatus = new SessionStatus(true, sessionId,
-                    WebApi.getInstance().getSessionWatchdog().getGame(sessionId));
-
-        return getJsonResponse(sessionStatus);
+            return getJsonResponse(sessionStatus);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(WebApi.getInstance().getSessionWatchdog().getActiveSessions());
+            return getJsonResponse(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses());
 
         default:
             return getNotFoundResponse(uriResource);
@@ -111,11 +107,7 @@ public class SessionController extends HTTPControllerBase {
      * @return A Http response
      */
     private Response openSession(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
-
-        if (sessionId == null)
-            return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
         if (game == "")
             return getBadRequestResponse("No game given!");
@@ -123,13 +115,13 @@ public class SessionController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (WebApi.getInstance().getSessionWatchdog().isSessionActive(sessionId))
-            return getBadRequestResponse("Session already active!");
+        // Create a new sessionId
+        var newSessionId = UUID.randomUUID();
 
-        WebApi.getInstance().getSessionWatchdog().openSession(sessionId, game, httpSession.getRemoteIpAddress(),
-                httpSession.getRemoteHostName());
+        WebApi.getInstance().getSessionAdministration().openSession(newSessionId, game,
+                httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
-        return getOkResponse("Session added.");
+        return getJsonResponse(newSessionId);
     }
 
 }

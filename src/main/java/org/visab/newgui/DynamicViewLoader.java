@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
-import org.visab.newgui.statistics.StatisticsViewModelBase;
+import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.StatisticsViewModelBase;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.AssignByGame;
@@ -116,7 +116,8 @@ public final class DynamicViewLoader {
             }
         }
     }
-
+ 
+    
     /**
      * Creates a window by creating a new stage and adding a scene of the parent to
      * it. Then shows it.

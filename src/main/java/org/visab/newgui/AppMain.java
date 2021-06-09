@@ -1,8 +1,6 @@
 package org.visab.newgui;
 
 import org.visab.newgui.settings.SettingsView;
-import org.visab.newgui.webapi.WebApiView;
-import org.visab.newgui.workspace.database.DatabaseView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;
@@ -28,8 +26,11 @@ public class AppMain extends Application {
         // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
         var viewTupel = FluentViewLoader.fxmlView(SettingsView.class).load();
         var root = viewTupel.getView();
+        stage.setMinHeight(400);
+        stage.setMinWidth(600);
         stage.setScene(new Scene(root));
         stage.show();
+     
     }
 
     /**
