@@ -63,8 +63,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     /**
      * The explorer view
      */
-    @FXML
-    FileExplorer fileExplorer;
+	@FXML
+	FileExplorer fileExplorer;
 
     @FXML
     public void deleteFileAction() {
@@ -85,11 +85,12 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     public void addFilesAction() {
         viewModel.addFileCommand().execute();
     }
-
+	
     /**
      * Fully refreshes the file explorer.
      */
-    @FXML
+    
+	@FXML
     public void refreshFileExplorer() {
         fileExplorer.setRoot(null);
 
@@ -100,10 +101,11 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         var expandUntil = 15;
         fileExplorer.expandChildren(expandUntil);
     }
-
+	
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refreshFileExplorer();
+        
+    	refreshFileExplorer();
 
         fileExplorer.addFileAddedHandler(f -> viewModel.addFile(f));
         fileExplorer.addRemoveFileHandler(ef -> viewModel.deleteFile(ef));
@@ -115,7 +117,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         // loaded upon the stage being shown.
         AppMain.getPrimaryStage().setOnShowing(e -> {
             viewModel.getDialogHelper().setParentWindow(fileExplorer.getScene().getWindow());
-        });
+        }); 
+        
     }
 
 }
