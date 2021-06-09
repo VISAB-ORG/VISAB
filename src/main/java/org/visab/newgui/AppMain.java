@@ -1,10 +1,6 @@
 package org.visab.newgui;
 
-import java.util.ResourceBundle;
-
-import org.visab.deprecated.gui.DatabaseView;
-import org.visab.newgui.main.view.HomeView;
-import org.visab.newgui.sessionoverview.view.SessionOverviewView;
+import org.visab.newgui.settings.SettingsView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;
@@ -27,7 +23,8 @@ public class AppMain extends Application {
         // mvvmfx magic
         // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
         // var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
-        var viewTupel = FluentViewLoader.fxmlView(SessionOverviewView.class).load();
+        // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
+        var viewTupel = FluentViewLoader.fxmlView(SettingsView.class).load();
         var root = viewTupel.getView();
         stage.setMinHeight(400);
         stage.setMinWidth(600);
@@ -43,4 +40,5 @@ public class AppMain extends Application {
     public void stop() {
         Main.shutdownWebApi();
     }
+    
 }

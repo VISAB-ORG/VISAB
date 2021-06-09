@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.gui.model.TableEntryCBRBot;
 import org.visab.gui.model.TableEntryScriptBot;
-import org.visab.util.Settings;
+import org.visab.util.SystemSettings;
 import org.visab.util.VISABUtil;
 
 import javafx.application.Platform;
@@ -161,17 +161,17 @@ public class PathViewerWindowController {
     private HBox hBoxScriptPlayer;
 
     // Initializing additional varibales
-    private Image imageScriptBot = new Image(Settings.IMAGE_PATH + "scriptBot.png");
+    private Image imageScriptBot = new Image(SystemSettings.IMAGE_PATH + "scriptBot.png");
 
-    private Image deathImage = new Image(Settings.IMAGE_PATH + "deathScript.png");
+    private Image deathImage = new Image(SystemSettings.IMAGE_PATH + "deathScript.png");
 
-    private Image deathImageCBR = new Image(Settings.IMAGE_PATH + "deadCBR.png");
+    private Image deathImageCBR = new Image(SystemSettings.IMAGE_PATH + "deadCBR.png");
 
-    private Image imageCbrBot = new Image(Settings.IMAGE_PATH + "cbrBot.png");
+    private Image imageCbrBot = new Image(SystemSettings.IMAGE_PATH + "cbrBot.png");
 
-    private Image changePlanCBRImage = new Image(Settings.IMAGE_PATH + "changePlan.png");
+    private Image changePlanCBRImage = new Image(SystemSettings.IMAGE_PATH + "changePlan.png");
 
-    private Image changePlanScriptImage = new Image(Settings.IMAGE_PATH + "changePlan.png");
+    private Image changePlanScriptImage = new Image(SystemSettings.IMAGE_PATH + "changePlan.png");
 
     private ImageView cbrbotImageView = new ImageView(imageCbrBot);
 
@@ -276,7 +276,7 @@ public class PathViewerWindowController {
         drawPane.getChildren().clear();
         String fileNameFromComboBox = comboBox.getValue();
 
-        String content = VISABUtil.readFile(Settings.DATA_PATH + fileNameFromComboBox.toString());
+        String content = VISABUtil.readFile(SystemSettings.DATA_PATH + fileNameFromComboBox.toString());
 
         boolean externalFileAccepted = false;
 
@@ -359,9 +359,9 @@ public class PathViewerWindowController {
         frameLabel.setText("Selected Frame: " + 0);
         sleepTimer = 1000;
         frameSlider.setValue(0);
-        playImage = new Image(Settings.IMAGE_PATH + "play.png");
+        playImage = new Image(SystemSettings.IMAGE_PATH + "play.png");
         playImageView = new ImageView(playImage);
-        pauseImage = new Image(Settings.IMAGE_PATH + "pause.png");
+        pauseImage = new Image(SystemSettings.IMAGE_PATH + "pause.png");
         pauseImageView = new ImageView(pauseImage);
         playPauseButton.setVisible(true);
         playPauseButton.setGraphic(playImageView);

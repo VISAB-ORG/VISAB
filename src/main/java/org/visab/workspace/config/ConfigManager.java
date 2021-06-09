@@ -3,7 +3,11 @@ package org.visab.workspace.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.visab.gui.GUIMain;
 import org.visab.util.StreamUtil;
+import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
@@ -17,16 +21,24 @@ import org.visab.workspace.config.model.ViewConfig;
  * TODO: Allowed games has to be added to settings.
  */
 public class ConfigManager {
+	
+	// Logger needs .class for each class to use for log traces
+    private static Logger logger = LogManager.getLogger(ConfigManager.class);
 
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
 
     private static final String MAPPING_PATH = "classMapping.json";
 
+    private static final String SETTINGS_PATH = "settings.json";
+
     private ConfigRepository repo = new ConfigRepository(CONFIG_PATH);
 
     private List<MappingConfig> mappings;
 
+    private UserSettings settings;
+
     public ConfigManager() {
+        loadSettings();
         // TODO: Load settings first, so that they can be used for mapping
         // initialization. Important in case we decide to make it customizable where to
         // save your mappings.
@@ -122,6 +134,7 @@ public class ConfigManager {
         var loadedMappings = repo.loadMappings(MAPPING_PATH);
 
         if (loadedMappings == null) {
+        	logger.info("User mappings do not exist yet, loading defaults.");
             // Load the default file. Save it to file system. Load again.
             var defaultPath = VISABUtil.getResourcePath("/configs/classMapping_DEFAULT.json");
             var defaultJson = repo.readFileContents(defaultPath);
@@ -150,6 +163,43 @@ public class ConfigManager {
         }
 
         return null;
+    }
+
+    /**
+     * Loads the settings from the file system using the repository
+     * 
+     * @return Object of the loaded settings.
+     */
+    public UserSettings loadSettings() {
+    	UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        if (loadedSettings == null) {
+        	logger.info("User settings do not exist yet, loading defaults.");
+            String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
+            String defaultSettings = repo.readFileContents(defaultPath);
+            repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
+            loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        }
+
+        settings = loadedSettings;
+        return settings;
+    }
+
+    /**
+     * Saves the settings to the file system using the repository.
+     * 
+     * @param settingsObject The object of the settings.
+     */
+    public void saveSettings(UserSettings settingsObject) {
+        repo.saveSettings(settingsObject, SETTINGS_PATH);
+    }
+
+    /**
+     * Getter for the UserSettings.
+     * 
+     * @return The settingsObject of the user settings.
+     */
+    public UserSettings getSettings() {
+        return settings;
     }
 
 }

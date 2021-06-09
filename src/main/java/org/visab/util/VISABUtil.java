@@ -141,9 +141,9 @@ public final class VISABUtil {
 
     public static void writeFileToDatabase(String fileName, String content) throws URISyntaxException {
 
-        File databaseDir = new File(Settings.DATA_PATH);
+        File databaseDir = new File(SystemSettings.DATA_PATH);
         databaseDir.mkdirs();
-        File saveIntoDatabase = new File(Settings.DATA_PATH + fileName);
+        File saveIntoDatabase = new File(SystemSettings.DATA_PATH + fileName);
 
         BufferedWriter writer;
         try {
@@ -169,9 +169,15 @@ public final class VISABUtil {
             path = "/" + path;
 
         var fullPath = Main.class.getResource(path).getPath();
-        if (fullPath.startsWith("/"))
-            fullPath = fullPath.substring(1, fullPath.length());
-
+        
+        var os = System.getProperty("os.name");
+        
+        // Unix file path needs the slash at beginning
+        if (os.startsWith("Windows")) {
+        	if (fullPath.startsWith("/"))
+        		fullPath = fullPath.substring(1, fullPath.length());
+        }
+        
         return fullPath;
     }
 

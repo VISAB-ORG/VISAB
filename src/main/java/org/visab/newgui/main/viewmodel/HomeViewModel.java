@@ -16,10 +16,9 @@ import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.main.MainScope;
 import org.visab.newgui.sessionoverview.view.SessionOverviewView;
 import org.visab.util.FileSizeHelper;
-import org.visab.util.Settings;
 import org.visab.util.StreamUtil;
+import org.visab.util.SystemSettings;
 import org.visab.util.VISABUtil;
-import org.visab.workspace.BasicRepository;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
@@ -51,7 +50,7 @@ public class HomeViewModel extends ViewModelBase {
 
     /** REGION: DATABASE VIEW */
 
-    private String baseDirPath = Settings.DATA_PATH;
+    private String baseDirPath = SystemSettings.DATA_PATH;
 
     private ExplorerFile baseFile;
 

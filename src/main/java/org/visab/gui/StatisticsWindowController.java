@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.gui.model.TableEntry;
 import org.visab.gui.model.TableEntryStatisticsVisab;
-import org.visab.util.Settings;
+import org.visab.util.SystemSettings;
 import org.visab.util.VISABUtil;
 
 import javafx.collections.FXCollections;
@@ -115,7 +115,7 @@ public class StatisticsWindowController {
 
         boolean externalFileAccepted = false;
 
-        String content = VISABUtil.readFile(Settings.DATA_PATH + fileNameFromComboBox);
+        String content = VISABUtil.readFile(SystemSettings.DATA_PATH + fileNameFromComboBox);
 
         if (fileNameFromComboBox == null) {
             // Set InfoLabel
