@@ -1,4 +1,4 @@
-package org.visab.newgui.main;
+package org.visab.newgui.main.viewmodel;
 
 import de.saxsys.mvvmfx.ViewModel;
 

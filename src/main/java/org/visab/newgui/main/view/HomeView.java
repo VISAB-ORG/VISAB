@@ -1,14 +1,12 @@
-package org.visab.newgui.main;
+package org.visab.newgui.main.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.AppMain;
-import org.visab.newgui.webapi.WebApiViewModel;
+import org.visab.newgui.main.viewmodel.HomeViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,7 +18,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 
 public class HomeView implements FxmlView<HomeViewModel>, Initializable {
-	@FXML
+	
+    @FXML
 	private MenuBar menuBar;
 	@FXML
 	private Menu homeMenu;
@@ -57,7 +56,6 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         viewModel.openApi().execute();
     }
 	
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -65,7 +63,5 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 	
 		
 	}
-	
-	
 
 }

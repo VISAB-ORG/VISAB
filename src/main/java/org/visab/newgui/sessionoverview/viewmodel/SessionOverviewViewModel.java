@@ -1,4 +1,4 @@
-package org.visab.newgui.webapi;
+package org.visab.newgui.sessionoverview.viewmodel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,9 +23,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+public class SessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
 
-    private Logger logger = LogManager.getLogger(WebApiViewModel.class);
+    private Logger logger = LogManager.getLogger(SessionOverviewViewModel.class);
 
     private IntegerProperty activeTransmissionSessions = new SimpleIntegerProperty(0);
 
@@ -68,7 +68,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
         return selectedSession;
     }
 
-    public WebApiViewModel() {
+    public SessionOverviewViewModel() {
         ApiEventBus.getInstance().subscribe(this);
 
         // Load in all existing session status from watchdog.
@@ -99,6 +99,7 @@ public class WebApiViewModel extends ViewModelBase implements ISubscriber<IApiEv
             activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
         }
 
+        // TODO: Is not needed if we use the same status object.
         var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
         if (existing != null) {
             existing.setIsActive(status.isActive());

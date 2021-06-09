@@ -2,8 +2,7 @@ package org.visab.newgui;
 
 import java.util.ResourceBundle;
 
-import org.visab.newgui.main.HomeView;
-import org.visab.newgui.webapi.WebApiView;
+import org.visab.newgui.main.view.HomeView;
 import org.visab.newgui.workspace.database.DatabaseView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;

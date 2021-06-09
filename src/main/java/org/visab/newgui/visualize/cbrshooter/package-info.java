@@ -5,4 +5,4 @@
  * The .fxml files should be stored in the projects resources.
  * </p>
  */
-package org.visab.newgui.statistics.cbrshooter;
+package org.visab.newgui.visualize.cbrshooter;

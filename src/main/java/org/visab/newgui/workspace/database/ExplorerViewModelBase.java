@@ -9,6 +9,7 @@ import java.time.ZoneId;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
+import org.visab.util.FileSizeHelper;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.BasicRepository;
 

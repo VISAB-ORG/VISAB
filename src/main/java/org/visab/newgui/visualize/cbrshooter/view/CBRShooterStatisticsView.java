@@ -1,11 +1,12 @@
-package org.visab.newgui.statistics.cbrshooter;
+package org.visab.newgui.visualize.cbrshooter.view;
 
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.control.CustomLabelPieChart;
-import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterStatisticsRow;
+import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterStatisticsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;

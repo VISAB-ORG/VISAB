@@ -1,4 +1,4 @@
-package org.visab.newgui.replay;
+package org.visab.newgui.visualize;
 
 public interface IReplayLiveViewModel {
 

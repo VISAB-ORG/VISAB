@@ -1,13 +1,13 @@
-package org.visab.newgui.statistics.cbrshooter;
+package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.statistics.LiveStatisticsViewModelBase;
-import org.visab.newgui.statistics.cbrshooter.model.CBRShooterStatisticsRow;
-import org.visab.newgui.statistics.cbrshooter.model.PlayerPlanTime;
-import org.visab.newgui.statistics.cbrshooter.model.Vector2;
+import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterStatisticsRow;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
+import org.visab.newgui.visualize.cbrshooter.model.Vector2;
 import org.visab.util.StreamUtil;
 
 import javafx.collections.FXCollections;

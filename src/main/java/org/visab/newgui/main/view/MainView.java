@@ -1,7 +1,9 @@
-package org.visab.newgui.main;
+package org.visab.newgui.main.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.visab.newgui.main.viewmodel.MainViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import javafx.fxml.Initializable;

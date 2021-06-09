@@ -5,4 +5,4 @@
  * 
  * </p>
  */
-package org.visab.newgui.statistics.cbrshooter.model;
+package org.visab.newgui.visualize.cbrshooter.model;

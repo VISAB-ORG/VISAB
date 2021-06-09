@@ -1,18 +1,14 @@
-package org.visab.newgui.main;
+package org.visab.newgui.main.viewmodel;
 
-import org.visab.newgui.AppMain;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
-import org.visab.newgui.webapi.WebApiView;
+import org.visab.newgui.main.MainScope;
+import org.visab.newgui.sessionoverview.view.SessionOverviewView;
 
-import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 @ScopeProvider(MainScope.class)
 public class HomeViewModel extends ViewModelBase implements ViewModel {
@@ -25,13 +21,12 @@ public class HomeViewModel extends ViewModelBase implements ViewModel {
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                DynamicViewLoader.showView(WebApiView.class, "API Dashboard");
+                DynamicViewLoader.showView(SessionOverviewView.class, "API Dashboard");
 
             });
         }
 
         return openApiDashboard;
-
     }
 
 }

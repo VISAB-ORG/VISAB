@@ -1,4 +1,4 @@
-package org.visab.newgui.statistics;
+package org.visab.newgui.visualize;
 
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.ViewModelBase;

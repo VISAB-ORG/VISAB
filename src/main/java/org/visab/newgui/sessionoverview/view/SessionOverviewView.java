@@ -1,9 +1,10 @@
-package org.visab.newgui.webapi;
+package org.visab.newgui.sessionoverview.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.globalmodel.SessionStatus;
+import org.visab.newgui.sessionoverview.viewmodel.SessionOverviewViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -14,7 +15,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
+public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, Initializable {
 
     @FXML
     private Button closeSessionButton;
@@ -23,7 +24,7 @@ public class WebApiView implements FxmlView<WebApiViewModel>, Initializable {
     private TableView<SessionStatus> sessionTable;
 
     @InjectViewModel
-    private WebApiViewModel viewModel;
+    private SessionOverviewViewModel viewModel;
 
     @FXML
     public void closeSessionAction() {
