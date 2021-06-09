@@ -1,6 +1,6 @@
 package org.visab.workspace;
 
-import org.visab.util.UserObject;
+import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.config.ConfigManager;
 
@@ -41,10 +41,6 @@ public class Workspace {
      * For singelton
      */
     private Workspace() {
-    }
-    
-    public UserObject getSettings() {
-        return this.configManager.getSettings();
     }
 
     public ConfigManager getConfigManager() {

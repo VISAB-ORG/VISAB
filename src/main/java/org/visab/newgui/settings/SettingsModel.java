@@ -2,7 +2,7 @@ package org.visab.newgui.settings;
 
 import java.util.ArrayList;
 
-import org.visab.util.UserObject;
+import org.visab.util.UserSettings;
 import org.visab.workspace.Workspace;
 
 /**
@@ -21,7 +21,7 @@ public class SettingsModel {
 
     private ArrayList<String> allowedGames = new ArrayList<>();
 
-    private UserObject settings = Workspace.getInstance().getConfigManager().getSettings();
+    private UserSettings settings = Workspace.getInstance().getConfigManager().getSettings();
 
     /**
      * Constructor of the class. Initializes the settings.

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.gui.GUIMain;
 import org.visab.util.StreamUtil;
-import org.visab.util.UserObject;
+import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
@@ -35,7 +35,7 @@ public class ConfigManager {
 
     private List<MappingConfig> mappings;
 
-    private UserObject settings;
+    private UserSettings settings;
 
     public ConfigManager() {
         loadSettings();
@@ -170,8 +170,8 @@ public class ConfigManager {
      * 
      * @return Object of the loaded settings.
      */
-    public UserObject loadSettings() {
-    	UserObject loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+    public UserSettings loadSettings() {
+    	UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         if (loadedSettings == null) {
         	logger.info("User settings do not exist yet, loading defaults.");
             String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
@@ -189,7 +189,7 @@ public class ConfigManager {
      * 
      * @param settingsObject The object of the settings.
      */
-    public void saveSettings(UserObject settingsObject) {
+    public void saveSettings(UserSettings settingsObject) {
         repo.saveSettings(settingsObject, SETTINGS_PATH);
     }
 
@@ -198,7 +198,7 @@ public class ConfigManager {
      * 
      * @return The settingsObject of the user settings.
      */
-    public UserObject getSettings() {
+    public UserSettings getSettings() {
         return settings;
     }
 

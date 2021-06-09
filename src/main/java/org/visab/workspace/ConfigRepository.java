@@ -6,7 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.visab.util.JsonConvert;
-import org.visab.util.UserObject;
+import org.visab.util.UserSettings;
 import org.visab.workspace.config.model.MappingConfig;
 
 public class ConfigRepository extends RepositoryBase {
@@ -56,20 +56,20 @@ public class ConfigRepository extends RepositoryBase {
      * @param relativeSettingsPath The relative path to the settings file.
      * @return The object of settings.
      */
-    public UserObject loadSettingsObject(String relativeSettingsPath) {
+    public UserSettings loadSettingsObject(String relativeSettingsPath) {
         var path = combinePath(baseDirectory, relativeSettingsPath);
         var settingsFile = new File(path);
         
         if (settingsFile.exists()) {
         	var content = readFileContents(path);
-        	return JsonConvert.deserializeJson(content, UserObject.class);	
+        	return JsonConvert.deserializeJson(content, UserSettings.class);	
         } else {
         	return null;
         }
         
     }
     
-    public void saveSettings(UserObject settingsObject, String relativeSavePath) {
+    public void saveSettings(UserSettings settingsObject, String relativeSavePath) {
         String json = JsonConvert.serializeObject(settingsObject);
         
         if (json != "") {
