@@ -21,8 +21,6 @@ public class SettingsViewModel extends ViewModelBase {
     
     private StringProperty webApiPort = new SimpleStringProperty(String.valueOf(settings.getWebApiPort()));
     
-    private StringProperty webApiHostName = new SimpleStringProperty(settings.getWebApiHostName());
-    
     private StringProperty sessionTimeout = new SimpleStringProperty(String.valueOf(settings.getSessionTimeout()));
     
     private StringProperty allowedGames = new SimpleStringProperty(settings.getAllowedGames().toString().
@@ -34,14 +32,6 @@ public class SettingsViewModel extends ViewModelBase {
      */
     public StringProperty webApiPortProperty() {
         return webApiPort;
-    }
-    
-    /**
-     * The webApiHostName for the view.
-     * @return The webApiHostName as StringProperty.
-     */
-    public StringProperty webApiHostNameProperty() {
-        return webApiHostName;
     }
     
     /**
@@ -73,7 +63,6 @@ public class SettingsViewModel extends ViewModelBase {
         
         // updating and saving the settings
         settings.updateWebApiPort(Integer.parseInt(webApiPort.get()));
-        settings.updateWebApiHostName(webApiHostName.get());
         settings.updateSessionTimeout(Integer.parseInt(sessionTimeout.get()));
         settings.updateAllowedGames(gamesArrray); 
         

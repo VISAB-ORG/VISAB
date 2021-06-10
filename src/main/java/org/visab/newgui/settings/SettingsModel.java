@@ -15,8 +15,6 @@ public class SettingsModel {
 
     private int webApiPort;
 
-    private String webApiHostName;
-
     private int sessionTimeout;
 
     private ArrayList<String> allowedGames = new ArrayList<>();
@@ -28,7 +26,6 @@ public class SettingsModel {
      */
     public SettingsModel() {
         this.webApiPort = settings.getWebApiPort();
-        this.webApiHostName = settings.getWebApiHostName();
         this.sessionTimeout = settings.getSessionTimeout();
         this.allowedGames = settings.getAllowedGames();
     }
@@ -40,15 +37,6 @@ public class SettingsModel {
      */
     public int getWebApiPort() {
         return webApiPort;
-    }
-
-    /**
-     * Getter for the webApiHostName.
-     * 
-     * @return The webApiHostName.
-     */
-    public String getWebApiHostName() {
-        return webApiHostName;
     }
 
     /**
@@ -79,15 +67,6 @@ public class SettingsModel {
     }
 
     /**
-     * Updates the webApiHostName.
-     * 
-     * @param hostName The new webApiHostName.
-     */
-    public void updateWebApiHostName(String hostName) {
-        this.webApiHostName = hostName;
-    }
-
-    /**
      * Updates the sessionTimeout time.
      * 
      * @param timeout The new sessionTimeout.
@@ -110,7 +89,6 @@ public class SettingsModel {
      */
     public void saveSettings() {
         settings.setWebApiPort(webApiPort);
-        settings.setWebApiHostName(webApiHostName);
         settings.setSessionTimeout(sessionTimeout);
         settings.setAllowedGames(allowedGames);
         Workspace.getInstance().getConfigManager().saveSettings(settings);
