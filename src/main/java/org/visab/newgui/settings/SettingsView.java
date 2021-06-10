@@ -24,9 +24,6 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     TextField webApiPortField;
     
     @FXML
-    TextField webApiHostNameField;
-    
-    @FXML
     TextField sessionTimeoutField;
     
     @FXML
@@ -74,7 +71,6 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
-        webApiHostNameField.textProperty().bindBidirectional(viewModel.webApiHostNameProperty());
         sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
         allowedGamesField.textProperty().bindBidirectional(viewModel.allowedGamesProperty());
         

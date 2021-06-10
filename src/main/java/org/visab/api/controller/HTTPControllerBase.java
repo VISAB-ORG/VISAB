@@ -72,9 +72,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getNotFoundResponse(UriResource uriResource) {
-        var responseMessage = "404: Adress: " 
-                + Workspace.getInstance().getConfigManager().getSettings().getWebApiHostName() + "/" 
-                + uriResource.getUri() + " was not found.";
+        var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found.";
 
         return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
@@ -89,8 +87,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getNotFoundResponse(UriResource uriResource, String additionalMessage) {
-        var responseMessage = "Adress: " + Workspace.getInstance().getConfigManager().getSettings().getWebApiHostName() 
-                + "/" + uriResource.getUri() + " was not found." + "Additional info: [" + additionalMessage + "]";
+        var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found." + "Additional info: [" + additionalMessage + "]";
 
         return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
