@@ -6,4 +6,4 @@
  * abstracted design pattern to distinct between models, views and controls.
  * </p>
  */
-package org.visab.gui;
+package org.visab.oldgui;

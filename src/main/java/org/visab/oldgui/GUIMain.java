@@ -1,4 +1,4 @@
-package org.visab.gui;
+package org.visab.oldgui;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import javafx.stage.Stage;
  * @author VISAB 1.0 group
  *
  */
+@Deprecated
 public class GUIMain extends Application {
 
     // Logger needs .class for each class to use for log traces
@@ -100,7 +101,8 @@ public class GUIMain extends Application {
      * @return an observable list of file names that are displayed in the GUI.
      */
     private ObservableList<String> loadFilesFromDatabase() {
-
+        System.out.println("Initializing files combo box.");
+        System.out.println("Database path: " + SystemSettings.DATA_PATH);
         File database = new File(SystemSettings.DATA_PATH);
         File[] visabFiles = database.listFiles();
         ObservableList<String> filesComboBox = FXCollections.observableArrayList();
@@ -152,8 +154,7 @@ public class GUIMain extends Application {
             primaryStage.setTitle("VisAB");
 
             PathViewerWindowController pathWindowController = loader.getController();
-            ObservableList<String> filesComboBox = loadFilesFromDatabase();
-            pathWindowController.updatePage(filesComboBox);
+            pathWindowController.updatePage();
             pathWindowController.setMain(this);
 
             Scene scene = new Scene(pane);
@@ -189,8 +190,7 @@ public class GUIMain extends Application {
             primaryStage.setTitle("VisAB");
 
             StatisticsWindowController statisticsWindowController = loader.getController();
-            ObservableList<String> filesComboBox = loadFilesFromDatabase();
-            statisticsWindowController.updatePage(filesComboBox);
+            statisticsWindowController.updatePage();
             statisticsWindowController.setMain(this);
 
             Scene scene = new Scene(pane);

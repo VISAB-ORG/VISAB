@@ -1,6 +1,7 @@
 package org.visab.newgui;
 
-import org.visab.newgui.settings.SettingsView;
+import org.visab.api.WebApi;
+import org.visab.newgui.main.view.HomeView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;
@@ -20,17 +21,15 @@ public class AppMain extends Application {
         primaryStage = stage;
         stage.setTitle("VISAB");
 
-        // mvvmfx magic
-        // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
-        // var viewTupel = FluentViewLoader.fxmlView(DatabaseView.class).load();
-        // var viewTupel = FluentViewLoader.fxmlView(WebApiView.class).load();
-        var viewTupel = FluentViewLoader.fxmlView(SettingsView.class).load();
+        // Only access the HomeView at start, because any other View will be opened in a
+        // new frame due to navigation
+        var viewTupel = FluentViewLoader.fxmlView(HomeView.class).load();
         var root = viewTupel.getView();
         stage.setMinHeight(400);
-        stage.setMinWidth(600);
+        stage.setMinWidth(800);
         stage.setScene(new Scene(root));
         stage.show();
-     
+
     }
 
     /**
@@ -38,7 +37,7 @@ public class AppMain extends Application {
      */
     @Override
     public void stop() {
-        Main.shutdownWebApi();
+        WebApi.getInstance().shutdown();
     }
-    
+
 }
