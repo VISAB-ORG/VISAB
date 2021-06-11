@@ -43,9 +43,10 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
         @Override
         public void notify(VISABFileSavedEvent event) {
             if (event.isSavedByListener())
+                // TODO: add it to the listener directly or sth.
+                // This has to be decided based on the view
                 savedFiles.add(event.getFileName());
         }
-
     }
 
     private ObservableList<String> savedFiles = FXCollections.observableArrayList();
