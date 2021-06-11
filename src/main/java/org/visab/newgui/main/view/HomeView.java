@@ -51,8 +51,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     private Button visualizeButton;
 
-    // Deprecated VISAB 1.0 GUI
-    // -----
+    // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
+    // ----- Command class variables -----
     @FXML
     private Menu oldGui;
 
@@ -92,8 +92,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     public void openAbout() {
         viewModel.openAbout().execute();
     }
-
-    // -----
+    // ----- End of deprecated VISAB 1.0 GUI code -----
 
     @InjectViewModel
     private HomeViewModel viewModel;
