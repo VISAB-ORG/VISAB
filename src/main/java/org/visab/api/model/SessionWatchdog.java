@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
 import org.visab.globalmodel.SessionStatus;
-import org.visab.util.Settings;
+import org.visab.workspace.Workspace;
 
 public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
 
@@ -77,9 +77,9 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
         var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();
         // If nothing was sent yet (only session openend) wait 30 more seconds until
         // timeout.
-        var timeoutSeconds = Settings.SESSION_TIMEOUT;
+        var timeoutSeconds = Workspace.getInstance().getConfigManager().getSettings().getSessionTimeout();
         if (status.getTotalRequests() == 1)
-            timeoutSeconds = Settings.SESSION_TIMEOUT + 30;
+            timeoutSeconds += 30;
 
         return elapsedSeconds >= timeoutSeconds;
     }

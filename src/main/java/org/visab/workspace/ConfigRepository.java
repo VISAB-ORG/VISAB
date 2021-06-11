@@ -1,10 +1,12 @@
 package org.visab.workspace;
 
+import java.io.File;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.visab.util.JsonConvert;
+import org.visab.util.UserSettings;
 import org.visab.workspace.config.model.MappingConfig;
 
 public class ConfigRepository extends RepositoryBase {
@@ -21,10 +23,15 @@ public class ConfigRepository extends RepositoryBase {
      */
     public List<MappingConfig> loadMappings(String relativeMappingPath) {
         var path = combinePath(baseDirectory, relativeMappingPath);
-        var content = readFileContents(path);
-
-        return JsonConvert.deserializeJson(content, new TypeReference<List<MappingConfig>>() {
-        });
+        var mappingsFile = new File(path);
+        
+        if (mappingsFile.exists()) {
+        	var content = readFileContents(path);
+        	return JsonConvert.deserializeJson(content, new TypeReference<List<MappingConfig>>() {
+            });
+        } else {
+        	return null;
+        }
     }
 
     /**
@@ -41,6 +48,33 @@ public class ConfigRepository extends RepositoryBase {
             return writeToFileRelative(relativeSavePath, json);
         else
             return false;
+    }
+    
+    /**
+     * Loads the object of settings.
+     * 
+     * @param relativeSettingsPath The relative path to the settings file.
+     * @return The object of settings.
+     */
+    public UserSettings loadSettingsObject(String relativeSettingsPath) {
+        var path = combinePath(baseDirectory, relativeSettingsPath);
+        var settingsFile = new File(path);
+        
+        if (settingsFile.exists()) {
+        	var content = readFileContents(path);
+        	return JsonConvert.deserializeJson(content, UserSettings.class);	
+        } else {
+        	return null;
+        }
+        
+    }
+    
+    public void saveSettings(UserSettings settingsObject, String relativeSavePath) {
+        String json = JsonConvert.serializeObject(settingsObject);
+        
+        if (json != "") {
+            writeToFileRelative(relativeSavePath, json);
+        }
     }
 
 }

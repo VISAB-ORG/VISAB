@@ -1,0 +1,6 @@
+{
+	"webApiPort": 2673,
+	"webApiHostName": "localhost:2673",
+	"sessionTimeout": 2,
+	"allowedGames": ["CBRShooter", "Settlers"]		
+}

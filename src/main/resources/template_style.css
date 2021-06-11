@@ -1,0 +1,76 @@
+.body {
+	-fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #eeeeee, #9e9b9b);
+}
+.pane-left{
+	-fx-background-color:white;
+}
+.pane-right {
+	-fx-background-color: #1f3761;
+}
+.menu-bar {
+	-fx-background-color: #12213a;
+	-fx-text-fill: #FFFFFF;
+}
+
+.context-menu {
+    -fx-background-color: #1f3761;
+	-fx-background-radius: 5;
+}
+
+.menu-item .label {
+	-fx-text-fill: #FFFFFF;
+}
+
+.menu-button:showing {
+	-fx-background-color: #ff5c33;
+	-fx-background-radius: 5;
+}
+
+.menu:hover, .menu:focused, .menu-item:focused {
+    -fx-background-color: #ff5c33;
+	-fx-background-radius: 5;
+}
+
+.button {
+	-fx-background-color: #12213a;
+	-fx-background-radius: 10;
+	-fx-text-fill: #FFFFFF;
+}
+
+.delete-button {
+	-fx-border-color: #12213a;
+	-fx-border-radius: 10;
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.listView_box {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 10;
+}
+
+.drag-box {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 10;
+}
+
+.transparent {
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.shadow{
+	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
+}
+
+.tableview{
+	-fx-font-size: 8px;
+	-fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #9e9b9b, #eeeeee);
+	-fx-background-radius: 10;
+}
+
+.table-view .column-header {
+	-fx-background-color: #12213a;
+	-fx-background-radius: 2;
+}
+.table-view .column-header .label {
+	-fx-text-fill: #FFFFFF;
+}

@@ -14,7 +14,7 @@
       <Label fx:id="warningMessage" layoutX="490.0" layoutY="516.0" prefHeight="83.0" prefWidth="393.0" textFill="#ee0606" wrapText="true" />
       <Button fx:id="pathViewerButton" layoutX="490.0" layoutY="687.0" mnemonicParsing="false" onAction="#handlePathViewerButton" prefHeight="25.0" prefWidth="209.0" text="Path Viewer" />
       <Button fx:id="statisticsViewButton" layoutX="490.0" layoutY="621.0" mnemonicParsing="false" onAction="#handleStatisticsViewButton" prefHeight="25.0" prefWidth="209.0" text="Statistics View" />
-      <ImageView fitHeight="381.0" fitWidth="381.0" layoutX="378.0" layoutY="57.0">
+      <ImageView fitHeight="381.0" fitWidth="450.0" layoutX="378.0" layoutY="57.0">
          <image>
             <Image url="@/img/visabLogo.png" />
          </image>
