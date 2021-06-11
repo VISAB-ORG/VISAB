@@ -130,6 +130,7 @@
                         </Menu>
                      </items>
                 </Menu>
+                <!-- This menu does only exist for reference of the legacy GUI, will be removed later on -->
                   <Menu mnemonicParsing="false" text="Old GUI">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#openMain" text="Main" />
