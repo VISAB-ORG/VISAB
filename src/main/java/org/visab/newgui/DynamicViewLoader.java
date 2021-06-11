@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.eventbus.GeneralEventBus;
+import org.visab.eventbus.IPublisher;
+import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
@@ -22,7 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public final class DynamicViewLoader {
+public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent> {
 
     private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
@@ -80,6 +83,9 @@ public final class DynamicViewLoader {
         vM.initialize(file);
 
         showWindow(root, "TODO: NOT LIVE");
+
+        var event = new VISABFileViewedEvent(file);
+        publishEvent(event);
     }
 
     /**
@@ -151,5 +157,14 @@ public final class DynamicViewLoader {
         }
 
         return _class;
+    }
+
+    @Override
+    public void publish(VISABFileViewedEvent event) {
+        GeneralEventBus.getInstance().publish(event);
+    }
+
+    public static void publishEvent(VISABFileViewedEvent event) {
+        new GeneralEventBus().publish(event);
     }
 }

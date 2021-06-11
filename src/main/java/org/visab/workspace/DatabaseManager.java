@@ -6,6 +6,9 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.eventbus.GeneralEventBus;
+import org.visab.eventbus.IPublisher;
+import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.util.StringFormat;
 import org.visab.util.VISABUtil;
@@ -14,28 +17,25 @@ import org.visab.util.VISABUtil;
  * The DatabaseManager that is used for deleting/adding/removing VISAB files.
  * TODO: Check if file name already exists in list of saved files.
  */
-public class DatabaseManager {
+public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
 
     public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
 
-    /**
-     * A list of files that were recently saved via SessionListeners or Database
-     * View.
-     */
-    private List<SavedFileInformation> savedFiles = new ArrayList<>();
-
     private static Logger logger = LogManager.getLogger(DatabaseManager.class);
 
-    // TODO: Somehow DATABASE_PATH is null on this call. Since static variables are
-    // initialized the first time the class if references (would be new
-    // DatabaseManager() here), I dont know how this is possible at all.
     private static DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
+
+    /**
+     * A list of file information for files that were recently saved via
+     * SessionListeners or Database View.
+     */
+    private List<SavedFileInformation> savedFiles = new ArrayList<>();
 
     /**
      * Loads a file that was saved by a session listener during the current runtime.
      * 
-     * @param sessionId
-     * @return
+     * @param sessionId The sessionId of the session for which the file was saved
+     * @return The saved file if there was one, null else
      */
     public IVISABFile loadSessionFile(UUID sessionId) {
         for (var saveInfo : savedFiles) {
@@ -49,7 +49,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Deletes a VISAB file from the database
+     * Deletes a VISAB file from the database.
      * 
      * @param fileName The name of the file
      * @param game     The game of the file
@@ -91,7 +91,7 @@ public class DatabaseManager {
 
     /**
      * Saves a VISAB file. When calling from SessionListeners, use the overload
-     * containing the sessionId.
+     * containing the sessionId as 3rd parameter.
      * 
      * @param file     The file to save
      * @param fileName The name of the file
@@ -104,11 +104,13 @@ public class DatabaseManager {
 
         var success = repo.saveFileDB(file, fileName);
 
-        if (success) {
+        if (!success) {
+            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
+        } else {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
             savedFiles.add(new SavedFileInformation(fileName, file.getGame()));
-        } else {
-            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
+            var event = new VISABFileSavedEvent(file, false);
+            publish(event);
         }
 
         return success;
@@ -129,14 +131,21 @@ public class DatabaseManager {
             fileName += ".visab2";
 
         var success = repo.saveFileDB(file, fileName);
-        if (success) {
+        if (!success) {
+            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
+        } else {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
             savedFiles.add(new SavedFileInformation(fileName, file.getGame(), sessionId));
-        } else {
-            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
+            var event = new VISABFileSavedEvent(file, true);
+            publish(event);
         }
 
         return success;
+    }
+
+    @Override
+    public void publish(VISABFileSavedEvent event) {
+        GeneralEventBus.getInstance().publish(event);
     }
 
 }
