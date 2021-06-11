@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.gui.GUIMain;
 import org.visab.util.StreamUtil;
 import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
@@ -21,8 +20,8 @@ import org.visab.workspace.config.model.ViewConfig;
  * TODO: Allowed games has to be added to settings.
  */
 public class ConfigManager {
-	
-	// Logger needs .class for each class to use for log traces
+
+    // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(ConfigManager.class);
 
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
@@ -134,7 +133,7 @@ public class ConfigManager {
         var loadedMappings = repo.loadMappings(MAPPING_PATH);
 
         if (loadedMappings == null) {
-        	logger.info("User mappings do not exist yet, loading defaults.");
+            logger.info("User mappings do not exist yet, loading defaults.");
             // Load the default file. Save it to file system. Load again.
             var defaultPath = VISABUtil.getResourcePath("/configs/classMapping_DEFAULT.json");
             var defaultJson = repo.readFileContents(defaultPath);
@@ -171,9 +170,9 @@ public class ConfigManager {
      * @return Object of the loaded settings.
      */
     public UserSettings loadSettings() {
-    	UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         if (loadedSettings == null) {
-        	logger.info("User settings do not exist yet, loading defaults.");
+            logger.info("User settings do not exist yet, loading defaults.");
             String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
             String defaultSettings = repo.readFileContents(defaultPath);
             repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
