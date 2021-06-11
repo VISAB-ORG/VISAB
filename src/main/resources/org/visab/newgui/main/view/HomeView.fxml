@@ -14,17 +14,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
-<?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import org.visab.newgui.control.FileExplorer?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.main.view.HomeView">
    <children>
@@ -135,6 +130,15 @@
                         </Menu>
                      </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Old GUI">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#openMain" text="Main" />
+                      <MenuItem mnemonicParsing="false" onAction="#openStatisticsViewer" text="StatisticsViewer" />
+                      <MenuItem mnemonicParsing="false" onAction="#openPathViewer" text="PathViewer" />
+                      <MenuItem mnemonicParsing="false" onAction="#openAbout" text="About" />
+                      <MenuItem mnemonicParsing="false" onAction="#openHelp" text="Help" />
+                    </items>
+                  </Menu>
               </menus>
                <BorderPane.margin>
                   <Insets />
@@ -252,7 +256,7 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <FileExplorer fx:id="fileExplorer"/>
+                        <!-- <FileExplorer fx:id="fileExplorer"/> -->
                         <GridPane GridPane.columnIndex="1">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -264,11 +268,11 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add Files" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#addFilesAction" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addFilesAction" text="Add Files" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteFileAction" text="Delete file" GridPane.rowIndex="1" />
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Show in explorer" onAction="#showInExplorerAction" />
-                                <Button onAction="#refreshFileExplorer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Refresh" GridPane.columnIndex="1" />
-                                <Button mnemonicParsing="false" text="Rename" GridPane.columnIndex="2" onAction="#renameFileAction" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showInExplorerAction" text="Show in explorer" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#refreshFileExplorer" text="Refresh" GridPane.columnIndex="1" />
+                                <Button mnemonicParsing="false" onAction="#renameFileAction" text="Rename" GridPane.columnIndex="2" />
                             </children>
                         </GridPane>
                     </children>
