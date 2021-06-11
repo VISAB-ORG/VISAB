@@ -32,21 +32,6 @@ public class DatabaseManager {
     private static DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
 
     /**
-     * Returns the fileName for a sessionId.
-     * 
-     * @param sessionId The sessionId
-     * @return The fileName if found, "" else
-     */
-    public String getSessionFileName(UUID sessionId) {
-        for (var saveInfo : savedFiles) {
-            if (saveInfo.isSavedByListener() && saveInfo.getSessionId().equals(sessionId))
-                return saveInfo.getFileName();
-        }
-
-        return "";
-    }
-
-    /**
      * Loads a file that was saved by a session listener during the current runtime.
      * 
      * @param sessionId

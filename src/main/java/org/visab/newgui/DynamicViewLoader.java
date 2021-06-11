@@ -107,17 +107,12 @@ public final class DynamicViewLoader {
                 showWindow(root, "TODO: LIVE");
             }
         } else {
-            var dbManager = Workspace.getInstance().getDatabaseManager();
-            var fileName = dbManager.getSessionFileName(sessionId);
-            if (!fileName.isBlank()) {
-                var file = Workspace.getInstance().getDatabaseManager().loadFile(fileName, game);
-                if (file != null)
-                    loadAndShowStatisticsView(game, file);
-            }
+            var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
+            if (file != null)
+                loadAndShowStatisticsView(game, file);
         }
     }
- 
-    
+
     /**
      * Creates a window by creating a new stage and adding a scene of the parent to
      * it. Then shows it.
