@@ -13,7 +13,9 @@ import org.visab.util.StreamUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart.Series;
 
+// TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
@@ -32,10 +34,25 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return planUsageScript;
     }
 
+    private Series<Double, Integer> killsScript = new Series<>();
+    private Series<Double, Integer> killsCBR = new Series<>();
+
+    public CBRShooterStatisticsViewModel() {
+        playerKillsSeries.add(killsCBR);
+        playerKillsSeries.add(killsScript);
+    }
+
+    private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
+
+    public ObservableList<Series<Double, Integer>> getPlayerKillsSeries() {
+        return playerKillsSeries;
+    }
+
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
         // Updates the pie charts for plan usage
         updatePlanUsage(newStatistics);
+        updatePlayerStatistics(newStatistics);
         overviewStatistics.add(mapToRow(newStatistics));
     }
 
@@ -73,6 +90,20 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 else
                     planUsageScript.add(data);
             }
+        }
+    }
+
+    // TODO: Calculate the total time.
+    private void updatePlayerStatistics(CBRShooterStatistics newStatistics) {
+        for (var player : newStatistics.getPlayers()) {
+            var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
+            newData.setYValue(player.getStatistics().getFrags());
+            newData.setXValue(Double.valueOf(newStatistics.getRoundTime()));
+
+            if (player.getIsCBR())
+                killsCBR.getData().add(newData);
+            else
+                killsScript.getData().add(newData);
         }
     }
 

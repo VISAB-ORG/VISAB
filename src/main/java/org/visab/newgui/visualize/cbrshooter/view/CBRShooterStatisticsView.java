@@ -12,6 +12,7 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.TableView;
 
 public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsViewModel>, Initializable {
@@ -25,6 +26,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @FXML
     CustomLabelPieChart planUsageScript;
 
+    @FXML
+    LineChart<Double, Integer> playerKills;
+
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
 
@@ -32,13 +36,16 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     public void initialize(URL location, ResourceBundle resources) {
         planUsageCBR.setData(viewModel.getPlanUsageCBR());
         planUsageScript.setData(viewModel.getPlanUsageScript());
-        // TODO: remove this
-        overviewTable.setItems(viewModel.getOverviewStatistics());
-
         // Set the label format for pie charts
         var df = new DecimalFormat("#.##");
         planUsageCBR.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
         planUsageScript.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
+
+        playerKills.setData(viewModel.getPlayerKillsSeries());
+
+        // TODO: remove this
+        overviewTable.setItems(viewModel.getOverviewStatistics());
+
     }
 
 }
