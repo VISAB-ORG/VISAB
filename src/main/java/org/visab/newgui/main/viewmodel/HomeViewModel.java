@@ -15,6 +15,7 @@ import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.main.MainScope;
 import org.visab.newgui.sessionoverview.view.SessionOverviewView;
+import org.visab.newgui.settings.SettingsView;
 import org.visab.util.FileSizeHelper;
 import org.visab.util.StreamUtil;
 import org.visab.util.SystemSettings;
@@ -28,7 +29,10 @@ import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
+import javafx.stage.Stage;
 
 @ScopeProvider(MainScope.class)
 public class HomeViewModel extends ViewModelBase {
@@ -36,7 +40,127 @@ public class HomeViewModel extends ViewModelBase {
     @InjectScope
     MainScope scope;
 
+    // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
+    // ----- Command class variables -----
+    private Command openMain;
+    private Command openStatisticsViewer;
+    private Command openPathViewer;
+    private Command openHelp;
+    private Command openAbout;
+
+    // ----- Command methods -----
+    public Command openMain() {
+        if (openMain == null) {
+            openMain = runnableCommand(() -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/MainWindow.fxml"));
+                Scene scene;
+                try {
+                    scene = new Scene(fxmlLoader.load(), 1200, 1000);
+                    Stage stage = new Stage();
+                    stage.setTitle("Old Main");
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+        }
+        return openMain;
+    }
+
+    public Command openStatisticsViewer() {
+        if (openStatisticsViewer == null) {
+            openStatisticsViewer = runnableCommand(() -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/StatisticsWindow.fxml"));
+                Scene scene;
+                try {
+                    scene = new Scene(fxmlLoader.load(), 1200, 1000);
+                    Stage stage = new Stage();
+                    stage.setTitle("Old StatisticsViewer");
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        return openStatisticsViewer;
+    }
+
+    public Command openPathViewer() {
+        if (openPathViewer == null) {
+            openPathViewer = runnableCommand(() -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/PathViewerWindow.fxml"));
+                Scene scene;
+                try {
+                    scene = new Scene(fxmlLoader.load(), 1200, 1000);
+                    Stage stage = new Stage();
+                    stage.setTitle("Old PathViewer");
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        return openPathViewer;
+    }
+
+    public Command openAbout() {
+        if (openAbout == null) {
+            openAbout = runnableCommand(() -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/AboutWindow.fxml"));
+                Scene scene;
+                try {
+                    scene = new Scene(fxmlLoader.load(), 1200, 1000);
+                    Stage stage = new Stage();
+                    stage.setTitle("Old About");
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        return openAbout;
+    }
+
+    public Command openHelp() {
+        if (openHelp == null) {
+            openHelp = runnableCommand(() -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/HelpWindow.fxml"));
+                Scene scene;
+                try {
+                    scene = new Scene(fxmlLoader.load(), 1200, 1000);
+                    Stage stage = new Stage();
+                    stage.setTitle("New Window");
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        return openHelp;
+    }
+    // ----- End of deprecated VISAB 1.0 GUI code -----
+
     private Command openApiDashboard;
+    private Command openSettings;
 
     public Command openApi() {
         if (openApiDashboard == null) {
@@ -46,6 +170,16 @@ public class HomeViewModel extends ViewModelBase {
         }
 
         return openApiDashboard;
+    }
+
+    public Command openSettings() {
+        if (openSettings == null) {
+            openSettings = runnableCommand(() -> {
+                DynamicViewLoader.showView(SettingsView.class, "Settings");
+            });
+        }
+
+        return openSettings;
     }
 
     /** REGION: DATABASE VIEW */

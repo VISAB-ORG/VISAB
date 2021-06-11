@@ -36,7 +36,7 @@
                         </ImageView>
                      </graphic>
                      <items>
-                        <Menu fx:id="homeMenu1" mnemonicParsing="false" style="-fx-text-fill: white;" text="Home">
+                        <MenuItem fx:id="homeMenuItem" mnemonicParsing="false" style="-fx-text-fill: white;" text="Home">
                            <graphic>
                               <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -44,12 +44,12 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                        </Menu>
+                        </MenuItem>
                      </items>
                 </Menu>
                   <Menu fx:id="apiMenu" mnemonicParsing="false">
                      <items>
-                        <Menu fx:id="apiMenu1" mnemonicParsing="false" onAction="#openApi" text="API Dashboard">
+                        <MenuItem fx:id="apiMenuItem" mnemonicParsing="false" onAction="#openApi" text="API Dashboard">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -57,7 +57,7 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                        </Menu>
+                        </MenuItem>
                      </items>
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
@@ -68,7 +68,7 @@
                      </graphic></Menu>
                   <Menu fx:id="settingsMenu" mnemonicParsing="false">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Settings">
+                        <MenuItem fx:id="settingsMenuItem" mnemonicParsing="false" onAction="#openSettings" text="Settings">
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -99,7 +99,7 @@
                         </ImageView>
                      </graphic>
                      <items>
-                        <Menu fx:id="aboutMenu1" mnemonicParsing="false" text="About">
+                        <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -107,7 +107,7 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                        </Menu>
+                        </MenuItem>
                      </items>
                 </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false">
@@ -119,7 +119,7 @@
                         </ImageView>
                      </graphic>
                      <items>
-                        <Menu fx:id="helpMenu1" mnemonicParsing="false" text="Help">
+                        <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="Help">
                            <graphic>
                               <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -127,7 +127,7 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                        </Menu>
+                        </MenuItem>
                      </items>
                 </Menu>
                 <!-- This menu does only exist for reference of the legacy GUI, will be removed later on -->
