@@ -68,23 +68,22 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
         showWindow(viewTuple.getView(), title);
     }
 
-    /**
-     * Loads and shows a statistics view for the given game. The statistics view is
-     * initialized with the given file.
-     * 
-     * @param game The game to load a statistics view for
-     * @param file The file to visualize
-     */
-    public static void loadAndShowStatisticsView(String game, IVISABFile file) {
+    public static void loadAndShowStatisticsView(String game, String fileName) {
         var viewTupel = DynamicViewLoader.loadStatisticsViewTuple(game);
         var root = viewTupel.getView();
         var vM = (StatisticsViewModelBase<?>) viewTupel.getViewModel();
+
+        var file = Workspace.getInstance().getDatabaseManager().loadFile(fileName, game);
+        if (file == null) {
+            logger.error("DatabaseManager return null file for filename:" + fileName);
+            return;
+        }
 
         vM.initialize(file);
 
         showWindow(root, "TODO: NOT LIVE");
 
-        var event = new VISABFileViewedEvent(file);
+        var event = new VISABFileViewedEvent(fileName, game);
         publishEvent(event);
     }
 
@@ -113,9 +112,9 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
                 showWindow(root, "TODO: LIVE");
             }
         } else {
-            var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
-            if (file != null)
-                loadAndShowStatisticsView(game, file);
+            var fileName = Workspace.getInstance().getDatabaseManager().getSessionFileName(sessionId);
+            if (fileName != "")
+                loadAndShowStatisticsView(game, fileName);
         }
     }
 

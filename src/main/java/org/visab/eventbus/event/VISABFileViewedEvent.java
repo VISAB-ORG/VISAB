@@ -3,20 +3,26 @@ package org.visab.eventbus.event;
 import java.time.LocalDateTime;
 
 import org.visab.eventbus.IEvent;
-import org.visab.globalmodel.IVISABFile;
 
 public class VISABFileViewedEvent implements IEvent {
 
-    private IVISABFile file;
-
     private LocalDateTime viewedDate = LocalDateTime.now();
 
-    public VISABFileViewedEvent(IVISABFile file) {
-        this.file = file;
+    private String fileName;
+
+    private String game;
+
+    public VISABFileViewedEvent(String fileName, String game) {
+        this.fileName = fileName;
+        this.game = game;
     }
 
-    public IVISABFile getFile() {
-        return file;
+    public String getGame() {
+        return game;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public LocalDateTime getViewedDate() {

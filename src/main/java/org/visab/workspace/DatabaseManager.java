@@ -48,6 +48,14 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         return null;
     }
 
+    public String getSessionFileName(UUID sessionId) {
+        for (var saveInfo : savedFiles) {
+            if (saveInfo.isSavedByListener() && saveInfo.getSessionId().equals(sessionId))
+                return saveInfo.getFileName();
+        }
+        return "";
+    }
+
     /**
      * Deletes a VISAB file from the database.
      * 
@@ -98,6 +106,11 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
      * @return True if successful
      */
     public boolean saveFile(IVISABFile file, String fileName) {
+        if (file == null) {
+            logger.info("Given visab file was null. Wont save it.");
+            return false;
+        }
+
         // If fileName has no extension, make it .visab2
         if (!fileName.contains("."))
             fileName += ".visab2";
@@ -109,7 +122,7 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         } else {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
             savedFiles.add(new SavedFileInformation(fileName, file.getGame()));
-            var event = new VISABFileSavedEvent(file, false);
+            var event = new VISABFileSavedEvent(fileName, file.getGame());
             publish(event);
         }
 
@@ -126,6 +139,11 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
      * @return True if successful
      */
     public boolean saveFile(IVISABFile file, String fileName, UUID sessionId) {
+        if (file == null) {
+            logger.info("Given visab file was null. Wont save it.");
+            return false;
+        }   
+
         // If fileName has no extension, make it .visab2
         if (!fileName.contains("."))
             fileName += ".visab2";
@@ -136,7 +154,7 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         } else {
             logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
             savedFiles.add(new SavedFileInformation(fileName, file.getGame(), sessionId));
-            var event = new VISABFileSavedEvent(file, true);
+            var event = new VISABFileSavedEvent(fileName, file.getGame(), sessionId);
             publish(event);
         }
 
