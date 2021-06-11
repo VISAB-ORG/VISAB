@@ -6,7 +6,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.visab.api.WebApi;
-import org.visab.gui.GUIMain;
+import org.visab.newgui.AppMain;
 
 import javafx.application.Application;
 
@@ -54,14 +54,14 @@ public class Main {
 
             System.exit(1);
         }
-        
+
         logger.info("Starting VISAB API HTTP server ...");
         WebApi.getInstance().start();
-        
+
         // Start the GUI additionally if desired
         if (mode.equals("gui")) {
             logger.info("Starting VISAB as a GUI application.");
-            new Thread(() -> Application.launch(GUIMain.class)).start();
+            new Thread(() -> Application.launch(AppMain.class)).start();
 
         }
     }
