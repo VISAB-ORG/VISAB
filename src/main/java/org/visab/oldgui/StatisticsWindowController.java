@@ -1,4 +1,4 @@
-package org.visab.gui;
+package org.visab.oldgui;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import org.visab.util.SystemSettings;
 import org.visab.util.VISABUtil;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -63,6 +62,9 @@ public class StatisticsWindowController {
     private Label infoLabel;
 
     @FXML
+    private Button refresh;
+
+    @FXML
     private StackedBarChart<String, Number> planChartCBRBot;
     @FXML
     private CategoryAxis xAxisPlanChartCBRBot;
@@ -80,6 +82,11 @@ public class StatisticsWindowController {
 
     public void setMain(GUIMain main) {
         this.main = main;
+    }
+
+    @FXML
+    public void handleRefresh() {
+        updatePage();
     }
 
     @FXML
@@ -144,8 +151,9 @@ public class StatisticsWindowController {
 
     }
 
-    public void updatePage(ObservableList<String> filesComboBox) {
-        comboBox.getItems().addAll(filesComboBox);
+    public void updatePage() {
+        System.out.println("Updating page.");
+        comboBox.getItems().addAll(VISABUtil.loadFilesFromDatabase());
         comboBox.getSelectionModel().selectFirst();
     }
 

@@ -1,4 +1,4 @@
-package org.visab.gui;
+package org.visab.oldgui;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import org.visab.util.VISABUtil;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -159,6 +158,8 @@ public class PathViewerWindowController {
     private HBox hBoxScriptDeaths;
     @FXML
     private HBox hBoxScriptPlayer;
+    @FXML
+    private Button refresh;
 
     // Initializing additional varibales
     private Image imageScriptBot = new Image(SystemSettings.IMAGE_PATH + "scriptBot.png");
@@ -191,6 +192,11 @@ public class PathViewerWindowController {
 
     public void setMain(GUIMain main) {
         this.main = main;
+    }
+
+    @FXML
+    public void handleRefresh() {
+        updatePage();
     }
 
     // Handle Method for menu navigation
@@ -309,8 +315,8 @@ public class PathViewerWindowController {
 
     }
 
-    public void updatePage(ObservableList<String> filesComboBox) {
-        comboBox.getItems().addAll(filesComboBox);
+    public void updatePage() {
+        comboBox.getItems().addAll(VISABUtil.loadFilesFromDatabase());
         comboBox.getSelectionModel().selectFirst();
     }
 
