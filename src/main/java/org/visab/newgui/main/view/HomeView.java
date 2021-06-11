@@ -13,7 +13,6 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -43,13 +42,13 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     private MenuItem helpMenuItem;
     @FXML
-    private ListView workspaceList;
-    @FXML
     private Button uploadButton;
     @FXML
     private Button deleteButton;
     @FXML
     private Button visualizeButton;
+    @FXML
+    private Button refreshButton;
 
     // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
     // ----- Command class variables -----
@@ -110,7 +109,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     /**
      * The explorer view
      */
-    // @FXML
+    @FXML
     FileExplorer fileExplorer;
 
     @FXML
@@ -126,6 +125,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     public void renameFileAction() {
         viewModel.renameFileCommand().execute();
+        refreshFileExplorer();
     }
 
     @FXML
@@ -139,8 +139,6 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 
     @FXML
     public void refreshFileExplorer() {
-        // Placeholder to keep fileExplorer != null
-        fileExplorer = new FileExplorer();
         fileExplorer.setRoot(null);
 
         var root = viewModel.getFreshBaseFile();
@@ -161,6 +159,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 
         viewModel.selectedExplorerFileProperty().bind(fileExplorer.getSelectionModel().selectedItemProperty());
 
+        // TODO: Check if this is still necessary
         // After the primaryStage.show() was called from AppMain.
         // Has to be called here, because the elements we want to reference, are only
         // loaded upon the stage being shown.
