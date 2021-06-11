@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.api.controller.FileController;
 import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.MapController;
 import org.visab.api.controller.SessionController;
@@ -69,6 +70,8 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("send/statistics", StatisticsController.class);
         addRoute("send/map", MapController.class);
         addRoute("games", GameSupportController.class);
+        addRoute("file/get", FileController.class);
+        addRoute("file/send", FileController.class);
     }
 
     public SessionAdministration getSessionAdministration() {

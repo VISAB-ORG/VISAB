@@ -20,7 +20,7 @@ public class DatabaseManager {
 
     /**
      * A list of files that were recently saved via SessionListeners or Database
-     * Workspace View.
+     * View.
      */
     private List<SavedFileInformation> savedFiles = new ArrayList<>();
 
@@ -29,8 +29,7 @@ public class DatabaseManager {
     // TODO: Somehow DATABASE_PATH is null on this call. Since static variables are
     // initialized the first time the class if references (would be new
     // DatabaseManager() here), I dont know how this is possible at all.
-    private DatabaseRepository repo = new DatabaseRepository(
-            VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database"));
+    private static DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
 
     /**
      * Returns the fileName for a sessionId.
@@ -45,6 +44,23 @@ public class DatabaseManager {
         }
 
         return "";
+    }
+
+    /**
+     * Loads a file that was saved by a session listener during the current runtime.
+     * 
+     * @param sessionId
+     * @return
+     */
+    public IVISABFile loadSessionFile(UUID sessionId) {
+        for (var saveInfo : savedFiles) {
+            if (saveInfo.isSavedByListener() && saveInfo.getSessionId().equals(sessionId)) {
+                var file = loadFile(saveInfo.getFileName(), saveInfo.getGame());
+
+                return file;
+            }
+        }
+        return null;
     }
 
     /**
@@ -109,7 +125,7 @@ public class DatabaseManager {
         } else {
             logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
         }
-        
+
         return success;
     }
 
