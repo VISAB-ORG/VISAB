@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
+import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.JsonConvert;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
@@ -58,6 +59,10 @@ public class FileController extends HTTPControllerBase {
 
         if (sessionId == null)
             return getBadRequestResponse("Could not parse uuid!");
+
+        if (SessionListenerAdministration.getSessionListener(sessionId) != null)
+            return getBadRequestResponse(
+                    "The session for the given sessionId is stil active and therefore no file was saved yet. Try querying it again later.");
 
         var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
         if (file == null)
