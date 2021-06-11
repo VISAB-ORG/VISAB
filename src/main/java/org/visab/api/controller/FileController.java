@@ -18,19 +18,12 @@ public class FileController extends HTTPControllerBase {
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        var endpointAdress = uriResource.getUri().replace("session/", "");
+        var endpointAdress = uriResource.getUri().replace("file/", "");
 
-        // Decide handlers based on uri
-        switch (endpointAdress) {
-        case "send":
-            return receiveFile(session);
-
-        case "get":
+        if (endpointAdress.equals("get"))
             return sendFile(session);
-
-        default:
+        else
             return getNotFoundResponse(uriResource);
-        }
     }
 
     private Response receiveFile(IHTTPSession session) {
@@ -75,7 +68,12 @@ public class FileController extends HTTPControllerBase {
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return getBadRequestResponse("Post request are not supported for getting/sending files!");
+        var endpointAdress = uriResource.getUri().replace("file/", "");
+
+        if (endpointAdress.equals("send"))
+            return receiveFile(session);
+        else
+            return getNotFoundResponse(uriResource);
     }
 
 }
