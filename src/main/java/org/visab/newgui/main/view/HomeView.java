@@ -125,7 +125,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     public void renameFileAction() {
         viewModel.renameFileCommand().execute();
-        refreshFileExplorer();
+        fileExplorer.refresh();
     }
 
     @FXML
