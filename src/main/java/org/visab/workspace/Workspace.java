@@ -15,8 +15,7 @@ public class Workspace {
      */
     private static Workspace instance;
 
-    public static final String WORKSPACE_PATH = VISABUtil.combinePath(VISABUtil.getRunningJarRootDirPath(),
-            "workspace");
+    public static final String WORKSPACE_PATH = VISABUtil.combinePath(System.getProperty("user.dir"), "workspace");
 
     /**
      * Gets the singelton instance
