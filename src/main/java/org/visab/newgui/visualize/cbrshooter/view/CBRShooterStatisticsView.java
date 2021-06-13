@@ -12,6 +12,7 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
 public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsViewModel>, Initializable {
@@ -25,6 +26,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @FXML
     CustomLabelPieChart planUsageScript;
 
+    @FXML
+    Label snapshotsPerSecond;
+
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
 
@@ -34,6 +38,8 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         planUsageScript.setData(viewModel.getPlanUsageScript());
         // TODO: remove this
         overviewTable.setItems(viewModel.getOverviewStatistics());
+
+        snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerSecondProperty().asString());
 
         // Set the label format for pie charts
         var df = new DecimalFormat("#.##");

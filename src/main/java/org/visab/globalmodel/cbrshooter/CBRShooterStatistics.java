@@ -24,9 +24,27 @@ public class CBRShooterStatistics implements IStatistics {
     private int round;
     private float roundTime;
     private Vector2 weaponPosition;
+    private float totalTime;
+    private float speed;
 
     public Vector2 getAmmunitionPosition() {
         return ammunitionPosition;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(float totalTime) {
+        this.totalTime = totalTime;
     }
 
     public List<PlayerInformation> getPlayers() {
