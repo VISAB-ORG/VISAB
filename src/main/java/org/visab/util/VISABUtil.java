@@ -158,6 +158,21 @@ public final class VISABUtil {
     }
 
     /**
+     * This method properly checks from within code, if the application is ran as a
+     * jar or not.
+     * 
+     * @return
+     */
+    public static boolean isRunningFromJar() {
+        String className = Main.class.getName().replace('.', '/');
+        String classJar = Main.class.getResource("/" + className + ".class").toString();
+        if (classJar.startsWith("jar:")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Helper method for loading files from the resources/ directory. Converts a
      * path relative to the resources/ directory to the full path at runtime.
      * 
@@ -165,6 +180,7 @@ public final class VISABUtil {
      * @return The full path at runtime
      */
     public static String getResourcePath(String path) {
+
         if (!path.startsWith("/"))
             path = "/" + path;
 
