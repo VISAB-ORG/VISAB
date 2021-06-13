@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.api.WebApi;
 import org.visab.util.StreamUtil;
 import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
@@ -233,35 +234,72 @@ public class ConfigManager {
     }
 
     /**
-     * Syntactic sugar to wrap the access on the settings object.
+     * Syntactic sugar to wrap the access on the settings object that also provides
+     * detailed logging information according to the changes made.
      * 
      * Updates the webApiPort.
      * 
      * @param port The new port.
      */
     public void updateWebApiPort(int port) {
+        int previousPort = this.settings.getWebApiPort();
+
+        if (port != previousPort) {
+            logger.info("Changed webApiPort from " + previousPort + " to " + port + ".");
+            // WebApi needs to be restarted because the port changed
+            WebApi.getInstance().restart();
+        }
+
         this.settings.setWebApiPort(port);
     }
 
     /**
-     * Syntactic sugar to wrap the access on the settings object.
+     * Syntactic sugar to wrap the access on the settings object that also provides
+     * detailed logging information according to the changes made.
      * 
      * Updates the sessionTimeout time.
      * 
      * @param timeout The new sessionTimeout.
      */
     public void updateSessionTimeout(int timeout) {
+        int oldTimeout = this.settings.getSessionTimeout();
+        if (timeout == 0) {
+            logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
+            timeout = oldTimeout;
+        } else if (timeout > 0 && timeout != oldTimeout) {
+            logger.info("Changed sessionTimeout from " + oldTimeout + "seconds to " + timeout + "seconds.");
+            // SessionWatchdog needs to be restarted because the timeout changed
+            WebApi.getInstance().restartSessionWatchdog();
+        }
+
         this.settings.setSessionTimeout(timeout);
     }
 
     /**
-     * Syntactic sugar to wrap the access on the settings object.
+     * Syntactic sugar to wrap the access on the settings object that also provides
+     * detailed logging information according to the changes made.
      * 
-     * Updates the list auf allowed games.
+     * Updates the list of allowed games.
      * 
      * @param games The new allowed games.
      */
     public void updateAllowedGames(ArrayList<String> games) {
+
+        // Check if current version of allowed games contains a new game
+        for (String game : games) {
+            if (!this.settings.getAllowedGames().contains(game)) {
+                logger.info("Added new game to allowedGame list: " + game + ".");
+            }
+        }
+        // Check if current version of allowed games is missing a game which was
+        // previously allowed
+        for (String game : this.settings.getAllowedGames()) {
+            if (!games.contains(game)) {
+                logger.info("Removed game: " + game + " from allowedGame list.");
+            }
+        }
+        // Renaming a game will result in both logs to be printed
+
         this.settings.setAllowedGames(games);
     }
 
