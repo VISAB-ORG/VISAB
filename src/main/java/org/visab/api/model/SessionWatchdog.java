@@ -23,8 +23,8 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
     /**
      * 
      * @param statusesReference The reference to the list were status will be added
-     *                        to. Lists added to this collection will be checked for
-     *                        timeout.
+     *                          to. Lists added to this collection will be checked
+     *                          for timeout.
      */
     public SessionWatchdog(List<SessionStatus> statusesReference) {
         this.statuses = statusesReference;
@@ -43,7 +43,6 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
                         if (shouldTimeout(status)) {
                             status.setIsActive(false);
                             status.setSessionClosed(LocalTime.now());
-
                             var event = new SessionClosedEvent(status.getSessionId(), status, true);
                             publish(event);
                         }

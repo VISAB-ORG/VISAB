@@ -35,15 +35,23 @@ public class SessionController extends HTTPControllerBase {
     private Response closeSession(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
 
-        if (sessionId == null)
+        var responseMessage = "Closed session successfully: ";
+        if (sessionId == null) {
+            responseMessage = "Either no sessionid given or could not parse uuid, cannot close session!";
+            logger.error(responseMessage);
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
+        }
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getOkResponse("Session was already closed!");
+        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId)) {
+            responseMessage = "Session: " + sessionId + " is already closed!";
+            logger.error(responseMessage);
+            return getOkResponse(responseMessage);
+        }
 
         WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
 
-        return getOkResponse("Closed the session!");
+        logger.info(responseMessage + sessionId);
+        return getOkResponse(responseMessage + sessionId);
     }
 
     /**
@@ -107,20 +115,31 @@ public class SessionController extends HTTPControllerBase {
      * @return A Http response
      */
     private Response openSession(IHTTPSession httpSession) {
+        logger.info("Trying to open a session for the VISAB WebApi.");
+
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
-        if (game == "")
-            return getBadRequestResponse("No game given!");
+        // If nothing fails, this is the default case
+        var responseMessage = "Session opened for game '" + game;
 
-        if (!AssignByGame.gameIsSupported(game))
-            return getBadRequestResponse("Game is not supported!");
+        if (game == "") {
+            responseMessage = "No game name provided, cannot open session.";
+            logger.error(responseMessage);
+            return getBadRequestResponse(responseMessage);
+        }
 
-        // Create a new sessionId
+        if (!AssignByGame.gameIsSupported(game)) {
+            responseMessage = "Given game name '" + game + "' is not supported, cannot open session.";
+            logger.error(responseMessage);
+            return getBadRequestResponse(responseMessage);
+        }
+
         var newSessionId = UUID.randomUUID();
 
         WebApi.getInstance().getSessionAdministration().openSession(newSessionId, game,
                 httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
+        logger.error(responseMessage + "' , ID: " + newSessionId);
         return getJsonResponse(newSessionId);
     }
 
