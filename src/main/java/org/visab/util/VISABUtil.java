@@ -9,16 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.main.Main;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
@@ -169,15 +168,15 @@ public final class VISABUtil {
             path = "/" + path;
 
         var fullPath = Main.class.getResource(path).getPath();
-        
+
         var os = System.getProperty("os.name");
-        
+
         // Unix file path needs the slash at beginning
         if (os.startsWith("Windows")) {
-        	if (fullPath.startsWith("/"))
-        		fullPath = fullPath.substring(1, fullPath.length());
+            if (fullPath.startsWith("/"))
+                fullPath = fullPath.substring(1, fullPath.length());
         }
-        
+
         return fullPath;
     }
 
@@ -208,6 +207,32 @@ public final class VISABUtil {
             getAllInterfaces(superClass, list);
 
         return list;
+    }
+
+    /**
+     * !! COPIED FROM OLD VISAB GUI TO HAVE EVERYTHING TOGETHER !!
+     * 
+     * @TODO: Delete this
+     * 
+     *        This method is responsible for retreiving the files located in the
+     *        location-specific database.
+     * 
+     * @return an observable list of file names that are displayed in the GUI.
+     */
+    public static ObservableList<String> loadFilesFromDatabase() {
+        File database = new File(SystemSettings.DATA_PATH);
+        File[] visabFiles = database.listFiles();
+        ObservableList<String> filesComboBox = FXCollections.observableArrayList();
+
+        // Check if there are files in the database or the database does even exist
+        if (visabFiles != null) {
+            for (int i = 0; i < visabFiles.length; i++) {
+                if (visabFiles[i].isFile()) {
+                    filesComboBox.add(visabFiles[i].getName());
+                }
+            }
+        }
+        return filesComboBox;
     }
 
 }

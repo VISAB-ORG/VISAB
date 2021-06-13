@@ -9,12 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Window;
 
 // TODO: Include the style sheets here
 public class DialogHelper {
@@ -118,27 +118,28 @@ public class DialogHelper {
      */
     public List<File> showFileDialog(String directoryPath, Map<String, String> allowedExtensions, String title) {
         var files = new ArrayList<File>();
-        if (parentWindow == null) {
-            var errorMessage = "Tried to open Dialog without having set parent window!\n"
-                    + "To use the DialogHelper, you first have to set the parent window from the View by calling "
-                    + "viewModel.getDialogHelper().setParentWindow()";
-            logger.error(errorMessage);
-        } else {
-            var fileChooser = new FileChooser();
 
-            for (var extension : allowedExtensions.entrySet()) {
-                var filter = new ExtensionFilter(extension.getKey(), extension.getValue());
-                fileChooser.getExtensionFilters().add(filter);
-            }
+//        if (parentWindow == null) {
+//            var errorMessage = "Tried to open Dialog without having set parent window!\n"
+//                    + "To use the DialogHelper, you first have to set the parent window from the View by calling "
+//                    + "viewModel.getDialogHelper().setParentWindow()";
+//            logger.error(errorMessage);
+//        } else {
+        var fileChooser = new FileChooser();
 
-            fileChooser.setTitle(title);
-            fileChooser.setInitialDirectory(new File(directoryPath));
-
-            var result = fileChooser.showOpenMultipleDialog(parentWindow);
-
-            if (result != null)
-                files.addAll(result);
+        for (var extension : allowedExtensions.entrySet()) {
+            var filter = new ExtensionFilter(extension.getKey(), extension.getValue());
+            fileChooser.getExtensionFilters().add(filter);
         }
+
+        fileChooser.setTitle(title);
+        fileChooser.setInitialDirectory(new File(directoryPath));
+
+        var result = fileChooser.showOpenMultipleDialog(parentWindow);
+
+        if (result != null)
+            files.addAll(result);
+        // }
 
         return files;
     }

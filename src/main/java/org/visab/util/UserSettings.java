@@ -17,8 +17,6 @@ public class UserSettings {
 
     private int webApiPort;
 
-    private String webApiHostName;
-
     private int sessionTimeout;
 
     private ArrayList<String> allowedGames;
@@ -44,29 +42,6 @@ public class UserSettings {
             }
         }
         this.webApiPort = port;
-    }
-
-    /**
-     * Gets the WebApiHostName.
-     * 
-     * @return The base address of the web api.
-     */
-    public String getWebApiHostName() {
-        return webApiHostName;
-    }
-
-    /**
-     * Sets the webApiHostName
-     * 
-     * @param hostName The hostName from the webApi.
-     */
-    public void setWebApiHostName(String hostName) {
-        if (this.getWebApiHostName() != null) {
-            if (!hostName.equals(this.getWebApiHostName())) {
-                logger.info("Changed webApiHostName from " + this.webApiHostName + " to " + hostName + ".");
-            }
-        }
-        this.webApiHostName = hostName;
     }
 
     /**

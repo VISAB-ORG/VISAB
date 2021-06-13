@@ -1,4 +1,4 @@
-package org.visab.gui;
+package org.visab.oldgui;
 
 import java.io.File;
 import java.net.URISyntaxException;
