@@ -4,12 +4,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -97,19 +104,6 @@ public final class VISABUtil {
     }
 
     /**
-     * Gets the path to the directory where the currently running jar file is
-     * located in.
-     *
-     * @return The path to the directory of the currently running jar file.
-     */
-    public static String getRunningJarRootDirPath() {
-        var runningJarFile = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        var pathToJar = runningJarFile.getAbsolutePath();
-
-        return pathToJar.replace(runningJarFile.getName(), "");
-    }
-
-    /**
      * Combines path strings to one string
      * 
      * @param path The base path
@@ -172,29 +166,18 @@ public final class VISABUtil {
         return false;
     }
 
-    /**
-     * Helper method for loading files from the resources/ directory. Converts a
-     * path relative to the resources/ directory to the full path at runtime.
-     * 
-     * @param path The path relative to the resources/ directory
-     * @return The full path at runtime
-     */
-    public static String getResourcePath(String path) {
-
+    public static String readResourceContents(String path) {
         if (!path.startsWith("/"))
             path = "/" + path;
 
-        var fullPath = Main.class.getResource(path).getPath();
-
-        var os = System.getProperty("os.name");
-
-        // Unix file path needs the slash at beginning
-        if (os.startsWith("Windows")) {
-            if (fullPath.startsWith("/"))
-                fullPath = fullPath.substring(1, fullPath.length());
+        byte[] data = null;
+        try (var stream = Main.class.getResourceAsStream(path)) {
+            data = stream.readAllBytes();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return fullPath;
+        return new String(data, StandardCharsets.UTF_8);
     }
 
     /**
