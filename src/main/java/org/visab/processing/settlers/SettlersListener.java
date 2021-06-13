@@ -7,23 +7,20 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersMapImage;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.statistics.ILiveViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
 
 /**
- * The SettlersListener class, that is responsible for listening to
- * information sent by the Unity Settlers of Catan game and creating 
- * files of that information.
+ * The SettlersListener class, that is responsible for listening to information
+ * sent by the Unity Settlers of Catan game and creating files of that
+ * information.
  *
  * @author leonr
  *
