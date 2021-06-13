@@ -18,9 +18,12 @@ import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
 
 /**
- * The SettlersListener class, that is responsible for listening to information
- * sent by the Unity Settlers of Catan game and creating files of that
- * information.
+ * <<<<<<< HEAD The SettlersListener class, that is responsible for listening to
+ * information sent by the Unity Settlers of Catan game and creating files of
+ * that information. ======= The SettlersListener class, that is responsible for
+ * listening to information sent by the Unity Settlers of Catan game and
+ * creating files of that information. >>>>>>>
+ * 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
  *
  * @author leonr
  *
