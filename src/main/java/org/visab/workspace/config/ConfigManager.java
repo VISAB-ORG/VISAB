@@ -24,6 +24,13 @@ public class ConfigManager {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(ConfigManager.class);
 
+    public static final String JSON_MIME_TYPE = "application/json";
+    public static final String MEDIA_CONTENT_TYPE = JSON_MIME_TYPE;
+    public static final String DATA_PATH_APPENDIX = "database";
+    public static final String CSS_PATH = "/application.css";
+    public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
+    public static final String IMAGE_PATH = "/img/";
+
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
 
     private static final String MAPPING_PATH = "classMapping.json";
@@ -188,17 +195,74 @@ public class ConfigManager {
      * 
      * @param settingsObject The object of the settings.
      */
-    public void saveSettings(UserSettings settingsObject) {
-        repo.saveSettings(settingsObject, SETTINGS_PATH);
+    public void saveSettings() {
+        repo.saveSettings(this.settings, SETTINGS_PATH);
     }
 
     /**
-     * Getter for the UserSettings.
+     * Syntactic sugar to wrap the access on the settings object.
      * 
-     * @return The settingsObject of the user settings.
+     * Getter for the webApiPort.
+     * 
+     * @return The webApiPort.
      */
-    public UserSettings getSettings() {
-        return settings;
+    public int getWebApiPort() {
+        return this.settings.getWebApiPort();
+    }
+
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Getter for the sessionTimeout.
+     * 
+     * @return The sessionTimeout.
+     */
+    public int getSessionTimeout() {
+        return this.settings.getSessionTimeout();
+    }
+
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Getter for the allowedGames.
+     * 
+     * @return The allowedGames.
+     */
+    public ArrayList<String> getAllowedGames() {
+        return this.settings.getAllowedGames();
+    }
+
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Updates the webApiPort.
+     * 
+     * @param port The new port.
+     */
+    public void updateWebApiPort(int port) {
+        this.settings.setWebApiPort(port);
+    }
+
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Updates the sessionTimeout time.
+     * 
+     * @param timeout The new sessionTimeout.
+     */
+    public void updateSessionTimeout(int timeout) {
+        this.settings.setSessionTimeout(timeout);
+    }
+
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Updates the list auf allowed games.
+     * 
+     * @param games The new allowed games.
+     */
+    public void updateAllowedGames(ArrayList<String> games) {
+        this.settings.setAllowedGames(games);
     }
 
 }
