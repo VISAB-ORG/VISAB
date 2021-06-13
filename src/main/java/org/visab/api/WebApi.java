@@ -86,6 +86,16 @@ public class WebApi extends RouterNanoHTTPD {
     }
 
     /**
+     * Restarts the WebApi, SessionListenerFactory and SessionWatchdog
+     * 
+     * @throws IOException if starting the WebApi failed
+     */
+    public void restart() throws IOException {
+        shutdown();
+        start();
+    }
+
+    /**
      * Starts the WebApi, SessionListenerFactory, SessionWatchdog
      */
     @Override
