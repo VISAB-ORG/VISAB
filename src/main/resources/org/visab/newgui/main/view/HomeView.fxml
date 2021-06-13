@@ -198,7 +198,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="379.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="277.0" prefWidth="423.0" HBox.hgrow="ALWAYS">
+                              <HBox fx:id="eraseBorder" alignment="CENTER" prefHeight="277.0" prefWidth="423.0" HBox.hgrow="ALWAYS">
                               <FileExplorer fx:id="fileExplorer" prefHeight="270.0" prefWidth="430.0" >
                               	 <styleClass>
                                     <String fx:value="file-explorer" />

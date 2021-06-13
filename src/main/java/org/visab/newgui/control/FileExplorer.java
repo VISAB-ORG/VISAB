@@ -50,9 +50,13 @@ public class FileExplorer extends TreeTableView<ExplorerFile> {
                 .setCellValueFactory(new TreeItemPropertyValueFactory<ExplorerFile, LocalDateTime>("creationDate"));
         sizeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<ExplorerFile, Long>("size"));
 
+        // full width (pref): 423px
         nameColumn.setText("Filename");
+        nameColumn.setMinWidth(245);
         creationDateColumn.setText("Creation date");
-        sizeColumn.setText("size");
+        creationDateColumn.setMinWidth(118);
+        sizeColumn.setText("Size");
+        sizeColumn.setMinWidth(45);
 
         initColumnPresentation();
 
