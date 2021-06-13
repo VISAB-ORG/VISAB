@@ -29,6 +29,8 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     LineChart<Double, Integer> playerKills;
+    
+    @FXML
     Label snapshotsPerSecond;
 
     @InjectViewModel

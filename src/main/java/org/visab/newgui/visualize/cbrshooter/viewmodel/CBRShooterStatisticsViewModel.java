@@ -1,7 +1,10 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
@@ -96,17 +99,28 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
     }
 
-    // TODO: Calculate the total time.
+    private Map<String, Integer> lastKills = new HashMap<>();
+
     private void updatePlayerStatistics(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
-            var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-            newData.setYValue(player.getStatistics().getFrags());
-            newData.setXValue(Double.valueOf(newStatistics.getRoundTime()));
+            var name = player.getName();
+            if (!lastKills.containsKey(name)) {
+                lastKills.put(name, 0);
+            }
 
-            if (player.getIsCBR())
-                killsCBR.getData().add(newData);
-            else
-                killsScript.getData().add(newData);
+            var kills = player.getStatistics().getFrags();
+            if (lastKills.get(name) != kills) {
+                lastKills.put(name, kills);
+
+                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
+                newData.setYValue(kills);
+                newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
+
+                if (player.getIsCBR())
+                    killsCBR.getData().add(newData);
+                else
+                    killsScript.getData().add(newData);
+            }
         }
     }
 
