@@ -42,11 +42,7 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
         }
 
-<<<<<<< HEAD
         if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId)) {
-=======
-        if (!WebApi.getInstance().getTempThingy().isSessionActive(sessionId)) {
->>>>>>> 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
             responseMessage = "Session: " + sessionId + " is already closed!";
             logger.error(responseMessage);
             return getOkResponse(responseMessage);
@@ -120,24 +116,12 @@ public class SessionController extends HTTPControllerBase {
      */
     private Response openSession(IHTTPSession httpSession) {
         logger.info("Trying to open a session for the VISAB WebApi.");
-<<<<<<< HEAD
 
-=======
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
->>>>>>> 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
         var game = WebApiHelper.extractGame(httpSession.getHeaders());
 
         // If nothing fails, this is the default case
         var responseMessage = "Session opened for game '" + game;
 
-<<<<<<< HEAD
-=======
-        if (sessionId == null) {
-            responseMessage = "Either no sessionid given or could not parse uuid!";
-            logger.error(responseMessage);
-            return getBadRequestResponse(responseMessage);
-        }
->>>>>>> 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
         if (game == "") {
             responseMessage = "No game name provided, cannot open session.";
             logger.error(responseMessage);
@@ -147,28 +131,16 @@ public class SessionController extends HTTPControllerBase {
         if (!AssignByGame.gameIsSupported(game)) {
             responseMessage = "Given game name '" + game + "' is not supported, cannot open session.";
             logger.error(responseMessage);
-            return getBadRequestResponse(game);
-        }
-
-<<<<<<< HEAD
-        var newSessionId = UUID.randomUUID();
-=======
-        if (WebApi.getInstance().getTempThingy().isSessionActive(sessionId)) {
-            responseMessage = "Session with UUID '" + sessionId + "', cannot open a second one.";
-            logger.error(responseMessage);
             return getBadRequestResponse(responseMessage);
         }
->>>>>>> 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
+
+        var newSessionId = UUID.randomUUID();
 
         WebApi.getInstance().getSessionAdministration().openSession(newSessionId, game,
                 httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
-<<<<<<< HEAD
+        logger.error(responseMessage + "' , ID: " + newSessionId);
         return getJsonResponse(newSessionId);
-=======
-        logger.info(responseMessage + " with UUID '" + sessionId);
-        return getOkResponse(responseMessage + " with UUID '" + sessionId);
->>>>>>> 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
     }
 
 }
