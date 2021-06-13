@@ -43,8 +43,6 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
                         if (shouldTimeout(status)) {
                             status.setIsActive(false);
                             status.setSessionClosed(LocalTime.now());
-                            logger.warn("Closing session '" + status.getSessionId() + "' due to timeout of: "
-                                    + Settings.SESSION_TIMEOUT);
                             var event = new SessionClosedEvent(status.getSessionId(), status, true);
                             publish(event);
                         }
