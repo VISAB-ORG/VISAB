@@ -23,8 +23,8 @@ public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
     /**
      * 
      * @param statusesReference The reference to the list were status will be added
-     *                        to. Lists added to this collection will be checked for
-     *                        timeout.
+     *                          to. Lists added to this collection will be checked
+     *                          for timeout.
      */
     public NewSessionWatchdog(List<TransmissionSessionStatus> statusesReference) {
         this.statuses = statusesReference;
@@ -43,7 +43,8 @@ public class NewSessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
                         if (shouldTimeout(status)) {
                             status.setIsActive(false);
                             status.setSessionClosed(LocalTime.now());
-
+                            logger.warn("Closing session '" + status.getSessionId() + "' due to timeout of: "
+                                    + Settings.SESSION_TIMEOUT);
                             var event = new SessionClosedEvent(status.getSessionId(), status, true);
                             publish(event);
                         }
