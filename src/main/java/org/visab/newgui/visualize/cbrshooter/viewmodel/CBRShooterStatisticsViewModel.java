@@ -10,6 +10,8 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.Vector2;
 import org.visab.util.StreamUtil;
 
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
@@ -53,6 +55,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // Updates the pie charts for plan usage
         updatePlanUsage(newStatistics);
         updatePlayerStatistics(newStatistics);
+        snapshotsPerSecond.set(overviewStatistics.size() / newStatistics.getTotalTime());
         overviewStatistics.add(mapToRow(newStatistics));
     }
 
@@ -127,6 +130,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         for (var statistics : file.getStatistics()) {
             notifyStatisticsAdded(statistics);
         }
+    }
+
+    private FloatProperty snapshotsPerSecond = new SimpleFloatProperty();
+
+    public FloatProperty snapshotPerSecondProperty() {
+        return snapshotsPerSecond;
     }
 
 }

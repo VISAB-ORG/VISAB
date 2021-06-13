@@ -11,6 +11,7 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
     <columnConstraints>
@@ -41,6 +42,7 @@
             </yAxis>
         </LineChart>
         <!--<LineChart fx:id="playerKills" title="Player kills"></LineChart>-->
+        <Label fx:id="snapshotsPerSecond"></Label>
         <CustomLabelPieChart fx:id="planUsageCBR" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
         <CustomLabelPieChart fx:id="planUsageScript" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </children>
