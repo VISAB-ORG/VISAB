@@ -76,7 +76,7 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
         var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();
         // If nothing was sent yet (only session openend) wait 30 more seconds until
         // timeout.
-        var timeoutSeconds = Workspace.getInstance().getConfigManager().getSettings().getSessionTimeout();
+        var timeoutSeconds = Workspace.getInstance().getConfigManager().getSessionTimeout();
         if (status.getTotalRequests() == 1)
             timeoutSeconds += 30;
 

@@ -51,7 +51,7 @@ public class WebApi extends RouterNanoHTTPD {
     private SessionWatchdog watchdog;
 
     private WebApi() {
-        super(Workspace.getInstance().getConfigManager().getSettings().getWebApiPort());
+        super(Workspace.getInstance().getConfigManager().getWebApiPort());
         addMappings();
     }
 

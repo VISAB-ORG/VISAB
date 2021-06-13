@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.util.StringFormat;
 import org.visab.util.VISABUtil;
+import org.visab.workspace.config.ConfigManager;
 
 /**
  * The DatabaseManager that is used for deleting/adding/removing VISAB files.
@@ -16,7 +17,8 @@ import org.visab.util.VISABUtil;
  */
 public class DatabaseManager {
 
-    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
+    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH,
+            ConfigManager.DATA_PATH_APPENDIX);
 
     /**
      * A list of files that were recently saved via SessionListeners or Database
@@ -29,8 +31,7 @@ public class DatabaseManager {
     // TODO: Somehow DATABASE_PATH is null on this call. Since static variables are
     // initialized the first time the class if references (would be new
     // DatabaseManager() here), I dont know how this is possible at all.
-    private DatabaseRepository repo = new DatabaseRepository(
-            VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database"));
+    private DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
 
     /**
      * Returns the fileName for a sessionId.
@@ -109,7 +110,7 @@ public class DatabaseManager {
         } else {
             logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
         }
-        
+
         return success;
     }
 

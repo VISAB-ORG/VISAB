@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.util.SystemSettings;
+import org.visab.workspace.config.ConfigManager;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
@@ -59,7 +59,7 @@ public class HelpWindowController extends Application {
     public void handleLoadButton() {
         File file = null;
         try {
-            file = new File(GUIMain.class.getResource(SystemSettings.VISAB_DOC_PATH).toURI());
+            file = new File(GUIMain.class.getResource(ConfigManager.VISAB_DOC_PATH).toURI());
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.main.Main;
+import org.visab.workspace.DatabaseManager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -140,9 +141,9 @@ public final class VISABUtil {
 
     public static void writeFileToDatabase(String fileName, String content) throws URISyntaxException {
 
-        File databaseDir = new File(SystemSettings.DATA_PATH);
+        File databaseDir = new File(DatabaseManager.DATABASE_PATH);
         databaseDir.mkdirs();
-        File saveIntoDatabase = new File(SystemSettings.DATA_PATH + fileName);
+        File saveIntoDatabase = new File(DatabaseManager.DATABASE_PATH + fileName);
 
         BufferedWriter writer;
         try {
@@ -220,7 +221,7 @@ public final class VISABUtil {
      * @return an observable list of file names that are displayed in the GUI.
      */
     public static ObservableList<String> loadFilesFromDatabase() {
-        File database = new File(SystemSettings.DATA_PATH);
+        File database = new File(DatabaseManager.DATABASE_PATH);
         File[] visabFiles = database.listFiles();
         ObservableList<String> filesComboBox = FXCollections.observableArrayList();
 
