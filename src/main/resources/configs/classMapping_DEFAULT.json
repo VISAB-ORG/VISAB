@@ -8,7 +8,7 @@
         "viewConfigurations": [
             {
                 "identifier": "statistics",
-                "classPath": "org.visab.newgui.statistics.cbrshooter.CBRShooterStatisticsView"
+                "classPath": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView"
             }
         ]
     }, {
@@ -20,7 +20,7 @@
         "viewConfigurations": [
             {
                 "identifier": "statistics",
-                "classPath": "org.visab.newgui.statistics.settlers.SettlersStatisticsView"
+                "classPath": "org.visab.newgui.visualize.settlers.view.SettlersStatisticsView"
             }
         ]
     }
