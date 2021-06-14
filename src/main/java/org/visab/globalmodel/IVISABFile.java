@@ -12,5 +12,5 @@ public interface IVISABFile {
 
     String getFileFormatVersion();
 
-    public String getGame();
+    String getGame();
 }

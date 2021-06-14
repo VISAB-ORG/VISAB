@@ -12,22 +12,15 @@ import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
-/**
- * The map controller, used for transmitting data for displaying unity maps in
- * VISABs GUI.
- *
- * @author moritz
- *
- */
-public class MapController extends HTTPControllerBase {
+public class ImageController extends HTTPControllerBase {
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(MapController.class);
+    private static Logger logger = LogManager.getLogger(ImageController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
         return getNotFoundResponse(uriResource,
-                "Get request are not supported when sending map images / map information!");
+                "Get request are not supported when sending images!");
     }
 
     @Override
@@ -63,6 +56,6 @@ public class MapController extends HTTPControllerBase {
 
         WebApi.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
 
-        return getOkResponse("Received Unity map images.");
+        return getOkResponse("Received images.");
     }
 }
