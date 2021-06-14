@@ -54,6 +54,7 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
      */
     public void startFactory() {
         if (!isStarted) {
+            logger.info("Starting SessionListenerFactory.");
             ApiEventBus.getInstance().subscribe(this);
             isStarted = true;
         }
@@ -64,6 +65,7 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
      */
     public void stopFactory() {
         if (isStarted) {
+            logger.info("Stopping SessionListenerFactory.");
             ApiEventBus.getInstance().unsubscribe(this);
             isStarted = false;
         }

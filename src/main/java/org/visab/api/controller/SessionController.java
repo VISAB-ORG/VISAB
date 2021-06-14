@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
-import org.visab.util.AssignByGame;
+import org.visab.workspace.Workspace;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -128,7 +128,7 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse(responseMessage);
         }
 
-        if (!AssignByGame.gameIsSupported(game)) {
+        if (!Workspace.getInstance().getConfigManager().isGameSupported(game)) {
             responseMessage = "Given game name '" + game + "' is not supported, cannot open session.";
             logger.error(responseMessage);
             return getBadRequestResponse(responseMessage);

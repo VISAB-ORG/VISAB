@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
-import org.visab.util.AssignByGame;
+import org.visab.workspace.Workspace;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
@@ -51,7 +51,7 @@ public class MapController extends HTTPControllerBase {
         if (game == "")
             return getBadRequestResponse("No game given!");
 
-        if (!AssignByGame.gameIsSupported(game))
+        if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
         if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))

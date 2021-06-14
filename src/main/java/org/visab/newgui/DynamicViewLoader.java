@@ -10,9 +10,9 @@ import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.StatisticsViewModelBase;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
-import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
+import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
@@ -38,7 +38,7 @@ public final class DynamicViewLoader {
             String game) {
         var className = "";
 
-        var viewMapping = Workspace.getInstance().getConfigManager().getViewMapping(AssignByGame.CBR_SHOOTER_STRING,
+        var viewMapping = Workspace.getInstance().getConfigManager().getViewMapping(ConfigManager.CBR_SHOOTER_STRING,
                 "statistics");
 
         if (viewMapping != null && viewMapping.getClassPath() != null)

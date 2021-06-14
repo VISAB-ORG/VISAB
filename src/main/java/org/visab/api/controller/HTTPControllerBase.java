@@ -3,8 +3,7 @@ package org.visab.api.controller;
 import java.util.Map;
 
 import org.visab.util.JsonConvert;
-import org.visab.util.SystemSettings;
-import org.visab.workspace.Workspace;
+import org.visab.workspace.config.ConfigManager;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -50,7 +49,8 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(Object o) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, SystemSettings.JSON_MIME_TYPE, JsonConvert.serializeObject(o));
+        return NanoHTTPD.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE,
+                JsonConvert.serializeObject(o));
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(String json) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, SystemSettings.JSON_MIME_TYPE, json);
+        return NanoHTTPD.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE, json);
     }
 
     /**
@@ -87,7 +87,8 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getNotFoundResponse(UriResource uriResource, String additionalMessage) {
-        var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found." + "Additional info: [" + additionalMessage + "]";
+        var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found." + "Additional info: ["
+                + additionalMessage + "]";
 
         return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
