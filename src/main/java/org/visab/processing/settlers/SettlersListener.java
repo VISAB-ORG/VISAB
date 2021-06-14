@@ -14,8 +14,8 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
+import org.visab.workspace.config.ConfigManager;
 
 /**
  * <<<<<<< HEAD The SettlersListener class, that is responsible for listening to
@@ -39,7 +39,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
     public SettlersListener(UUID sessionId) {
-        super(AssignByGame.SETTLERS_OF_CATAN_STRING, sessionId);
+        super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
     }
 
     @Override

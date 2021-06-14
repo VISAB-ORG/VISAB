@@ -36,6 +36,9 @@ public class ConfigManager {
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
 
+    public static final String CBR_SHOOTER_STRING = "CBRShooter";
+    public static final String SETTLERS_OF_CATAN_STRING = "Settlers";
+
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_APPENDIX);
 
     private static final String SETTINGS_PATH = "settings.json";
@@ -235,4 +238,7 @@ public class ConfigManager {
         this.settings.setAllowedGames(games);
     }
 
+    public boolean isGameSupported(String game) {
+        return this.settings.getAllowedGames().contains(game);
+    }
 }

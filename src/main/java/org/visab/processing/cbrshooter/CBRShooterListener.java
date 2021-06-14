@@ -14,8 +14,8 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.util.AssignByGame;
 import org.visab.util.StringFormat;
+import org.visab.workspace.config.ConfigManager;
 
 /**
  * The CBRShooterListener class, that is responsible for listening to
@@ -36,7 +36,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
-        super(AssignByGame.CBR_SHOOTER_STRING, sessionId);
+        super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
     }
 
     @Override

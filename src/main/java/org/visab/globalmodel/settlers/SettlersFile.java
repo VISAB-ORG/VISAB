@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.visab.globalmodel.BasicVISABFile;
-import org.visab.util.AssignByGame;
+import org.visab.workspace.config.ConfigManager;
 
 /**
  * This class represents the structure of a VISAB data file
@@ -18,7 +18,7 @@ public class SettlersFile extends BasicVISABFile {
     private List<SettlersStatistics> statistics = new ArrayList<>();
 
     public SettlersFile() {
-        super(AssignByGame.SETTLERS_OF_CATAN_STRING, "2.0");
+        super(ConfigManager.SETTLERS_OF_CATAN_STRING, "2.0");
     }
 
     public List<SettlersStatistics> getStatistics() {
