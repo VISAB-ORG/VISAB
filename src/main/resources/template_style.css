@@ -58,8 +58,8 @@
 }
 
 .tree-table-view {
-	-fx-background-radius: 10;
-	-fx-border-radius: 10;
+	-fx-background-radius: 7;
+	-fx-border-radius: 7;
 	-fx-color: #dddddd;
 }
 
@@ -94,5 +94,34 @@
    	-fx-background-radius: 7 7 0 0;
 }
 
+.table-view {
+	-fx-background-color: radial-gradient(center 50% 50% , radius 80% , #9e9b9b, #eeeeee);
+	-fx-background-radius: 7;
+	-fx-border-radius: 7;
+}
+.table-view .label{
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 10.5px;
+	-fx-background-color: #12213a;
+	-fx-background-radius: 7 7 0 0;
+}
+.table-row-cell {
+	-fx-text-fill: black;
+	-fx-background-color: transparent;
+	-fx-border-radius: 7 7 0 0;
+	-fx-background-radius: 7 7 0 0;
+}
+.table-view .column-header {
+	-fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
+.table-view .column-header-background .filler {
+	-fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
 
-
+.table-view .column-header-background { 
+   -fx-color: #12213a;
+   -fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}

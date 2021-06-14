@@ -35,12 +35,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -48,10 +44,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.sessionoverview.view.SessionOverviewView">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.sessionoverview.view.SessionOverviewView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -65,59 +62,59 @@
                     <RowConstraints vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <TableView fx:id="sessionTable" prefHeight="272.0" prefWidth="580.0" styleClass="tableview" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                    <TableView fx:id="sessionTable" prefHeight="276.0" prefWidth="756.0" styleClass="tableview" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                         <columns>
                             <TableColumn maxWidth="100.0" minWidth="60.0" prefWidth="-1.0" text="SessionId">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionId" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="HostName">
+                            <TableColumn maxWidth="55.76605987548828" minWidth="-1.0" prefWidth="55.76605987548828" text="HostName">
                                 <cellValueFactory>
                                    <PropertyValueFactory property="hostName" />
                                 </cellValueFactory>
                              </TableColumn>
-                             <TableColumn maxWidth="-1.0" minWidth="43.0" prefWidth="-1.0" text="IP">
+                             <TableColumn maxWidth="70.39994812011719" minWidth="0.0" prefWidth="35.733924865722656" text="IP">
                                 <cellValueFactory>
                                    <PropertyValueFactory property="ip" />
                                 </cellValueFactory>
                              </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="45.0" prefWidth="-1.0" text="Game">
+                            <TableColumn maxWidth="109.12410736083984" minWidth="44.39320373535156" prefWidth="44.39320373535156" text="Game">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="game" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionOpened">
+                            <TableColumn maxWidth="138.7628173828125" minWidth="60.0" prefWidth="81.25456237792969" text="SessionOpened">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionOpened" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="LastRequest">
+                            <TableColumn maxWidth="126.71771240234375" minWidth="60.0" prefWidth="76.48870849609375" text="LastRequest">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="lastRequest" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionClosed">
+                            <TableColumn maxWidth="135.62734985351562" minWidth="60.0" prefWidth="83.25460815429688" text="SessionClosed">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="sessionClosed" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" text="ReceivedStatistics">
+                            <TableColumn maxWidth="141.26605224609375" minWidth="70.0" prefWidth="95.05227661132812" text="ReceivedStatistics">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="receivedStatistics" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="ReceivedImages">
+                            <TableColumn maxWidth="167.05218505859375" minWidth="60.0" prefWidth="84.85009765625" text="ReceivedImages">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="receivedImages" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="RequestsTotal">
+                            <TableColumn maxWidth="218.14520263671875" minWidth="60.0" prefWidth="78.61602783203125" text="RequestsTotal">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="totalRequests" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="SessionActive">
+                            <TableColumn maxWidth="260.5" minWidth="58.870361328125" prefWidth="66.906494140625" text="SessionActive">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="isActive" />
                                 </cellValueFactory>
@@ -147,118 +144,15 @@
             </GridPane>
          </center>
          <top>
-            <MenuBar id="menuBar" fx:id="menuBar" styleClass="menu-item" BorderPane.alignment="CENTER">
-               <menus>
-                  <Menu fx:id="homeMenu" mnemonicParsing="false" style="-fx-text-fill: white;">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../img/home_icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <items>
-                        <Menu fx:id="homeMenu1" mnemonicParsing="false" style="-fx-text-fill: white;" text="Home">
-                           <graphic>
-                              <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../img/home_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Menu>
-                     </items>
-                  </Menu>
-                  <Menu fx:id="apiMenu" mnemonicParsing="false">
-                     <items>
-                        <Menu fx:id="apiMenu1" mnemonicParsing="false" text="API Dashboard">
-                           <graphic>
-                              <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../img/apiDashboard_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Menu>
-                     </items>
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../img/apiDashboard_icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Menu>
-                  <Menu fx:id="settingsMenu" mnemonicParsing="false">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Settings">
-                           <graphic>
-                              <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../img/settings_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="dark mode">
-                           <graphic>
-                              <ToggleButton mnemonicParsing="false" selected="true" text="on" />
-                           </graphic>
-                        </MenuItem>
-                     </items>
-                     <graphic>
-                        <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../img/settings_icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Menu>
-                  <Menu fx:id="aboutMenu" mnemonicParsing="false">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../img/about_icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <items>
-                        <Menu fx:id="aboutMenu1" mnemonicParsing="false" text="About">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../img/about_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Menu>
-                     </items>
-                  </Menu>
-                  <Menu fx:id="helpMenu" mnemonicParsing="false">
-                     <graphic>
-                        <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../img/help_icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <items>
-                        <Menu fx:id="helpMenu1" mnemonicParsing="false" text="Help">
-                           <graphic>
-                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../img/help_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Menu>
-                     </items>
-                  </Menu>
-               </menus>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </MenuBar>
+            <Pane prefHeight="26.0" prefWidth="548.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../img/visab_innerLogo1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
          </top>
       </BorderPane>
    </children>
