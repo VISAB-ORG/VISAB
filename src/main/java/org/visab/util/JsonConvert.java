@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -62,12 +63,21 @@ public final class JsonConvert {
         }
     }
 
+    public static final JsonNode deserializeJsonUnknown(String json) {
+        try {
+            return mapper.readTree(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * Serializes a given object into a Json string.
      *
      * @param o the object to serialize
-     * @return A json string representation of the object, empty string if serialization
-     *         failed
+     * @return A json string representation of the object, empty string if
+     *         serialization failed
      */
     public static final String serializeObject(Object o) {
         try {
