@@ -3,15 +3,18 @@ package org.visab.workspace.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
+import org.visab.util.JsonConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.model.MappingConfig;
+import org.visab.workspace.config.model.Mapping;
 import org.visab.workspace.config.model.ViewConfig;
 
 /**
@@ -28,54 +31,28 @@ public class ConfigManager {
     public static final String JSON_MIME_TYPE = "application/json";
     public static final String MEDIA_CONTENT_TYPE = JSON_MIME_TYPE;
     public static final String DATA_PATH_APPENDIX = "database";
+    public static final String CONFIG_PATH_APPENDIX = "config";
     public static final String CSS_PATH = "/application.css";
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
 
-    public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "config");
-
-    private static final String MAPPING_PATH = "classMapping.json";
+    public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_APPENDIX);
 
     private static final String SETTINGS_PATH = "settings.json";
 
     private ConfigRepository repo = new ConfigRepository(CONFIG_PATH);
 
-    private List<MappingConfig> mappings;
+    private List<Mapping> mappings;
 
     private UserSettings settings;
 
     public ConfigManager() {
         loadSettings();
-        // TODO: Load settings first, so that they can be used for mapping
-        // initialization. Important in case we decide to make it customizable where to
-        // save your mappings.
         loadMappings();
     }
 
-    public List<MappingConfig> getMappings() {
+    public List<Mapping> getMappings() {
         return this.mappings;
-    }
-
-    /**
-     * Replaces an existing mapping with a new Mapping
-     * 
-     * @param game       The game to replace the mapping of
-     * @param newMapping The new mapping
-     * @return True if successful
-     */
-    public boolean replaceMapping(String game, MappingConfig newMapping) {
-        var mappingCopy = new ArrayList<MappingConfig>(mappings);
-        for (int i = 0; i < mappingCopy.size(); i++) {
-            var mapping = mappingCopy.get(i);
-
-            if (mapping.getGame().equals(newMapping.getGame())) {
-                mappings.set(i, newMapping);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -84,73 +61,29 @@ public class ConfigManager {
      * @param game The game to get the mapping for
      * @return The mapping if mappings contained it, null else
      */
-    public MappingConfig getMapping(String game) {
+    public Mapping getMapping(String game) {
         return StreamUtil.firstOrNull(mappings, x -> x.getGame().equals(game));
-    }
-
-    /**
-     * Adds a mapping to the mappings.
-     * 
-     * @param newMapping The mapping to add
-     * @return True if successful
-     */
-    public boolean addMapping(MappingConfig newMapping) {
-        if (getMapping(newMapping.getGame()) == null) {
-            mappings.add(newMapping);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Removes a mapping by game from the mappings.
-     * 
-     * @param game The game to remove the mapping for
-     * @return True if successful
-     */
-    public boolean removeMapping(String game) {
-        return mappings.removeIf(x -> x.getGame().equals(game));
-    }
-
-    /**
-     * Removes a mappign from the mappings.
-     * 
-     * @return True if successful
-     */
-    public boolean removeMapping(MappingConfig mapping) {
-        return mappings.remove(mapping);
-    }
-
-    /**
-     * Saves the mappings to the filesystem using the repository.
-     * 
-     * @return True if successfully saved
-     */
-    public boolean saveMappings() {
-        return repo.saveMappings(mappings, MAPPING_PATH);
     }
 
     /**
      * Loads the mappings from the filesystem using the repository.
      * 
-     * @return True if successfully loaded
+     * @return The list of mappings if successfully loaded, throws RuntimeException
+     *         else
      */
-    private boolean loadMappings() {
-        var loadedMappings = repo.loadMappings(MAPPING_PATH);
+    private List<Mapping> loadMappings() {
+        var json = VISABUtil.readResourceContents("/configs/classMapping_DEFAULT.json");
+        var mappings = JsonConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
+        });
 
-        if (loadedMappings == null) {
-            logger.info("User mappings do not exist yet, loading defaults.");
-            // Load the default file. Save it to file system. Load again.
-            var defaultPath = VISABUtil.getResourcePath("/configs/classMapping_DEFAULT.json");
-            var defaultJson = repo.readFileContents(defaultPath);
-            repo.writeToFileRelative(MAPPING_PATH, defaultJson);
-            loadedMappings = repo.loadMappings(MAPPING_PATH);
+        if (mappings == null) {
+            logger.error("Failed to load mappings!");
+            throw new RuntimeException("Failed to load mappings!");
         }
-        this.mappings = loadedMappings;
 
-        return loadedMappings != null;
+        this.mappings = mappings;
+
+        return mappings;
     }
 
     /**
@@ -181,8 +114,7 @@ public class ConfigManager {
         UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         if (loadedSettings == null) {
             logger.info("User settings do not exist yet, loading defaults.");
-            String defaultPath = VISABUtil.getResourcePath("/configs/defaultSettings.json");
-            String defaultSettings = repo.readFileContents(defaultPath);
+            String defaultSettings = VISABUtil.readResourceContents("/configs/defaultSettings.json");
             repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
             loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         }
