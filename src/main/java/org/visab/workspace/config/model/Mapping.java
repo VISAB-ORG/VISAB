@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Pojo representing a MappingConfiguration. Each of these fields has the fully
+ * Pojo representing a mapping configuration. Each of these fields has the fully
  * qualifying name of the class to initialize / deserialize into as their value.
  */
-public class MappingConfig {
+public class Mapping {
 
     private String game;
 
@@ -24,7 +24,7 @@ public class MappingConfig {
     /**
      * For deserialization
      */
-    public MappingConfig() {
+    public Mapping() {
     }
 
     public String getGame() {

@@ -12,6 +12,7 @@ import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.util.StringFormat;
 import org.visab.util.VISABUtil;
+import org.visab.workspace.config.ConfigManager;
 
 /**
  * The DatabaseManager that is used for deleting/adding/removing VISAB files.
@@ -19,9 +20,8 @@ import org.visab.util.VISABUtil;
  */
 public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
 
-    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, "database");
-
-    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
+    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH,
+            ConfigManager.DATA_PATH_APPENDIX);
 
     private static DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
 
@@ -30,6 +30,8 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
      * SessionListeners or Database View.
      */
     private List<SavedFileInformation> savedFiles = new ArrayList<>();
+
+    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
 
     /**
      * Loads a file that was saved by a session listener during the current runtime.

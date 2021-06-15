@@ -2,9 +2,6 @@ package org.visab.util;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Creates a settings object with the settings from the settings.json file.
  * 
@@ -12,8 +9,6 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class UserSettings {
-
-    private static Logger logger = LogManager.getLogger(UserSettings.class);
 
     private int webApiPort;
 
@@ -36,11 +31,6 @@ public class UserSettings {
      * @param port The port of the webApi.
      */
     public void setWebApiPort(int port) {
-        if (this.webApiPort != 0) {
-            if (port != this.webApiPort) {
-                logger.info("Changed webApiPort from " + this.webApiPort + " to " + port + ".");
-            }
-        }
         this.webApiPort = port;
     }
 
@@ -60,14 +50,6 @@ public class UserSettings {
      * @param timeout The timeout of the session.
      */
     public void setSessionTimeout(int timeout) {
-        if (this.sessionTimeout != 0) {
-            if (timeout == 0) {
-                logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
-                timeout = this.sessionTimeout;
-            } else if (timeout > 0 && timeout != this.sessionTimeout) {
-                logger.info("Changed sessionTimeout from " + this.sessionTimeout + "s to " + timeout + "s.");
-            }
-        }
         this.sessionTimeout = timeout;
     }
 
@@ -86,24 +68,6 @@ public class UserSettings {
      * @param games The games that are allowed.
      */
     public void setAllowedGames(ArrayList<String> games) {
-        if (this.allowedGames != null) {
-
-            // Check if current version of allowed games contains a new game
-            for (String game : games) {
-                if (!this.allowedGames.contains(game)) {
-                    logger.info("Added new game to allowedGame list: " + game + ".");
-                }
-            }
-            // Check if current version of allowed games is missing a game which was
-            // previously allowed
-            for (String game : this.allowedGames) {
-                if (!games.contains(game)) {
-                    logger.info("Removed game: " + game + " from allowedGame list.");
-                }
-            }
-            // Renaming a game will result in both logs to be printed
-        }
-
         this.allowedGames = games;
     }
 }

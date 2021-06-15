@@ -1,4 +1,4 @@
-workspace/
+workspace
 logs/
 # Mac specific
 **/.DS_Store
@@ -80,3 +80,4 @@ dependency-reduced-pom.xml
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
 /target/
+/workspace/

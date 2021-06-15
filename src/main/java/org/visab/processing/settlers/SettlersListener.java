@@ -1,4 +1,4 @@
-package org.visab.processing.cbrshooter;
+package org.visab.processing.settlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.settlers.SettlersFile;
+import org.visab.globalmodel.settlers.SettlersMapImage;
+import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
@@ -18,29 +18,32 @@ import org.visab.util.StringFormat;
 import org.visab.workspace.config.ConfigManager;
 
 /**
- * The CBRShooterListener class, that is responsible for listening to
- * information sent by the CBRShooter game and creating files of that
- * information.
+ * <<<<<<< HEAD The SettlersListener class, that is responsible for listening to
+ * information sent by the Unity Settlers of Catan game and creating files of
+ * that information. ======= The SettlersListener class, that is responsible for
+ * listening to information sent by the Unity Settlers of Catan game and
+ * creating files of that information. >>>>>>>
+ * 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
  *
- * @author moritz
+ * @author leonr
  *
  */
-public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage>
-        implements ILiveViewable<CBRShooterStatistics> {
+public class SettlersListener extends ReplaySessionListenerBase<SettlersStatistics, SettlersMapImage>
+        implements ILiveViewable<SettlersStatistics> {
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
+    private static Logger logger = LogManager.getLogger(SettlersListener.class);
 
-    private CBRShooterFile file;
+    private SettlersFile file;
 
-    private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
+    private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
-    public CBRShooterListener(UUID sessionId) {
-        super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
+    public SettlersListener(UUID sessionId) {
+        super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
     }
 
     @Override
-    public void addViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
+    public void addViewModel(ILiveViewModel<SettlersStatistics> viewModel) {
         viewModels.add(viewModel);
 
         // If the session isnt active anymore, instantly notify, that it was closed.
@@ -49,9 +52,9 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-    public List<CBRShooterStatistics> getReceivedStatistics() {
+    public List<SettlersStatistics> getReceivedStatistics() {
         // Return a copy to avoid concurrent modification
-        return new ArrayList<CBRShooterStatistics>(file.getStatistics());
+        return new ArrayList<SettlersStatistics>(file.getStatistics());
     }
 
     @Override
@@ -63,7 +66,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-    public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
+    public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
             UiHelper.inovkeOnUiThread(() -> viewModel.notifyStatisticsAdded(addedStatistics));
     }
@@ -75,16 +78,16 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionStarted() {
-        file = new CBRShooterFile();
+        file = new SettlersFile();
     }
 
     @Override
-    public void processImage(CBRShooterMapImage mapImage) {
+    public void processImage(SettlersMapImage mapImage) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void processStatistics(CBRShooterStatistics statistics) {
+    public void processStatistics(SettlersStatistics statistics) {
         file.getStatistics().add(statistics);
 
         writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));

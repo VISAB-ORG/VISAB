@@ -52,7 +52,7 @@ public class WebApi extends RouterNanoHTTPD {
     private SessionWatchdog watchdog;
 
     private WebApi() {
-        super(Workspace.getInstance().getConfigManager().getSettings().getWebApiPort());
+        super(Workspace.getInstance().getConfigManager().getWebApiPort());
         addMappings();
     }
 
@@ -82,10 +82,34 @@ public class WebApi extends RouterNanoHTTPD {
      * Shutsdown the WebApi, SessionListenerFactory and SessionWatchdog
      */
     public void shutdown() {
+        logger.info("Stopping WebApi.");
         listenerFactory.stopFactory();
         watchdog.stopTimeoutLoop();
         this.stop();
-        logger.info("Stopped WebApi & SessionListenerFactory & Session TimeoutLoop.");
+    }
+
+    /**
+     * Restarts the WebApi, SessionListenerFactory and SessionWatchdog
+     */
+    public void restart() {
+        shutdown();
+
+        // Try catch here to avoid multiple throws declarations along the call hierarchy
+        try {
+            start();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            logger.error("Exception occured at WebApi startup: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Restarts SessionWatchdog
+     */
+    public void restartSessionWatchdog() {
+        watchdog.stopTimeoutLoop();
+        watchdog.StartTimeoutLoop();
     }
 
     /**
@@ -93,12 +117,12 @@ public class WebApi extends RouterNanoHTTPD {
      */
     @Override
     public void start() throws IOException {
+        logger.info("Starting WebApi.");
         watchdog = new SessionWatchdog(sessionAdministration.getSessionStatuses());
 
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         listenerFactory.startFactory();
         watchdog.StartTimeoutLoop();
-        logger.info("Started WebApi & SessionListenerFactory & Session TimeoutLoop.");
     }
 
 }
