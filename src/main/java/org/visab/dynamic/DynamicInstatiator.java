@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.exception.DynamicException;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.starter.DefaultSessionListener;
 import org.visab.util.StringFormat;
@@ -27,8 +26,7 @@ public final class DynamicInstatiator {
      * 
      * @param game      The game to instantiate a listener of
      * @param sessionId The sessionId
-     * @return A SessionListener object if successful, throws exception if not
-     *         succesful (cast failed).
+     * @return A SessionListener instance if successful, null else
      */
     public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
@@ -43,7 +41,16 @@ public final class DynamicInstatiator {
             sessionListener = new DefaultSessionListener(game, sessionId);
         } else {
             var instance = instatiateClass(className, sessionId);
-            sessionListener = (ISessionListener<?>) instance;
+            if (instance == null) {
+                logger.error("Couldent create instance of " + className);
+            } else {
+                try {
+                    sessionListener = (ISessionListener<?>) instance;
+                } catch (Exception e) {
+                    logger.error(StringFormat.niceString("Failed to cast instance of {0} to ISessionListener<?>.",
+                            className));
+                }
+            }
         }
 
         return sessionListener;
@@ -114,7 +121,7 @@ public final class DynamicInstatiator {
         if (correctConstructor == null) {
             var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", class_.getName());
             logger.error(message);
-            throw new DynamicException(message);
+            return null;
         }
 
         Object instance = null;
@@ -128,7 +135,6 @@ public final class DynamicInstatiator {
                     class_.getName(), correctConstructor);
 
             logger.error(message);
-            throw new DynamicException(message);
         }
 
         return instance;
