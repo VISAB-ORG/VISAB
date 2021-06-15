@@ -8,6 +8,7 @@ import org.visab.newgui.control.CustomLabelPieChart;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterStatisticsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterStatisticsViewModel;
 
+import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
