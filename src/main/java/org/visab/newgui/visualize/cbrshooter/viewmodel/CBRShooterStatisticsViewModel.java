@@ -1,7 +1,10 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
@@ -15,7 +18,9 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart.Series;
 
+// TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
@@ -34,10 +39,25 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return planUsageScript;
     }
 
+    private Series<Double, Integer> killsScript = new Series<>();
+    private Series<Double, Integer> killsCBR = new Series<>();
+
+    public CBRShooterStatisticsViewModel() {
+        playerKillsSeries.add(killsCBR);
+        playerKillsSeries.add(killsScript);
+    }
+
+    private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
+
+    public ObservableList<Series<Double, Integer>> getPlayerKillsSeries() {
+        return playerKillsSeries;
+    }
+
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
         // Updates the pie charts for plan usage
         updatePlanUsage(newStatistics);
+        updatePlayerStatistics(newStatistics);
         snapshotsPerSecond.set(overviewStatistics.size() / newStatistics.getTotalTime());
         overviewStatistics.add(mapToRow(newStatistics));
     }
@@ -75,6 +95,31 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                     planUsageCBR.add(data);
                 else
                     planUsageScript.add(data);
+            }
+        }
+    }
+
+    private Map<String, Integer> lastKills = new HashMap<>();
+
+    private void updatePlayerStatistics(CBRShooterStatistics newStatistics) {
+        for (var player : newStatistics.getPlayers()) {
+            var name = player.getName();
+            if (!lastKills.containsKey(name)) {
+                lastKills.put(name, 0);
+            }
+
+            var kills = player.getStatistics().getFrags();
+            if (lastKills.get(name) != kills) {
+                lastKills.put(name, kills);
+
+                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
+                newData.setYValue(kills);
+                newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
+
+                if (player.getIsCBR())
+                    killsCBR.getData().add(newData);
+                else
+                    killsScript.getData().add(newData);
             }
         }
     }

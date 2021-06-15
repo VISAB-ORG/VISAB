@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.eventbus.GeneralEventBus;
+import org.visab.eventbus.IPublisher;
+import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
@@ -22,7 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public final class DynamicViewLoader {
+public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent> {
 
     private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
@@ -65,21 +68,23 @@ public final class DynamicViewLoader {
         showWindow(viewTuple.getView(), title);
     }
 
-    /**
-     * Loads and shows a statistics view for the given game. The statistics view is
-     * initialized with the given file.
-     * 
-     * @param game The game to load a statistics view for
-     * @param file The file to visualize
-     */
-    public static void loadAndShowStatisticsView(String game, IVISABFile file) {
+    public static void loadAndShowStatisticsView(String game, String fileName) {
         var viewTupel = DynamicViewLoader.loadStatisticsViewTuple(game);
         var root = viewTupel.getView();
         var vM = (StatisticsViewModelBase<?>) viewTupel.getViewModel();
 
+        var file = Workspace.getInstance().getDatabaseManager().loadFile(fileName, game);
+        if (file == null) {
+            logger.error("DatabaseManager return null file for filename:" + fileName);
+            return;
+        }
+
         vM.initialize(file);
 
         showWindow(root, "TODO: NOT LIVE");
+
+        var event = new VISABFileViewedEvent(fileName, game);
+        publishEvent(event);
     }
 
     /**
@@ -107,17 +112,12 @@ public final class DynamicViewLoader {
                 showWindow(root, "TODO: LIVE");
             }
         } else {
-            var dbManager = Workspace.getInstance().getDatabaseManager();
-            var fileName = dbManager.getSessionFileName(sessionId);
-            if (!fileName.isBlank()) {
-                var file = Workspace.getInstance().getDatabaseManager().loadFile(fileName, game);
-                if (file != null)
-                    loadAndShowStatisticsView(game, file);
-            }
+            var fileName = Workspace.getInstance().getDatabaseManager().getSessionFileName(sessionId);
+            if (fileName != "")
+                loadAndShowStatisticsView(game, fileName);
         }
     }
- 
-    
+
     /**
      * Creates a window by creating a new stage and adding a scene of the parent to
      * it. Then shows it.
@@ -156,5 +156,14 @@ public final class DynamicViewLoader {
         }
 
         return _class;
+    }
+
+    @Override
+    public void publish(VISABFileViewedEvent event) {
+        GeneralEventBus.getInstance().publish(event);
+    }
+
+    public static void publishEvent(VISABFileViewedEvent event) {
+        new GeneralEventBus().publish(event);
     }
 }

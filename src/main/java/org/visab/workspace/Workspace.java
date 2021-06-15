@@ -54,14 +54,3 @@ public class Workspace {
     }
 
 }
-
-/**
- * Gets the static Workspace instance
- * 
- * @return The static Workspace instance
- * 
- *         public static Workspace getInstance() { if (instance == null)
- *         instance = new Workspace();
- * 
- *         return instance; }
- */
