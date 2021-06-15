@@ -9,7 +9,6 @@ import org.visab.dynamic.DynamicInstatiator;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileViewedEvent;
-import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.IVisualizeViewModel;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;

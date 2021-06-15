@@ -2,7 +2,6 @@ package org.visab.dynamic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.exception.DynamicException;
 import org.visab.util.StringFormat;
 
 public final class DynamicHelper {
@@ -23,11 +22,7 @@ public final class DynamicHelper {
                 _class = Class.forName(className);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-
-                // If there was a class name given, but it couldent be resolved throw exception
-                var message = StringFormat.niceString("Failed to find class for name {0}.", className);
-                logger.fatal(message);
-                throw new DynamicException(message);
+                logger.error(StringFormat.niceString("Failed to find class for name {0}.", className));
             }
         }
 

@@ -9,6 +9,7 @@ import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultImage;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.util.JsonConvert;
+import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
 /**
@@ -25,7 +26,7 @@ public final class DynamicSerializer {
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a image
-     * @return An IImage object if successful, throws exception if not successful
+     * @return An IImage object if successful, null else
      */
     public static IImage deserializeImage(String json, String game) {
         var className = "";
@@ -49,8 +50,7 @@ public final class DynamicSerializer {
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
-     * @return An IStatistics object if successful, throws exception if not
-     *         successful
+     * @return An IStatistics object if successful, null else
      */
     public static IStatistics deserializeStatistics(String json, String game) {
         var className = "";
@@ -74,8 +74,7 @@ public final class DynamicSerializer {
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
-     * @return An IVISABFile object if successful, throws exception if not
-     *         successful
+     * @return An IVISABFile object if successful, null else
      */
     public static IVISABFile deserializeVISABFile(String json, String game) {
         var className = "";
@@ -109,15 +108,23 @@ public final class DynamicSerializer {
      * @param <T>       The type to deserialize into
      * @param className The fully classified class name of the type
      * @param json      The json to deserialize
-     * @return An object of type T if successful, throws exception else
+     * @return An object of type T if successful, null else
      */
     @SuppressWarnings("unchecked")
     private static <T> T tryDeserialize(String className, String json) {
         T instance = null;
-        if (!className.isBlank()) {
+        if (className != null && !className.isBlank()) {
             var _class = DynamicHelper.tryGetClass(className);
-            if (_class != null)
-                instance = (T) JsonConvert.deserializeJson(json, _class);
+            if (_class == null) {
+                logger.error("Failed to resolve class for " + className);
+            } else {
+                try {
+                    var concrete = (Class<T>) _class;
+                    instance = JsonConvert.deserializeJson(json, concrete);
+                } catch (Exception e) {
+                    logger.error(StringFormat.niceString("Failed to cast {0} to Class<T>.", className));
+                }
+            }
         }
 
         return instance;

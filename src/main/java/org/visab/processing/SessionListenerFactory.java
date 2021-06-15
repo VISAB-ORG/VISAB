@@ -39,9 +39,14 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
      */
     public void addListener(UUID sessionId, String game) {
         var newListener = DynamicInstatiator.instantiateSessionListener(game, sessionId);
-        SessionListenerAdministration.addListener(newListener);
-        // Notify the listener that the session started
-        newListener.onSessionStarted();
+        if (newListener != null) {
+            SessionListenerAdministration.addListener(newListener);
+            // Notify the listener that the session started
+            newListener.onSessionStarted();
+            logger.info("Added listener for " + game);
+        } else {
+            logger.error("Failed to instantiate SessionListener for game " + game);
+        }
     }
 
     @Override
