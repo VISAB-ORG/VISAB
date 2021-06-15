@@ -4,11 +4,14 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.dynamic.DynamicHelper;
+import org.visab.dynamic.DynamicInstatiator;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IVISABFile;
+import org.visab.newgui.visualize.IVisualizeViewModel;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.StatisticsViewModelBase;
 import org.visab.processing.ILiveViewable;
@@ -16,6 +19,7 @@ import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.ConfigManager;
+import org.visab.workspace.config.model.ViewConfig;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
@@ -44,14 +48,14 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
         var viewMapping = Workspace.getInstance().getConfigManager().getViewMapping(ConfigManager.CBR_SHOOTER_STRING,
                 "statistics");
 
-        if (viewMapping != null && viewMapping.getClassPath() != null)
-            className = viewMapping.getClassPath();
+        if (viewMapping != null && viewMapping.getViewClass() != null)
+            className = viewMapping.getViewClass();
 
         if (className.isBlank()) {
             // TODO: load some standard statistics view
             return null;
         } else {
-            var viewClass = (Class<? extends FxmlView<? extends ViewModel>>) tryGetClass(className);
+            var viewClass = (Class<? extends FxmlView<? extends ViewModel>>) DynamicHelper.tryGetClass(className);
 
             return FluentViewLoader.fxmlView(viewClass).load();
         }
@@ -133,29 +137,127 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
         stage.show();
     }
 
-    /**
-     * Tries to get a Class<?> object for a given class name.
-     * 
-     * @param className The fully classified class name
-     * @return The Class<?> object if successful, null else
-     */
-    private static Class<?> tryGetClass(String className) {
-        Class<?> _class = null;
+    // TODO: Change completely
+    @SuppressWarnings("unchecked")
+    public void loadVisualizer(String game, IVISABFile file) {
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
+        if (mapping == null || mapping.getViewConfigurations() == null) {
+            // Load default statistics view
+        } else {
+            for (var config : mapping.getViewConfigurations()) {
+                if (config == null) {
+                    logger.debug("Config was null. Skipping it.");
+                    continue;
+                }
 
-        if (className != null && !className.isBlank()) {
-            try {
-                _class = Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                // Load view class
+                var viewClass = getViewClass(config);
+                if (viewClass == null) {
+                    logger.error(StringFormat.niceString("Failed to load View for {0} for game {1}. Skipping it.",
+                            config.getIdentifier(), game));
+                    continue;
+                }
 
-                // If there was a class name given, but it couldent be resolved throw exception
-                var message = StringFormat.niceString("Failed to find class for name {0}.", className);
-                logger.fatal(message);
-                throw new DynamicException(message);
+                // Load viewModel class
+                var viewModelClass = getViewModelClass(config);
+                if (viewModelClass == null) {
+                    logger.error(StringFormat.niceString("Failed to load ViewModel for {0} for game {1}. Skipping it.",
+                            config.getIdentifier(), game));
+                    continue;
+                }
+
+                // If we are here, both viewClass and viewModelClass are valid classes.
+
+                // Initialize the viewmodel with the file
+                var object_ = DynamicInstatiator.instantiateClass(viewModelClass);
+                if (object_ == null) {
+                    logger.error("Failed to create instance of " + config.getViewModelClass());
+                    continue;
+                }
+
+                // Initialize viewModel with file
+                var viewModel = (ViewModel) object_;
+                if (viewModel instanceof IVisualizeViewModel) {
+                    var asVisualize = (IVisualizeViewModel) object_;
+                    asVisualize.initialize(file);
+                }
+                // TODO: Potentially add else case here, if we want to have views that are
+                // visualized based on things other than files.
+
+                // Create the viewStep and add the viewModel instance
+                var viewStep = FluentViewLoader.fxmlView(viewClass);
+                viewStep.viewModel(viewModel);
+                viewStep.load();
             }
         }
+    }
 
-        return _class;
+    // TODO: Change completely
+    public void loadVisualizer(String game, UUID sessionId) {
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private Class<? extends FxmlView<? extends ViewModel>> getViewClass(ViewConfig config) {
+        if (config == null) {
+            logger.error("Config was null.");
+            return null;
+        }
+
+        if (config.getViewClass() == null || config.getViewClass().trim().equals("")) {
+            logger.error("View class of config was null or empty string.");
+            return null;
+        }
+
+        var viewClass = DynamicHelper.tryGetClass(config.getViewClass());
+        if (viewClass == null) {
+            logger.error(StringFormat.niceString("Failed to resolve class {0} as View for view identifier {1}.",
+                    config.getViewClass(), config.getIdentifier()));
+            return null;
+        }
+
+        // Try to cast class_ to class of FxmlView
+        Class<? extends FxmlView<? extends ViewModel>> asView = null;
+        try {
+            asView = (Class<? extends FxmlView<? extends ViewModel>>) viewClass;
+        } catch (Exception e) {
+            logger.error(StringFormat.niceString(
+                    "Failed to cast {0} to Class<? extends FxmlView<? extends ViewModel>>.", viewClass.getName()));
+        }
+
+        return asView;
+    }
+
+    // TODO: Throw away
+    @SuppressWarnings("unchecked")
+    private Class<? extends ViewModel> getViewModelClass(ViewConfig config) {
+        if (config == null) {
+            logger.error("Config was null.");
+            return null;
+        }
+
+        if (config.getViewModelClass() == null || config.getViewModelClass().trim().equals("")) {
+            logger.error("ViewModel class of config was null or empty string.");
+            return null;
+        }
+
+        var viewModelClass = DynamicHelper.tryGetClass(config.getViewModelClass());
+        if (viewModelClass == null) {
+            logger.error(StringFormat.niceString("Failed to resolve class {0} as ViewModel for view identifier {1}.",
+                    config.getViewModelClass(), config.getIdentifier()));
+            return null;
+        }
+
+        // Try to cast class_ to class of FxmlView
+        Class<? extends ViewModel> asViewModel = null;
+        try {
+            asViewModel = (Class<? extends ViewModel>) viewModelClass;
+        } catch (Exception e) {
+            logger.error(StringFormat.niceString("Failed to cast {0} to Class<? extends ViewModel>.",
+                    viewModelClass.getName()));
+        }
+
+        return asViewModel;
     }
 
     @Override

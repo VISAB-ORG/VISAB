@@ -23,27 +23,6 @@ public final class DynamicInstatiator {
     private static Logger logger = LogManager.getLogger(DynamicInstatiator.class);
 
     /**
-     * Gets the constructors for a given class name.
-     * 
-     * @param className The fully classified class name of the class to get the
-     *                  constructors of
-     * @return A list of the constructors
-     */
-    private static List<Constructor<?>> getConstructors(String className) {
-        var constructors = new ArrayList<Constructor<?>>();
-
-        try {
-            for (var ctor : Class.forName(className).getConstructors())
-                constructors.add(ctor);
-        } catch (SecurityException | ClassNotFoundException e) {
-            logger.warn(StringFormat.niceString("Failed to get constructors for {0}.", className));
-            e.printStackTrace();
-        }
-
-        return constructors;
-    }
-
-    /**
      * Instantiates a SessionListener based on the dynamic mappings configuration.
      * 
      * @param game      The game to instantiate a listener of
@@ -75,12 +54,35 @@ public final class DynamicInstatiator {
      * for the given parameters.
      * 
      * @param className The fully classified class name of the class to instantiate
-     * @param params    The constructor parameters
+     * @param arguments The constructor arguments
      * @return An instance of the class if successful, null else
      */
-    public static Object instatiateClass(String className, Object... params) {
+    public static Object instatiateClass(String className, Object... arguments) {
+        var class_ = DynamicHelper.tryGetClass(className);
+        if (class_ == null) {
+            logger.error("Couldent resove class for " + className);
+            return null;
+        } else {
+            return instantiateClass(class_, arguments);
+        }
+    }
+
+    /**
+     * Instantiates an object of a given class name using the fitting constructor
+     * for the given arguments.
+     * 
+     * @param class_    The class to instantiate
+     * @param arguments The constructor arguments
+     * @return An instance of the class if successful, null else
+     */
+    public static Object instantiateClass(Class<?> class_, Object... arguments) {
+        if (class_ == null) {
+            logger.info("Cant create an instance of null.");
+            return null;
+        }
+
         // Start by getting the right constructor
-        var constructors = getConstructors(className);
+        var constructors = getConstructors(class_);
 
         Constructor<?> correctConstructor = null;
         for (var ctor : constructors) {
@@ -89,10 +91,10 @@ public final class DynamicInstatiator {
             // Find the constructor whose parameters types match the given params
             // By nature, selects the first constructor that matches
             var isCorrect = true;
-            if (ctorParameters.length == params.length) {
-                for (int i = 0; i < params.length; i++) {
+            if (ctorParameters.length == arguments.length) {
+                for (int i = 0; i < arguments.length; i++) {
                     var ctorParam = ctorParameters[i];
-                    var param = params[i];
+                    var param = arguments[i];
 
                     if (ctorParam.getType() != param.getClass()) {
                         isCorrect = false;
@@ -110,26 +112,47 @@ public final class DynamicInstatiator {
 
         // If there was not correct constructor found, throw exception
         if (correctConstructor == null) {
-            var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", className);
-            logger.fatal(message);
+            var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", class_.getName());
+            logger.error(message);
             throw new DynamicException(message);
         }
 
         Object instance = null;
         try {
-            instance = correctConstructor.newInstance(params);
+            instance = correctConstructor.newInstance(arguments);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
             // If instatiation via reflection fails eventhought constructor was found, throw
             // exception
             var message = StringFormat.niceString("Failed to create an instance of {0} using constructor {1}.",
-                    className, correctConstructor);
+                    class_.getName(), correctConstructor);
 
-            logger.fatal(message);
+            logger.error(message);
             throw new DynamicException(message);
         }
 
         return instance;
+    }
+
+    /**
+     * Gets the constructors for a given class name.
+     * 
+     * @param className The fully classified class name of the class to get the
+     *                  constructors of
+     * @return A list of the constructors
+     */
+    private static List<Constructor<?>> getConstructors(Class<?> class_) {
+        var constructors = new ArrayList<Constructor<?>>();
+
+        try {
+            for (var ctor : class_.getConstructors())
+                constructors.add(ctor);
+        } catch (SecurityException e) {
+            logger.warn(StringFormat.niceString("Failed to get constructors for {0}.", class_.getName()));
+            e.printStackTrace();
+        }
+
+        return constructors;
     }
 
     public static void main(String[] args) {

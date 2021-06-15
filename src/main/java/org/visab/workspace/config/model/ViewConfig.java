@@ -3,7 +3,8 @@ package org.visab.workspace.config.model;
 public class ViewConfig {
 
     private String identifier;
-    private String classPath;
+    private String viewClass;
+    private String viewModelClass;
 
     /**
      * For deserialization
@@ -19,17 +20,20 @@ public class ViewConfig {
         this.identifier = identifier;
     }
 
-    public String getClassPath() {
-        return classPath;
+    public String getViewClass() {
+        return viewClass;
     }
 
-    public void setClassPath(String classPath) {
-        this.classPath = classPath;
+    public String getViewModelClass() {
+        return viewModelClass;
     }
 
-    public ViewConfig(String identifier, String classPath) {
-        this.setIdentifier(identifier);
-        this.setClassPath(classPath);
+    public void setViewModelClass(String viewModelClass) {
+        this.viewModelClass = viewModelClass;
+    }
+
+    public void setClassPath(String viewClass) {
+        this.viewClass = viewClass;
     }
 
 }
