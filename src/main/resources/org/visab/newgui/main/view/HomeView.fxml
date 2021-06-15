@@ -194,12 +194,12 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="363.0" prefWidth="458.0" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="363.0" prefWidth="458.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="379.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                        <VBox alignment="TOP_RIGHT" prefHeight="379.0" prefWidth="300.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox fx:id="eraseBorder" alignment="CENTER" prefHeight="277.0" prefWidth="423.0" HBox.hgrow="ALWAYS">
-                              <FileExplorer fx:id="fileExplorer" prefHeight="270.0" prefWidth="430.0" >
+                              <HBox fx:id="eraseBorder" alignment="CENTER" prefHeight="277.0" prefWidth="423.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                              <FileExplorer fx:id="fileExplorer" prefHeight="270.0" prefWidth="430.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                               	 <styleClass>
                                     <String fx:value="file-explorer" />
                                     </styleClass>
@@ -214,7 +214,7 @@
                               </HBox>
                               
                         
-                              <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="269.0" VBox.vgrow="ALWAYS">
+                              <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="269.0" HBox.hgrow="ALWAYS">
                                  <children>
                                       <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#refreshFileExplorer" prefHeight="28.0" prefWidth="37.0">
                                        <HBox.margin>
