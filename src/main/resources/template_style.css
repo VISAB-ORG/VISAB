@@ -99,6 +99,12 @@
 	-fx-background-radius: 7;
 	-fx-border-radius: 7;
 }
+
+.tree-table-row-cell:selected {
+    -fx-background-color: #ff5c33;
+    -fx-background-radius: 0;
+}
+
 .table-view .label{
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 10.5px;
