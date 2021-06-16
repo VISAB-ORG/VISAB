@@ -2,6 +2,7 @@ package org.visab.workspace.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -82,6 +83,44 @@ public class ConfigManager {
         if (mappings == null) {
             logger.error("Failed to load mappings!");
             throw new RuntimeException("Failed to load mappings!");
+        }
+
+        Function<String, Boolean> classExists = s -> {
+            try {
+                Class.forName(s);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        };
+
+        // Do validation check
+        for (var mapping : mappings) {
+            var hasGame = mapping.getGame() != null && !mapping.getGame().isBlank();
+            if (!hasGame)
+                throw new RuntimeException("A mapping needs a game!");
+
+            var hasMeta = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
+                    && classExists.apply(mapping.getMetaInformation());
+            if (!hasMeta)
+                throw new RuntimeException("A mapping needs meta information!");
+
+            var hasStatistics = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
+                    && classExists.apply(mapping.getStatistics());
+            if (!hasStatistics)
+                throw new RuntimeException("A mapping needs statistics!");
+
+            var hasListener = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
+                    && classExists.apply(mapping.getListener());
+            if (!hasListener)
+                throw new RuntimeException("A mapping needs a listener!");
+
+            var hasFile = mapping.getFile() != null && !mapping.getFile().isBlank()
+                    && classExists.apply(mapping.getFile());
+            if (!hasFile)
+                throw new RuntimeException("A mapping needs a file!");
+
+            var hasImage = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank();
         }
 
         this.mappings = mappings;
