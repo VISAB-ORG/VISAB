@@ -8,6 +8,8 @@ import org.visab.dynamic.DynamicInstatiator;
 import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.subscriber.ApiSubscriberBase;
+import org.visab.globalmodel.IMetaInformation;
+import org.visab.util.StringFormat;
 
 /**
  * The SessionListenerFactory that will instantiate new SessionListeners
@@ -33,20 +35,23 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
     /**
      * Instantiates a new listener based on the given game and adds it to the
      * SessionListenerAdministration.
-     * 
-     * @param sessionId The sessionId
-     * @param game      The game for which to instantiate a listener
      */
-    public void addListener(UUID sessionId, String game) {
-        var newListener = DynamicInstatiator.instantiateSessionListener(game, sessionId);
+    public void addListener(UUID sessionId, IMetaInformation metaInformation) {
+        if (metaInformation == null || metaInformation.getGame() == null || metaInformation.getGame().isBlank()) {
+            logger.error(StringFormat.niceString(
+                    "Received invalid meta information {0}. Wont create listener instance.", metaInformation));
+            return;
+        }
+
+        var newListener = DynamicInstatiator.instantiateSessionListener(metaInformation.getGame(), sessionId);
         SessionListenerAdministration.addListener(newListener);
         // Notify the listener that the session started
-        newListener.onSessionStarted();
+        newListener.onSessionStarted(metaInformation);
     }
 
     @Override
     public void notify(SessionOpenedEvent event) {
-        addListener(event.getSessionId(), event.getGame());
+        addListener(event.getSessionId(), event.getMetaInformation());
     }
 
     /**

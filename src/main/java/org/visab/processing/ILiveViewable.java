@@ -3,6 +3,7 @@ package org.visab.processing;
 import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.ILiveViewModel;
 
 /**
@@ -28,6 +29,11 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      * @return The list of received statistics
      */
     List<TStatistics> getReceivedStatistics();
+
+    /**
+     * Returns the current (unfinished) IVISABFile.
+     */
+    IVISABFile getCurrentFile();
 
     /**
      * Notifies the observing ViewModels that the session was closed.

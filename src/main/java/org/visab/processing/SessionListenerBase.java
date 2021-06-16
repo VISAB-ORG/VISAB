@@ -13,6 +13,7 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.subscriber.ApiSubscriberBase;
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
 import org.visab.util.StringFormat;
 import org.visab.workspace.DatabaseManager;
@@ -146,7 +147,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     public abstract void onSessionClosed();
 
     @Override
-    public abstract void onSessionStarted();
+    public abstract void onSessionStarted(IMetaInformation metaInformation);
 
     @Override
     public abstract void processStatistics(TStatistics statistics);

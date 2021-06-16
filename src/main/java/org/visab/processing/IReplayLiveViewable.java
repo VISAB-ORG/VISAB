@@ -21,4 +21,11 @@ public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage ext
      */
     TImage getReceivedImage();
 
+    /**
+     * Notifies the observing ViewModels that images were added.
+     * 
+     * @param addedImage The added images
+     */
+    void notifyStatisticsAdded(TImage addedImage);
+
 }
