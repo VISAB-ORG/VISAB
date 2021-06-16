@@ -11,6 +11,8 @@ public class Mapping {
 
     private String game;
 
+    private String metaInformation;
+
     private String listener;
 
     private String statistics;
@@ -25,6 +27,14 @@ public class Mapping {
      * For deserialization
      */
     public Mapping() {
+    }
+
+    public String getMetaInformation() {
+        return metaInformation;
+    }
+
+    public void setMetaInformation(String metaInformation) {
+        this.metaInformation = metaInformation;
     }
 
     public String getGame() {

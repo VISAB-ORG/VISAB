@@ -9,6 +9,7 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultImage;
+import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.util.JsonConvert;
 import org.visab.util.StringFormat;
@@ -37,22 +38,22 @@ public final class DynamicSerializer {
             return null;
         }
 
-        var game = jsonObject.get("game");
-        
+        var game = jsonObject.get("game").asText();
+
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping != null && mapping.getImage() != null)
-            className = mapping.getImage();
+        if (mapping != null && mapping.getMetaInformation() != null)
+            className = mapping.getMetaInformation();
 
-        IImage image = null;
+        IMetaInformation metaInformation = null;
         if (className.isBlank()) {
-            image = new DefaultImage(game, json);
+            metaInformation = new DefaultMetaInformation(game, json);
         } else {
-            image = DynamicSerializer.<IImage>tryDeserialize(className, json);
+            metaInformation = DynamicSerializer.<IMetaInformation>tryDeserialize(className, json);
         }
 
-        return image;
+        return metaInformation;
     }
 
     /**
@@ -71,7 +72,7 @@ public final class DynamicSerializer {
 
         IImage image = null;
         if (className.isBlank()) {
-            image = new DefaultImage(game, json);
+            image = new DefaultImage(json);
         } else {
             image = DynamicSerializer.<IImage>tryDeserialize(className, json);
         }
