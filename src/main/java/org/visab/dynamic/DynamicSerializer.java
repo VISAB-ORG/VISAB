@@ -118,14 +118,12 @@ public final class DynamicSerializer {
         if (mapping != null && mapping.getFile() != null)
             className = mapping.getFile();
 
-        IVISABFile visabFile = null;
-        if (className.isBlank()) {
-            visabFile = JsonConvert.deserializeJson(json, DefaultFile.class);
-        } else {
-            visabFile = DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
+        try {
+            return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonConvert.deserializeJson(json, DefaultFile.class);
         }
-
-        return visabFile;
     }
 
     public static void main(String[] args) {
