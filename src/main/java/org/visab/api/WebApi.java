@@ -10,6 +10,8 @@ import org.visab.api.controller.ImageController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.api.model.SessionWatchdog;
+import org.visab.eventbus.event.SessionClosedEvent;
+import org.visab.processing.SessionListenerAdministration;
 import org.visab.processing.SessionListenerFactory;
 import org.visab.workspace.Workspace;
 
@@ -85,6 +87,12 @@ public class WebApi extends RouterNanoHTTPD {
         logger.info("Stopping WebApi.");
         listenerFactory.stopFactory();
         watchdog.stopTimeoutLoop();
+
+        // Close all active sessions.
+        for (var status : sessionAdministration.getActiveSessionStatuses()) {
+            sessionAdministration.closeSession(status.getSessionId());
+        }
+
         this.stop();
     }
 
@@ -102,14 +110,6 @@ public class WebApi extends RouterNanoHTTPD {
             logger.error("Exception occured at WebApi startup: " + e);
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Restarts SessionWatchdog
-     */
-    public void restartSessionWatchdog() {
-        watchdog.stopTimeoutLoop();
-        watchdog.StartTimeoutLoop();
     }
 
     /**

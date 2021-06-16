@@ -203,8 +203,6 @@ public class ConfigManager {
             timeout = oldTimeout;
         } else if (timeout > 0 && timeout != oldTimeout) {
             logger.info("Changed sessionTimeout from " + oldTimeout + "seconds to " + timeout + "seconds.");
-            // SessionWatchdog needs to be restarted because the timeout changed
-            WebApi.getInstance().restartSessionWatchdog();
         }
 
         this.settings.setSessionTimeout(timeout);
