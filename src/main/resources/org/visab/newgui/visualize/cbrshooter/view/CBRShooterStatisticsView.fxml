@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
 <?import org.visab.newgui.control.CustomLabelPieChart?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Label?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
     <columnConstraints>
@@ -24,26 +24,31 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TableView fx:id="overviewTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="302.0" GridPane.columnIndex="1">
-            <columns>
-                <TableColumn prefWidth="75.0" text="C1">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="playerOnePosition" />
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
-        <LineChart fx:id="playerKills" title="Chart Test">
+        <LineChart fx:id="playerKills" title="Player Kills">
             <xAxis>
-                <NumberAxis side="bottom"></NumberAxis>
+                <NumberAxis label="Seconds" side="bottom" />
             </xAxis>
             <yAxis>
-                <NumberAxis side="left"></NumberAxis>
+                <NumberAxis label="Kills" side="left" />
             </yAxis>
         </LineChart>
-        <!--<LineChart fx:id="playerKills" title="Player kills"></LineChart>-->
-        <Label fx:id="snapshotsPerSecond"></Label>
         <CustomLabelPieChart fx:id="planUsageCBR" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
         <CustomLabelPieChart fx:id="planUsageScript" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+         <children>
+            <Label text="Snapshots per ingame second" />
+              <Label fx:id="snapshotsPerSecond" />
+      
+              <TableView fx:id="overviewTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="302.0">
+                  <columns>
+                      <TableColumn prefWidth="75.0" text="C1">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="playerOnePosition" />
+                          </cellValueFactory>
+                      </TableColumn>
+                  </columns>
+              </TableView>
+         </children>
+      </VBox>
     </children>
 </GridPane>

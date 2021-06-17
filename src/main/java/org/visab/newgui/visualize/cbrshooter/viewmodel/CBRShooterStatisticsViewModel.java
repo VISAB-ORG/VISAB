@@ -43,6 +43,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private Series<Double, Integer> killsCBR = new Series<>();
 
     public CBRShooterStatisticsViewModel() {
+        killsScript.setName("Kills Script Bot");
+        killsCBR.setName("Kills CBR Bot");
+
         playerKillsSeries.add(killsCBR);
         playerKillsSeries.add(killsScript);
     }
