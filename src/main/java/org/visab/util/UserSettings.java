@@ -1,6 +1,8 @@
 package org.visab.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Creates a settings object with the settings from the settings.json file.
@@ -12,9 +14,11 @@ public class UserSettings {
 
     private int webApiPort;
 
-    private int sessionTimeout;
+    private int defaultTimeout;
 
     private ArrayList<String> allowedGames;
+    
+    private Map<String, Integer> sessionTimeouts;
 
     /**
      * Gets the webApiPort.
@@ -38,19 +42,19 @@ public class UserSettings {
      * Gets the time in seconds until a session is automatically timed out if no
      * statistics were received.
      * 
-     * @return The timeout of the session.
+     * @return The default timeout of the session.
      */
-    public int getSessionTimeout() {
-        return sessionTimeout;
+    public int getDefaultSessionTimeout() {
+        return defaultTimeout;
     }
 
     /**
-     * Sets the sessionTimeout.
+     * Sets the defaultSessionTimeout.
      * 
-     * @param timeout The timeout of the session.
+     * @param timeout The default timeout of the session.
      */
-    public void setSessionTimeout(int timeout) {
-        this.sessionTimeout = timeout;
+    public void setDefaultSessionTimeout(int timeout) {
+        this.defaultTimeout = timeout;
     }
 
     /**
@@ -70,4 +74,23 @@ public class UserSettings {
     public void setAllowedGames(ArrayList<String> games) {
         this.allowedGames = games;
     }
+    
+    /**
+     * Gets the time in seconds until a session is automatically timed out if no statistics were received for each game.
+     * 
+     * @return The timeout of the sessions.
+     */
+    public Map<String, Integer> getSessionTimeout() {
+        return sessionTimeouts;
+    }
+    
+    /**
+     * Sets the sessionTimeouts for each game.
+     * 
+     * @param timeout The timeout of the sessions.
+     */
+    public void setSessionTimeouts(Map<String, Integer> timeout) {
+        this.sessionTimeouts = timeout;
+    }
+    
 }
