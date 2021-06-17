@@ -1,5 +1,9 @@
 {
 	"webApiPort": 2673,
-	"sessionTimeout": 2,
-	"allowedGames": ["CBRShooter", "Settlers"]		
+	"defaultTimeout": 2,
+	"allowedGames": ["CBRShooter", "Settlers"],
+	"sessionTimeouts": {
+			"CBRShooter": 2,
+			"Settlers": 15
+	}
 }
