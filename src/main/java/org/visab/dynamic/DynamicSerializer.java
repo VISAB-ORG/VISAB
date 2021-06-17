@@ -4,10 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultImage;
+import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.util.JsonConvert;
 import org.visab.util.StringFormat;
@@ -23,11 +25,43 @@ public final class DynamicSerializer {
     private static Logger logger = LogManager.getLogger(DynamicSerializer.class);
 
     /**
+     * Deserializes a json string into a IMetaInformation.
+     * 
+     * @param json The json to deserialize
+     * @return A IMetaInformation object is successful, null else
+     */
+    public static IMetaInformation deserializeMetaInformation(String json) {
+        var jsonObject = JsonConvert.deserializeJsonUnknown(json);
+
+        if (!jsonObject.has("game")) {
+            logger.error("Json had no field with name game. Cant deserialize it. Json:" + json);
+            return null;
+        }
+
+        var game = jsonObject.get("game").asText();
+
+        var className = "";
+
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
+        if (mapping != null && mapping.getMetaInformation() != null)
+            className = mapping.getMetaInformation();
+
+        IMetaInformation metaInformation = null;
+        if (className.isBlank()) {
+            metaInformation = new DefaultMetaInformation(game, json);
+        } else {
+            metaInformation = DynamicSerializer.<IMetaInformation>tryDeserialize(className, json);
+        }
+
+        return metaInformation;
+    }
+
+    /**
      * Deserialize a json string into a IImage.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a image
-     * @return An IImage object if successful, throws exception if not successful
+     * @return An IImage object if successful, null else
      */
     public static IImage deserializeImage(String json, String game) {
         var className = "";
@@ -38,7 +72,7 @@ public final class DynamicSerializer {
 
         IImage image = null;
         if (className.isBlank()) {
-            image = new DefaultImage(game, json);
+            image = new DefaultImage(json);
         } else {
             image = DynamicSerializer.<IImage>tryDeserialize(className, json);
         }
@@ -51,8 +85,7 @@ public final class DynamicSerializer {
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
-     * @return An IStatistics object if successful, throws exception if not
-     *         successful
+     * @return An IStatistics object if successful, null else
      */
     public static IStatistics deserializeStatistics(String json, String game) {
         var className = "";
@@ -63,7 +96,7 @@ public final class DynamicSerializer {
 
         IStatistics statistics = null;
         if (className.isBlank()) {
-            statistics = new DefaultStatistics(game, json);
+            statistics = new DefaultStatistics(json);
         } else {
             statistics = DynamicSerializer.<IStatistics>tryDeserialize(className, json);
         }
@@ -76,8 +109,7 @@ public final class DynamicSerializer {
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
-     * @return An IVISABFile object if successful, throws exception if not
-     *         successful
+     * @return An IVISABFile object if successful, null else
      */
     public static IVISABFile deserializeVISABFile(String json, String game) {
         var className = "";
@@ -86,14 +118,12 @@ public final class DynamicSerializer {
         if (mapping != null && mapping.getFile() != null)
             className = mapping.getFile();
 
-        IVISABFile visabFile = null;
-        if (className.isBlank()) {
-            visabFile = JsonConvert.deserializeJson(json, DefaultFile.class);
-        } else {
-            visabFile = DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
+        try {
+            return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonConvert.deserializeJson(json, DefaultFile.class);
         }
-
-        return visabFile;
     }
 
     public static void main(String[] args) {
@@ -102,7 +132,6 @@ public final class DynamicSerializer {
 
         var stats = DynamicSerializer.deserializeStatistics(json, "CBRShooter");
 
-        stats.getGame();
     }
 
     /**
@@ -149,4 +178,5 @@ public final class DynamicSerializer {
 
         return _class;
     }
+
 }

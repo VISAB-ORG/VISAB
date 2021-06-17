@@ -2,6 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.SessionStatus;
 
 /**
@@ -13,15 +14,15 @@ import org.visab.globalmodel.SessionStatus;
  */
 public class SessionOpenedEvent extends ApiEventBase {
 
-    private String game;
+    private IMetaInformation metaInformation;
 
-    public SessionOpenedEvent(UUID sessionId, SessionStatus status, String game) {
+    public SessionOpenedEvent(UUID sessionId, SessionStatus status, IMetaInformation metaInformation) {
         super(sessionId, status);
-        this.game = game;
+        this.metaInformation = metaInformation;
     }
 
-    public String getGame() {
-        return game;
+    public IMetaInformation getMetaInformation() {
+        return this.metaInformation;
     }
 
 }

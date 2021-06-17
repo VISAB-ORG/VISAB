@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
+import org.visab.dynamic.DynamicSerializer;
+import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -117,29 +119,32 @@ public class SessionController extends HTTPControllerBase {
     private Response openSession(IHTTPSession httpSession) {
         logger.info("Trying to open a session for the VISAB WebApi.");
 
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+        var json = WebApiHelper.extractJsonBody(httpSession);
+        if (json == "")
+            return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        // If nothing fails, this is the default case
-        var responseMessage = "Session opened for game '" + game;
+        var metaInformation = DynamicSerializer.deserializeMetaInformation(json);
+        if (metaInformation == null || metaInformation.getGame() == null || metaInformation.getGame().isBlank()) {
+            var responseMessage = StringFormat.niceString("Meta information {0} was invalid. Wont start session.",
+                    metaInformation);
+            logger.info(responseMessage);
+            return getBadRequestResponse(responseMessage);
+        }
 
-        if (game == "") {
-            responseMessage = "No game name provided, cannot open session.";
+        if (!Workspace.getInstance().getConfigManager().isGameSupported(metaInformation.getGame())) {
+            var responseMessage = "Given game name '" + metaInformation.getGame()
+                    + "' is not supported, cannot open session.";
             logger.error(responseMessage);
             return getBadRequestResponse(responseMessage);
         }
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(game)) {
-            responseMessage = "Given game name '" + game + "' is not supported, cannot open session.";
-            logger.error(responseMessage);
-            return getBadRequestResponse(responseMessage);
-        }
-
+        // Generate new UUID to use for identifying the session
         var newSessionId = UUID.randomUUID();
 
-        WebApi.getInstance().getSessionAdministration().openSession(newSessionId, game,
+        var success = WebApi.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
                 httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
-        logger.error(responseMessage + "' , ID: " + newSessionId);
+        logger.info(StringFormat.niceString("Opened session with ID '{0}'"));
         return getJsonResponse(newSessionId);
     }
 

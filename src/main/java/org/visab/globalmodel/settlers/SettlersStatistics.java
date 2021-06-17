@@ -57,9 +57,7 @@ public class SettlersStatistics implements IStatistics {
 
     private String game;
 
-    @Override
     public String getGame() {
-        // TODO Auto-generated method stub
         return game;
     }
 

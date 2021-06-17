@@ -51,7 +51,6 @@ public class CBRShooterStatistics implements IStatistics {
         return players;
     }
 
-    @Override
     public String getGame() {
         return game;
     }

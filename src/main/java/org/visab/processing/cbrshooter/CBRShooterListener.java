@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.IMetaInformation;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
@@ -74,8 +76,9 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-    public void onSessionStarted() {
+    public void onSessionStarted(IMetaInformation metaInformation) {
         file = new CBRShooterFile();
+        // TODO: Add meta information to the file.
     }
 
     @Override
@@ -90,5 +93,10 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
         writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
+    }
+
+    @Override
+    public IVISABFile getCurrentFile() {
+        return file;
     }
 }

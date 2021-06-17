@@ -2,6 +2,7 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
@@ -25,8 +26,9 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultStatistic
     }
 
     @Override
-    public void onSessionStarted() {
+    public void onSessionStarted(IMetaInformation metaInformation) {
         file = new DefaultFile(game);
+        // TODO: Do something with the meta information
     }
 
     @Override

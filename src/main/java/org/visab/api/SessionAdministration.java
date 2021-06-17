@@ -15,8 +15,10 @@ import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.eventbus.publisher.ApiPublisherBase;
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
+import org.visab.util.StringFormat;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
@@ -40,19 +42,21 @@ public class SessionAdministration {
      * Opens a new transmission session and publishes a SessionOpenedEvent.
      * 
      * @param sessionId            The sessionId to open a session for
-     * @param game                 The game of the session
+     * @param metaInformation      The metainformation of the session
      * @param remoteCallerIp       The ip of the device that made the api call
      * @param remoteCallerHostName The hostname of the device that made the api call
      */
-    public void openSession(UUID sessionId, String game, String remoteCallerIp, String remoteCallerHostName) {
-        var status = new SessionStatus(sessionId, game, true, LocalTime.now(), LocalTime.now(), null, 0, 0,
-                1, remoteCallerHostName, remoteCallerIp);
+    public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp,
+            String remoteCallerHostName) {
+        var status = new SessionStatus(sessionId, metaInformation.getGame(), true, LocalTime.now(), LocalTime.now(),
+                null, 0, 0, 1, remoteCallerHostName, remoteCallerIp);
         statuses.add(status);
 
-        var event = new SessionOpenedEvent(sessionId, status, game);
-
+        var event = new SessionOpenedEvent(sessionId, status, metaInformation);
         // Publish the SessionOpenedEvent
         publish(event);
+
+        return true;
     }
 
     /**

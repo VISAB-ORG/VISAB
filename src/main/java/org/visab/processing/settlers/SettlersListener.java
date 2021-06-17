@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.IMetaInformation;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersMapImage;
 import org.visab.globalmodel.settlers.SettlersStatistics;
@@ -18,12 +20,9 @@ import org.visab.util.StringFormat;
 import org.visab.workspace.config.ConfigManager;
 
 /**
- * <<<<<<< HEAD The SettlersListener class, that is responsible for listening to
- * information sent by the Unity Settlers of Catan game and creating files of
- * that information. ======= The SettlersListener class, that is responsible for
- * listening to information sent by the Unity Settlers of Catan game and
- * creating files of that information. >>>>>>>
- * 38ae1ffe3f30403a94cfcfd5a5778e696de254d7
+ * The SettlersListener class, that is responsible for listening to information
+ * sent by the Unity Settlers of Catan game and creating files of that
+ * information.
  *
  * @author leonr
  *
@@ -77,8 +76,9 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     }
 
     @Override
-    public void onSessionStarted() {
+    public void onSessionStarted(IMetaInformation metaInformation) {
         file = new SettlersFile();
+        // TODO: Add meta information
     }
 
     @Override
@@ -93,5 +93,10 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
         writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
+    }
+
+    @Override
+    public IVISABFile getCurrentFile() {
+        return file;
     }
 }

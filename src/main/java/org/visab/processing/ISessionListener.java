@@ -3,6 +3,7 @@ package org.visab.processing;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
 
 /**
@@ -50,8 +51,11 @@ public interface ISessionListener<TStatistics extends IStatistics> {
 
     /**
      * Called when the listeners is started.
+     * 
+     * @param metaInformation The meta information object using which the session
+     *                        was opened.
      */
-    void onSessionStarted();
+    void onSessionStarted(IMetaInformation metaInformation);
 
     /**
      * Called upon reciving statistics for the current session. Is only called if
