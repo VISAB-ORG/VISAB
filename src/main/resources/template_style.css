@@ -43,14 +43,10 @@
 	-fx-background-color: rgba(0,0,0,0);
 }
 
-.listView_box {
-	-fx-background-color: #FFFFFF;
-	-fx-background-radius: 10;
-}
 
-.drag-box {
-	-fx-background-color: #FFFFFF;
-	-fx-background-radius: 10;
+.file-explorer {
+	-fx-border-radius: 10;
+	-fx-background-insets:0;
 }
 
 .transparent {
@@ -61,16 +57,77 @@
 	-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0.1), 10.0, 0.0, 0.0, 10.0);
 }
 
-.tableview{
-	-fx-font-size: 8px;
-	-fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #9e9b9b, #eeeeee);
-	-fx-background-radius: 10;
+.tree-table-view {
+	-fx-background-radius: 7;
+	-fx-border-radius: 7;
+	-fx-color: #dddddd;
 }
 
-.table-view .column-header {
-	-fx-background-color: #12213a;
-	-fx-background-radius: 2;
-}
-.table-view .column-header .label {
+.tree-table-view .label{
 	-fx-text-fill: #FFFFFF;
+	-fx-background-color: #12213a;
+	-fx-background-radius: 7 7 0 0;
+}
+
+.tree-table-row-cell {
+	-fx-text-fill: black;
+	-fx-background-color: transparent;
+	-fx-border-radius: 7 7 0 0;
+	-fx-background-radius: 7 7 0 0;
+}
+
+.tree-table-view .column-header {
+	-fx-color: transparent;
+    -fx-background-insets: 0 1px 0 0;
+    -fx-padding: 0 0 1px 0;
+    -fx-background-radius: 7 7 0 0;
+}
+
+.tree-table-view .column-header-background .filler {
+	-fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
+
+.tree-table-view .column-header-background { 
+   -fx-color: #12213a;
+   -fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
+
+.table-view {
+	-fx-background-color: radial-gradient(center 50% 50% , radius 80% , #9e9b9b, #eeeeee);
+	-fx-background-radius: 7;
+	-fx-border-radius: 7;
+}
+
+.tree-table-row-cell:selected {
+    -fx-background-color: #ff5c33;
+    -fx-background-radius: 0;
+}
+
+.table-view .label{
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 10.5px;
+	-fx-background-color: #12213a;
+	-fx-background-radius: 7 7 0 0;
+}
+.table-row-cell {
+	-fx-text-fill: black;
+	-fx-background-color: transparent;
+	-fx-border-radius: 7 7 0 0;
+	-fx-background-radius: 7 7 0 0;
+}
+.table-view .column-header {
+	-fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
+.table-view .column-header-background .filler {
+	-fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
+}
+
+.table-view .column-header-background { 
+   -fx-color: #12213a;
+   -fx-border-radius: 7 7 0 0;
+   	-fx-background-radius: 7 7 0 0;
 }
