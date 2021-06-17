@@ -76,7 +76,7 @@ public class ConfigManager {
      *         else
      */
     private List<Mapping> loadMappings() {
-        var json = VISABUtil.readResourceContents("/configs/classMapping_DEFAULT.json");
+        var json = VISABUtil.readResourceContents("/configs/classMapping.json");
         var mappings = JsonConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
         });
 
