@@ -23,9 +23,11 @@ import javafx.scene.chart.XYChart.Series;
 // TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
-    private ObservableList<CBRShooterStatisticsRow> overviewStatistics = FXCollections.observableArrayList();
+    private ObservableList<CBRShooterStatisticsRow> comparisonStatistics = FXCollections.observableArrayList();
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
+
+    private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
     private ObservableList<Data> planUsageCBR = FXCollections.observableArrayList();
 
@@ -61,8 +63,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // Updates the pie charts for plan usage
         updatePlanUsage(newStatistics);
         updatePlayerStatistics(newStatistics);
-        snapshotsPerSecond.set(overviewStatistics.size() / newStatistics.getTotalTime());
-        overviewStatistics.add(mapToRow(newStatistics));
+        snapshotsPerSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
+        comparisonStatistics.add(mapToRow(newStatistics));
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -133,7 +135,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     public ObservableList<CBRShooterStatisticsRow> getOverviewStatistics() {
-        return overviewStatistics;
+        return comparisonStatistics;
     }
 
     @Override

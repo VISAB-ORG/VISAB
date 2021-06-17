@@ -1,4 +1,4 @@
-package org.visab.globalmodel.cbrshooter;
+package org.visab.globalmodel;
 
 public class Vector2 {
 

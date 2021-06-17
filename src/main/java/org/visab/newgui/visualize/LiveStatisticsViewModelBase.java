@@ -37,6 +37,9 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         // dock onto listener
         concreteListener.addViewModel(this);
 
+        // Set the file
+        file = (TFile) concreteListener.getCurrentFile();
+
         // Notify for all the already received statistics
         for (var statistics : concreteListener.getReceivedStatistics())
             notifyStatisticsAdded(statistics);

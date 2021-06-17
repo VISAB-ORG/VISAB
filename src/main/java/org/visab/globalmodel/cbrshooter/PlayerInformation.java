@@ -1,5 +1,7 @@
 package org.visab.globalmodel.cbrshooter;
 
+import org.visab.globalmodel.Vector2;
+
 public class PlayerInformation {
 
     private int health;
@@ -15,27 +17,8 @@ public class PlayerInformation {
 
     private String weapon;
 
-    private boolean isCBR;
-    private boolean isHumanControlled;
-
     public int getHealth() {
         return health;
-    }
-
-    public boolean getIsCBR() {
-        return isCBR;
-    }
-
-    public void setIsCBR(boolean isCBR) {
-        this.isCBR = isCBR;
-    }
-
-    public boolean getIsHumanControlled() {
-        return isHumanControlled;
-    }
-
-    public void setIsHumanControlled(boolean isHumanControlled) {
-        this.isHumanControlled = isHumanControlled;
     }
 
     public int getMagazineAmmunition() {

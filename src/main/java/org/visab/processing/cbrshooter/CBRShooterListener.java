@@ -11,6 +11,7 @@ import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
+import org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
@@ -77,8 +78,12 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     @Override
     public void onSessionStarted(IMetaInformation metaInformation) {
+        var concrete = (CBRShooterMetaInformation) metaInformation;
         file = new CBRShooterFile();
-        // TODO: Add meta information to the file.
+        file.setGameSpeed(concrete.getGameSpeed());
+        file.setMapRectangle(concrete.getMapRectangle());
+        file.setPlayerCount(concrete.getPlayerCount());
+        file.getPlayerInformation().putAll(concrete.getPlayerInformation());
     }
 
     @Override
