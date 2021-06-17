@@ -49,6 +49,12 @@
                      </GridPane.margin>
                   </Label>
                   <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <columns>
+                      <TableColumn fx:id="gamesColumn" prefWidth="75.0" text="Game" />
+                      <TableColumn fx:id="timeoutColumn" prefWidth="75.0" text="Session Timeout" />
+                    </columns>
+                  </TableView>
                   <TextField fx:id="allowedGamesField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
@@ -64,12 +70,6 @@
                         </Button>
                      </children>
                   </HBox>
-                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="Game" />
-                      <TableColumn prefWidth="75.0" text="Session Timeout" />
-                    </columns>
-                  </TableView>
                </children>
                <BorderPane.margin>
                   <Insets bottom="15.0" left="10.0" right="10.0" top="5.0" />

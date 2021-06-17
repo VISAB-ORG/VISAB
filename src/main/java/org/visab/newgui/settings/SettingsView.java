@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
@@ -28,7 +29,13 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
 //    @FXML
 //    TextField sessionTimeoutField;
     @FXML
-    TableView<SettingsItem> sessionTimeoutsTable;
+    TableView<SessionItem> sessionTimeoutsTable;
+    
+    @FXML
+    TableColumn<SessionItem, String> gamesColumn;
+    
+    @FXML
+    TableColumn<SessionItem, String> timeoutColumn;
     
     @FXML
     TextField allowedGamesField;
@@ -75,10 +82,13 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
-//        sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
         allowedGamesField.textProperty().bindBidirectional(viewModel.allowedGamesProperty());
 
+        gamesColumn.setCellValueFactory(cellData -> cellData.getValue().getGame());
+        timeoutColumn.setCellValueFactory(c -> c.getValue().getTimeout());
+        
         sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
+
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
 //        setInputFieldNumericOnly(sessionTimeoutField);

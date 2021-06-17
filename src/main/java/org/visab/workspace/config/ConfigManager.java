@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -217,7 +216,7 @@ public class ConfigManager {
      * 
      * @return The SessionTimeouts.
      */
-    public Map<String, Integer> getSessionTimeouts() {
+    public HashMap<String, Integer> getSessionTimeouts() {
         return this.settings.getSessionTimeout();
     }
 

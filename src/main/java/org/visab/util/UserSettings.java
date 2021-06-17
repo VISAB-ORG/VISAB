@@ -2,7 +2,6 @@ package org.visab.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Creates a settings object with the settings from the settings.json file.
@@ -18,7 +17,7 @@ public class UserSettings {
 
     private ArrayList<String> allowedGames;
     
-    private Map<String, Integer> sessionTimeouts;
+    private HashMap<String, Integer> sessionTimeouts;
 
     /**
      * Gets the webApiPort.
@@ -80,7 +79,7 @@ public class UserSettings {
      * 
      * @return The timeout of the sessions.
      */
-    public Map<String, Integer> getSessionTimeout() {
+    public HashMap<String, Integer> getSessionTimeout() {
         return sessionTimeouts;
     }
     
@@ -89,7 +88,7 @@ public class UserSettings {
      * 
      * @param timeout The timeout of the sessions.
      */
-    public void setSessionTimeouts(Map<String, Integer> timeout) {
+    public void setSessionTimeouts(HashMap<String, Integer> timeout) {
         this.sessionTimeouts = timeout;
     }
     

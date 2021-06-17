@@ -12,7 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 /**
  * This class represents the viewmodel of the settings.
@@ -31,10 +30,7 @@ public class SettingsViewModel extends ViewModelBase {
     private StringProperty allowedGames = new SimpleStringProperty(Workspace.getInstance().getConfigManager()
             .getAllowedGames().toString().replace("[", "").replace("]", "").replace(" ", ""));
     
-//    private MapProperty sessionTimeouts = new SimpleMapProperty<String, Integer>();
-    private ObservableMap<String, Integer> sessionTimeouts = FXCollections.observableMap(Workspace.getInstance().getConfigManager().getSessionTimeouts());
-    
-    private ObservableList<SettingsItem> settingsItem = FXCollections.observableArrayList();
+    private ObservableList<SessionItem> settingsItem = FXCollections.observableArrayList();
 
     /**
      * The webApiPort for the view.
@@ -63,19 +59,19 @@ public class SettingsViewModel extends ViewModelBase {
         return allowedGames;
     }
     
-    public ObservableMap<String, Integer> sessionTimeoutsProperty() {
-        return sessionTimeouts;
-    }
-    
-    public ObservableList<SettingsItem> settingsItemProperty() {
-        var items = new ArrayList<SettingsItem>();
+    /**
+     * The session timeout for very game.
+     * 
+     * @return List of SettingsItemts.
+     */
+    public ObservableList<SessionItem> settingsItemProperty() {
+        var items = new ArrayList<SessionItem>();
         for (int i = 0; i < Workspace.getInstance().getConfigManager().getAllowedGames().size(); i++) {
-            items.add(new SettingsItem(Workspace.getInstance().getConfigManager().getAllowedGames().get(i), 
+            items.add(new SessionItem(Workspace.getInstance().getConfigManager().getAllowedGames().get(i), 
                     Workspace.getInstance().getConfigManager().getSessionTimeouts().get(Workspace.getInstance().getConfigManager().getAllowedGames().get(i))));
         }
         settingsItem.addAll(items);
-        System.out.println(settingsItem.get(0).getGame());
-        System.out.println(settingsItem.get(0).getTimeout());
+
         return settingsItem;
     }
 
