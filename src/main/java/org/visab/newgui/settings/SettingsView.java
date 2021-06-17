@@ -10,7 +10,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+
 
 /**
  * This class represents the view of the settings.
@@ -23,8 +25,10 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @FXML
     TextField webApiPortField;
     
+//    @FXML
+//    TextField sessionTimeoutField;
     @FXML
-    TextField sessionTimeoutField;
+    TableView<SettingsItem> sessionTimeoutsTable;
     
     @FXML
     TextField allowedGamesField;
@@ -71,12 +75,13 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
-        sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
+//        sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
         allowedGamesField.textProperty().bindBidirectional(viewModel.allowedGamesProperty());
-        
+
+        sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
-        setInputFieldNumericOnly(sessionTimeoutField);
+//        setInputFieldNumericOnly(sessionTimeoutField);
     }
 
 }
