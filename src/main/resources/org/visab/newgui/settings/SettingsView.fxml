@@ -30,6 +30,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                  <RowConstraints />
               </rowConstraints>
                <children>
                   <Label fx:id="webApiPortLabel" text="Web Api Port:" GridPane.rowIndex="0">
@@ -48,15 +49,8 @@
                      </GridPane.margin>
                   </Label>
                   <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-<<<<<<< Upstream, based on origin/dev
-                  <TextField fx:id="sessionTimeoutField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="allowedGamesField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <HBox alignment="TOP_RIGHT" prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-=======
-                  <TextField fx:id="webApiHostNameField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="allowedGamesField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
->>>>>>> ad9b084 updating timeout display
                      <children>
                         <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="28.0" prefWidth="127.0" text="Return">
                            <HBox.margin>
@@ -70,7 +64,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columns>
                       <TableColumn prefWidth="75.0" text="Game" />
                       <TableColumn prefWidth="75.0" text="Session Timeout" />
