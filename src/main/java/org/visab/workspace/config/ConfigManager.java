@@ -1,8 +1,10 @@
 package org.visab.workspace.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -192,8 +194,8 @@ public class ConfigManager {
      * 
      * @return The sessionTimeout.
      */
-    public int getSessionTimeout() {
-        return this.settings.getSessionTimeout();
+    public int getDefaultSessionTimeout() {
+        return this.settings.getDefaultSessionTimeout();
     }
 
     /**
@@ -205,6 +207,18 @@ public class ConfigManager {
      */
     public ArrayList<String> getAllowedGames() {
         return this.settings.getAllowedGames();
+    }
+    
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Getter for the sessionTimeouts.
+     * 
+     * @return The SessionTimeouts.
+     */
+    public Map<String, Integer> getSessionTimeouts() {
+        return this.settings.getSessionTimeout();
     }
 
     /**
@@ -236,7 +250,7 @@ public class ConfigManager {
      * @param timeout The new sessionTimeout.
      */
     public void updateSessionTimeout(int timeout) {
-        int oldTimeout = this.settings.getSessionTimeout();
+        int oldTimeout = this.settings.getDefaultSessionTimeout();
         if (timeout == 0) {
             logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
             timeout = oldTimeout;
@@ -244,7 +258,7 @@ public class ConfigManager {
             logger.info("Changed sessionTimeout from " + oldTimeout + "seconds to " + timeout + "seconds.");
         }
 
-        this.settings.setSessionTimeout(timeout);
+        this.settings.setDefaultSessionTimeout(timeout);
     }
 
     /**
