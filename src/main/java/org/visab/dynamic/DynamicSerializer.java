@@ -33,12 +33,15 @@ public final class DynamicSerializer {
     public static IMetaInformation deserializeMetaInformation(String json) {
         var jsonObject = JsonConvert.deserializeJsonUnknown(json);
 
-        if (!jsonObject.has("game")) {
+        var gameProperty = jsonObject.get("game");
+        if (gameProperty == null)
+            gameProperty = jsonObject.get("Game");
+
+        if (gameProperty == null) {
             logger.error("Json had no field with name game. Cant deserialize it. Json:" + json);
             return null;
         }
-
-        var game = jsonObject.get("game").asText();
+        var game = gameProperty.asText();
 
         var className = "";
 

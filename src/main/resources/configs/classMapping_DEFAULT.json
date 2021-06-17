@@ -1,6 +1,7 @@
 [
     {
         "game": "CBRShooter",
+        "metaInformation": "org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation",
         "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
         "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
         "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
@@ -14,6 +15,7 @@
     },
     {
         "game": "Settlers",
+        "metaInformation": "org.visab.globalmodel.settlers.SettlersMetaInformation",
         "listener": "org.visab.processing.settlers.SettlersListener",
         "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
         "file": "org.visab.globalmodel.settlers.SettlersFile",

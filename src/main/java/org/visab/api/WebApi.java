@@ -1,6 +1,7 @@
 package org.visab.api;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import org.visab.api.model.SessionWatchdog;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.processing.SessionListenerAdministration;
 import org.visab.processing.SessionListenerFactory;
+import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -117,7 +119,8 @@ public class WebApi extends RouterNanoHTTPD {
      */
     @Override
     public void start() throws IOException {
-        logger.info("Starting WebApi.");
+        logger.info(StringFormat.niceString("Starting WebApi on {0}:{1}.", Inet4Address.getLocalHost().getHostAddress(),
+                Workspace.getInstance().getConfigManager().getWebApiPort()));
         watchdog = new SessionWatchdog(sessionAdministration.getSessionStatuses());
 
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);

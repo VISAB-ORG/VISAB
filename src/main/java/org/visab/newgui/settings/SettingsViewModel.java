@@ -56,11 +56,6 @@ public class SettingsViewModel extends ViewModelBase {
 
     /**
      * Updates the settings values with the new values and saves them.
-     * 
-     * @param port     The used port.
-     * @param hostName The used hostName.
-     * @param timeout  The sessionTimeout time.
-     * @param games    The games that are allowed.
      */
     public Command updateSettingsCommand() {
         // converting the games String back to an ArrayList

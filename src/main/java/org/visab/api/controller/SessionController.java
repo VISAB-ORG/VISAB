@@ -107,7 +107,12 @@ public class SessionController extends HTTPControllerBase {
 
     @Override
     public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return getNotFoundResponse(uriResource, "Post request are not supported for session handeling!");
+        var endpointAdress = uriResource.getUri().replace("session/", "");
+
+        if (endpointAdress.equals("open"))
+            return openSession(session);
+        else
+            return getNotFoundResponse(uriResource);
     }
 
     /**
@@ -144,7 +149,7 @@ public class SessionController extends HTTPControllerBase {
         var success = WebApi.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
                 httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
 
-        logger.info(StringFormat.niceString("Opened session with ID '{0}'"));
+        logger.info(StringFormat.niceString("Opened session with ID '{0}'", newSessionId));
         return getJsonResponse(newSessionId);
     }
 
