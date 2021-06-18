@@ -2,11 +2,9 @@ package org.visab.newgui.settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.workspace.Workspace;
-
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.SimpleStringProperty;
@@ -76,11 +74,8 @@ public class SettingsViewModel extends ViewModelBase {
         Workspace.getInstance().getConfigManager().updateWebApiPort(Integer.parseInt(webApiPort.get()));
         Workspace.getInstance().getConfigManager().updateAllowedGames(gamesArrray);
         
-        //TODO: remove when solved with a better solution
-        HashMap<String, Integer> map = Workspace.getInstance().getConfigManager().getSessionTimeout();
-        map.put(gamesArrray.get(gamesArrray.size() -1), 2);
-        Workspace.getInstance().getConfigManager().updateSessionTimeout(map);
-        System.out.println(Workspace.getInstance().getConfigManager().getSessionTimeout());
+//        HashMap<String, Integer> map = Workspace.getInstance().getConfigManager().getSessionTimeout();
+//        Workspace.getInstance().getConfigManager().updateSessionTimeout(map);
 
         return runnableCommand(() -> {
             Workspace.getInstance().getConfigManager().saveSettings();

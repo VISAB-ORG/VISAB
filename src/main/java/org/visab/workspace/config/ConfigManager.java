@@ -243,6 +243,10 @@ public class ConfigManager {
         for (String game : games) {
             if (!this.settings.getAllowedGames().contains(game)) {
                 logger.info("Added new game to allowedGame list: " + game + ".");
+                HashMap<String, Integer> map = getSessionTimeout();
+                map.put(game, 10);
+                updateSessionTimeout(map);
+                logger.info("Added session timeout: 10, for new game: " + game);
             }
         }
         // Check if current version of allowed games is missing a game which was

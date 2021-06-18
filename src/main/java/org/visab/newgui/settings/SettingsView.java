@@ -10,9 +10,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 
 /**
@@ -40,26 +43,36 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @FXML
     TextField allowedGamesField;
     
+    @FXML
+    Button saveButton;
+    
+    @FXML
+    Button returnButton;
+    
     @InjectViewModel
     SettingsViewModel viewModel;
     
     /**
+     * Saves the settings and closes the settingsView.
      * 
      * @param event Is triggered when the save button is pressed.
      */
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
         viewModel.updateSettingsCommand().execute();
-        // TODO: should the settings view be closed when the new settings are saved?
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
     }
     
     /**
+     * Closes the settingsView.
      * 
      * @param event Is triggered when the return button is pressed.
      */
     @FXML
     private void handleReturnButtonAction(ActionEvent event) {
-        // TODO: check if return button is needed or otherwise implemented
+        Stage stage = (Stage) returnButton.getScene().getWindow();
+        stage.close();
     }
     
     /**
@@ -86,6 +99,8 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
 
         gamesColumn.setCellValueFactory(cellData -> cellData.getValue().getGame());
         timeoutColumn.setCellValueFactory(c -> c.getValue().getTimeout());
+        timeoutColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        
         
         sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
 
