@@ -47,7 +47,7 @@ public class StatisticsController extends HTTPControllerBase {
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
         if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session was already closed!");
+            return getBadRequestResponse("Session was already closed!" + WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
 
         if (game == "")
             return getBadRequestResponse("No game given in headers!");

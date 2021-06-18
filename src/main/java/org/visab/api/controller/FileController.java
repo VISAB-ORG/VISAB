@@ -3,6 +3,8 @@ package org.visab.api.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
@@ -16,6 +18,8 @@ import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 public class FileController extends HTTPControllerBase {
+
+    private static Logger logger = LogManager.getLogger(FileController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
@@ -48,6 +52,7 @@ public class FileController extends HTTPControllerBase {
     }
 
     private Response sendFile(IHTTPSession session) {
+        logger.info("Started to send file...");
         var parameters = session.getParameters();
 
         UUID sessionId = null;

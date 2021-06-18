@@ -19,8 +19,7 @@ public class ImageController extends HTTPControllerBase {
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return getNotFoundResponse(uriResource,
-                "Get request are not supported when sending images!");
+        return getNotFoundResponse(uriResource, "Get request are not supported when sending images!");
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ImageController extends HTTPControllerBase {
             return getBadRequestResponse("Game is not supported!");
 
         if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session was closed!");
+            return getBadRequestResponse("Session was closed!" + WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
 
         var json = WebApiHelper.extractJsonBody(httpSession);
         if (json == "")
