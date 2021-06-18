@@ -254,6 +254,10 @@ public class ConfigManager {
         for (String game : this.settings.getAllowedGames()) {
             if (!games.contains(game)) {
                 logger.info("Removed game: " + game + " from allowedGame list.");
+                HashMap<String, Integer> map = getSessionTimeout();
+                map.remove(game);
+                updateSessionTimeout(map);
+                logger.info("Removed session timeout for game: " + game);
             }
         }
         // Renaming a game will result in both logs to be printed
