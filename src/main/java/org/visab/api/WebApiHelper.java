@@ -23,6 +23,12 @@ public final class WebApiHelper {
     private static Logger logger = LogManager.getLogger(WebApiHelper.class);
 
     /**
+     * Is returned if session specific data like statistics or images were sent, but
+     * the session was already closed.
+     */
+    public static final String SESSION_ALREADY_CLOSED_RESPONSE = "SESSION_ALREADY_CLOSED";
+
+    /**
      * Extracts the game from the headers of a Http request.
      * 
      * @param headers The headers
