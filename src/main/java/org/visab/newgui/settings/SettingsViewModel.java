@@ -2,6 +2,7 @@ package org.visab.newgui.settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.workspace.Workspace;
@@ -24,9 +25,6 @@ public class SettingsViewModel extends ViewModelBase {
     private StringProperty webApiPort = new SimpleStringProperty(
             String.valueOf(Workspace.getInstance().getConfigManager().getWebApiPort()));
 
-    private StringProperty sessionTimeout = new SimpleStringProperty(
-            String.valueOf(Workspace.getInstance().getConfigManager().getDefaultSessionTimeout()));
-
     private StringProperty allowedGames = new SimpleStringProperty(Workspace.getInstance().getConfigManager()
             .getAllowedGames().toString().replace("[", "").replace("]", "").replace(" ", ""));
     
@@ -39,15 +37,6 @@ public class SettingsViewModel extends ViewModelBase {
      */
     public StringProperty webApiPortProperty() {
         return webApiPort;
-    }
-
-    /**
-     * The sessionTimeout for view.
-     * 
-     * @return The sessionTimeout as StringProperty.
-     */
-    public StringProperty sessionTimeoutProperty() {
-        return sessionTimeout;
     }
 
     /**
@@ -65,10 +54,11 @@ public class SettingsViewModel extends ViewModelBase {
      * @return List of SettingsItemts.
      */
     public ObservableList<SessionItem> settingsItemProperty() {
+        //TODO: find a better solution
         var items = new ArrayList<SessionItem>();
         for (int i = 0; i < Workspace.getInstance().getConfigManager().getAllowedGames().size(); i++) {
             items.add(new SessionItem(Workspace.getInstance().getConfigManager().getAllowedGames().get(i), 
-                    Workspace.getInstance().getConfigManager().getSessionTimeouts().get(Workspace.getInstance().getConfigManager().getAllowedGames().get(i))));
+                    Workspace.getInstance().getConfigManager().getSessionTimeout().get(Workspace.getInstance().getConfigManager().getAllowedGames().get(i))));
         }
         settingsItem.addAll(items);
 
@@ -84,8 +74,13 @@ public class SettingsViewModel extends ViewModelBase {
 
         // updating and saving the settings
         Workspace.getInstance().getConfigManager().updateWebApiPort(Integer.parseInt(webApiPort.get()));
-        Workspace.getInstance().getConfigManager().updateSessionTimeout(Integer.parseInt(sessionTimeout.get()));
         Workspace.getInstance().getConfigManager().updateAllowedGames(gamesArrray);
+        
+        //TODO: remove when solved with a better solution
+        HashMap<String, Integer> map = Workspace.getInstance().getConfigManager().getSessionTimeout();
+        map.put(gamesArrray.get(gamesArrray.size() -1), 2);
+        Workspace.getInstance().getConfigManager().updateSessionTimeout(map);
+        System.out.println(Workspace.getInstance().getConfigManager().getSessionTimeout());
 
         return runnableCommand(() -> {
             Workspace.getInstance().getConfigManager().saveSettings();

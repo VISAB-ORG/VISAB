@@ -189,17 +189,6 @@ public class ConfigManager {
     /**
      * Syntactic sugar to wrap the access on the settings object.
      * 
-     * Getter for the sessionTimeout.
-     * 
-     * @return The sessionTimeout.
-     */
-    public int getDefaultSessionTimeout() {
-        return this.settings.getDefaultSessionTimeout();
-    }
-
-    /**
-     * Syntactic sugar to wrap the access on the settings object.
-     * 
      * Getter for the allowedGames.
      * 
      * @return The allowedGames.
@@ -216,7 +205,7 @@ public class ConfigManager {
      * 
      * @return The SessionTimeouts.
      */
-    public HashMap<String, Integer> getSessionTimeouts() {
+    public HashMap<String, Integer> getSessionTimeout() {
         return this.settings.getSessionTimeout();
     }
 
@@ -238,26 +227,6 @@ public class ConfigManager {
         }
 
         this.settings.setWebApiPort(port);
-    }
-
-    /**
-     * Syntactic sugar to wrap the access on the settings object that also provides
-     * detailed logging information according to the changes made.
-     * 
-     * Updates the sessionTimeout time.
-     * 
-     * @param timeout The new sessionTimeout.
-     */
-    public void updateSessionTimeout(int timeout) {
-        int oldTimeout = this.settings.getDefaultSessionTimeout();
-        if (timeout == 0) {
-            logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
-            timeout = oldTimeout;
-        } else if (timeout > 0 && timeout != oldTimeout) {
-            logger.info("Changed sessionTimeout from " + oldTimeout + "seconds to " + timeout + "seconds.");
-        }
-
-        this.settings.setDefaultSessionTimeout(timeout);
     }
 
     /**
@@ -286,6 +255,10 @@ public class ConfigManager {
         // Renaming a game will result in both logs to be printed
 
         this.settings.setAllowedGames(games);
+    }
+    
+    public void updateSessionTimeout(HashMap<String, Integer> timeouts) {
+        this.settings.setSessionTimeout(timeouts);
     }
 
     public boolean isGameSupported(String game) {

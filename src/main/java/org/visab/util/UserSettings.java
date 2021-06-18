@@ -13,11 +13,9 @@ public class UserSettings {
 
     private int webApiPort;
 
-    private int defaultTimeout;
-
     private ArrayList<String> allowedGames;
     
-    private HashMap<String, Integer> sessionTimeouts;
+    private HashMap<String, Integer> sessionTimeout;
 
     /**
      * Gets the webApiPort.
@@ -35,25 +33,6 @@ public class UserSettings {
      */
     public void setWebApiPort(int port) {
         this.webApiPort = port;
-    }
-
-    /**
-     * Gets the time in seconds until a session is automatically timed out if no
-     * statistics were received.
-     * 
-     * @return The default timeout of the session.
-     */
-    public int getDefaultSessionTimeout() {
-        return defaultTimeout;
-    }
-
-    /**
-     * Sets the defaultSessionTimeout.
-     * 
-     * @param timeout The default timeout of the session.
-     */
-    public void setDefaultSessionTimeout(int timeout) {
-        this.defaultTimeout = timeout;
     }
 
     /**
@@ -80,7 +59,7 @@ public class UserSettings {
      * @return The timeout of the sessions.
      */
     public HashMap<String, Integer> getSessionTimeout() {
-        return sessionTimeouts;
+        return sessionTimeout;
     }
     
     /**
@@ -88,8 +67,8 @@ public class UserSettings {
      * 
      * @param timeout The timeout of the sessions.
      */
-    public void setSessionTimeouts(HashMap<String, Integer> timeout) {
-        this.sessionTimeouts = timeout;
+    public void setSessionTimeout(HashMap<String, Integer> timeout) {
+        this.sessionTimeout = timeout;
     }
     
 }

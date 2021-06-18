@@ -43,7 +43,8 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
                     for (var status : statuses) {
                         if (shouldTimeout(status)) {
                             logger.info("Closing session " + status.getSessionId() + " due to timeout of "
-                                    + Workspace.getInstance().getConfigManager().getDefaultSessionTimeout() + " seconds.");
+                                    + Workspace.getInstance().getConfigManager().getSessionTimeout().get(status.getGame())
+                                    + " seconds.");
                             ;
                             status.setIsActive(false);
                             status.setSessionClosed(LocalTime.now());
@@ -81,7 +82,7 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
         var elapsedSeconds = Duration.between(status.getLastRequest(), LocalTime.now()).toSeconds();
         // If nothing was sent yet (only session openend) wait 30 more seconds until
         // timeout.
-        var timeoutSeconds = Workspace.getInstance().getConfigManager().getDefaultSessionTimeout();
+        var timeoutSeconds = Workspace.getInstance().getConfigManager().getSessionTimeout().get(status.getGame());
         if (status.getTotalRequests() == 1)
             timeoutSeconds += 30;
 
