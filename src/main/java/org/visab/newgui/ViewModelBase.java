@@ -16,8 +16,12 @@ public abstract class ViewModelBase implements ViewModel {
     public Command runnableCommand(Runnable runnable) {
         return new DelegateCommand(() -> new Action() {
             @Override
-            protected void action() throws Exception {
-                runnable.run();
+            protected void action() {
+                try {
+                    runnable.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
