@@ -1,5 +1,6 @@
 package org.visab.newgui.settings;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,7 +10,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -52,6 +55,26 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @InjectViewModel
     SettingsViewModel viewModel;
     
+    @FXML
+    private void handleEditSessionTimeoutButtonAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("SessionTimeoutEditView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Edit SessionTimeout");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException io) {
+            
+        }
+    }
+    
+    @FXML
+    private void handleEditAllowedGamesButtonAction(ActionEvent e) {
+        
+    }
+    
     /**
      * Saves the settings and closes the settingsView.
      * 
@@ -77,6 +100,7 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     
     /**
      * Makes a inputField to a numericalField.
+     * 
      * @param inputField The inputField that should be a numericalField.
      */
     private void setInputFieldNumericOnly(TextField inputField) {

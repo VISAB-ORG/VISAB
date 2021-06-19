@@ -62,7 +62,7 @@ public class SettingsViewModel extends ViewModelBase {
 
         return settingsItem;
     }
-
+    
     /**
      * Updates the settings values with the new values and saves them.
      */
