@@ -8,7 +8,7 @@ import java.util.Map;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterStatisticsRow;
+import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.Vector2;
 import org.visab.util.StreamUtil;
@@ -23,7 +23,17 @@ import javafx.scene.chart.XYChart.Series;
 // TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
-    private ObservableList<CBRShooterStatisticsRow> comparisonStatistics = FXCollections.observableArrayList();
+    private ObservableList<String> playerNames = FXCollections.observableArrayList();
+
+    public ObservableList<String> getPlayerNames() {
+        return playerNames;
+    }
+
+    private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
+
+    public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
+        return comparisonStatistics;
+    }
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
@@ -64,7 +74,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         updatePlanUsage(newStatistics);
         updatePlayerStatistics(newStatistics);
         snapshotsPerSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
-        comparisonStatistics.add(mapToRow(newStatistics));
+
+        
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -72,10 +83,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             // If plan is "" substitute with No plan
             var plan = player.getPlan().equals("") ? "No plan" : player.getPlan();
 
+            var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
+
             // If player plan time doesnt for player exist yet, add it.
             var playerPlanTime = StreamUtil.firstOrNull(planTimes, x -> x.getPlayerName().equals(player.getName()));
             if (playerPlanTime == null) {
-                playerPlanTime = new PlayerPlanTime(player.getName(), player.getIsCBR());
+                playerPlanTime = new PlayerPlanTime(player.getName(), isCbr);
                 planTimes.add(playerPlanTime);
             }
 
@@ -84,7 +97,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
             // Check if plan is new
             var isNewPlan = false;
-            if (player.getIsCBR())
+            if (isCbr)
                 isNewPlan = !StreamUtil.contains(planUsageCBR, x -> x.getName().equals(plan));
             else
                 isNewPlan = !StreamUtil.contains(planUsageScript, x -> x.getName().equals(plan));
@@ -96,7 +109,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 data.pieValueProperty().bind(playerPlanTime.getTimeProperty(plan));
 
                 // Add to observable list
-                if (player.getIsCBR())
+                if (isCbr)
                     planUsageCBR.add(data);
                 else
                     planUsageScript.add(data);
@@ -108,7 +121,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private void updatePlayerStatistics(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
+            var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
             var name = player.getName();
+
             if (!lastKills.containsKey(name)) {
                 lastKills.put(name, 0);
             }
@@ -121,21 +136,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 newData.setYValue(kills);
                 newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
 
-                if (player.getIsCBR())
+                if (isCbr)
                     killsCBR.getData().add(newData);
                 else
                     killsScript.getData().add(newData);
             }
         }
-    }
-
-    private CBRShooterStatisticsRow mapToRow(CBRShooterStatistics statistics) {
-        var position = statistics.getPlayers().get(0).getPosition();
-        return new CBRShooterStatisticsRow(new Vector2(position.getX(), position.getY()));
-    }
-
-    public ObservableList<CBRShooterStatisticsRow> getOverviewStatistics() {
-        return comparisonStatistics;
     }
 
     @Override

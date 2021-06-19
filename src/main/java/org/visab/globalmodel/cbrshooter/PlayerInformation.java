@@ -6,6 +6,7 @@ public class PlayerInformation {
 
     private int health;
     private int magazineAmmunition;
+    private int totalAmmunition;
     private String name;
     private String plan;
 
@@ -19,6 +20,14 @@ public class PlayerInformation {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getTotalAmmunition() {
+        return totalAmmunition;
+    }
+
+    public void setTotalAmmunition(int totalAmmunition) {
+        this.totalAmmunition = totalAmmunition;
     }
 
     public int getMagazineAmmunition() {

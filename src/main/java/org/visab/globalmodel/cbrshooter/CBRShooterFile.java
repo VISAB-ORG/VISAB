@@ -3,6 +3,7 @@ package org.visab.globalmodel.cbrshooter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.globalmodel.Rectangle;
@@ -13,11 +14,16 @@ public class CBRShooterFile extends BasicVISABFile {
     private List<CBRShooterStatistics> statistics = new ArrayList<>();
     private int playerCount;
     private Rectangle mapRectangle;
-    private HashMap<String, String> playerInformation = new HashMap<>();
+    private Map<String, String> playerInformation = new HashMap<>();
     private float gameSpeed;
+    private List<WeaponInformation> weaponInformation = new ArrayList<>();
 
     public CBRShooterFile() {
         super(ConfigManager.CBR_SHOOTER_STRING, "2.0");
+    }
+
+    public List<WeaponInformation> getWeaponInformation() {
+        return weaponInformation;
     }
 
     public List<CBRShooterStatistics> getStatistics() {
@@ -40,7 +46,7 @@ public class CBRShooterFile extends BasicVISABFile {
         this.mapRectangle = mapSize;
     }
 
-    public HashMap<String, String> getPlayerInformation() {
+    public Map<String, String> getPlayerInformation() {
         return this.playerInformation;
     }
 

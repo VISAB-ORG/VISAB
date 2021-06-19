@@ -32,6 +32,7 @@ public final class DynamicSerializer {
      */
     public static IMetaInformation deserializeMetaInformation(String json) {
         var jsonObject = JsonConvert.deserializeJsonUnknown(json);
+        System.out.println(json);
 
         var gameProperty = jsonObject.get("game");
         if (gameProperty == null)
