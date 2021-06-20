@@ -1,23 +1,21 @@
-package org.visab.newgui.settings;
+package org.visab.newgui.settings.view;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.visab.newgui.settings.SessionItem;
+import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 
@@ -32,8 +30,6 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @FXML
     TextField webApiPortField;
     
-//    @FXML
-//    TextField sessionTimeoutField;
     @FXML
     TableView<SessionItem> sessionTimeoutsTable;
     
@@ -55,33 +51,23 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @InjectViewModel
     SettingsViewModel viewModel;
     
+    /**
+     * Opens the SessionTimeoutEditView.
+     */
     @FXML
-    private void handleEditSessionTimeoutButtonAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("SessionTimeoutEditView.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            Stage stage = new Stage();
-            stage.setTitle("Edit SessionTimeout");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException io) {
-            
-        }
+    private void handleEditSessionTimeoutButtonAction() {
+        viewModel.openSessionTimeoutEditViewCommand().execute();
     }
     
     @FXML
-    private void handleEditAllowedGamesButtonAction(ActionEvent e) {
-        
+    private void handleEditAllowedGamesButtonAction() {
     }
     
     /**
      * Saves the settings and closes the settingsView.
-     * 
-     * @param event Is triggered when the save button is pressed.
      */
     @FXML
-    private void handleSaveButtonAction(ActionEvent event) {
+    private void handleSaveButtonAction() {
         viewModel.updateSettingsCommand().execute();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
@@ -89,11 +75,9 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     
     /**
      * Closes the settingsView.
-     * 
-     * @param event Is triggered when the return button is pressed.
      */
     @FXML
-    private void handleReturnButtonAction(ActionEvent event) {
+    private void handleReturnButtonAction() {
         Stage stage = (Stage) returnButton.getScene().getWindow();
         stage.close();
     }
@@ -123,7 +107,6 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
 
         gamesColumn.setCellValueFactory(cellData -> cellData.getValue().getGame());
         timeoutColumn.setCellValueFactory(c -> c.getValue().getTimeout());
-        timeoutColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         
         
         sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
