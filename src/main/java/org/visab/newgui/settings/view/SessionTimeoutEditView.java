@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * this class represents the view of the sessionTimeoutEdit.
+ * This class represents the view of the sessionTimeoutEdit.
  * 
  * @author tim
  *
@@ -43,7 +43,7 @@ public class SessionTimeoutEditView implements FxmlView<SessionTimeoutEditViewMo
      */
     @FXML
     private void handleSaveButtonAction() {
-        viewModel.selectedGame(selectedGameChoiceBox.getValue());
+        viewModel.selectedGame().bindBidirectional(new SimpleStringProperty(selectedGameChoiceBox.getValue()));
         viewModel.updateSessionTimeoutCommand().execute();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

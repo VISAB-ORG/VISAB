@@ -24,16 +24,15 @@ public class SessionTimeoutEditViewModel extends ViewModelBase{
     
     private ObservableList<String> allowedGames = FXCollections.observableArrayList();
     
-    private String game;
+    private StringProperty game = new SimpleStringProperty();
     
     /**
-     * Sets the game with the selected one in the choicebox of the view.
+     * Sets the game with the selected one in the choice box of the view.
      * 
-     * @param game The selected game.
      * @return The game that is selected.
      */
-    public String selectedGame(String game) {
-        return this.game = game;
+    public StringProperty selectedGame() {
+        return game;
     }
     
     /**
@@ -62,11 +61,11 @@ public class SessionTimeoutEditViewModel extends ViewModelBase{
     /**
      * Updates the sessionTimeout setting with the new value and saves it.
      * 
-     * @return Saves the settings per runnableCommand.
+     * @return Saves the updated settings.
      */
     public Command updateSessionTimeoutCommand() {
         HashMap<String, Integer> sessionTimeout = Workspace.getInstance().getConfigManager().getSessionTimeout();
-        sessionTimeout.replace(game, Integer.parseInt(timeout.get()));
+        sessionTimeout.replace(game.get(), Integer.parseInt(timeout.get()));
         Workspace.getInstance().getConfigManager().updateSessionTimeout(sessionTimeout);
        
         return runnableCommand(() -> {

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.settings.SessionItem;
+import org.visab.newgui.settings.view.AllowedGamesEditView;
 import org.visab.newgui.settings.view.SessionTimeoutEditView;
 import org.visab.workspace.Workspace;
 
@@ -33,14 +34,7 @@ public class SettingsViewModel extends ViewModelBase {
     
     private Command openSessionTimeoutEditViewCommand;
     
-    public Command openSessionTimeoutEditViewCommand() {
-        if (openSessionTimeoutEditViewCommand == null) {
-            openSessionTimeoutEditViewCommand = runnableCommand(() -> {
-                DynamicViewLoader.showView(SessionTimeoutEditView.class, "Session Tiemout");
-            });
-        }
-        return openSessionTimeoutEditViewCommand;
-    }
+    private Command openAllowedGameEditViewCommand;
     
     /**
      * The webApiPort for the view.
@@ -78,6 +72,34 @@ public class SettingsViewModel extends ViewModelBase {
     }
     
     /**
+     * Command to open the sessionTimeoutEditView.
+     * 
+     * @return Opens the sessionTimeoutEditView.
+     */
+    public Command openSessionTimeoutEditViewCommand() {
+        if (openSessionTimeoutEditViewCommand == null) {
+            openSessionTimeoutEditViewCommand = runnableCommand(() -> {
+                DynamicViewLoader.showView(SessionTimeoutEditView.class, "Session Tiemout");
+            });
+        }
+        return openSessionTimeoutEditViewCommand;
+    }
+    
+    /**
+     * Command to open the allowedGameEditView.
+     * 
+     * @return Opens the allowedGameEditView.
+     */
+    public Command openAllowedGameEditViewComman() {
+        if (openAllowedGameEditViewCommand == null) {
+            openAllowedGameEditViewCommand = runnableCommand(() -> {
+                DynamicViewLoader.showView(AllowedGamesEditView.class, "Allowed Games");
+            });
+        }
+        return  openAllowedGameEditViewCommand;
+    }
+    
+    /**
      * Updates the settings values with the new values and saves them.
      * 
      * @return Saves the settings per runnableCommand.
@@ -85,7 +107,8 @@ public class SettingsViewModel extends ViewModelBase {
     public Command updateSettingsCommand() {
         // converting the games String back to an ArrayList
         ArrayList<String> gamesArrray = new ArrayList<String>(Arrays.asList(allowedGames.get().split(",")));
-
+        System.out.println(gamesArrray);
+        
         // updating and saving the settings
         Workspace.getInstance().getConfigManager().updateWebApiPort(Integer.parseInt(webApiPort.get()));
         Workspace.getInstance().getConfigManager().updateAllowedGames(gamesArrray);

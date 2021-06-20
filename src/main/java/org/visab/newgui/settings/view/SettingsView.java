@@ -61,6 +61,7 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     
     @FXML
     private void handleEditAllowedGamesButtonAction() {
+        viewModel.openAllowedGameEditViewComman().execute();
     }
     
     /**
