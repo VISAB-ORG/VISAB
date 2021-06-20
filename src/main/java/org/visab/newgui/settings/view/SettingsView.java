@@ -113,7 +113,6 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
 
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
-//        setInputFieldNumericOnly(sessionTimeoutField);
     }
 
 }
