@@ -4,12 +4,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.settings.viewmodel.SessionTimeoutEditViewModel;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -33,27 +34,28 @@ public class SessionTimeoutEditView implements FxmlView<SessionTimeoutEditViewMo
     
     /**
      * Saves the sessionTimout and closes the sessonTimeoutEditView.
-     * 
-     * @param event Is triggered when the save button is pressed.
      */
     @FXML
-    private void handleSaveButtonAction(ActionEvent event) {
+    private void handleSaveButtonAction() {
+        viewModel.selectedGame(selectedGameChoiceBox.getValue());
         viewModel.updateSessionTimeoutCommand().execute();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
     
+    /**
+     * Changes the value of the choicebox to the new selected value.
+     */
+    @FXML
+    private void handleChoiceBoxAction() {
+        sessionTimeoutField.setText(String.valueOf(Workspace.getInstance().getConfigManager().getSessionTimeout().get(selectedGameChoiceBox.getValue())));
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO Auto-generated method stub
-        
-        
-        //TODO: Probably not working since view is not dynamically loaded 
-        selectedGameChoiceBox.setValue("Test");
         selectedGameChoiceBox.setItems(viewModel.allowedGamesProperty());
-        
-        System.out.println(viewModel.allowedGamesProperty());
-        
+        selectedGameChoiceBox.setValue("CBRShooter");
+        sessionTimeoutField.textProperty().bindBidirectional(viewModel.timeoutProperty(new SimpleStringProperty(String.valueOf(Workspace.getInstance().getConfigManager().getSessionTimeout().get(selectedGameChoiceBox.getValue())))));
         
         // force the field to be numeric only
         sessionTimeoutField.textProperty().addListener(new ChangeListener<String>() {

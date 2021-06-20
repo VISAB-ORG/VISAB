@@ -15,7 +15,7 @@ import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.main.MainScope;
 import org.visab.newgui.sessionoverview.view.SessionOverviewView;
-import org.visab.newgui.settings.SettingsView;
+import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
 import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;

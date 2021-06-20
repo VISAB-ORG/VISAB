@@ -1,9 +1,12 @@
-package org.visab.newgui.settings;
+package org.visab.newgui.settings.viewmodel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
+import org.visab.newgui.settings.SessionItem;
+import org.visab.newgui.settings.view.SessionTimeoutEditView;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -27,7 +30,18 @@ public class SettingsViewModel extends ViewModelBase {
             .getAllowedGames().toString().replace("[", "").replace("]", "").replace(" ", ""));
     
     private ObservableList<SessionItem> settingsItem = FXCollections.observableArrayList();
-
+    
+    private Command openSessionTimeoutEditViewCommand;
+    
+    public Command openSessionTimeoutEditViewCommand() {
+        if (openSessionTimeoutEditViewCommand == null) {
+            openSessionTimeoutEditViewCommand = runnableCommand(() -> {
+                DynamicViewLoader.showView(SessionTimeoutEditView.class, "Session Tiemout");
+            });
+        }
+        return openSessionTimeoutEditViewCommand;
+    }
+    
     /**
      * The webApiPort for the view.
      * 
@@ -52,7 +66,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return List of SettingsItemts.
      */
     public ObservableList<SessionItem> settingsItemProperty() {
-        //TODO: find a better solution
+        //TODO: find a better solution needs to be reloaded when sessionTimeout edit is done
         var items = new ArrayList<SessionItem>();
         for (int i = 0; i < Workspace.getInstance().getConfigManager().getAllowedGames().size(); i++) {
             items.add(new SessionItem(Workspace.getInstance().getConfigManager().getAllowedGames().get(i), 
@@ -65,6 +79,8 @@ public class SettingsViewModel extends ViewModelBase {
     
     /**
      * Updates the settings values with the new values and saves them.
+     * 
+     * @return Saves the settings per runnableCommand.
      */
     public Command updateSettingsCommand() {
         // converting the games String back to an ArrayList

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.SettingsView">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SettingsView">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="800.0" styleClass="body">
          <center>
