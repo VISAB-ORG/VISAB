@@ -18,6 +18,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * this class represents the view of the sessionTimeoutEdit.
+ * 
+ * @author tim
+ *
+ */
 public class SessionTimeoutEditView implements FxmlView<SessionTimeoutEditViewModel>, Initializable{
 
     @FXML
