@@ -1,7 +1,6 @@
 package org.visab.newgui.settings.viewmodel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
@@ -104,17 +103,9 @@ public class SettingsViewModel extends ViewModelBase {
      * 
      * @return Saves the settings per runnableCommand.
      */
-    public Command updateSettingsCommand() {
-        // converting the games String back to an ArrayList
-        ArrayList<String> gamesArrray = new ArrayList<String>(Arrays.asList(allowedGames.get().split(",")));
-        System.out.println(gamesArrray);
-        
+    public Command updateSettingsCommand() {        
         // updating and saving the settings
         Workspace.getInstance().getConfigManager().updateWebApiPort(Integer.parseInt(webApiPort.get()));
-        Workspace.getInstance().getConfigManager().updateAllowedGames(gamesArrray);
-        
-//        HashMap<String, Integer> map = Workspace.getInstance().getConfigManager().getSessionTimeout();
-//        Workspace.getInstance().getConfigManager().updateSessionTimeout(map);
 
         return runnableCommand(() -> {
             Workspace.getInstance().getConfigManager().saveSettings();

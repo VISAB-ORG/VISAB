@@ -56,7 +56,7 @@
                       <TableColumn fx:id="timeoutColumn" prefWidth="75.0" text="Session Timeout" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="allowedGamesField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="allowedGamesField" editable="false" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
                         <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="28.0" prefWidth="127.0" text="Return">
