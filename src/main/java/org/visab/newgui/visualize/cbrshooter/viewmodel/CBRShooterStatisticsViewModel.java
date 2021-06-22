@@ -9,8 +9,9 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
+import org.visab.newgui.visualize.cbrshooter.model.MovementComparisonRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
-import org.visab.newgui.visualize.cbrshooter.model.Vector2;
+import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
 import javafx.beans.property.FloatProperty;
@@ -75,7 +76,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         updatePlayerStatistics(newStatistics);
         snapshotsPerSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
-        
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -161,6 +161,21 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     public FloatProperty snapshotPerSecondProperty() {
         return snapshotsPerSecond;
+    }
+
+    @Override
+    public void afterInitialize(ILiveViewable<CBRShooterStatistics> listener) {
+        // Add the player names
+        playerNames.addAll(file.getPlayerInformation().keySet());
+
+        // TODO: Temporary
+        var row = new MovementComparisonRow();
+        row.updateValues(file);
+        comparisonStatistics.add(row);
+
+        // Notify for all the already received statistics
+        for (var statistics : listener.getReceivedStatistics())
+            notifyStatisticsAdded(statistics);
     }
 
 }

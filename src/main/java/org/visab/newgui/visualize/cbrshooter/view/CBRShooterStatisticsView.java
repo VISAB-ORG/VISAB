@@ -2,6 +2,7 @@ package org.visab.newgui.visualize.cbrshooter.view;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -52,7 +53,8 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         planUsageScript.setData(viewModel.getPlanUsageScript());
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        comparisonTable.getColumns().addAll(createColumns());
+        var columns = createColumns();
+        comparisonTable.getColumns().addAll(columns);
 
         // Set the label format for pie charts
         var df = new DecimalFormat("#.##");
@@ -63,25 +65,28 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createColumns() {
-        var playerNames = viewModel.getPlayerNames();
+        var columns = new ArrayList<TableColumn<ComparisonRowBase<?>, ?>>();
 
-        for (int i = 0; i < playerNames.size() ; i++) {
+        var playerNames = viewModel.getPlayerNames();
+        for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
             var column = new TableColumn<ComparisonRowBase<?>, ObservableValue<?>>(name);
-            column.setCellValueFactory(createListValueFactory(row -> row.getPlayerValues(), i));
-        }
-    }
-
-    private <T> Callback<CellDataFeatures<ComparisonRowBase<T>, T>, ObservableValue<T>> createListValueFactory(
-            Function<ComparisonRowBase<T>, List<T>> valueFunc, int index) {
-        if (index < 0) {
-            return cd -> null;
-        } else {
-            return cd -> {
-                var values = valueFunc.apply(cd.getValue());
-                return values == null || values.size() <= index ? null : new SimpleObjectProperty<>(values.get(index));
+            
+            // Create cell value factory
+            // TODO: Check if this works
+            var factory = new Callback<CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>>, ObservableValue<ObservableValue<?>>>() {
+                @Override
+                public ObservableValue<ObservableValue<?>> call(
+                        CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>> param) {
+                    return new SimpleObjectProperty<>(param.getValue().getPlayerValues().get(name));
+                }
             };
+
+            column.setCellValueFactory(factory);
+            columns.add(column);
         }
+
+        return columns;
     }
 
 }

@@ -16,7 +16,7 @@ public abstract class ComparisonRowBase<TProperty extends Property<?>> {
         this.rowDescription = rowDescrition;
     }
 
-    public String getRowDescrition() {
+    public String getRowDescription() {
         return this.rowDescription;
     }
 

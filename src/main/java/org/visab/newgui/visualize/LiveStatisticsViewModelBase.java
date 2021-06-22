@@ -40,10 +40,17 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         // Set the file
         file = (TFile) concreteListener.getCurrentFile();
 
-        // Notify for all the already received statistics
-        for (var statistics : concreteListener.getReceivedStatistics())
-            notifyStatisticsAdded(statistics);
+        afterInitialize(concreteListener);
     }
+
+    /**
+     * Called after the viewmodel docked onto the listener and set its own file.
+     * What you would do here typically is to read in all the received statistics
+     * from the listener.
+     * 
+     * @param listener The listener that was docked onto
+     */
+    public abstract void afterInitialize(ILiveViewable<TStatistics> listener);
 
     @Override
     public abstract void notifyStatisticsAdded(TStatistics newStatistics);
