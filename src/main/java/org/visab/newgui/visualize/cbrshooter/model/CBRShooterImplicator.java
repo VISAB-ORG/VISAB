@@ -4,43 +4,71 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.WeaponInformation;
 import org.visab.util.StreamUtil;
 import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
 
-    public static Map<String, Integer> concludeShotTaken(CBRShooterFile file) {
-        var shots = new HashMap<String, Integer>();
-
-        var statistics = file.getStatistics();
-        for (int i = 1; i < statistics.size(); i++) {
-            var previous = statistics.get(i - 1);
-            var current = statistics.get(i);
-
-            for (var player : previous.getPlayers()) {
-            }
-        }
-
-        CBRShooterStatistics lastStatistics = null;
-        for (var stats : file.getStatistics()) {
-            var players = stats.getPlayers();
-            for (int i = 0; i < players.size(); i++) {
-                var player = players.get(i);
-                // var ammuSpent = player.getMagazineAmmunition() - lastStatistics.getPlayers()
-            }
-        }
-
-        return null;
+    public enum Collectable {
+        Ammunition, Health, Weapon
     }
 
-    // TODO: This really only works for two players ofcourse.
-    // If there are more than two players, we can not conclude which one fired and
-    // hit.
+    public static boolean wasCollected(Collectable collectable, CBRShooterStatistics last,
+            CBRShooterStatistics current) {
+
+        if (last == null || current == null)
+            return false;
+
+        switch (collectable) {
+        case Ammunition:
+            return last.getIsAmmunitionCollected() == false && current.getIsAmmunitionCollected();
+        case Health:
+            return last.getIsHealthCollected() == false && current.getIsHealthCollected();
+        case Weapon:
+            return last.getIsWeaponCollected() == false && current.getIsWeaponCollected();
+        default:
+            return false;
+        }
+    }
+
+    public static boolean playerCollected(String name, Collectable collectable, CBRShooterStatistics last,
+            CBRShooterStatistics current) {
+        var lastPlayerStats = StreamUtil.firstOrNull(last.getPlayers(), x -> x.getName().equals(name));
+        var currentPlayerStats = StreamUtil.firstOrNull(current.getPlayers(), x -> x.getName().equals(name));
+
+        var lastRound = last.getRound();
+        var currentRound = last.getRound();
+        if (lastRound == currentRound)
+            return false;
+
+        var wasCollected = wasCollected(collectable, last, current);
+        if (!wasCollected)
+            return false;
+
+        switch (collectable) {
+        case Health:
+            var lastHealth = lastPlayerStats.getHealth();
+            var currentHealth = currentPlayerStats.getHealth();
+
+            return currentHealth >= lastHealth;
+        case Ammunition:
+            var lastAmmu = lastPlayerStats.getTotalAmmunition();
+            var currentAmmu = currentPlayerStats.getTotalAmmunition();
+
+            return currentAmmu >= lastAmmu;
+        case Weapon:
+            var lastWeapon = lastPlayerStats.getWeapon();
+            var currentWeapon = currentPlayerStats.getWeapon();
+
+            return lastWeapon != currentWeapon;
+        default:
+            return false;
+        }
+    }
+
     public static Map<String, Double> concludeAimRatio(CBRShooterFile file) {
         var ratios = new HashMap<String, Double>();
         for (var name : file.getPlayerInformation().keySet())
@@ -49,16 +77,60 @@ public final class CBRShooterImplicator {
         if (file.getPlayerCount() != 2)
             return ratios;
 
-        var lastHealths = new HashMap<String, Integer>();
-        for (var snapshot : file.getStatistics()) {
-            for (var player : snapshot.getPlayers()) {
+        var shotsFired = concludeShotsFired(file);
+        var hitsTaken = concludeHitsTaken(file);
+
+        for (var name : ratios.keySet()) {
+            var otherHitsTaken = hitsTaken.get(otherPlayerName(name, file));
+            ratios.put(name, ((double) otherHitsTaken) / shotsFired.get(name));
+        }
+
+        return ratios;
+    }
+
+    public static Map<String, Integer> concludeShotsFired(CBRShooterFile file) {
+        var shots = new HashMap<String, Integer>();
+        for (var name : file.getPlayerInformation().keySet())
+            shots.put(name, 0);
+
+        var lastAmmunitions = new HashMap<String, Integer>();
+        for (var statistics : file.getStatistics()) {
+            for (var player : statistics.getPlayers()) {
                 var name = player.getName();
 
-                var lastHealth = lastHealths.get(name);
+                var lastAmmu = lastAmmunitions.getOrDefault(name, player.getTotalAmmunition());
+                var currentAmmu = player.getTotalAmmunition();
 
+                // Only add if less ammu than before. Else round ended or ammunition was
+                // collected.
+                if (currentAmmu < lastAmmu)
+                    shots.put(name, shots.get(name) + lastAmmu - currentAmmu);
+
+                lastAmmunitions.put(name, currentAmmu);
             }
         }
 
+        return shots;
+    }
+
+    public static Map<String, Integer> concludeCollected(CBRShooterFile file, Collectable collectable) {
+        var collected = new HashMap<String, Integer>();
+        for (var name : file.getPlayerInformation().keySet())
+            collected.put(name, 0);
+
+        CBRShooterStatistics lastStatistics = null;
+        for (var statistics : file.getStatistics()) {
+            for (var player : statistics.getPlayers()) {
+                var name = player.getName();
+                var hasCollected = playerCollected(name, collectable, lastStatistics, statistics);
+
+                if (hasCollected)
+                    collected.put(name, collected.get(name) + 1);
+            }
+            lastStatistics = statistics;
+        }
+
+        return collected;
     }
 
     public static Map<String, Integer> concludeHitsTaken(CBRShooterFile file) {
@@ -86,7 +158,8 @@ public final class CBRShooterImplicator {
                 if (lastHealth != currentHealth || lastDeath != currentDeath) {
                     var otherPlayerWeapon = lastWeapons.get(otherPlayerName(name, file));
 
-                    var weaponInfo = file.getWeaponInformation().get(otherPlayerWeapon);
+                    var weaponInfo = StreamUtil.firstOrNull(file.getWeaponInformation(),
+                            x -> x.getName().equals(otherPlayerWeapon));
                     if (weaponInfo == null)
                         throw new RuntimeException("Weapon info was null");
 
@@ -103,7 +176,7 @@ public final class CBRShooterImplicator {
                     // Update hits taken
                     hitsTaken.put(name, hitsTaken.get(name) + hits);
                 }
-                
+
                 lastHealths.put(name, currentHealth);
                 lastDeaths.put(name, currentDeath);
                 lastWeapons.put(name, player.getWeapon());
@@ -123,11 +196,8 @@ public final class CBRShooterImplicator {
             for (var player : snapshot.getPlayers()) {
                 var name = player.getName();
 
-                var lastPos = lastPositions.get(name);
+                var lastPos = lastPositions.getOrDefault(name, player.getPosition());
                 var currentPos = player.getPosition();
-
-                if (lastPos == null)
-                    lastPos = currentPos;
 
                 // Euclidian distance
                 var moved = Math.sqrt(Math.pow(lastPos.getX() - currentPos.getX(), 2.0)
@@ -155,9 +225,12 @@ public final class CBRShooterImplicator {
 
     public static void main(String[] args) {
         var file = Workspace.getInstance().getDatabaseManager()
-                .<CBRShooterFile>loadFile("b833e26c-b232-4870-b14c-2964275cccbe.visab2", "CBRShooter");
+                .<CBRShooterFile>loadFile("7b717be5-0696-4c9b-8d1b-4b78a54b8b79.visab2", "CBRShooter");
+        var config = file.getPlayerInformation();
         var walked = concludeUnitsWalked(file);
         var hits = concludeHitsTaken(file);
+        var shots = concludeShotsFired(file);
+        var aimRatio = concludeAimRatio(file);
         System.out.println(walked);
     }
 

@@ -84,6 +84,7 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
         file.setMapRectangle(concrete.getMapRectangle());
         file.setPlayerCount(concrete.getPlayerCount());
         file.getPlayerInformation().putAll(concrete.getPlayerInformation());
+        file.getWeaponInformation().addAll(concrete.getWeaponInformation());
     }
 
     @Override
