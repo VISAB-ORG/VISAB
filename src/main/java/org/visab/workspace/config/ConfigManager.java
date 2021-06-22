@@ -265,7 +265,13 @@ public class ConfigManager {
         this.settings.setAllowedGames(games);
     }
     
+    /**
+     * Updates the timeouts from the games.
+     * 
+     * @param timeouts The timeouts Map.
+     */
     public void updateSessionTimeout(HashMap<String, Integer> timeouts) {
+        logger.info("Updated the session timeouts");
         this.settings.setSessionTimeout(timeouts);
     }
 
