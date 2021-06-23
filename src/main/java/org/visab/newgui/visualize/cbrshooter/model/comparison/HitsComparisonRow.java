@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class HitsComparisonRow extends ComparisonRowBase<IntegerProperty> {
 
     public HitsComparisonRow() {
-        super("Total hits");
+        super("Total hits on enemy");
     }
 
     @Override
@@ -20,8 +20,18 @@ public class HitsComparisonRow extends ComparisonRowBase<IntegerProperty> {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleIntegerProperty(0));
 
-            playerValues.get(name).set(result.get(name));
+            var otherPlayerName = getOtherPlayerName(file, name);
+            playerValues.get(name).set(result.get(otherPlayerName));
         }
+    }
+
+    private String getOtherPlayerName(CBRShooterFile file, String myPlayer) {
+        for (var name : file.getPlayerInformation().keySet()) {
+            if (name != myPlayer)
+                return name;
+        }
+
+        return "";
     }
 
 }

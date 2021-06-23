@@ -13,7 +13,7 @@ public class CollectedComparisonRow extends ComparisonRowBase<IntegerProperty> {
     private Collectable collectable;
 
     public CollectedComparisonRow(Collectable collectable) {
-        super(collectable.toString());
+        super(collectable.toString() + " items collected");
     }
 
     @Override

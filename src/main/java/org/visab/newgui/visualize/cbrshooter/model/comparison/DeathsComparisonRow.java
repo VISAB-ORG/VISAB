@@ -20,7 +20,7 @@ public class DeathsComparisonRow extends ComparisonRowBase<IntegerProperty> {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleIntegerProperty(0));
 
-            playerValues.get(name).set(player.getStatistics().getFrags());
+            playerValues.get(name).set(player.getStatistics().getDeaths());
         }
     }
 

@@ -48,7 +48,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             super.initializeLive(scope.getSessionListener());
 
             // Initialize the data structures used for visualization
-            UiHelper.inovkeOnUiThread(() -> initializeDataStructures(file));
+            initializeDataStructures(file);
 
             // Notify for all the already received statistics
             for (var statistics : listener.getReceivedStatistics())
@@ -84,6 +84,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
 
         // Add the comparison rows.
+        comparisonStatistics.add(new PlayerTypeComparisonRow());
         comparisonStatistics.add(new KillsComparisonRow());
         comparisonStatistics.add(new DeathsComparisonRow());
         comparisonStatistics.add(new ShotsComparisonRow());
@@ -126,9 +127,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
         updatePlanUsage(newStatistics);
         updatePlayerKills(newStatistics);
-
-        for (var row : comparisonStatistics)
-            row.updateValues(file);
+        updateComparisonStatistics();
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -179,6 +178,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 else
                     killsScript.getData().add(newData);
             }
+        }
+    }
+
+    private void updateComparisonStatistics() {
+        if (isLiveViewProperty.get()) {
+            for (var row : comparisonStatistics)
+                row.updateValues(file);
         }
     }
 
