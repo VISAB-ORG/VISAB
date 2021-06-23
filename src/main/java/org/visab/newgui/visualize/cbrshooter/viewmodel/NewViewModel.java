@@ -3,7 +3,7 @@ package org.visab.newgui.visualize.cbrshooter.viewmodel;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.newgui.visualize.StatisticsViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
-import org.visab.newgui.visualize.cbrshooter.model.KillsComparisonRow;
+import org.visab.newgui.visualize.cbrshooter.model.comparison.KillsComparisonRow;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

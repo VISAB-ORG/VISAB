@@ -7,11 +7,13 @@ import java.util.Map;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
-import org.visab.newgui.visualize.cbrshooter.model.MovementComparisonRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
+import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
@@ -46,7 +48,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             super.initializeLive(scope.getSessionListener());
 
             // Initialize the data structures used for visualization
-            initializeDataStructures(file);
+            UiHelper.inovkeOnUiThread(() -> initializeDataStructures(file));
 
             // Notify for all the already received statistics
             for (var statistics : listener.getReceivedStatistics())
@@ -73,11 +75,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
-        // TODO: Temporary
-        var row = new MovementComparisonRow();
-        row.updateValues(file);
-        comparisonStatistics.add(row);
-
         for (var name : playerNames) {
             // Initialize plan visualization
             var planTime = new PlayerPlanTime(name);
@@ -86,6 +83,20 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
         }
 
+        // Add the comparison rows.
+        comparisonStatistics.add(new KillsComparisonRow());
+        comparisonStatistics.add(new DeathsComparisonRow());
+        comparisonStatistics.add(new ShotsComparisonRow());
+        comparisonStatistics.add(new HitsComparisonRow());
+        comparisonStatistics.add(new AimRatioComparisonRow());
+        comparisonStatistics.add(new MovementComparisonRow());
+        comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
+        comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
+        comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
+
+        for (var row : comparisonStatistics) {
+            row.updateValues(file);
+        }
     }
 
     public List<String> getPlayerNames() {
@@ -115,6 +126,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
         updatePlanUsage(newStatistics);
         updatePlayerKills(newStatistics);
+
+        for (var row : comparisonStatistics)
+            row.updateValues(file);
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {

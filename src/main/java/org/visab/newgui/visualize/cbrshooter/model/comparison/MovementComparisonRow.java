@@ -1,6 +1,8 @@
-package org.visab.newgui.visualize.cbrshooter.model;
+package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
+import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

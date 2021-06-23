@@ -92,7 +92,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
 
             // Resolve the main view
             var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
-
+            
             showView(view, "Visualizer View");
         }
     }

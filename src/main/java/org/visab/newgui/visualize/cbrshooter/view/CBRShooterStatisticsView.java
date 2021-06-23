@@ -14,7 +14,9 @@ import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterStatisticsViewM
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -80,29 +82,11 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         var playerNames = viewModel.getPlayerNames();
         for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
-            var column = new TableColumn<ComparisonRowBase<?>, ObservableValue<?>>(name);
+            var column = new TableColumn<ComparisonRowBase<?>, Object>(name);
 
             // Create cell value factory
-            // TODO: Check if this works
-            var valueFactory = new Callback<CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>>, ObservableValue<ObservableValue<?>>>() {
-                @Override
-                public ObservableValue<ObservableValue<?>> call(
-                        CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>> param) {
-                    return new SimpleObjectProperty<>(param.getValue().getPlayerValues().get(name));
-                }
-            };
-
-            column.setCellValueFactory(valueFactory);
-            column.setCellFactory(x -> new TableCell<>() {
-
-                @Override
-                protected void updateItem(ObservableValue<?> item, boolean empty) {
-                    if (!empty) {
-                        setText(item.getValue().toString());
-                    }
-                }
-            });
-
+            column.setCellValueFactory(
+                    cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerValues().get(name));
             columns.add(column);
         }
 

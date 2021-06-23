@@ -12,10 +12,6 @@ import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
 
-    public enum Collectable {
-        Ammunition, Health, Weapon
-    }
-
     public static boolean wasCollected(Collectable collectable, CBRShooterStatistics last,
             CBRShooterStatistics current) {
 
@@ -36,6 +32,9 @@ public final class CBRShooterImplicator {
 
     public static boolean playerCollected(String name, Collectable collectable, CBRShooterStatistics last,
             CBRShooterStatistics current) {
+        if (last == null || current == null)
+            return false;
+
         var lastPlayerStats = StreamUtil.firstOrNull(last.getPlayers(), x -> x.getName().equals(name));
         var currentPlayerStats = StreamUtil.firstOrNull(current.getPlayers(), x -> x.getName().equals(name));
 
