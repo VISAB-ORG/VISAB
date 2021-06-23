@@ -529,6 +529,17 @@ public class HomeViewModel extends ViewModelBase {
             updateFileSize(parentFile, add);
     }
 
+    public Command visualizeCommand() {
+        return runnableCommand(() -> {
+            var selectedFile = getSelectedFile();
+            if (selectedFile != null) {
+                var visabFile = Workspace.getInstance().getDatabaseManager().loadFile(selectedFile.getAbsolutePath());
+                if (visabFile != null)
+                    DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
+            }
+        });
+    }
+
     /** ENDREGION: DATABASE VIEW */
 
 }

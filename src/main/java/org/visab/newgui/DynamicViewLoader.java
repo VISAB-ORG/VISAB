@@ -52,7 +52,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
             scope.setLive(false);
 
             // Resolve the main view
-            var view = FluentViewLoader.fxmlView(viewClass).load();
+            var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
 
             showView(view, "Visualizer View");
         }

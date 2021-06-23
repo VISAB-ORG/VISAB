@@ -224,8 +224,8 @@ public final class CBRShooterImplicator {
     }
 
     public static void main(String[] args) {
-        var file = Workspace.getInstance().getDatabaseManager()
-                .<CBRShooterFile>loadFile("7b717be5-0696-4c9b-8d1b-4b78a54b8b79.visab2", "CBRShooter");
+        var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
+                .loadFile("7b717be5-0696-4c9b-8d1b-4b78a54b8b79.visab2", "CBRShooter");
         var config = file.getPlayerInformation();
         var walked = concludeUnitsWalked(file);
         var hits = concludeHitsTaken(file);

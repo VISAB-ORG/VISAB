@@ -8,7 +8,7 @@ import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 public abstract class ViewModelBase implements ViewModel {
 
     /**
-     * Gets a Command that invokes the given runnable
+     * Creates a DelegateCommand whose action is to run the given Runnable.
      * 
      * @param runnable The runnable to invoke
      * @return A command
@@ -27,9 +27,7 @@ public abstract class ViewModelBase implements ViewModel {
     }
 
     /**
-     * The DialogHelper that can be used to show dialogs from the viewmodel. To use
-     * the helper, you first have to set the parent window from the View by calling
-     * getDialogHelper().setParentWindow().
+     * The DialogHelper that can be used to show dialogs from the viewmodel.
      */
     protected DialogHelper dialogHelper = new DialogHelper();
 

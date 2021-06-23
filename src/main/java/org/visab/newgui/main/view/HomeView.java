@@ -134,10 +134,14 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         viewModel.addFileCommand().execute();
     }
 
-    /**
-     * Fully refreshes the file explorer.
-     */
+    @FXML
+    public void visualizeAction() {
+        viewModel.visualizeCommand().execute();
+    }
 
+    /**
+     * Fully refreshes the file explorer, by reloading the os file structure.
+     */
     @FXML
     public void refreshFileExplorer() {
         fileExplorer.setRoot(null);
