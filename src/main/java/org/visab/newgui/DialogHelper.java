@@ -8,11 +8,17 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.saxsys.mvvmfx.FluentViewLoader;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.ViewModel;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 
@@ -21,11 +27,11 @@ public class DialogHelper {
 
     private Logger logger = LogManager.getLogger(DialogHelper.class);
 
-    private Window parentWindow;
+    // private Window parentWindow;
 
-    public void setParentWindow(Window parentWindow) {
-        this.parentWindow = parentWindow;
-    }
+    // public void setParentWindow(Window parentWindow) {
+    //     this.parentWindow = parentWindow;
+    // }
 
     /**
      * Shows a confirmation dialog with an OK and CANCEL button.
@@ -119,12 +125,6 @@ public class DialogHelper {
     public List<File> showFileDialog(String directoryPath, Map<String, String> allowedExtensions, String title) {
         var files = new ArrayList<File>();
 
-//        if (parentWindow == null) {
-//            var errorMessage = "Tried to open Dialog without having set parent window!\n"
-//                    + "To use the DialogHelper, you first have to set the parent window from the View by calling "
-//                    + "viewModel.getDialogHelper().setParentWindow()";
-//            logger.error(errorMessage);
-//        } else {
         var fileChooser = new FileChooser();
 
         for (var extension : allowedExtensions.entrySet()) {
@@ -135,13 +135,27 @@ public class DialogHelper {
         fileChooser.setTitle(title);
         fileChooser.setInitialDirectory(new File(directoryPath));
 
-        var result = fileChooser.showOpenMultipleDialog(parentWindow);
+        var result = fileChooser.showOpenMultipleDialog(new Stage());
 
         if (result != null)
             files.addAll(result);
-        // }
 
         return files;
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
+        var viewTuple = FluentViewLoader.fxmlView(viewType).load();
+        var view = viewTuple.getView();
+
+        var stage = new Stage();
+        var scene = new Scene(view);
+        stage.setTitle(title);
+        stage.setScene(scene);
+
+        if (blockWindows)
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
     }
 
 }

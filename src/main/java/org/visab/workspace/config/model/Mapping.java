@@ -81,4 +81,9 @@ public class Mapping {
         return this.viewConfigurations;
     }
 
+    public String getVisualizeView() {
+        // TODO
+        return null;
+    }
+
 }

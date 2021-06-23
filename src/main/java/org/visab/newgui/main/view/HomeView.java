@@ -3,6 +3,7 @@ package org.visab.newgui.main.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.visab.newgui.AppMain;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.control.FileExplorer;
 import org.visab.newgui.control.RecursiveTreeItem;

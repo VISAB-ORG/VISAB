@@ -56,5 +56,5 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
      * 
      * @param file The file that the view was initialized with.
      */
-    public abstract void afterInitialize(TFile file);
+    protected abstract void afterInitialize(TFile file);
 }

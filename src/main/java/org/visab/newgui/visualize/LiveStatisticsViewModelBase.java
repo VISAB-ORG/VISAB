@@ -50,7 +50,7 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
      * 
      * @param listener The listener that was docked onto
      */
-    public abstract void afterInitialize(TFile file, ILiveViewable<TStatistics> listener);
+    protected abstract void afterInitialize(TFile file, ILiveViewable<TStatistics> listener);
 
     @Override
     public abstract void notifyStatisticsAdded(TStatistics newStatistics);
@@ -59,6 +59,6 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     public abstract void notifySessionClosed();
 
     @Override
-    public abstract void afterInitialize(TFile file);
+    protected abstract void afterInitialize(TFile file);
 
 }

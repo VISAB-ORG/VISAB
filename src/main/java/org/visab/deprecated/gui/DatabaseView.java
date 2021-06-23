@@ -12,7 +12,6 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 
 public class DatabaseView implements FxmlView<DatabaseViewModel>, Initializable {
     /**
@@ -71,9 +70,9 @@ public class DatabaseView implements FxmlView<DatabaseViewModel>, Initializable 
         // After the primaryStage.show() was called from AppMain.
         // Has to be called here, because the elements we want to reference, are only
         // loaded upon the stage being shown.
-        AppMain.getPrimaryStage().setOnShowing(e -> {
-            viewModel.getDialogHelper().setParentWindow(fileExplorer.getScene().getWindow());
-        });
+        // AppMain.getPrimaryStage().setOnShowing(e -> {
+        //     viewModel.getDialogHelper().setParentWindow(fileExplorer.getScene().getWindow());
+        // });
     }
 
 }

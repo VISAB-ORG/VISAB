@@ -164,7 +164,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     @Override
-    public void afterInitialize(ILiveViewable<CBRShooterStatistics> listener) {
+    protected void afterInitialize(CBRShooterFile file, ILiveViewable<CBRShooterStatistics> listener) {
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
