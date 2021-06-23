@@ -26,12 +26,4 @@ public class NewViewModel extends StatisticsViewModelBase<CBRShooterFile> {
         return comparisonStatistics;
     }
 
-    @Override
-    public void afterInitialize(CBRShooterFile file) {
-        // Set all the values for the comparison view
-        for (var row : comparisonStatistics) {
-            row.updateValues(file);
-        }
-    }
-
 }

@@ -11,6 +11,11 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         extends StatisticsViewModelBase<TFile> implements ILiveStatisticsViewModel<TStatistics> {
 
     /**
+     * The listener that the viewmodel is docked onto.
+     */
+    protected ILiveViewable<TStatistics> listener;
+
+    /**
      * Whether the current listeners corresponding transmission session is still
      * active.
      */
@@ -29,36 +34,22 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     @Override
     @SuppressWarnings("unchecked")
     public void initializeLive(ILiveViewable<? extends IStatistics> listener) {
-        var concreteListener = (ILiveViewable<TStatistics>) listener;
+        this.listener = (ILiveViewable<TStatistics>) listener;
+
+        // dock onto listener
+        this.listener.addViewModel(this);
 
         isLiveViewProperty.set(true);
         liveSessionActiveProperty.set(true);
 
-        // dock onto listener
-        concreteListener.addViewModel(this);
-
         // Set the file
-        this.file = (TFile) concreteListener.getCurrentFile();
-
-        afterInitializeLive(this.file, concreteListener);
+        this.file = (TFile) listener.getCurrentFile();
     }
-
-    /**
-     * Called after the viewmodel docked onto the listener and set its own file.
-     * What you would do here typically is to read in all the received statistics
-     * from the listener.
-     * 
-     * @param listener The listener that was docked onto
-     */
-    protected abstract void afterInitializeLive(TFile file, ILiveViewable<TStatistics> listener);
 
     @Override
     public abstract void notifyStatisticsAdded(TStatistics newStatistics);
 
     @Override
     public abstract void notifySessionClosed();
-
-    @Override
-    protected abstract void afterInitialize(TFile file);
 
 }

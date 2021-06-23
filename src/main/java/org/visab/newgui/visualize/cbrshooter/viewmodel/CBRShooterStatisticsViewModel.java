@@ -30,16 +30,33 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
-        if (scope.isLive())
-            super.initializeLive(scope.getSessionListener());
-        else
-            super.initialize(scope.getFile());
-
         killsScript.setName("Kills Script Bot");
         killsCBR.setName("Kills CBR Bot");
 
         playerKillsSeries.add(killsCBR);
         playerKillsSeries.add(killsScript);
+
+        if (scope.isLive()) {
+            super.initializeLive(scope.getSessionListener());
+
+            // Add the player names
+            playerNames.addAll(file.getPlayerInformation().keySet());
+
+            // TODO: Temporary
+            var row = new MovementComparisonRow();
+            row.updateValues(file);
+            comparisonStatistics.add(row);
+
+            // Notify for all the already received statistics
+            for (var statistics : listener.getReceivedStatistics())
+                notifyStatisticsAdded(statistics);
+        } else {
+            super.initialize(scope.getFile());
+
+            for (var statistics : file.getStatistics()) {
+                notifyStatisticsAdded(statistics);
+            }
+        }
     }
 
     @InjectScope
@@ -167,28 +184,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     public FloatProperty snapshotPerSecondProperty() {
         return snapshotsPerSecond;
-    }
-
-    @Override
-    protected void afterInitializeLive(CBRShooterFile file, ILiveViewable<CBRShooterStatistics> listener) {
-        // Add the player names
-        playerNames.addAll(file.getPlayerInformation().keySet());
-
-        // TODO: Temporary
-        var row = new MovementComparisonRow();
-        row.updateValues(file);
-        comparisonStatistics.add(row);
-
-        // Notify for all the already received statistics
-        for (var statistics : listener.getReceivedStatistics())
-            notifyStatisticsAdded(statistics);
-    }
-
-    @Override
-    public void afterInitialize(CBRShooterFile file) {
-        for (var statistics : file.getStatistics()) {
-            notifyStatisticsAdded(statistics);
-        }
     }
 
 }

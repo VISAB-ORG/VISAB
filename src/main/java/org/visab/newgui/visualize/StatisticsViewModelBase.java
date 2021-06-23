@@ -46,15 +46,6 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
     public void initialize(IVISABFile file) {
         this.file = (TFile) file;
         isLiveViewProperty.set(false);
-
-        afterInitialize(this.file);
     }
 
-    /**
-     * Is called after initilization from a file. What you would do here typically,
-     * is to read in the file into your view models datastrctures.
-     * 
-     * @param file The file that the view was initialized with.
-     */
-    protected abstract void afterInitialize(TFile file);
 }
