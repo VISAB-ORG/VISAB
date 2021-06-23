@@ -5,7 +5,7 @@ import org.visab.processing.ILiveViewable;
 
 public interface ILiveStatisticsViewModel<TStatistics extends IStatistics> extends IStatisticsViewModel {
 
-    void initialize(ILiveViewable<? extends IStatistics> listener);
+    void initializeLive(ILiveViewable<? extends IStatistics> listener);
 
     /**
      * Called by the docked listener upon reciving new statistics.

@@ -83,7 +83,7 @@ public class Mapping {
 
     public String getVisualizeView() {
         // TODO
-        return null;
+        return "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView";
     }
 
 }

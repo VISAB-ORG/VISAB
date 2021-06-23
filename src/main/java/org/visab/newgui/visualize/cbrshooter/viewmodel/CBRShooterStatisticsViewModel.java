@@ -8,12 +8,14 @@ import java.util.Map;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.MovementComparisonRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
+import de.saxsys.mvvmfx.InjectScope;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
@@ -23,6 +25,25 @@ import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        if (scope.isLive())
+            super.initializeLive(scope.getSessionListener());
+        else
+            super.initialize(scope.getFile());
+
+        killsScript.setName("Kills Script Bot");
+        killsCBR.setName("Kills CBR Bot");
+
+        playerKillsSeries.add(killsCBR);
+        playerKillsSeries.add(killsScript);
+    }
+
+    @InjectScope
+    VisualizeScope scope;
 
     private ObservableList<String> playerNames = FXCollections.observableArrayList();
 
@@ -54,14 +75,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private Series<Double, Integer> killsScript = new Series<>();
     private Series<Double, Integer> killsCBR = new Series<>();
-
-    public CBRShooterStatisticsViewModel() {
-        killsScript.setName("Kills Script Bot");
-        killsCBR.setName("Kills CBR Bot");
-
-        playerKillsSeries.add(killsCBR);
-        playerKillsSeries.add(killsScript);
-    }
 
     private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
 
@@ -150,13 +163,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // TODO: Render some future "who won" graphs an such
     }
 
-    @Override
-    public void afterInitialize(CBRShooterFile file) {
-        for (var statistics : file.getStatistics()) {
-            notifyStatisticsAdded(statistics);
-        }
-    }
-
     private FloatProperty snapshotsPerSecond = new SimpleFloatProperty();
 
     public FloatProperty snapshotPerSecondProperty() {
@@ -164,7 +170,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     @Override
-    protected void afterInitialize(CBRShooterFile file, ILiveViewable<CBRShooterStatistics> listener) {
+    protected void afterInitializeLive(CBRShooterFile file, ILiveViewable<CBRShooterStatistics> listener) {
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
@@ -176,6 +182,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // Notify for all the already received statistics
         for (var statistics : listener.getReceivedStatistics())
             notifyStatisticsAdded(statistics);
+    }
+
+    @Override
+    public void afterInitialize(CBRShooterFile file) {
+        for (var statistics : file.getStatistics()) {
+            notifyStatisticsAdded(statistics);
+        }
     }
 
 }

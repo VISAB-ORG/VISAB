@@ -9,4 +9,6 @@ public interface IVisualizeMainViewModel {
 
     void setListener(ILiveViewable<?> listener);
 
+    void setLive(boolean isLive);
+
 }

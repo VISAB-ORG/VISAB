@@ -7,11 +7,20 @@ import de.saxsys.mvvmfx.Scope;
 
 public class VisualizeScope implements Scope {
 
+    private boolean isLive;
     private IVISABFile file;
     private ILiveViewable<?> sessionListener;
 
     public void setFile(IVISABFile file) {
         this.file = file;
+    }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean isLive) {
+        this.isLive = isLive;
     }
 
     public ILiveViewable<?> getSessionListener() {

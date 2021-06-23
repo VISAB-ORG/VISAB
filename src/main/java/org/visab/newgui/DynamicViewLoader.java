@@ -10,6 +10,7 @@ import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.IVisualizeMainViewModel;
+import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.StringFormat;
@@ -27,6 +28,11 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
     private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
     public static void loadVisualizer(String game, IVISABFile file) {
+        if (file == null) {
+            logger.fatal("Given file was null!");
+            return;
+        }
+
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping == null || mapping.getVisualizeView() == null || mapping.getVisualizeView().isBlank()) {
             // Load default statistics view
@@ -40,18 +46,14 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
                         StringFormat.niceString("Failed to load Visualizer View for for game {0}. Skipping it.", game));
             }
 
+            // Create new scope instance that will be injected in all the view types for
+            // visualization
+            var scope = new VisualizeScope();
+            scope.setFile(file);
+            scope.setLive(false);
+
             // Resolve the main view
             var view = FluentViewLoader.fxmlView(viewClass).load();
-            var viewModel = view.getViewModel();
-            // Initialize viewModel with file
-            if (viewModel instanceof IVisualizeMainViewModel) {
-                var asVisualize = (IVisualizeMainViewModel) viewModel;
-                asVisualize.setFile(file);
-            } else {
-                logger.info(StringFormat.niceString(
-                        "Cant initialize the scope of the viewmodel for view {0}, cause the viewmodel doesnt implement IVisualizeMainViewModel.",
-                        viewClassName));
-            }
 
             showView(view, "Visualizer View");
         }
@@ -78,25 +80,19 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
                         StringFormat.niceString("Failed to load Visualizer View for for game {0}. Skipping it.", game));
             }
 
-            // Resolve the main view
-            var view = FluentViewLoader.fxmlView(viewClass).load();
-            var viewModel = view.getViewModel();
-            // Initialize viewModel with file
-            if (viewModel instanceof IVisualizeMainViewModel) {
-                var asVisualize = (IVisualizeMainViewModel) viewModel;
-
-                if (listener instanceof ILiveViewable<?>) {
-                    var asLiveViewable = (ILiveViewable<?>) listener;
-                    asVisualize.setListener(asLiveViewable);
-                } else {
-                    logger.info(
-                            StringFormat.niceString("Listener for game {0} did not implement ILiveViewamble.", game));
-                }
+            // Create new scope instance that will be injected in all the view types for
+            // visualization
+            var scope = new VisualizeScope();
+            if (listener instanceof ILiveViewable<?>) {
+                var asLiveViewable = (ILiveViewable<?>) listener;
+                scope.setSessionListener(asLiveViewable);
+                scope.setLive(true);
             } else {
-                logger.info(StringFormat.niceString(
-                        "Cant initialize the scope of the viewmodel for view {0}, cause the viewmodel doesnt implement IVisualizeMainViewModel.",
-                        viewClassName));
+                logger.info(StringFormat.niceString("Listener for game {0} did not implement ILiveViewable.", game));
             }
+
+            // Resolve the main view
+            var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
 
             showView(view, "Visualizer View");
         }
@@ -108,7 +104,8 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
      * @param viewTuple
      * @param title
      */
-    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title) {
+    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple,
+            String title) {
         // TODO: Get the style here
         var parent = viewTuple.getView();
         var stage = new Stage();

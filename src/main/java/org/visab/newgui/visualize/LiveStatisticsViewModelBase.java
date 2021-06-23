@@ -28,7 +28,7 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
 
     @Override
     @SuppressWarnings("unchecked")
-    public void initialize(ILiveViewable<? extends IStatistics> listener) {
+    public void initializeLive(ILiveViewable<? extends IStatistics> listener) {
         var concreteListener = (ILiveViewable<TStatistics>) listener;
 
         isLiveViewProperty.set(true);
@@ -40,7 +40,7 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         // Set the file
         this.file = (TFile) concreteListener.getCurrentFile();
 
-        afterInitialize(this.file, concreteListener);
+        afterInitializeLive(this.file, concreteListener);
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
      * 
      * @param listener The listener that was docked onto
      */
-    protected abstract void afterInitialize(TFile file, ILiveViewable<TStatistics> listener);
+    protected abstract void afterInitializeLive(TFile file, ILiveViewable<TStatistics> listener);
 
     @Override
     public abstract void notifyStatisticsAdded(TStatistics newStatistics);
