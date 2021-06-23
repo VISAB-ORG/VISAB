@@ -11,7 +11,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveViewModel;
+import org.visab.newgui.visualize.ILiveStatisticsViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.StringFormat;
@@ -33,14 +33,14 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
 
     private CBRShooterFile file;
 
-    private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
+    private List<ILiveStatisticsViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
         super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
     }
 
     @Override
-    public void addViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
+    public void addViewModel(ILiveStatisticsViewModel<CBRShooterStatistics> viewModel) {
         viewModels.add(viewModel);
 
         // If the session isnt active anymore, instantly notify, that it was closed.

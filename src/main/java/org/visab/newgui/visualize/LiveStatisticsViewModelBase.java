@@ -8,7 +8,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
-        extends StatisticsViewModelBase<TFile> implements ILiveViewModel<TStatistics> {
+        extends StatisticsViewModelBase<TFile> implements ILiveStatisticsViewModel<TStatistics> {
 
     /**
      * Whether the current listeners corresponding transmission session is still
@@ -37,10 +37,19 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         // dock onto listener
         concreteListener.addViewModel(this);
 
-        // Notify for all the already received statistics
-        for (var statistics : concreteListener.getReceivedStatistics())
-            notifyStatisticsAdded(statistics);
+        this.file = listener.
+
+        afterInitialize(concreteListener);
     }
+
+    /**
+     * Called after the viewmodel docked onto the listener and set its own file.
+     * What you would do here typically is to read in all the received statistics
+     * from the listener.
+     * 
+     * @param listener The listener that was docked onto
+     */
+    public abstract void afterInitialize(TFile file, ILiveViewable<TStatistics> listener);
 
     @Override
     public abstract void notifyStatisticsAdded(TStatistics newStatistics);
@@ -50,4 +59,5 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
 
     @Override
     public abstract void afterInitialize(TFile file);
+
 }

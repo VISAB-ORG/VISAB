@@ -10,7 +10,7 @@ import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.newgui.visualize.IVisualizeViewModel;
+import org.visab.newgui.visualize.IVisualizeMainView;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.StatisticsViewModelBase;
 import org.visab.processing.ILiveViewable;
