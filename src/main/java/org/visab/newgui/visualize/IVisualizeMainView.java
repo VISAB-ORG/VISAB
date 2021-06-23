@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.saxsys.mvvmfx.ViewModel;
 
-public interface IVisualizeView {
+public interface IVisualizeMainView {
 
     List<ViewModel> getTabViewModels();
 

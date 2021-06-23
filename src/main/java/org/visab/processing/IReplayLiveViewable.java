@@ -2,6 +2,7 @@ package org.visab.processing;
 
 import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
+import org.visab.newgui.visualize.ILiveReplayViewModel;
 
 /**
  * The IReplayLiveViewable interface, that all replay live viewable
@@ -15,6 +16,14 @@ public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage ext
         extends ILiveViewable<TStatistics> {
 
     /**
+     * Adds a ViewModel to the list of ViewModels that will be informed of added
+     * statistics and images.
+     * 
+     * @param viewModel The ViewModel to add
+     */
+    void addViewModel(ILiveReplayViewModel<TStatistics, TImage> viewModel);
+
+    /**
      * Returns the images that were received.
      * 
      * @return The received images
@@ -26,6 +35,6 @@ public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage ext
      * 
      * @param addedImage The added images
      */
-    void notifyStatisticsAdded(TImage addedImage);
+    void notifyImageAdded(TImage addedImage);
 
 }

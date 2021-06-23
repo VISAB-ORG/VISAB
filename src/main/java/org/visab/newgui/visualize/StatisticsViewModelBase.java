@@ -6,7 +6,8 @@ import org.visab.newgui.ViewModelBase;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends ViewModelBase {
+public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends ViewModelBase
+        implements IStatisticsViewModel {
 
     /**
      * Returns whether the StatisticsViewModel supports live viewing.
@@ -14,7 +15,7 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
      * @return True if live viewing is supported
      */
     public boolean supportsLiveViewing() {
-        return this instanceof ILiveViewModel<?>;
+        return this instanceof ILiveStatisticsViewModel<?>;
     }
 
     /**

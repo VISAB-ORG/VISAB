@@ -1,18 +1,12 @@
 package org.visab.newgui.visualize;
 
+import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
-import org.visab.processing.ILiveViewable;
+import org.visab.processing.IReplayLiveViewable;
 
-public interface ILiveViewModel<TStatistics extends IStatistics> {
+public interface ILiveReplayViewModel<TStatistics extends IStatistics, TImage extends IImage> extends IReplayViewModel {
 
-    /**
-     * 
-     * Initializer for live view. Docks into the given listener and invokes
-     * notifyStatisticsAdded for all statistics of the listener.
-     * 
-     * @param listener The listener to dock onto
-     */
-    void initialize(ILiveViewable<? extends IStatistics> listener);
+    void initialize(IReplayLiveViewable<? extends IStatistics, ? extends IImage> listener);
 
     /**
      * Called by the docked listener upon reciving new statistics.
@@ -20,6 +14,8 @@ public interface ILiveViewModel<TStatistics extends IStatistics> {
      * @param newStatistics The newely received statistics.
      */
     void notifyStatisticsAdded(TStatistics newStatistics);
+
+    void notifyImageAdded(TImage image);
 
     /**
      * Called by the docked listener upon closing the session.
