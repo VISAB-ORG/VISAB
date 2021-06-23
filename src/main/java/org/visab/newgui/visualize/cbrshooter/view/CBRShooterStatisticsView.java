@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -32,10 +33,10 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     TableView<ComparisonRowBase<?>> comparisonTable;
 
     @FXML
-    CustomLabelPieChart planUsageCBR;
+    CustomLabelPieChart planUsageOne;
 
     @FXML
-    CustomLabelPieChart planUsageScript;
+    CustomLabelPieChart planUsageTwo;
 
     @FXML
     LineChart<Double, Integer> playerKills;
@@ -48,34 +49,42 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerSecondProperty().asString());
+        snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
 
-        planUsageCBR.setData(viewModel.getPlanUsageCBR());
-        planUsageScript.setData(viewModel.getPlanUsageScript());
+        // Initialize pie charts
+        if (viewModel.getPlayerNames().size() == 2) {
+            var name = viewModel.getPlayerNames().get(0);
+            planUsageOne.setData(viewModel.getPlanUsage(name));
+            planUsageOne.setTitle(name + " Plan Usage");
+
+            name = viewModel.getPlayerNames().get(1);
+            planUsageTwo.setData(viewModel.getPlanUsage(name));
+            planUsageTwo.setTitle(name + " Plan Usage");
+
+            // Set the label format for pie charts
+            var df = new DecimalFormat("#.##");
+            planUsageOne.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
+            planUsageTwo.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
+        }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        var columns = createColumns();
+        var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
-
-        // Set the label format for pie charts
-        var df = new DecimalFormat("#.##");
-        planUsageCBR.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
-        planUsageScript.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
 
         playerKills.setData(viewModel.getPlayerKillsSeries());
     }
 
-    private List<TableColumn<ComparisonRowBase<?>, ?>> createColumns() {
+    private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {
         var columns = new ArrayList<TableColumn<ComparisonRowBase<?>, ?>>();
 
         var playerNames = viewModel.getPlayerNames();
         for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
             var column = new TableColumn<ComparisonRowBase<?>, ObservableValue<?>>(name);
-            
+
             // Create cell value factory
             // TODO: Check if this works
-            var factory = new Callback<CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>>, ObservableValue<ObservableValue<?>>>() {
+            var valueFactory = new Callback<CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>>, ObservableValue<ObservableValue<?>>>() {
                 @Override
                 public ObservableValue<ObservableValue<?>> call(
                         CellDataFeatures<ComparisonRowBase<?>, ObservableValue<?>> param) {
@@ -83,7 +92,17 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
                 }
             };
 
-            column.setCellValueFactory(factory);
+            column.setCellValueFactory(valueFactory);
+            column.setCellFactory(x -> new TableCell<>() {
+
+                @Override
+                protected void updateItem(ObservableValue<?> item, boolean empty) {
+                    if (!empty) {
+                        setText(item.getValue().toString());
+                    }
+                }
+            });
+
             columns.add(column);
         }
 

@@ -34,6 +34,9 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     @Override
     @SuppressWarnings("unchecked")
     public void initializeLive(ILiveViewable<? extends IStatistics> listener) {
+        if (listener == null)
+            throw new RuntimeException("Listener was null!");
+
         this.listener = (ILiveViewable<TStatistics>) listener;
 
         // dock onto listener

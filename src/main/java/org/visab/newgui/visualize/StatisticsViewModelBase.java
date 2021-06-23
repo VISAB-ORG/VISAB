@@ -44,6 +44,9 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
      */
     @SuppressWarnings("unchecked")
     public void initialize(IVISABFile file) {
+        if (file == null)
+            throw new RuntimeException("File was null!");
+
         this.file = (TFile) file;
         isLiveViewProperty.set(false);
     }

@@ -9,7 +9,6 @@ import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileViewedEvent;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.newgui.visualize.IVisualizeMainViewModel;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;

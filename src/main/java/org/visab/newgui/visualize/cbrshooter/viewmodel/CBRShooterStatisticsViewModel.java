@@ -20,32 +20,33 @@ import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
+    private List<PlayerPlanTime> planTimes = new ArrayList<>();
+
+    @InjectScope
+    VisualizeScope scope;
+
+    private List<String> playerNames = new ArrayList<>();
+    private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
+
+    private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
+    private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
+
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
-        killsScript.setName("Kills Script Bot");
-        killsCBR.setName("Kills CBR Bot");
-
-        playerKillsSeries.add(killsCBR);
-        playerKillsSeries.add(killsScript);
-
         if (scope.isLive()) {
             super.initializeLive(scope.getSessionListener());
 
-            // Add the player names
-            playerNames.addAll(file.getPlayerInformation().keySet());
-
-            // TODO: Temporary
-            var row = new MovementComparisonRow();
-            row.updateValues(file);
-            comparisonStatistics.add(row);
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
 
             // Notify for all the already received statistics
             for (var statistics : listener.getReceivedStatistics())
@@ -53,41 +54,50 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         } else {
             super.initialize(scope.getFile());
 
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
+
             for (var statistics : file.getStatistics()) {
                 notifyStatisticsAdded(statistics);
             }
         }
     }
 
-    @InjectScope
-    VisualizeScope scope;
+    private void initializeDataStructures(CBRShooterFile file) {
+        killsScript.setName("Kills Script Bot");
+        killsCBR.setName("Kills CBR Bot");
 
-    private ObservableList<String> playerNames = FXCollections.observableArrayList();
+        playerKillsSeries.add(killsCBR);
+        playerKillsSeries.add(killsScript);
 
-    public ObservableList<String> getPlayerNames() {
-        return playerNames;
+        // Add the player names
+        playerNames.addAll(file.getPlayerInformation().keySet());
+
+        // TODO: Temporary
+        var row = new MovementComparisonRow();
+        row.updateValues(file);
+        comparisonStatistics.add(row);
+
+        for (var name : playerNames) {
+            // Initialize plan visualization
+            var planTime = new PlayerPlanTime(name);
+            planTimes.add(planTime);
+            planUsages.put(name, FXCollections.observableArrayList());
+
+        }
+
     }
 
-    private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
+    public List<String> getPlayerNames() {
+        return playerNames;
+    }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
         return comparisonStatistics;
     }
 
-    private List<PlayerPlanTime> planTimes = new ArrayList<>();
-
-    private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
-
-    private ObservableList<Data> planUsageCBR = FXCollections.observableArrayList();
-
-    private ObservableList<Data> planUsageScript = FXCollections.observableArrayList();
-
-    public ObservableList<Data> getPlanUsageCBR() {
-        return planUsageCBR;
-    }
-
-    public ObservableList<Data> getPlanUsageScript() {
-        return planUsageScript;
+    public ObservableList<Data> getPlanUsage(String playerName) {
+        return planUsages.get(playerName);
     }
 
     private Series<Double, Integer> killsScript = new Series<>();
@@ -101,55 +111,39 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
-        // Updates the pie charts for plan usage
-        updatePlanUsage(newStatistics);
-        updatePlayerStatistics(newStatistics);
-        snapshotsPerSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
+        snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
+        updatePlanUsage(newStatistics);
+        updatePlayerKills(newStatistics);
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
-            // If plan is "" substitute with No plan
+            // If plan is "" substitute with 'No plan'
             var plan = player.getPlan().equals("") ? "No plan" : player.getPlan();
 
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
-
-            // If player plan time doesnt for player exist yet, add it.
             var playerPlanTime = StreamUtil.firstOrNull(planTimes, x -> x.getPlayerName().equals(player.getName()));
-            if (playerPlanTime == null) {
-                playerPlanTime = new PlayerPlanTime(player.getName(), isCbr);
-                planTimes.add(playerPlanTime);
-            }
 
-            // Increment the plan time
+            // Increment the plan time. This change is reflected in the view, since
+            // PlayerPlanTimes uses a DoubleProperty for the plan times.
             playerPlanTime.incrementOccurance(plan, newStatistics.getRound(), newStatistics.getRoundTime());
 
-            // Check if plan is new
-            var isNewPlan = false;
-            if (isCbr)
-                isNewPlan = !StreamUtil.contains(planUsageCBR, x -> x.getName().equals(plan));
-            else
-                isNewPlan = !StreamUtil.contains(planUsageScript, x -> x.getName().equals(plan));
+            var dataList = planUsages.get(player.getName());
+            var isNewPlan = !StreamUtil.contains(dataList, x -> x.getName().equals(plan));
 
             // If plan is newly added, add new data with bound value to observable list
             if (isNewPlan) {
-                // Create new data
                 var data = new Data(plan, playerPlanTime.getTotalTime(plan));
                 data.pieValueProperty().bind(playerPlanTime.getTimeProperty(plan));
 
-                // Add to observable list
-                if (isCbr)
-                    planUsageCBR.add(data);
-                else
-                    planUsageScript.add(data);
+                dataList.add(data);
             }
         }
     }
 
     private Map<String, Integer> lastKills = new HashMap<>();
 
-    private void updatePlayerStatistics(CBRShooterStatistics newStatistics) {
+    private void updatePlayerKills(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
             var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
             var name = player.getName();
@@ -180,10 +174,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         // TODO: Render some future "who won" graphs an such
     }
 
-    private FloatProperty snapshotsPerSecond = new SimpleFloatProperty();
-
-    public FloatProperty snapshotPerSecondProperty() {
-        return snapshotsPerSecond;
+    public FloatProperty snapshotPerIngameSecondProperty() {
+        return snapshotsPerIngamesSecond;
     }
 
 }
