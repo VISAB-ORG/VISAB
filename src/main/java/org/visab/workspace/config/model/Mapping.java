@@ -21,12 +21,14 @@ public class Mapping {
 
     private String image;
 
-    private List<ViewConfig> viewConfigurations = new ArrayList<>();
+    private String visualizer;
 
-    /**
-     * For deserialization
-     */
-    public Mapping() {
+    public String getVisualizer() {
+        return visualizer;
+    }
+
+    public void setVisualizer(String visualizerView) {
+        this.visualizer = visualizerView;
     }
 
     public String getMetaInformation() {
@@ -75,15 +77,6 @@ public class Mapping {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public List<ViewConfig> getViewConfigurations() {
-        return this.viewConfigurations;
-    }
-
-    public String getVisualizeView() {
-        // TODO
-        return "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView";
     }
 
 }

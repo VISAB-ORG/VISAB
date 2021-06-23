@@ -16,7 +16,6 @@ import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.Mapping;
-import org.visab.workspace.config.model.ViewConfig;
 
 /**
  * The ConfigManager that is used for loading and modifying settings and dynamic
@@ -126,25 +125,6 @@ public class ConfigManager {
         this.mappings = mappings;
 
         return mappings;
-    }
-
-    /**
-     * Gets a view configuration of a game based on the views identifier.
-     * 
-     * Example usage: getViewMapping(CBRShooter, statistics);
-     * 
-     * @param game           The game to get the view configuration for
-     * @param viewIdentifier The identifier for the view
-     * @return The ViewConfig if found, null else
-     */
-    public ViewConfig getViewMapping(String game, String viewIdentifier) {
-        var mapping = getMapping(game);
-        if (mapping != null) {
-            return StreamUtil.firstOrNull(mapping.getViewConfigurations(),
-                    x -> x.getIdentifier().equals(viewIdentifier));
-        }
-
-        return null;
     }
 
     /**

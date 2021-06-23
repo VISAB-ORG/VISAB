@@ -6,12 +6,7 @@
         "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
         "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
         "image": "org.visab.globalmodel.cbrshooter.CBRShooterMapImage",
-        "viewConfigurations": [
-            {
-                "identifier": "statistics",
-                "classPath": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView"
-            }
-        ]
+        "visualizer": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView"
     },
     {
         "game": "Settlers",

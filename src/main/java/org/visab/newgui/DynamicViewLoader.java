@@ -33,10 +33,10 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
         }
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping == null || mapping.getVisualizeView() == null || mapping.getVisualizeView().isBlank()) {
+        if (mapping == null || mapping.getVisualizer() == null || mapping.getVisualizer().isBlank()) {
             // Load default statistics view
         } else {
-            var viewClassName = mapping.getVisualizeView();
+            var viewClassName = mapping.getVisualizer();
 
             // Load main view class
             var viewClass = getViewClass(viewClassName);
@@ -67,10 +67,10 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
         }
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping == null || mapping.getVisualizeView() == null || mapping.getVisualizeView().isBlank()) {
+        if (mapping == null || mapping.getVisualizer() == null || mapping.getVisualizer().isBlank()) {
             // Load default statistics view
         } else {
-            var viewClassName = mapping.getVisualizeView();
+            var viewClassName = mapping.getVisualizer();
 
             // Load main view class
             var viewClass = getViewClass(viewClassName);
