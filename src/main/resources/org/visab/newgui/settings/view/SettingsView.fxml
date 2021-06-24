@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -56,7 +57,6 @@
                       <TableColumn fx:id="timeoutColumn" prefWidth="75.0" text="Session Timeout" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="allowedGamesField" editable="false" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
                         <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="28.0" prefWidth="127.0" text="Return">
@@ -73,6 +73,7 @@
                   </HBox>
                   <Button fx:id="editSessionTimeoutButton" mnemonicParsing="false" onAction="#handleEditSessionTimeoutButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Button fx:id="editAllowedGamesButton" mnemonicParsing="false" onAction="#handleEditAllowedGamesButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <ListView fx:id="allowedGamesList" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="15.0" left="10.0" right="10.0" top="5.0" />

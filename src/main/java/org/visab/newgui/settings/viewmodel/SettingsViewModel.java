@@ -25,11 +25,11 @@ public class SettingsViewModel extends ViewModelBase {
 
     private StringProperty webApiPort = new SimpleStringProperty(
             String.valueOf(Workspace.getInstance().getConfigManager().getWebApiPort()));
-
-    private StringProperty allowedGames = new SimpleStringProperty(Workspace.getInstance().getConfigManager()
-            .getAllowedGames().toString().replace("[", "").replace("]", "").replace(" ", ""));
     
     private ObservableList<SessionItem> settingsItem = FXCollections.observableArrayList();
+    
+    private ObservableList<String> allowedGames = FXCollections.observableArrayList(Workspace.getInstance().
+            getConfigManager().getAllowedGames());
     
     private Command openSessionTimeoutEditViewCommand;
     
@@ -43,15 +43,6 @@ public class SettingsViewModel extends ViewModelBase {
     public StringProperty webApiPortProperty() {
         return webApiPort;
     }
-
-    /**
-     * The allowedGames for the view.
-     * 
-     * @return The allowedGames as String.
-     */
-    public StringProperty allowedGamesProperty() {
-        return allowedGames;
-    }
     
     /**
      * The session timeout for very game.
@@ -63,11 +54,21 @@ public class SettingsViewModel extends ViewModelBase {
         var items = new ArrayList<SessionItem>();
         for (int i = 0; i < Workspace.getInstance().getConfigManager().getAllowedGames().size(); i++) {
             items.add(new SessionItem(Workspace.getInstance().getConfigManager().getAllowedGames().get(i), 
-                    Workspace.getInstance().getConfigManager().getSessionTimeout().get(Workspace.getInstance().getConfigManager().getAllowedGames().get(i))));
+                    Workspace.getInstance().getConfigManager().getSessionTimeout().get(Workspace.getInstance().
+                            getConfigManager().getAllowedGames().get(i))));
         }
         settingsItem.addAll(items);
 
         return settingsItem;
+    }
+    
+    /**
+     * The allowed Games.
+     * 
+     * @return ObservableList of allowed Games.
+     */
+    public ObservableList<String> allowedGamesProperty() {
+        return allowedGames;
     }
     
     /**
