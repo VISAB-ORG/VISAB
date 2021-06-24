@@ -83,13 +83,12 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
     /**
      * Loads a VISABFile from the database.
      * 
-     * @param <T>      The type of the file
      * @param fileName The name of the file
      * @param game     The game of the file
      * @return The file if successfully loaded, null else
      */
-    public <T extends IVISABFile> T loadFile(String fileName, String game) {
-        var file = repo.<T>loadVISABFileDB(fileName, game);
+    public IVISABFile loadFile(String fileName, String game) {
+        var file = repo.loadVISABFileDB(fileName, game);
 
         if (file != null)
             logger.info(StringFormat.niceString("Loaded {0} of {1} from database", fileName, game));
@@ -97,6 +96,18 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
             logger.error(StringFormat.niceString("Failed to load {0} of {1} in database", fileName, game));
 
         return file;
+    }
+
+    public IVISABFile loadFile(String absolutePath) {
+        var file = repo.loadBasicVISABFile(absolutePath);
+
+        var concreteFile = repo.loadVISABFile(absolutePath, file.getGame());
+        if (concreteFile != null)
+            logger.info(StringFormat.niceString("Loaded file at {0} of {1}.", absolutePath, file.getGame()));
+        else
+            logger.error(StringFormat.niceString("Failed to load file at {0} of {1}.", absolutePath, file.getGame()));
+
+        return concreteFile;
     }
 
     /**
@@ -144,7 +155,7 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         if (file == null) {
             logger.info("Given visab file was null. Wont save it.");
             return false;
-        }   
+        }
 
         // If fileName has no extension, make it .visab2
         if (!fileName.contains("."))

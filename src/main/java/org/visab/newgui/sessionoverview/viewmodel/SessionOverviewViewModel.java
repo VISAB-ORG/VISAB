@@ -83,7 +83,7 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
                 if (selectedSession != null) {
                     var sessionInfo = selectedSession.get();
 
-                    DynamicViewLoader.loadAndShowStatisticsViewLive(sessionInfo.getGame(), sessionInfo.getSessionId());
+                    DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
                 }
             });
         }

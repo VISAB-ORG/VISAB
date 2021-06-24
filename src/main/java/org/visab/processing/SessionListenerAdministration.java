@@ -29,7 +29,8 @@ public final class SessionListenerAdministration {
      * @param listener The listener to add
      */
     protected static void addListener(ISessionListener<?> listener) {
-        activeListeners.add(listener);
+        if (listener != null)
+            activeListeners.add(listener);
     }
 
     /**

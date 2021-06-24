@@ -10,8 +10,6 @@ public class PlayerPlanTime {
 
     private String playerName;
 
-    private boolean isCBR;
-
     // Plan, total time of occurance
     private Map<String, DoubleProperty> planTimes = new HashMap<>();
 
@@ -19,12 +17,8 @@ public class PlayerPlanTime {
         return planTimes;
     }
 
-    public PlayerPlanTime(String playerName, boolean isCBR) {
+    public PlayerPlanTime(String playerName) {
         this.playerName = playerName;
-    }
-
-    public boolean isCbr() {
-        return isCBR;
     }
 
     public String getPlayerName() {

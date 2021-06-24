@@ -2,7 +2,6 @@ package org.visab.dynamic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.exception.DynamicException;
 import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
@@ -32,6 +31,7 @@ public final class DynamicSerializer {
      */
     public static IMetaInformation deserializeMetaInformation(String json) {
         var jsonObject = JsonConvert.deserializeJsonUnknown(json);
+        System.out.println(json);
 
         var gameProperty = jsonObject.get("game");
         if (gameProperty == null)
@@ -143,43 +143,26 @@ public final class DynamicSerializer {
      * @param <T>       The type to deserialize into
      * @param className The fully classified class name of the type
      * @param json      The json to deserialize
-     * @return An object of type T if successful, throws exception else
+     * @return An object of type T if successful, null else
      */
     @SuppressWarnings("unchecked")
     private static <T> T tryDeserialize(String className, String json) {
         T instance = null;
-        if (!className.isBlank()) {
-            var _class = tryGetClass(className);
-            if (_class != null)
-                instance = (T) JsonConvert.deserializeJson(json, _class);
-        }
-
-        return instance;
-    }
-
-    /**
-     * Tries to get a Class<?> object for a given class name.
-     * 
-     * @param className The fully classified class name
-     * @return The Class<?> object if successful, null else
-     */
-    private static Class<?> tryGetClass(String className) {
-        Class<?> _class = null;
-
         if (className != null && !className.isBlank()) {
-            try {
-                _class = Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-
-                // If there was a class name given, but it couldent be resolved throw exception
-                var message = StringFormat.niceString("Failed to find class for name {0}.", className);
-                logger.fatal(message);
-                throw new DynamicException(message);
+            var _class = DynamicHelper.tryGetClass(className);
+            if (_class == null) {
+                logger.error("Failed to resolve class for " + className);
+            } else {
+                try {
+                    var concrete = (Class<T>) _class;
+                    instance = JsonConvert.deserializeJson(json, concrete);
+                } catch (Exception e) {
+                    logger.error(StringFormat.niceString("Failed to cast {0} to Class<T>.", className));
+                }
             }
         }
 
-        return _class;
+        return instance;
     }
 
 }

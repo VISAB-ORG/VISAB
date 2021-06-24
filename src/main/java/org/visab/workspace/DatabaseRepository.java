@@ -43,32 +43,29 @@ public class DatabaseRepository extends RepositoryBase {
     /**
      * Loads a VISABFile from a given path.
      *
-     * @param <T>      The type of the file
      * @param game     The game of the file
      * @param filePath The path to the file
      * @return The VISABFile
      */
-    @SuppressWarnings("unchecked")
-    public <T extends IVISABFile> T loadVISABFile(String filePath, String game) {
+    public IVISABFile loadVISABFile(String filePath, String game) {
         var json = readFileContents(filePath);
 
         var file = DynamicSerializer.deserializeVISABFile(json, game);
 
-        return file != null ? (T) file : null;
+        return file;
     }
 
     /**
      * Loads a VISABFile file from the database.
      *
-     * @param <T>      The type of the file
      * @param game     The game of the file
      * @param fileName The name of the file
      * @return The VISABFile
      */
-    public <T extends IVISABFile> T loadVISABFileDB(String fileName, String game) {
+    public IVISABFile loadVISABFileDB(String fileName, String game) {
         var filePath = combinePath(baseDirectory, game, fileName);
 
-        return this.<T>loadVISABFile(filePath, game);
+        return loadVISABFile(filePath, game);
     }
 
     /**

@@ -164,7 +164,7 @@ public class HomeViewModel extends ViewModelBase {
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                DynamicViewLoader.showView(SessionOverviewView.class, "API Dashboard");
+                dialogHelper.showView(SessionOverviewView.class, "API Dashboard", true);
             });
         }
 
@@ -174,7 +174,7 @@ public class HomeViewModel extends ViewModelBase {
     public Command openSettings() {
         if (openSettings == null) {
             openSettings = runnableCommand(() -> {
-                DynamicViewLoader.showView(SettingsView.class, "Settings");
+                dialogHelper.showView(SettingsView.class, "Settings", true);
             });
         }
 
@@ -527,6 +527,17 @@ public class HomeViewModel extends ViewModelBase {
         var parentFile = file.getParentDir();
         if (parentFile != null)
             updateFileSize(parentFile, add);
+    }
+
+    public Command visualizeCommand() {
+        return runnableCommand(() -> {
+            var selectedFile = getSelectedFile();
+            if (selectedFile != null) {
+                var visabFile = Workspace.getInstance().getDatabaseManager().loadFile(selectedFile.getAbsolutePath());
+                if (visabFile != null)
+                    DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
+            }
+        });
     }
 
     /** ENDREGION: DATABASE VIEW */

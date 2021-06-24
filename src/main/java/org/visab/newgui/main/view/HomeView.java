@@ -3,6 +3,7 @@ package org.visab.newgui.main.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.visab.newgui.AppMain;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.control.FileExplorer;
 import org.visab.newgui.control.RecursiveTreeItem;
@@ -133,10 +134,14 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         viewModel.addFileCommand().execute();
     }
 
-    /**
-     * Fully refreshes the file explorer.
-     */
+    @FXML
+    public void visualizeAction() {
+        viewModel.visualizeCommand().execute();
+    }
 
+    /**
+     * Fully refreshes the file explorer, by reloading the os file structure.
+     */
     @FXML
     public void refreshFileExplorer() {
         fileExplorer.setRoot(null);

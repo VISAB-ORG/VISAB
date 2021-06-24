@@ -8,7 +8,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
-        extends StatisticsViewModelBase<TFile> implements ILiveViewModel<TStatistics> {
+        extends StatisticsViewModelBase<TFile> implements ILiveStatisticsViewModel<TStatistics> {
+
+    /**
+     * The listener that the viewmodel is docked onto.
+     */
+    protected ILiveViewable<TStatistics> listener;
 
     /**
      * Whether the current listeners corresponding transmission session is still
@@ -28,18 +33,20 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
 
     @Override
     @SuppressWarnings("unchecked")
-    public void initialize(ILiveViewable<? extends IStatistics> listener) {
-        var concreteListener = (ILiveViewable<TStatistics>) listener;
+    public void initializeLive(ILiveViewable<? extends IStatistics> listener) {
+        if (listener == null)
+            throw new RuntimeException("Listener was null!");
+
+        this.listener = (ILiveViewable<TStatistics>) listener;
+
+        // dock onto listener
+        this.listener.addViewModel(this);
 
         isLiveViewProperty.set(true);
         liveSessionActiveProperty.set(true);
 
-        // dock onto listener
-        concreteListener.addViewModel(this);
-
-        // Notify for all the already received statistics
-        for (var statistics : concreteListener.getReceivedStatistics())
-            notifyStatisticsAdded(statistics);
+        // Set the file
+        this.file = (TFile) listener.getCurrentFile();
     }
 
     @Override
@@ -48,6 +55,4 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     @Override
     public abstract void notifySessionClosed();
 
-    @Override
-    public abstract void afterInitialize(TFile file);
 }

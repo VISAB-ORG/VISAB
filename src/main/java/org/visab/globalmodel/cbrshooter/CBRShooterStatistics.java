@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
+import org.visab.globalmodel.Vector2;
 
 /**
  * The CBRShooterStatistics class, representing the information given by the
@@ -16,7 +17,6 @@ public class CBRShooterStatistics implements IStatistics {
 
     private Vector2 ammunitionPosition;
     private List<PlayerInformation> players = new ArrayList<>();
-    private String game;
     private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
@@ -25,18 +25,9 @@ public class CBRShooterStatistics implements IStatistics {
     private float roundTime;
     private Vector2 weaponPosition;
     private float totalTime;
-    private float speed;
 
     public Vector2 getAmmunitionPosition() {
         return ammunitionPosition;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public float getTotalTime() {
@@ -49,10 +40,6 @@ public class CBRShooterStatistics implements IStatistics {
 
     public List<PlayerInformation> getPlayers() {
         return players;
-    }
-
-    public String getGame() {
-        return game;
     }
 
     public Vector2 getHealthPosition() {
@@ -85,10 +72,6 @@ public class CBRShooterStatistics implements IStatistics {
 
     public void setAmmunitionPosition(Vector2 ammunitionPosition) {
         this.ammunitionPosition = ammunitionPosition;
-    }
-
-    public void setGame(String game) {
-        this.game = game;
     }
 
     public void setHealthPosition(Vector2 healthPosition) {
