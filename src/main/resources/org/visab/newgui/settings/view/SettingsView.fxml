@@ -3,6 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +17,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.SettingsView">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SettingsView">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="800.0" styleClass="body">
          <center>
@@ -22,12 +25,14 @@
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                  <RowConstraints />
               </rowConstraints>
                <children>
                   <Label fx:id="webApiPortLabel" text="Web Api Port:" GridPane.rowIndex="0">
@@ -46,9 +51,13 @@
                      </GridPane.margin>
                   </Label>
                   <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                  <TextField fx:id="sessionTimeoutField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="allowedGamesField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <HBox alignment="TOP_RIGHT" prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <columns>
+                      <TableColumn fx:id="gamesColumn" prefWidth="75.0" text="Game" />
+                      <TableColumn fx:id="timeoutColumn" prefWidth="75.0" text="Session Timeout" />
+                    </columns>
+                  </TableView>
+                  <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
                         <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="28.0" prefWidth="127.0" text="Return">
                            <HBox.margin>
@@ -62,6 +71,9 @@
                         </Button>
                      </children>
                   </HBox>
+                  <Button fx:id="editSessionTimeoutButton" mnemonicParsing="false" onAction="#handleEditSessionTimeoutButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button fx:id="editAllowedGamesButton" mnemonicParsing="false" onAction="#handleEditAllowedGamesButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <ListView fx:id="allowedGamesList" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="15.0" left="10.0" right="10.0" top="5.0" />

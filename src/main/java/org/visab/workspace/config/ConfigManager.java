@@ -1,6 +1,7 @@
 package org.visab.workspace.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
@@ -168,23 +169,24 @@ public class ConfigManager {
     /**
      * Syntactic sugar to wrap the access on the settings object.
      * 
-     * Getter for the sessionTimeout.
-     * 
-     * @return The sessionTimeout.
-     */
-    public int getSessionTimeout() {
-        return this.settings.getSessionTimeout();
-    }
-
-    /**
-     * Syntactic sugar to wrap the access on the settings object.
-     * 
      * Getter for the allowedGames.
      * 
      * @return The allowedGames.
      */
     public ArrayList<String> getAllowedGames() {
         return this.settings.getAllowedGames();
+    }
+    
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * Getter for the sessionTimeouts.
+     * 
+     * @return The SessionTimeouts.
+     */
+    public HashMap<String, Integer> getSessionTimeout() {
+        return this.settings.getSessionTimeout();
     }
 
     /**
@@ -211,26 +213,6 @@ public class ConfigManager {
      * Syntactic sugar to wrap the access on the settings object that also provides
      * detailed logging information according to the changes made.
      * 
-     * Updates the sessionTimeout time.
-     * 
-     * @param timeout The new sessionTimeout.
-     */
-    public void updateSessionTimeout(int timeout) {
-        int oldTimeout = this.settings.getSessionTimeout();
-        if (timeout == 0) {
-            logger.error("Value 0 is not allowed for sessionTimeout, please provide a value > 0.");
-            timeout = oldTimeout;
-        } else if (timeout > 0 && timeout != oldTimeout) {
-            logger.info("Changed sessionTimeout from " + oldTimeout + "seconds to " + timeout + "seconds.");
-        }
-
-        this.settings.setSessionTimeout(timeout);
-    }
-
-    /**
-     * Syntactic sugar to wrap the access on the settings object that also provides
-     * detailed logging information according to the changes made.
-     * 
      * Updates the list of allowed games.
      * 
      * @param games The new allowed games.
@@ -241,6 +223,10 @@ public class ConfigManager {
         for (String game : games) {
             if (!this.settings.getAllowedGames().contains(game)) {
                 logger.info("Added new game to allowedGame list: " + game + ".");
+                HashMap<String, Integer> map = getSessionTimeout();
+                map.put(game, 10);
+                updateSessionTimeout(map);
+                logger.info("Added session timeout: 10, for new game: " + game);
             }
         }
         // Check if current version of allowed games is missing a game which was
@@ -248,11 +234,25 @@ public class ConfigManager {
         for (String game : this.settings.getAllowedGames()) {
             if (!games.contains(game)) {
                 logger.info("Removed game: " + game + " from allowedGame list.");
+                HashMap<String, Integer> map = getSessionTimeout();
+                map.remove(game);
+                updateSessionTimeout(map);
+                logger.info("Removed session timeout for game: " + game);
             }
         }
         // Renaming a game will result in both logs to be printed
 
         this.settings.setAllowedGames(games);
+    }
+    
+    /**
+     * Updates the timeouts from the games.
+     * 
+     * @param timeouts The timeouts Map.
+     */
+    public void updateSessionTimeout(HashMap<String, Integer> timeouts) {
+        logger.info("Updated the session timeouts");
+        this.settings.setSessionTimeout(timeouts);
     }
 
     public boolean isGameSupported(String game) {

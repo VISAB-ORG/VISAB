@@ -1,16 +1,24 @@
-package org.visab.newgui.settings;
+package org.visab.newgui.settings.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.visab.newgui.settings.SessionItem;
+import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
 
 /**
  * This class represents the view of the settings.
@@ -24,35 +32,61 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     TextField webApiPortField;
     
     @FXML
-    TextField sessionTimeoutField;
+    TableView<SessionItem> sessionTimeoutsTable;
     
     @FXML
-    TextField allowedGamesField;
+    TableColumn<SessionItem, String> gamesColumn;
+    
+    @FXML
+    TableColumn<SessionItem, String> timeoutColumn;
+    
+    @FXML
+    ListView<String> allowedGamesList;
+    
+    @FXML
+    Button saveButton;
+    
+    @FXML
+    Button returnButton;
     
     @InjectViewModel
     SettingsViewModel viewModel;
     
     /**
-     * 
-     * @param event Is triggered when the save button is pressed.
+     * Opens the SessionTimeoutEditView.
      */
     @FXML
-    private void handleSaveButtonAction(ActionEvent event) {
-        viewModel.updateSettingsCommand().execute();
-        // TODO: should the settings view be closed when the new settings are saved?
+    private void handleEditSessionTimeoutButtonAction() {
+        viewModel.openSessionTimeoutEditViewCommand().execute();
+    }
+    
+    @FXML
+    private void handleEditAllowedGamesButtonAction() {
+        viewModel.openAllowedGameEditViewComman().execute();
     }
     
     /**
-     * 
-     * @param event Is triggered when the return button is pressed.
+     * Saves the settings and closes the settingsView.
      */
     @FXML
-    private void handleReturnButtonAction(ActionEvent event) {
-        // TODO: check if return button is needed or otherwise implemented
+    private void handleSaveButtonAction() {
+        viewModel.updateSettingsCommand().execute();
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
+    }
+    
+    /**
+     * Closes the settingsView.
+     */
+    @FXML
+    private void handleReturnButtonAction() {
+        Stage stage = (Stage) returnButton.getScene().getWindow();
+        stage.close();
     }
     
     /**
      * Makes a inputField to a numericalField.
+     * 
      * @param inputField The inputField that should be a numericalField.
      */
     private void setInputFieldNumericOnly(TextField inputField) {
@@ -71,12 +105,16 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
-        sessionTimeoutField.textProperty().bindBidirectional(viewModel.sessionTimeoutProperty());
-        allowedGamesField.textProperty().bindBidirectional(viewModel.allowedGamesProperty());
+
+        gamesColumn.setCellValueFactory(cellData -> cellData.getValue().getGame());
+        timeoutColumn.setCellValueFactory(cellData -> cellData.getValue().getTimeout());
         
+        sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
+        
+        allowedGamesList.getItems().addAll(viewModel.allowedGamesProperty());
+
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
-        setInputFieldNumericOnly(sessionTimeoutField);
     }
 
 }
