@@ -79,7 +79,7 @@ public class SettingsViewModel extends ViewModelBase {
     public Command openSessionTimeoutEditViewCommand() {
         if (openSessionTimeoutEditViewCommand == null) {
             openSessionTimeoutEditViewCommand = runnableCommand(() -> {
-                DynamicViewLoader.showView(SessionTimeoutEditView.class, "Session Tiemout");
+                dialogHelper.showView(SessionTimeoutEditView.class, "Session Tiemout", true);
             });
         }
         return openSessionTimeoutEditViewCommand;
@@ -93,7 +93,7 @@ public class SettingsViewModel extends ViewModelBase {
     public Command openAllowedGameEditViewComman() {
         if (openAllowedGameEditViewCommand == null) {
             openAllowedGameEditViewCommand = runnableCommand(() -> {
-                DynamicViewLoader.showView(AllowedGamesEditView.class, "Allowed Games");
+                dialogHelper.showView(AllowedGamesEditView.class, "Allowed Games", true);
             });
         }
         return  openAllowedGameEditViewCommand;
