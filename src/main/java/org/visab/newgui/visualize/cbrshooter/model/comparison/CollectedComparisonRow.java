@@ -1,14 +1,15 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
-import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class CollectedComparisonRow extends ComparisonRowBase<IntegerProperty> {
+public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerProperty> {
 
     private Collectable collectable;
 
