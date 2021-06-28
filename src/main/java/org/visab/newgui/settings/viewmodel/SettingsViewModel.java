@@ -1,8 +1,8 @@
 package org.visab.newgui.settings.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.settings.SessionItem;
 import org.visab.newgui.settings.view.AllowedGamesEditView;
@@ -30,6 +30,14 @@ public class SettingsViewModel extends ViewModelBase {
     
     private ObservableList<String> allowedGames = FXCollections.observableArrayList(Workspace.getInstance().
             getConfigManager().getAllowedGames());
+    
+    private StringProperty timeout = new SimpleStringProperty();
+    
+    private StringProperty game = new SimpleStringProperty();
+    
+    private StringProperty newGame = new SimpleStringProperty();
+    
+    private StringProperty removedGame = new SimpleStringProperty();
     
     private Command openSessionTimeoutEditViewCommand;
     
@@ -72,6 +80,95 @@ public class SettingsViewModel extends ViewModelBase {
     }
     
     /**
+     * Sets the game with the selected one in the choice box of the view.
+     * 
+     * @return The game that is selected.
+     */
+    public StringProperty selectedGame() {
+        return game;
+    }
+    
+    /**
+     * The timeout for the session.
+     * 
+     * @param time The timeout time.
+     * @return The timeout for the session.
+     */
+    public StringProperty timeoutProperty(StringProperty time) {
+        return this.timeout = time;
+    }
+    
+    /**
+     * The name of the new game.
+     * 
+     * @return The new game.
+     */
+    public StringProperty newGameProperty() {
+        return newGame;
+    }
+    
+    /**
+     * The removed game from the view choice box.
+     * 
+     * @return The removed game.
+     */
+    public StringProperty removedGame() {
+        return this.removedGame;
+    }
+    
+    /**
+     * Adds the new game to the settings.
+     * 
+     * @return Saves the updated settings.
+     */
+    public Command addAllowedGameCommand() {
+      ArrayList<String> games = new ArrayList<>(Workspace.getInstance().getConfigManager().getAllowedGames());
+      games.add(newGame.get());
+      
+      Workspace.getInstance().getConfigManager().updateAllowedGames(games);
+
+      return runnableCommand(() -> {          
+          Workspace.getInstance().getConfigManager().saveSettings();
+      });
+    }
+    
+    /**
+     * Removes the chosen game from the settings
+     * 
+     * @return Saves the updated settings.
+     */
+    public Command removeAllowedGameCommand() {
+        ArrayList<String> games = new ArrayList<>(Workspace.getInstance().getConfigManager().getAllowedGames());
+        
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i).contains(removedGame.get())) {
+                games.remove(i);
+            }
+        }
+        
+        Workspace.getInstance().getConfigManager().updateAllowedGames(games);
+        
+        return runnableCommand(() -> {
+            Workspace.getInstance().getConfigManager().saveSettings();
+        });
+    }
+    
+    /**
+     * Updates the sessionTimeout setting with the new value and saves it.
+     * 
+     * @return Saves the updated settings.
+     */
+    public Command updateSessionTimeoutCommand() {
+        HashMap<String, Integer> sessionTimeout = Workspace.getInstance().getConfigManager().getSessionTimeout();
+        sessionTimeout.replace(game.get(), Integer.parseInt(timeout.get()));
+        Workspace.getInstance().getConfigManager().updateSessionTimeout(sessionTimeout);
+       
+        return runnableCommand(() -> {
+            Workspace.getInstance().getConfigManager().saveSettings();
+        });
+    }
+    
+    /**
      * Command to open the sessionTimeoutEditView.
      * 
      * @return Opens the sessionTimeoutEditView.
@@ -90,7 +187,7 @@ public class SettingsViewModel extends ViewModelBase {
      * 
      * @return Opens the allowedGameEditView.
      */
-    public Command openAllowedGameEditViewComman() {
+    public Command openAllowedGameEditViewCommand() {
         if (openAllowedGameEditViewCommand == null) {
             openAllowedGameEditViewCommand = runnableCommand(() -> {
                 dialogHelper.showView(AllowedGamesEditView.class, "Allowed Games", true);

@@ -3,7 +3,7 @@ package org.visab.newgui.settings.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.settings.viewmodel.AllowedGamesEditViewModel;
+import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  * @author tim
  *
  */
-public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>, Initializable{
+public class AllowedGamesEditView implements FxmlView<SettingsViewModel>, Initializable{
 
     @FXML
     TextField allowedGameField;
@@ -39,7 +39,7 @@ public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>
     Button returnButton;
     
     @InjectViewModel
-    AllowedGamesEditViewModel viewModel;
+    SettingsViewModel viewModel;
     
     /**
      * Adds the new game.

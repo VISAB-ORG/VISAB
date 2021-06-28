@@ -3,7 +3,7 @@ package org.visab.newgui.settings.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.settings.viewmodel.SessionTimeoutEditViewModel;
+import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * @author tim
  *
  */
-public class SessionTimeoutEditView implements FxmlView<SessionTimeoutEditViewModel>, Initializable{
+public class SessionTimeoutEditView implements FxmlView<SettingsViewModel>, Initializable{
 
     @FXML
     ChoiceBox<String> selectedGameChoiceBox;
@@ -36,7 +36,7 @@ public class SessionTimeoutEditView implements FxmlView<SessionTimeoutEditViewMo
     Button saveButton;
     
     @InjectViewModel
-    SessionTimeoutEditViewModel viewModel;
+    SettingsViewModel viewModel;
     
     /**
      * Saves the sessionTimout and closes the sessonTimeoutEditView.
