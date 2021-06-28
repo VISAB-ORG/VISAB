@@ -22,7 +22,7 @@ public class SessionItem {
      */
     public SessionItem(String game, int timeout) {
         this.game = new SimpleStringProperty(game);
-        this.timeout = new SimpleStringProperty(String.valueOf(timeout));
+        this.timeout = new SimpleStringProperty(String.valueOf(timeout + " s"));
     }
     
     /**
