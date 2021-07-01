@@ -4,8 +4,6 @@ import java.net.URL;
 import java.text.Format;
 import java.util.ResourceBundle;
 
-import javax.swing.text.TableView.TableCell;
-
 import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 
@@ -19,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -115,10 +114,30 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
         sessionTimeoutsTable.setItems(viewModel.gameSessionTimeouts());
         allowedGamesList.setItems(viewModel.allowedGames());
         viewModel.selectedAllowedGameProperty().bind(allowedGamesList.getSelectionModel().selectedItemProperty());
-        viewModel.selectedSessionTimeoutProperty().bind(sessionTimeoutsTable.getSelectionModel().selectedItemProperty());
-        
+        viewModel.selectedSessionTimeoutProperty()
+                .bind(sessionTimeoutsTable.getSelectionModel().selectedItemProperty());
+
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
+
+        // Show seconds
+        sessionTimeoutColumn.setCellFactory(
+                new Callback<TableColumn<SessionTimeoutItem, Integer>, TableCell<SessionTimeoutItem, Integer>>() {
+
+                    @Override
+                    public TableCell<SessionTimeoutItem, Integer> call(TableColumn<SessionTimeoutItem, Integer> param) {
+                        var cell = new TableCell<SessionTimeoutItem, Integer>() {
+
+                            @Override
+                            public void updateItem(Integer item, boolean empty) {
+                                if (item != null) {
+                                    setText(item + "s");
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                });
     }
 
 }
