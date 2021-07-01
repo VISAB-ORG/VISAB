@@ -70,6 +70,8 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
+        viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
+
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 

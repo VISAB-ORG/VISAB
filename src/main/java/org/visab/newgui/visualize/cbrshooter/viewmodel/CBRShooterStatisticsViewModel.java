@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.SimpleObjectIdResolver;
+
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
@@ -19,7 +21,9 @@ import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
 import javafx.beans.property.FloatProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -37,8 +41,14 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
+    private ObjectProperty<ComparisonRowBase<?>> selectedRow = new SimpleObjectProperty<>();
+
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
     private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
+
+    public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
+        return this.selectedRow;
+    }
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
