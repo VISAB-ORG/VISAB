@@ -3,11 +3,10 @@ package org.visab.newgui.settings.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.settings.viewmodel.AllowedGamesEditViewModel;
+import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,7 +20,7 @@ import javafx.stage.Stage;
  * @author tim
  *
  */
-public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>, Initializable{
+public class AllowedGamesEditView implements FxmlView<SettingsViewModel>, Initializable{
 
     @FXML
     TextField allowedGameField;
@@ -39,7 +38,7 @@ public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>
     Button returnButton;
     
     @InjectViewModel
-    AllowedGamesEditViewModel viewModel;
+    SettingsViewModel viewModel;
     
     /**
      * Adds the new game.
@@ -54,7 +53,6 @@ public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>
      */
     @FXML
     private void handleRemoveGameButtonAction() {
-        viewModel.removedGame().bindBidirectional(new SimpleStringProperty(allowedGameChoiceBox.getValue()));
         viewModel.removeAllowedGameCommand().execute();
     }
     
@@ -69,10 +67,9 @@ public class AllowedGamesEditView implements FxmlView<AllowedGamesEditViewModel>
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        allowedGameField.textProperty().bindBidirectional(viewModel.newGameProperty());
-        allowedGameChoiceBox.setItems(viewModel.allowedGamesProperty());
-        allowedGameChoiceBox.setValue("CBRShooter");
-        
+        allowedGameField.textProperty().bindBidirectional(viewModel.editAllowedNewGameProperty());
+        allowedGameChoiceBox.setItems(viewModel.allowedGames());
+        allowedGameChoiceBox.valueProperty().bindBidirectional(viewModel.editAllowedSelectedGameProperty());
     }
 
 }
