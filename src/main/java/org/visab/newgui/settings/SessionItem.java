@@ -1,8 +1,5 @@
 package org.visab.newgui.settings;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 /**
  * Helper class to create a session item of the games and the corresponding sessionTimeout.
  * 
@@ -11,8 +8,8 @@ import javafx.beans.property.StringProperty;
  */
 public class SessionItem {
     
-    private StringProperty game;
-    private StringProperty timeout;
+    private String game;
+    private String timeout;
     
     /**
      * The constructor of the class.
@@ -21,8 +18,8 @@ public class SessionItem {
      * @param timeout The timeout of the session.
      */
     public SessionItem(String game, int timeout) {
-        this.game = new SimpleStringProperty(game);
-        this.timeout = new SimpleStringProperty(String.valueOf(timeout + " s"));
+        this.game = game;
+        this.timeout = String.valueOf(timeout) + " s";
     }
     
     /**
@@ -30,7 +27,7 @@ public class SessionItem {
      * 
      * @return The game of the session timeout.
      */
-    public StringProperty getGame() {
+    public String getGame() {
         return this.game;
     }
     
@@ -39,7 +36,7 @@ public class SessionItem {
      * 
      * @return The timeout of the session.
      */
-    public StringProperty getTimeout() {
+    public String getTimeout() {
         return this.timeout;
     }
 

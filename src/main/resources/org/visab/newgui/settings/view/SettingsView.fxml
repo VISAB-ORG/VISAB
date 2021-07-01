@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SettingsView">
    <children>
@@ -53,8 +54,16 @@
                   <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                   <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columns>
-                      <TableColumn fx:id="gamesColumn" prefWidth="75.0" text="Game" />
-                      <TableColumn fx:id="timeoutColumn" prefWidth="75.0" text="Session Timeout" />
+                      <TableColumn prefWidth="75.0" text="Game">
+                          <cellValueFactory>
+                      	      <PropertyValueFactory property="game" />
+                          </cellValueFactory>
+                      </TableColumn>
+                      <TableColumn prefWidth="75.0" text="Session Timeout">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="timeout" />
+                          </cellValueFactory>
+                      </TableColumn>
                     </columns>
                   </TableView>
                   <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">

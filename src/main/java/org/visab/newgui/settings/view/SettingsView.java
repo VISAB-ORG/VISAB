@@ -15,9 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 
 /**
@@ -106,15 +108,30 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     public void initialize(URL location, ResourceBundle resources) {
         webApiPortField.textProperty().bindBidirectional(viewModel.webApiPortProperty());
 
-        gamesColumn.setCellValueFactory(cellData -> cellData.getValue().getGame());
-        timeoutColumn.setCellValueFactory(cellData -> cellData.getValue().getTimeout());
-        
         sessionTimeoutsTable.setItems(viewModel.settingsItemProperty());
         
         allowedGamesList.getItems().addAll(viewModel.allowedGamesProperty());
 
         // sets the inputField as numericalField
         setInputFieldNumericOnly(webApiPortField);
+    }
+    
+    private void initializeSessionTablePresentation() {
+        sessionTimeoutsTable.setRowFactory(new Callback<TableView<SessionItem>, TableRow<SessionItem>>() {
+            
+            @Override
+            public TableRow<SessionItem> call(TableView<SessionItem> param) {
+                var row = new TableRow<SessionItem>() {
+                    @Override
+                    protected void updateItem(SessionItem row, boolean empty) {
+                        if (empty || row == null) {
+                            return;
+                        }
+                    }
+                };
+                return row;
+            }
+        });
     }
 
 }
