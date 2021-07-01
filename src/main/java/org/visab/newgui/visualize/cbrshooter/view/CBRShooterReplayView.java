@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.visab.gui.model.TableEntryCBRBot;
 import org.visab.gui.model.TableEntryScriptBot;
 import org.visab.util.VISABUtil;
-import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.config.ConfigManager;
 
 import javafx.application.Platform;
@@ -23,7 +22,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -76,8 +74,6 @@ public class CBRShooterReplayView {
     private Button showCoordinates;
     @FXML
     private ScrollPane scrollPane;
-    @FXML
-    private ComboBox<String> comboBox;
     @FXML
     private Label infoLabel;
     @FXML
@@ -154,8 +150,6 @@ public class CBRShooterReplayView {
     private HBox hBoxScriptDeaths;
     @FXML
     private HBox hBoxScriptPlayer;
-    @FXML
-    private Button refresh;
 
     // Images / Icons
     private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
@@ -175,11 +169,6 @@ public class CBRShooterReplayView {
     public static int masterIndex;
 
     public static int sleepTimer;
-
-    @FXML
-    public void handleRefresh() {
-        updatePage();
-    }
 
     // Dummy Handle Method for frame slider
     @FXML
@@ -229,44 +218,13 @@ public class CBRShooterReplayView {
 
         // Remove old Paths
         drawPane.getChildren().clear();
-        String fileNameFromComboBox = comboBox.getValue();
-
-        String content = VISABUtil.readFile(DatabaseManager.DATABASE_PATH + fileNameFromComboBox.toString());
 
         boolean externalFileAccepted = false;
 
-        if (fileNameFromComboBox == "" || fileNameFromComboBox == null) {
-            // Set InfoLabel
-            infoLabel.setText("Please select a file name first!");
-        } else if (fileNameFromComboBox.endsWith(".visab")) {
-            // Path Viewer Action with visab file
-            try {
-                loadVisabStatistics(content);
-            } catch (Exception e) {
-                infoLabel.setText("Visab file corrupted. Please check its content!");
-            }
-
-            // Set bot type labels (in case of adding bots: create new labels)
-            botTypeLabel1.setText("Type: CBR-Bot");
-            botTypeLabel2.setText("Type: Script-Bot");
-
-        } else {
-            for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-                if (fileNameFromComboBox.endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
-                    externalFileAccepted = true;
-                }
-            }
-
-        }
         if (externalFileAccepted) {
             loadExternalStatistics();
         }
 
-    }
-
-    public void updatePage() {
-        comboBox.getItems().addAll(VISABUtil.loadFilesFromDatabase());
-        comboBox.getSelectionModel().selectFirst();
     }
 
     @SuppressWarnings({ "unchecked", "resource" })
