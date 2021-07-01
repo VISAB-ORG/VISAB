@@ -30,7 +30,7 @@ public class DialogHelper {
     // private Window parentWindow;
 
     // public void setParentWindow(Window parentWindow) {
-    //     this.parentWindow = parentWindow;
+    // this.parentWindow = parentWindow;
     // }
 
     /**
@@ -156,6 +156,27 @@ public class DialogHelper {
             stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.show();
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            ViewModel initViewModel) {
+
+        var viewStep = FluentViewLoader.fxmlView(viewType);
+        viewStep.viewModel(initViewModel);
+        var viewTuple = viewStep.load();
+
+        var view = viewTuple.getView();
+
+        var stage = new Stage();
+        var scene = new Scene(view);
+        stage.setTitle(title);
+        stage.setScene(scene);
+
+        if (blockWindows)
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+
     }
 
 }

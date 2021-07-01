@@ -59,7 +59,7 @@
                       	      <PropertyValueFactory property="game" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn prefWidth="75.0" text="Session Timeout">
+                      <TableColumn fx:id="sessionTimeoutColumn" prefWidth="75.0" text="Session Timeout">
                           <cellValueFactory>
                               <PropertyValueFactory property="timeout" />
                           </cellValueFactory>

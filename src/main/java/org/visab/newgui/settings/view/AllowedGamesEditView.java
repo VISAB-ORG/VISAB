@@ -54,7 +54,6 @@ public class AllowedGamesEditView implements FxmlView<SettingsViewModel>, Initia
      */
     @FXML
     private void handleRemoveGameButtonAction() {
-        viewModel.removedGame().bindBidirectional(new SimpleStringProperty(allowedGameChoiceBox.getValue()));
         viewModel.removeAllowedGameCommand().execute();
     }
     
@@ -69,10 +68,9 @@ public class AllowedGamesEditView implements FxmlView<SettingsViewModel>, Initia
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        allowedGameField.textProperty().bindBidirectional(viewModel.newGameProperty());
-        allowedGameChoiceBox.setItems(viewModel.allowedGamesProperty());
-        allowedGameChoiceBox.setValue("CBRShooter");
-        
+        allowedGameField.textProperty().bindBidirectional(viewModel.editAllowedNewGameProperty());
+        allowedGameChoiceBox.setItems(viewModel.allowedGames());
+        allowedGameChoiceBox.valueProperty().bindBidirectional(viewModel.editAllowedSelectedGameProperty());
     }
 
 }

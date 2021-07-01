@@ -22,7 +22,8 @@ import org.visab.workspace.config.model.Mapping;
  * The ConfigManager that is used for loading and modifying settings and dynamic
  * mappings.
  * 
- * TODO: Allowed games has to be added to settings.
+ * TODO: HAVE TO RETURN BOOLEAN VALUES, INDICATING IF THE CHANGE OF SETTINGS WAS
+ * SUCCESSFUL (ALLOWED TYPICALLY)
  */
 public class ConfigManager {
 
@@ -176,8 +177,7 @@ public class ConfigManager {
     public ArrayList<String> getAllowedGames() {
         return this.settings.getAllowedGames();
     }
-    
-    
+
     /**
      * Syntactic sugar to wrap the access on the settings object.
      * 
@@ -244,7 +244,7 @@ public class ConfigManager {
 
         this.settings.setAllowedGames(games);
     }
-    
+
     /**
      * Updates the timeouts from the games.
      * 
