@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableView?>
@@ -27,36 +22,15 @@
          <font>
             <Font size="28.0" />
          </font></Label>
-		<Button fx:id="showCoordinates" layoutX="776.0" layoutY="716.0" mnemonicParsing="false" onAction="#handleShowCoordinates" text="Load Path Viewer" />
       <ImageView fitHeight="550.0" fitWidth="550.0" layoutX="41.0" layoutY="143.0">
          <image>
-            <Image url="@img/fps_map.png" />
+            <Image url="@../../../../../../img/fps_map.png" />
          </image>
       </ImageView>
-      <Pane fx:id="drawPane" layoutX="535.0" layoutY="140.0" prefHeight="200.0" prefWidth="200.0" rotate="-45.0">
-         <children>
-            <Line layoutX="-640.0" />
-            <ImageView fx:id="healthImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.1" scaleY="0.1" visible="true">
-               <image>
-                  <Image url="@img/healthContainer.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="ammuImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.1" scaleY="0.1" visible="true">
-               <image>
-                  <Image url="@img/ammuContainer.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="weaponImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="40.1" scaleX="0.15" scaleY="0.15" visible="true">
-               <image>
-                  <Image url="@img/weapon.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
       <Label fx:id="infoLabel" layoutX="142.0" layoutY="92.0" prefHeight="46.0" prefWidth="273.0" textFill="#f20101" wrapText="true" />
       <TableView fx:id="statisticsTableCBRBot" layoutX="776.0" layoutY="143.0" prefHeight="234.0" prefWidth="344.0" style="-fx-border-color: rgb(68,114,196); -fx-border-width: 2;" />
       <TableView fx:id="statisticsTableScriptBot" layoutX="776.0" layoutY="418.0" prefHeight="275.0" prefWidth="344.0" style="-fx-border-color: rgb(68,114,196); -fx-border-width: 2;" />
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="41.0" layoutY="822.0" majorTickUnit="10.0" prefHeight="14.0" prefWidth="550.0" showTickLabels="true" showTickMarks="true" visible="true" />
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="41.0" layoutY="822.0" majorTickUnit="10.0" prefHeight="38.0" prefWidth="252.0" showTickLabels="true" showTickMarks="true" visible="true" />
       <Label fx:id="frameLabel" layoutX="41.0" layoutY="758.0" prefHeight="27.0" prefWidth="163.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -66,7 +40,7 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Slider fx:id="veloSlider" blockIncrement="2.0" layoutX="387.0" layoutY="822.0" majorTickUnit="2.0" max="8.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
+      <Slider fx:id="veloSlider" blockIncrement="2.0" layoutX="390.0" layoutY="822.0" majorTickUnit="2.0" max="8.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
       <ToggleButton fx:id="playPauseButton" layoutX="278.0" layoutY="759.0" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-color: rgb(68,114,196); -fx-border-width: 2;" visible="true" />
       <Label fx:id="botTypeLabel1" layoutX="773.0" layoutY="115.0" prefHeight="20.0" prefWidth="120.0">
          <font>
@@ -138,7 +112,7 @@
                         </Label>
                         <ImageView fx:id="scriptDeathLegend" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/deathScript.png" />
+                              <Image url="@../../../../../../img/deathScript.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="12.0" />
@@ -155,7 +129,7 @@
                         </Label>
                         <ImageView fx:id="scriptDeathLegend1" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/deadCBR.png" />
+                              <Image url="@../../../../../../img/deadCBR.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="12.0" />
@@ -172,7 +146,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/scriptBot.png" />
+                              <Image url="@../../../../../../img/scriptBot.png" />
                            </image>
                            <HBox.margin>
                               <Insets />
@@ -189,7 +163,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend1" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/cbrBot.png" />
+                              <Image url="@../../../../../../img/cbrBot.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="3.0" />
@@ -206,7 +180,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend11" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/weapon.png" />
+                              <Image url="@../../../../../../img/weapon.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="3.0" top="5.0" />
@@ -223,7 +197,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend12" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/ammuContainer.png" />
+                              <Image url="@../../../../../../img/ammuContainer.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="2.0" />
@@ -240,7 +214,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend13" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/healthContainer.png" />
+                              <Image url="@../../../../../../img/healthContainer.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="3.0" />
@@ -257,7 +231,7 @@
                         </Label>
                         <ImageView fx:id="scriptBotLegend14" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/changePlan.png" />
+                              <Image url="@../../../../../../img/changePlan.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="7.0" right="3.0" />
