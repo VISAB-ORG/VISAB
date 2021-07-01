@@ -1,42 +1,38 @@
 package org.visab.newgui.visualize.cbrshooter.view;
 
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.gui.model.TableEntryCBRBot;
-import org.visab.gui.model.TableEntryScriptBot;
+import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.config.ConfigManager;
 
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 
@@ -47,41 +43,13 @@ import javafx.scene.shape.MoveTo;
  * @author leonr
  *
  */
-public class CBRShooterReplayView {
+public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>, Initializable {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
 
-    @FXML
-    private MenuItem browseFileMenu;
-    @FXML
-    private MenuItem pathViewerMenu;
-    @FXML
-    private MenuItem statisticsMenu;
-    @FXML
-    private MenuItem helpMenu;
-    @FXML
-    private MenuItem aboutMenu;
-    @FXML
-    private Line line;
-    @SuppressWarnings("rawtypes")
-    @FXML
-    private TableView statisticsTableCBRBot;
-    @SuppressWarnings("rawtypes")
-    @FXML
-    private TableView statisticsTableScriptBot;
-    @FXML
-    private Button showCoordinates;
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private Label infoLabel;
-    @FXML
-    private Pane drawPane;
-    @FXML
-    private Label frameLabel;
-    @FXML
-    private Slider frameSlider;
+    // ----- IMAGE VIEWS -------
+
     @FXML
     private ImageView healthImage;
     @FXML
@@ -89,25 +57,11 @@ public class CBRShooterReplayView {
     @FXML
     private ImageView weaponImage;
     @FXML
-    private Label botTypeLabel1;
-    @FXML
-    private Label botTypeLabel2;
-    @FXML
-    private Label botNameLabel1;
-    @FXML
-    private Label botNameLabel2;
-    @FXML
-    private Image playImage;
-    @FXML
-    private Image pauseImage;
-    @FXML
     private ImageView playImageView;
     @FXML
     private ImageView pauseImageView;
-    @FXML
-    private ToggleButton playPauseButton;
-    @FXML
-    private VBox vBoxView;
+
+    // ----- VISIBILITY CHECKS -----
     @FXML
     private CheckBox checkBoxScriptBotPath;
     @FXML
@@ -126,12 +80,48 @@ public class CBRShooterReplayView {
     private CheckBox checkBoxAmmu;
     @FXML
     private CheckBox checkBoxHealth;
+
+    // ----- CONTROLS ----
     @FXML
-    private Label labelVBOX;
+    private Slider frameSlider;
     @FXML
-    private Label labelLegend;
+    private Slider veloSlider;
+    @FXML
+    private ToggleButton playPauseButton;
+
+    // ----- PANES / BOXES -----
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Pane drawPane;
+    @FXML
+    private VBox vBoxView;
     @FXML
     private Pane panePlan;
+    @FXML
+    private HBox hBoxScriptPath;
+    @FXML
+    private HBox hBoxScriptDeaths;
+    @FXML
+    private HBox hBoxScriptPlayer;
+
+    // ----- LABELS ------
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Label frameLabel;
+    @FXML
+    private Label botTypeLabel1;
+    @FXML
+    private Label botTypeLabel2;
+    @FXML
+    private Label botNameLabel1;
+    @FXML
+    private Label botNameLabel2;
+    @FXML
+    private Label labelVBox;
+    @FXML
+    private Label labelLegend;
     @FXML
     private Label labelPlanCBR;
     @FXML
@@ -142,14 +132,13 @@ public class CBRShooterReplayView {
     private Label labelCurrentPlanScript;
     @FXML
     private Label veloLabel;
+
+    // --- FXML IMAGES ----
+
     @FXML
-    private Slider veloSlider;
+    private Image playImage;
     @FXML
-    private HBox hBoxScriptPath;
-    @FXML
-    private HBox hBoxScriptDeaths;
-    @FXML
-    private HBox hBoxScriptPlayer;
+    private Image pauseImage;
 
     // Images / Icons
     private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
@@ -164,11 +153,17 @@ public class CBRShooterReplayView {
     private ImageView deathImageViewCBR = new ImageView(deathImageCBR);
     private ImageView scriptbotImageView = new ImageView(imageScriptBot);
 
-    public Task<Void> task;
-
+    // Helper variables
     public static int masterIndex;
-
     public static int sleepTimer;
+
+    @InjectViewModel
+    CBRShooterReplayViewModel viewModel;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     // Dummy Handle Method for frame slider
     @FXML
@@ -198,35 +193,6 @@ public class CBRShooterReplayView {
         }
     }
 
-    // Handle Method for the show coordinates option including additional core
-    // features like the path viewer and its content
-    public void handleShowCoordinates() throws URISyntaxException {
-
-        infoLabel.setText("Loading...");
-        infoLabel.setStyle("-fx-text-fill: orange;");
-
-        masterIndex = 0;
-        checkBoxScriptBotPath.setSelected(true);
-        checkBoxScriptBotDeaths.setSelected(true);
-        checkBoxScriptBotPlayer.setSelected(true);
-        checkBoxCBRBotPath.setSelected(true);
-        checkBoxCBRBotDeaths.setSelected(true);
-        checkBoxCBRBotPlayer.setSelected(true);
-        checkBoxWeapons.setSelected(true);
-        checkBoxAmmu.setSelected(true);
-        checkBoxHealth.setSelected(true);
-
-        // Remove old Paths
-        drawPane.getChildren().clear();
-
-        boolean externalFileAccepted = false;
-
-        if (externalFileAccepted) {
-            loadExternalStatistics();
-        }
-
-    }
-
     @SuppressWarnings({ "unchecked", "resource" })
     private void loadVisabStatistics(String content) {
 
@@ -237,23 +203,11 @@ public class CBRShooterReplayView {
         List<List<Double>> coordinatesCBRBotList = new ArrayList<List<Double>>();
         List<List<Double>> coordinatesScriptBotList = new ArrayList<List<Double>>();
 
-        List<String> healthScriptBotList = new ArrayList<String>();
-        List<String> healthCBRBotList = new ArrayList<String>();
-
-        List<String> weaponScriptBotList = new ArrayList<String>();
-        List<String> weaponCBRBotList = new ArrayList<String>();
-
         List<String> statisticsScriptBotList = new ArrayList<String>();
         List<String> statisticsCBRBotList = new ArrayList<String>();
 
-        List<String> nameScriptBotList = new ArrayList<String>();
-        List<String> nameCBRBotList = new ArrayList<String>();
-
         List<String> planCBRBotList = new ArrayList<String>();
         List<String> planScriptBotList = new ArrayList<String>();
-
-        List<String> weaponMagAmmuCBRBotList = new ArrayList<String>();
-        List<String> weaponMagAmmuScriptBotList = new ArrayList<String>();
 
         List<String> healthPositionList = new ArrayList<String>();
         List<String> weaponPositionList = new ArrayList<String>();
@@ -289,97 +243,6 @@ public class CBRShooterReplayView {
                 // TODO: (Skalierbarkeit)
                 // Analoge Schleifeneintr�ge erstellen (s.u.)
                 // Dabei muss der entsprechende Attributsname abgeglichen werden.
-
-                // Create Lists for table
-                // Health
-                if (rawDataRow.get(j).contains("healthScriptBot")) {
-                    String healthScriptBot = rawDataRow.get(j + 1);
-                    healthScriptBotList.add(healthScriptBot);
-                }
-
-                if (rawDataRow.get(j).contains("healthCBRBot")) {
-                    String healthCBRBot = rawDataRow.get(j + 1);
-                    healthCBRBotList.add(healthCBRBot);
-                }
-
-                // Weapon
-                if (rawDataRow.get(j).contains("weaponScriptBot")) {
-                    String weaponScriptBot = rawDataRow.get(j + 1);
-                    weaponScriptBotList.add(weaponScriptBot);
-                }
-
-                if (rawDataRow.get(j).contains("weaponCBRBot")) {
-                    String weaponCBRBot = rawDataRow.get(j + 1);
-                    weaponCBRBotList.add(weaponCBRBot);
-                }
-
-                // K/D-Ratio aka Statistics
-                if (rawDataRow.get(j).contains("statisticScriptBot")) {
-                    String statisticScriptBot = rawDataRow.get(j + 1);
-                    statisticsScriptBotList.add(statisticScriptBot);
-                }
-
-                if (rawDataRow.get(j).contains("statisticCBRBot")) {
-                    String statisticCBRBot = rawDataRow.get(j + 1);
-                    statisticsCBRBotList.add(statisticCBRBot);
-                }
-
-                // Name of each player
-                if (rawDataRow.get(j).contains("nameScriptBot")) {
-                    String nameScriptBot = rawDataRow.get(j + 1);
-                    nameScriptBotList.add(nameScriptBot);
-                    botNameLabel1.setText("Name: " + nameScriptBot);
-                }
-
-                if (rawDataRow.get(j).contains("nameCBRBot")) {
-                    String nameCBRBot = rawDataRow.get(j + 1);
-                    nameCBRBotList.add(nameCBRBot);
-                    botNameLabel2.setText("Name: " + nameCBRBot);
-                }
-
-                // Executed Plans of CBR-Bot & Script-Bot
-                if (rawDataRow.get(j).contains("planCBRBot")) {
-                    String planCBRBot = rawDataRow.get(j + 1);
-                    planCBRBotList.add(planCBRBot);
-                }
-
-                if (rawDataRow.get(j).contains("planScriptBot")) {
-                    String planScriptBot = rawDataRow.get(j + 1);
-                    planScriptBotList.add(planScriptBot);
-                }
-
-                // Current ammunition
-                if (rawDataRow.get(j).contains("weaponMagAmmuCBRBot")) {
-                    String weaponMagAmmuCBRBot = rawDataRow.get(j + 1);
-                    weaponMagAmmuCBRBotList.add(weaponMagAmmuCBRBot);
-                }
-
-                if (rawDataRow.get(j).contains("weaponMagAmmuScriptBot")) {
-                    String weaponMagAmmuCBRBot = rawDataRow.get(j + 1);
-                    weaponMagAmmuScriptBotList.add(weaponMagAmmuCBRBot);
-                }
-
-                // Position of Health/Weapon/Ammu Spawn
-                if (rawDataRow.get(j).contains("healthPosition")) {
-                    String healthPosition = rawDataRow.get(j + 1);
-                    healthPositionList.add(healthPosition);
-                }
-
-                if (rawDataRow.get(j).contains("weaponPosition")) {
-                    String weaponPosition = rawDataRow.get(j + 1);
-                    weaponPositionList.add(weaponPosition);
-                }
-
-                if (rawDataRow.get(j).contains("ammuPosition")) {
-                    String ammuPosition = rawDataRow.get(j + 1);
-                    ammuPositionList.add(ammuPosition);
-                }
-
-                // Round Counter
-                if (rawDataRow.get(j).contains("roundCounter")) {
-                    String roundCounter = rawDataRow.get(j + 1);
-                    roundCounterList.add(roundCounter);
-                }
 
                 // TODO: (Skalierbarkeit)
                 // Koordinaten extrahieren (s.u.)
@@ -426,10 +289,6 @@ public class CBRShooterReplayView {
             }
         }
 
-        // Create Table for both bots
-        createTableCBRBot();
-        createTableScriptBot();
-
         // TODO: (Skalierbarkeit)
         // Methode zur Erstellung einer neuen Tabelle hinzuf�gen (s.o.)
         // Der Inhalt der Methode kann kopiert und angepasst werden.
@@ -437,64 +296,6 @@ public class CBRShooterReplayView {
         // preparated Lists for Path Viewer
         ArrayList<Double> coordinatesCBRBotListPrep = new ArrayList<Double>();
         ArrayList<Double> coordinatesScriptBotListPrep = new ArrayList<Double>();
-
-        // TODO: (Skalierbarkeit)
-        // Analoge Vorbereitungsliste f�r die Koordinaten erstellen (s.o.)
-
-        int frameCountCBR = 0;
-        int frameCountScript = 0;
-
-        // TODO: (Skalierbarkeit)
-        // Vorbereitungsliste bef�llen und Tabelleneintr�ge erstellen (s.u.)
-
-        // lists with coordinates
-        for (int i = 0; i < coordinatesCBRBotList.size(); i += 3) {
-            TableEntryCBRBot tableEntryCBRbot = new TableEntryCBRBot();
-            coordinatesCBRBotListPrep.add(coordinatesCBRBotList.get(i + 2).get(0));
-            coordinatesCBRBotListPrep.add(coordinatesCBRBotList.get(i).get(0));
-            // Fill CBR bot Table with information
-            tableEntryCBRbot.setBotType("CBR-Bot");
-            tableEntryCBRbot.setCoordinatesCBRBot(
-                    coordinatesCBRBotList.get(i + 2).get(0) + ", " + coordinatesCBRBotList.get(i).get(0));
-            tableEntryCBRbot.setFrame(frameCountCBR);
-            tableEntryCBRbot.setHealthCBRBot(healthCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setNameCBRBot(nameCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setPlanCBRBot(planCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setStatisticCBRBot(statisticsCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setWeaponCBRBot(weaponCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setWeaponMagAmmuCBRBot(weaponMagAmmuCBRBotList.get(frameCountCBR));
-            tableEntryCBRbot.setHealthPosition(healthPositionList.get(frameCountCBR));
-            tableEntryCBRbot.setWeaponPosition(weaponPositionList.get(frameCountCBR));
-            tableEntryCBRbot.setAmmuPosition(ammuPositionList.get(frameCountCBR));
-            tableEntryCBRbot.setRoundCounter(roundCounterList.get(frameCountCBR));
-
-            frameCountCBR++;
-            statisticsTableCBRBot.getItems().add(tableEntryCBRbot);
-        }
-
-        for (int i = 0; i < coordinatesScriptBotList.size(); i += 3) {
-            TableEntryScriptBot tableEntryScriptBot = new TableEntryScriptBot();
-            coordinatesScriptBotListPrep.add(coordinatesScriptBotList.get(i + 2).get(0));
-            coordinatesScriptBotListPrep.add(coordinatesScriptBotList.get(i).get(0));
-            // Fill Script bot Table with information
-            tableEntryScriptBot.setBotType("Script-Bot");
-            tableEntryScriptBot.setCoordinatesScriptBot(
-                    coordinatesScriptBotList.get(i + 2).get(0) + ", " + coordinatesScriptBotList.get(i).get(0));
-            tableEntryScriptBot.setFrame(frameCountScript);
-            tableEntryScriptBot.setHealthScriptBot(healthScriptBotList.get(frameCountScript));
-            tableEntryScriptBot.setNameScriptBot(nameScriptBotList.get(frameCountScript));
-            tableEntryScriptBot.setStatisticScriptBot(statisticsScriptBotList.get(frameCountScript));
-            tableEntryScriptBot.setWeaponScriptBot(weaponScriptBotList.get(frameCountScript));
-            tableEntryScriptBot.setWeaponMagAmmuScriptBot(weaponMagAmmuScriptBotList.get(frameCountScript));
-            tableEntryScriptBot.setHealthPosition(healthPositionList.get(frameCountScript));
-            tableEntryScriptBot.setWeaponPosition(weaponPositionList.get(frameCountScript));
-            tableEntryScriptBot.setAmmuPosition(ammuPositionList.get(frameCountScript));
-            tableEntryScriptBot.setRoundCounter(roundCounterList.get(frameCountScript));
-            tableEntryScriptBot.setPlanScriptBot(planScriptBotList.get(frameCountScript));
-
-            frameCountScript++;
-            statisticsTableScriptBot.getItems().add(tableEntryScriptBot);
-        }
 
         // Preparing List for drawing the Paths
         for (int i = 0; i < coordinatesCBRBotListPrep.size(); i++) {
@@ -589,7 +390,6 @@ public class CBRShooterReplayView {
                             // position
                             while (masterIndex < coordinatesScriptBotListPrep.size() / 2) {
                                 if (playPauseButton.isSelected()) {
-                                    showCoordinates.setDisable(true);
                                     int i = masterIndex;
                                     i++;
                                     drawMap(coordinatesCBRBotListPrep, coordinatesScriptBotListPrep,
@@ -627,7 +427,6 @@ public class CBRShooterReplayView {
                                     frameSlider.setValue(masterIndex);
                                     playPauseButton.setGraphic(playImageView);
                                     frameSlider.setVisible(true);
-                                    showCoordinates.setDisable(false);
                                     veloSlider.setValue(0);
                                 }
                             });
@@ -1141,153 +940,5 @@ public class CBRShooterReplayView {
             }
         });
 
-    }
-
-    private void loadExternalStatistics() {
-        // If file is external
-        statisticsTableCBRBot.getItems().clear();
-        statisticsTableScriptBot.getItems().clear();
-        infoLabel.setText("PathViewer is not available!");
-        infoLabel.setStyle("-fx-text-fill: orange;");
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createTableCBRBot() {
-        // Clear to show entries only once
-        VISABUtil.clearTable(statisticsTableCBRBot);
-
-        // Create Table Columns
-        @SuppressWarnings("rawtypes")
-        TableColumn botType = new TableColumn("botType");
-        botType.setCellValueFactory(new PropertyValueFactory<>("botType"));
-//              botType.prefWidthProperty().bind(statisticsTable.widthProperty().divide(1.5));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn frame = new TableColumn("frame");
-        frame.setCellValueFactory(new PropertyValueFactory<>("frame"));
-//              frame.prefWidthProperty().bind(statisticsTable.widthProperty().divide(3.06));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn coordinatesCBRBot = new TableColumn("coordinatesCBRBot");
-        coordinatesCBRBot.setCellValueFactory(new PropertyValueFactory<>("coordinatesCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn healthCBRBot = new TableColumn("healthCBRBot");
-        healthCBRBot.setCellValueFactory(new PropertyValueFactory<>("healthCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponCBRBot = new TableColumn("weaponCBRBot");
-        weaponCBRBot.setCellValueFactory(new PropertyValueFactory<>("weaponCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn statisticCBRBot = new TableColumn("statisticCBRBot");
-        statisticCBRBot.setCellValueFactory(new PropertyValueFactory<>("statisticCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn nameCBRBot = new TableColumn("nameCBRBot");
-        nameCBRBot.setCellValueFactory(new PropertyValueFactory<>("nameCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn planCBRBot = new TableColumn("planCBRBot");
-        planCBRBot.setCellValueFactory(new PropertyValueFactory<>("planCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponMagAmmuCBRBot = new TableColumn("weaponMagAmmuCBRBot");
-        weaponMagAmmuCBRBot.setCellValueFactory(new PropertyValueFactory<>("weaponMagAmmuCBRBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn healthPosition = new TableColumn("healthPosition");
-        healthPosition.setCellValueFactory(new PropertyValueFactory<>("healthPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponPosition = new TableColumn("weaponPosition");
-        weaponPosition.setCellValueFactory(new PropertyValueFactory<>("weaponPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn ammuPosition = new TableColumn("ammuPosition");
-        ammuPosition.setCellValueFactory(new PropertyValueFactory<>("ammuPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn roundCounter = new TableColumn("roundCounter");
-        roundCounter.setCellValueFactory(new PropertyValueFactory<>("roundCounter"));
-
-        // All possible Table Columns
-//      statisticsTableCBRBot.getColumns().addAll(botType, frame, coordinatesCBRBot, healthCBRBot, weaponCBRBot,
-//              statisticCBRBot, nameCBRBot, planCBRBot, weaponMagAmmuCBRBot, healthPosition, weaponPosition,
-//              ammuPosition, roundCounter);
-
-        // Cleaned Up Table
-        statisticsTableCBRBot.getColumns().addAll(frame, coordinatesCBRBot, healthCBRBot, weaponCBRBot, statisticCBRBot,
-                planCBRBot);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createTableScriptBot() {
-        // Clear to show entries only once
-        VISABUtil.clearTable(statisticsTableScriptBot);
-
-        // Create Table
-        @SuppressWarnings("rawtypes")
-        TableColumn botType = new TableColumn("botType");
-        botType.setCellValueFactory(new PropertyValueFactory<>("botType"));
-//              botType.prefWidthProperty().bind(statisticsTable.widthProperty().divide(1.5));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn frame = new TableColumn("frame");
-        frame.setCellValueFactory(new PropertyValueFactory<>("frame"));
-//              frame.prefWidthProperty().bind(statisticsTable.widthProperty().divide(3.06));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn coordinatesScriptBot = new TableColumn("coordinatesScriptBot");
-        coordinatesScriptBot.setCellValueFactory(new PropertyValueFactory<>("coordinatesScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn healthScriptBot = new TableColumn("healthScriptBot");
-        healthScriptBot.setCellValueFactory(new PropertyValueFactory<>("healthScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponScriptBot = new TableColumn("weaponScriptBot");
-        weaponScriptBot.setCellValueFactory(new PropertyValueFactory<>("weaponScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn statisticScriptBot = new TableColumn("statisticScriptBot");
-        statisticScriptBot.setCellValueFactory(new PropertyValueFactory<>("statisticScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn nameScriptBot = new TableColumn("nameScriptBot");
-        nameScriptBot.setCellValueFactory(new PropertyValueFactory<>("nameScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn planScriptBot = new TableColumn("planScriptBot");
-        planScriptBot.setCellValueFactory(new PropertyValueFactory<>("planScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponMagAmmuScriptBot = new TableColumn("weaponMagAmmuScriptBot");
-        weaponMagAmmuScriptBot.setCellValueFactory(new PropertyValueFactory<>("weaponMagAmmuScriptBot"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn healthPosition = new TableColumn("healthPosition");
-        healthPosition.setCellValueFactory(new PropertyValueFactory<>("healthPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn weaponPosition = new TableColumn("weaponPosition");
-        weaponPosition.setCellValueFactory(new PropertyValueFactory<>("weaponPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn ammuPosition = new TableColumn("ammuPosition");
-        ammuPosition.setCellValueFactory(new PropertyValueFactory<>("ammuPosition"));
-
-        @SuppressWarnings("rawtypes")
-        TableColumn roundCounter = new TableColumn("roundCounter");
-        roundCounter.setCellValueFactory(new PropertyValueFactory<>("roundCounter"));
-
-        // All possible Table Columns
-//      statisticsTableScriptBot.getColumns().addAll(botType, frame, coordinatesScriptBot, healthScriptBot, weaponScriptBot,
-//              statisticScriptBot, nameScriptBot, weaponMagAmmuScriptBot, healthPosition, weaponPosition,
-//              ammuPosition, roundCounter);
-
-        // Cleaned Up Table
-        statisticsTableScriptBot.getColumns().addAll(frame, coordinatesScriptBot, healthScriptBot, weaponScriptBot,
-                statisticScriptBot, planScriptBot);
     }
 }
