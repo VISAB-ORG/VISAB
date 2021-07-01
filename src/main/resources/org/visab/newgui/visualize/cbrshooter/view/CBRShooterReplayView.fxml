@@ -24,7 +24,7 @@
             <Image url="@../../../../../../img/fps_map.png" />
          </image>
       </ImageView>
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="625.0" layoutY="571.0" majorTickUnit="10.0" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="625.0" layoutY="571.0" majorTickUnit="10.0" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" onValueChange="#handleFrameSlider" />
       <Label fx:id="frameLabel" layoutX="722.0" layoutY="544.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -34,7 +34,7 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Slider fx:id="veloSlider" blockIncrement="2.0" layoutX="712.0" layoutY="631.0" majorTickUnit="2.0" max="8.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
+      <Slider fx:id="veloSlider" blockIncrement="2.0" layoutX="712.0" layoutY="631.0" majorTickUnit="2.0" max="8.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" onValueChange="#handleVeloSlider"/>
       <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-color: rgb(68,114,196); -fx-border-width: 2;" visible="true" />
       <GridPane layoutX="625.0" layoutY="174.0">
         <columnConstraints>
