@@ -2,7 +2,6 @@ package org.visab.newgui.settings.viewmodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Predicate;
 
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.settings.SessionTimeoutItem;

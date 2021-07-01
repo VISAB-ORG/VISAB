@@ -1,7 +1,6 @@
 package org.visab.newgui.settings.view;
 
 import java.net.URL;
-import java.text.Format;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.settings.SessionTimeoutItem;
@@ -10,7 +9,6 @@ import org.visab.newgui.settings.viewmodel.SettingsViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -19,13 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 /**
