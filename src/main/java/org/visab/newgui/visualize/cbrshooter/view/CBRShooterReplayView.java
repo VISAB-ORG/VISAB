@@ -107,27 +107,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     // ----- LABELS ------
     @FXML
-    private Label infoLabel;
-    @FXML
     private Label frameLabel;
     @FXML
-    private Label botTypeLabel1;
-    @FXML
-    private Label botTypeLabel2;
-    @FXML
-    private Label botNameLabel1;
-    @FXML
-    private Label botNameLabel2;
-    @FXML
-    private Label labelVBox;
-    @FXML
-    private Label labelLegend;
-    @FXML
-    private Label labelPlanCBR;
-    @FXML
     private Label labelCurrentPlanCBR;
-    @FXML
-    private Label labelPlanScript;
     @FXML
     private Label labelCurrentPlanScript;
     @FXML
@@ -168,7 +150,13 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // Dummy Handle Method for frame slider
     @FXML
     public void handleFrameSlider() {
+        // TODO: Add call to underlying viewmodel to change data?
+        System.out.println("Frame Slider moved!");
+    }
 
+    public void handleVeloSlider() {
+        // TODO: Add call to underlying viewmodel to speed up?
+        System.out.println("Velocity Slider moved!");
     }
 
     // Handle Method for user Selection regarding visability of the Script Bot
@@ -439,8 +427,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 }
             }
         });
-        infoLabel.setText("Data successfully loaded!");
-        infoLabel.setStyle("-fx-text-fill: green;");
 
     }
 
