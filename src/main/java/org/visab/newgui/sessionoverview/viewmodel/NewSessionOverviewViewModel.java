@@ -1,6 +1,7 @@
 package org.visab.newgui.sessionoverview.viewmodel;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,9 @@ import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
+import org.visab.newgui.control.CustomSessionObject;
 import org.visab.util.StreamUtil;
+import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.DoubleProperty;
@@ -26,6 +29,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class NewSessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
 
@@ -73,6 +79,38 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         }
 
         return closeSessionCommand;
+    }
+
+    public void initializeSessionGrid(AnchorPane anchorPane) {
+        // TODO Auto-generated method stub
+        GridPane innerGrid = new GridPane();
+        innerGrid.setPadding(new Insets(10));
+        innerGrid.setHgap(5);
+        innerGrid.setVgap(5);
+        // Setting the style CSS
+
+        // 0-based, therefore 2 denotes 3 columns max
+        var initialColSize = 2;
+        var rowIterator = 0;
+        var colIterator = 0;
+
+        for (UUID sessionId : WebApi.getInstance().getSessionAdministration().getSessionIds()) {
+            SessionStatus sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
+
+            var logoPath = ConfigManager.IMAGE_PATH + sessionStatus.getGame() + "Logo.png";
+            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus.getGame(), logoPath, sessionId,
+                    sessionStatus.getHostName(), sessionStatus.getIp(), sessionStatus.getSessionOpened().toString(),
+                    sessionStatus.getStatusType());
+
+            innerGrid.add(sessionObject, colIterator, rowIterator);
+            colIterator++;
+
+            if (colIterator == initialColSize) {
+                rowIterator++;
+            }
+        }
+
+        anchorPane.getChildren().add(innerGrid);
     }
 
     private Command openLiveViewCommand;

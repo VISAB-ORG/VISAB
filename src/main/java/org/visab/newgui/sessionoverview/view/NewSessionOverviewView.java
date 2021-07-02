@@ -10,12 +10,15 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.layout.AnchorPane;
 
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
 
     @FXML
     private Button closeSessionButton;
+
+    @FXML
+    private AnchorPane scrollPane;
 
     @InjectViewModel
     private NewSessionOverviewViewModel viewModel;
@@ -30,11 +33,9 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
         viewModel.openLiveViewCommand().execute();
     }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.viewModel.initializeSessionGrid(this.scrollPane);
+    }
 
 }
