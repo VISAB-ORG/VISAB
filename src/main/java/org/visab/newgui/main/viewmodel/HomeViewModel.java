@@ -14,7 +14,7 @@ import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.main.MainScope;
-import org.visab.newgui.sessionoverview.view.SessionOverviewView;
+import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
 import org.visab.util.StreamUtil;
@@ -164,7 +164,7 @@ public class HomeViewModel extends ViewModelBase {
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(SessionOverviewView.class, "API Dashboard", true);
+                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", true);
             });
         }
 
