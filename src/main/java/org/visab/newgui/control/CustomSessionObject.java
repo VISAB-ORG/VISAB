@@ -2,6 +2,11 @@ package org.visab.newgui.control;
 
 import java.util.UUID;
 
+import org.visab.api.WebApi;
+import org.visab.newgui.DynamicViewLoader;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -49,6 +54,12 @@ public class CustomSessionObject extends GridPane {
         this.gameNameValue = new Label(gameName);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
         this.openLiveViewButton = new Button("Open Live View");
+        this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                DynamicViewLoader.loadVisualizer(gameName, sessionId);
+            }
+        });
         this.sessionIdValue = new Label(sessionId.toString());
         this.hostNameValue = new Label(hostName);
         this.ipValue = new Label(ip);
@@ -66,6 +77,13 @@ public class CustomSessionObject extends GridPane {
         this.closeSessionButton.setPrefSize(10, 10);
         this.closeSessionButton.setGraphic(closeSessionView);
         this.closeSessionButton.getStyleClass().add("delete-button");
+
+        this.closeSessionButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
+            }
+        });
 
         this.add(this.closeSessionButton, 1, 0);
         this.add(this.gameNameValue, 0, 1);
