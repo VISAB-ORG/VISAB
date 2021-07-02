@@ -42,11 +42,13 @@ public class SessionWatchdog extends ApiPublisherBase<SessionClosedEvent> {
                 while (checkTimeouts) {
                     for (var status : statuses) {
                         if (shouldTimeout(status)) {
-                            logger.info("Closing session " + status.getSessionId() + " due to timeout of "
-                                    + Workspace.getInstance().getConfigManager().getSessionTimeout().get(status.getGame())
+                            logger.info("Closing session "
+                                    + status.getSessionId() + " due to timeout of " + Workspace.getInstance()
+                                            .getConfigManager().getSessionTimeout().get(status.getGame())
                                     + " seconds.");
                             ;
                             status.setIsActive(false);
+                            status.setStatusType("timeouted");
                             status.setSessionClosed(LocalTime.now());
                             var event = new SessionClosedEvent(status.getSessionId(), status, true);
                             publish(event);
