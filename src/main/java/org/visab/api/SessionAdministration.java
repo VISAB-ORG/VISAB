@@ -18,7 +18,6 @@ import org.visab.eventbus.publisher.ApiPublisherBase;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
-import org.visab.util.StringFormat;
 
 /**
  * Class for administering the current transmission sessions. Holds a reference
@@ -38,6 +37,8 @@ public class SessionAdministration {
      */
     private List<SessionStatus> statuses = new ArrayList<>();
 
+    private List<UUID> sessionIds = new ArrayList<>();
+
     /**
      * Opens a new transmission session and publishes a SessionOpenedEvent.
      * 
@@ -49,8 +50,9 @@ public class SessionAdministration {
     public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp,
             String remoteCallerHostName) {
         var status = new SessionStatus(sessionId, metaInformation.getGame(), true, LocalTime.now(), LocalTime.now(),
-                null, 0, 0, 1, remoteCallerHostName, remoteCallerIp);
+                null, 0, 0, 1, remoteCallerHostName, remoteCallerIp, "active");
         statuses.add(status);
+        sessionIds.add(sessionId);
 
         var event = new SessionOpenedEvent(sessionId, status, metaInformation);
         // Publish the SessionOpenedEvent
@@ -68,6 +70,7 @@ public class SessionAdministration {
         // Also disable the session from timeout check
         var status = getStatus(sessionId);
         status.setIsActive(false);
+        status.setStatusType("canceled");
         status.setLastRequest(LocalTime.now());
         status.setSessionClosed(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
@@ -98,6 +101,10 @@ public class SessionAdministration {
         var event = new StatisticsReceivedEvent(sessionId, status, game,
                 DynamicSerializer.deserializeStatistics(statisticsJson, game));
         publish(event);
+    }
+
+    public List<UUID> getSessionIds() {
+        return this.sessionIds;
     }
 
     /**

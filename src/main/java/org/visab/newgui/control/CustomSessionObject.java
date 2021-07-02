@@ -24,6 +24,10 @@ import javafx.scene.layout.GridPane;
  */
 public class CustomSessionObject extends GridPane {
 
+    private enum SessionStatusEnum {
+        ACTIVE, CANCELED, TIMEOUTED
+    }
+
     // closeIcon can be a static class variable because it is always the same
 
     // "Static" content
@@ -48,10 +52,11 @@ public class CustomSessionObject extends GridPane {
     private Button openLiveViewButton;
 
     public CustomSessionObject(String gameName, String gameIconPath, UUID sessionId, String hostName, String ip,
-            String sessionOpened, String sessionStatus) {
+            String sessionOpened, String sessionStatusType) {
 
-        this.setBackgroundColor(sessionStatus);
+        this.setBackgroundColor(sessionStatusType);
         this.gameNameValue = new Label(gameName);
+        System.out.println(gameIconPath);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
         this.openLiveViewButton = new Button("Open Live View");
         this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -109,8 +114,8 @@ public class CustomSessionObject extends GridPane {
      * 
      * @param sessionStatus the status of the session that is referred to.
      */
-    public void setBackgroundColor(String sessionStatus) {
-        switch (sessionStatus) {
+    public void setBackgroundColor(String sessionStatusType) {
+        switch (sessionStatusType) {
         case "active":
             this.setBackgroundColor("green");
             break;
