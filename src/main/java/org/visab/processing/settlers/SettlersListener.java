@@ -11,6 +11,7 @@ import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersMapImage;
+import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveStatisticsViewModel;
@@ -78,7 +79,10 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     @Override
     public void onSessionStarted(IMetaInformation metaInformation) {
         file = new SettlersFile();
-        // TODO: Add meta information
+        var asSettler = (SettlersMetaInformation) metaInformation;
+        file.setMapRectangle(asSettler.getMapRectangle());
+        file.setPlayerCount(asSettler.getPlayerCount());
+        file.setPlayerInformation(asSettler.getPlayerInformation());
     }
 
     @Override
