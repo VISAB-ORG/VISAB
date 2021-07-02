@@ -83,6 +83,12 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         return closeSessionCommand;
     }
 
+    /**
+     * Initializes the session information grid with all available sessions
+     * regardless which status they have.
+     * 
+     * @param anchorPane the anchorpane where the grid pane should be added to.
+     */
     public void initializeSessionGrid(AnchorPane anchorPane) {
         GridPane sessionObjectGrid = new GridPane();
         sessionObjectGrid.setPadding(new Insets(10));
