@@ -24,12 +24,6 @@ import javafx.scene.layout.GridPane;
  */
 public class CustomSessionObject extends GridPane {
 
-    private enum SessionStatusEnum {
-        ACTIVE, CANCELED, TIMEOUTED
-    }
-
-    // closeIcon can be a static class variable because it is always the same
-
     // "Static" content
     private static Image CLOSE_ICON = new Image("/img/closeIcon.png", 12, 12, false, false);
     private Label sessionIdLabel = new Label("Session ID:");
@@ -54,9 +48,8 @@ public class CustomSessionObject extends GridPane {
     public CustomSessionObject(String gameName, String gameIconPath, UUID sessionId, String hostName, String ip,
             String sessionOpened, String sessionStatusType) {
 
-        this.setBackgroundColor(sessionStatusType);
+        this.setBackgroundColorByStatus(sessionStatusType);
         this.gameNameValue = new Label(gameName);
-        System.out.println(gameIconPath);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
         this.openLiveViewButton = new Button("Open Live View");
         this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -114,16 +107,16 @@ public class CustomSessionObject extends GridPane {
      * 
      * @param sessionStatus the status of the session that is referred to.
      */
-    public void setBackgroundColor(String sessionStatusType) {
+    public void setBackgroundColorByStatus(String sessionStatusType) {
         switch (sessionStatusType) {
         case "active":
-            this.setBackgroundColor("green");
+            this.setStyle("-fx-background-color: green");
             break;
         case "canceled":
-            this.setBackgroundColor("red");
+            this.setStyle("-fx-background-color: red");
             break;
         case "timeouted":
-            this.setBackgroundColor("grey");
+            this.setStyle("-fx-background-color: grey");
             break;
         }
     }

@@ -18,7 +18,7 @@ import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
 import org.visab.util.StreamUtil;
-import org.visab.workspace.config.ConfigManager;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.DoubleProperty;
@@ -34,6 +34,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 public class NewSessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+
+    private int gridColSize;
 
     private class FileSavedSubscriber implements ISubscriber<VISABFileSavedEvent> {
 
@@ -82,35 +84,41 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
     }
 
     public void initializeSessionGrid(AnchorPane anchorPane) {
-        // TODO Auto-generated method stub
-        GridPane innerGrid = new GridPane();
-        innerGrid.setPadding(new Insets(10));
-        innerGrid.setHgap(5);
-        innerGrid.setVgap(5);
-        // Setting the style CSS
+        GridPane sessionObjectGrid = new GridPane();
+        sessionObjectGrid.setPadding(new Insets(10));
+        sessionObjectGrid.setHgap(5);
+        sessionObjectGrid.setVgap(5);
 
-        // 0-based, therefore 2 denotes 3 columns max
-        var initialColSize = 2;
+        // Used to calculate coordinates on which the session objects should be placed
+        gridColSize = 3;
         var rowIterator = 0;
         var colIterator = 0;
 
         for (UUID sessionId : WebApi.getInstance().getSessionAdministration().getSessionIds()) {
             SessionStatus sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
 
-            var logoPath = ConfigManager.IMAGE_PATH + sessionStatus.getGame() + "Logo.png";
+            var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame(sessionStatus.getGame());
+
+            // Customized JavaFX Gridpane which displays relevant session information
             CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus.getGame(), logoPath, sessionId,
                     sessionStatus.getHostName(), sessionStatus.getIp(), sessionStatus.getSessionOpened().toString(),
                     sessionStatus.getStatusType());
 
-            innerGrid.add(sessionObject, colIterator, rowIterator);
+            sessionObject.setBackgroundColorByStatus(sessionStatus.getStatusType());
+
+            sessionObjectGrid.add(sessionObject, colIterator, rowIterator);
+
             colIterator++;
 
-            if (colIterator == initialColSize) {
+            // Once there the col size is reached, move on to the next row
+            if (colIterator == gridColSize) {
                 rowIterator++;
+                colIterator = 0;
             }
+
         }
 
-        anchorPane.getChildren().add(innerGrid);
+        anchorPane.getChildren().add(sessionObjectGrid);
     }
 
     private Command openLiveViewCommand;
