@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
@@ -17,6 +15,8 @@ import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.Mapping;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
  * The ConfigManager that is used for loading and modifying settings and dynamic
@@ -36,6 +36,13 @@ public class ConfigManager {
     public static final String CSS_PATH = "/application.css";
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
+
+    private static final HashMap<String, String> gameLogoPaths = new HashMap<String, String>() {
+        {
+            put("CBRShooter", IMAGE_PATH + "CBRShooterLogo.png");
+            put("Settlers", IMAGE_PATH + "settlersLogo.png");
+        }
+    };
 
     public static final String CBR_SHOOTER_STRING = "CBRShooter";
     public static final String SETTLERS_OF_CATAN_STRING = "Settlers";
@@ -176,8 +183,7 @@ public class ConfigManager {
     public ArrayList<String> getAllowedGames() {
         return this.settings.getAllowedGames();
     }
-    
-    
+
     /**
      * Syntactic sugar to wrap the access on the settings object.
      * 
@@ -244,7 +250,17 @@ public class ConfigManager {
 
         this.settings.setAllowedGames(games);
     }
-    
+
+    /**
+     * Helper method that provides a specific game logo path by game name.
+     * 
+     * @param game the name of the game the logo is needed for.
+     * @return the logo path for the respective game.
+     */
+    public String getLogoPathByGame(String game) {
+        return gameLogoPaths.get(game);
+    }
+
     /**
      * Updates the timeouts from the games.
      * 
