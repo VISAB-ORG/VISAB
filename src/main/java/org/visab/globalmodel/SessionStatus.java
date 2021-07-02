@@ -16,6 +16,8 @@ public class SessionStatus {
     private String game;
     private LocalTime sessionOpened;
 
+    private String statusType;
+
     private BooleanProperty isActiveProperty = new SimpleBooleanProperty();
     private ObjectProperty<LocalTime> lastRequestProperty = new SimpleObjectProperty<>();
     private IntegerProperty totalRequestsProperty = new SimpleIntegerProperty();
@@ -27,9 +29,9 @@ public class SessionStatus {
     private String hostName;
     private String ip;
 
-    public SessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest,
-            LocalTime sessionOpened, LocalTime sessionClosed, int receivedStatistics, int receivedImages,
-            int totalRequests, String hostName, String ip) {
+    public SessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest, LocalTime sessionOpened,
+            LocalTime sessionClosed, int receivedStatistics, int receivedImages, int totalRequests, String hostName,
+            String ip, String statusType) {
         this.game = game;
         this.sessionId = sessionId;
         this.sessionOpened = sessionOpened;
@@ -42,6 +44,15 @@ public class SessionStatus {
         this.receivedStatisticsProperty.set(receivedStatistics);
         this.receivedImagesProperty.set(receivedImages);
         this.totalRequestsProperty.set(totalRequests);
+        this.statusType = statusType;
+    }
+
+    public String getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
     }
 
     public String getHostName() {
@@ -58,6 +69,10 @@ public class SessionStatus {
 
     public String getGame() {
         return this.game;
+    }
+
+    public boolean getIsActive() {
+        return this.isActive();
     }
 
     public LocalTime getSessionOpened() {
