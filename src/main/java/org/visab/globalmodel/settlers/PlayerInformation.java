@@ -14,21 +14,39 @@ import org.visab.globalmodel.Vector2;
 public class PlayerInformation {
 
     private int villageCount;
-    private List<Vector2> villagePositions = null;
+    private List<Vector2> villagePositions;
     private int streetCount;
-    private List<Vector2> streetPositions = null;
+    private List<Vector2> streetPositions;
     private int cityCount;
-    private List<Vector2> cityPositions = null;
+    private List<Vector2> cityPositions;
     private PlayerResources resources;
     private boolean hasLongestRoad;
     private boolean isAi;
     private int longestRoad;
     private String name;
-    private List<String> planActions = null;
+    private List<String> planActions;
     private int victoryPoints;
-
+    private PlayerResources resourcesGained;
+    private boolean isMyTurn;
+    
     public int getVillageCount() {
         return villageCount;
+    }
+
+    public boolean isMyTurn() {
+        return isMyTurn;
+    }
+
+    public void setIsMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
+    }
+
+    public PlayerResources getResourcesGained() {
+        return resourcesGained;
+    }
+
+    public void setResourcesGained(PlayerResources resourcesGained) {
+        this.resourcesGained = resourcesGained;
     }
 
     public void setVillageCount(int villageCount) {

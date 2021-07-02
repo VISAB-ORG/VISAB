@@ -15,10 +15,19 @@ public class SettlersStatistics implements IStatistics {
 
     private int turn;
     private String turnTimeStamp;
-    private List<PlayerInformation> players = null;
+    private List<PlayerInformation> players;
+    private int diceNumberRolled;
 
     public int getTurn() {
         return turn;
+    }
+
+    public int getDiceNumberRolled() {
+        return diceNumberRolled;
+    }
+
+    public void setDiceNumberRolled(int diceNumberRolled) {
+        this.diceNumberRolled = diceNumberRolled;
     }
 
     public void setTurn(int turn) {
