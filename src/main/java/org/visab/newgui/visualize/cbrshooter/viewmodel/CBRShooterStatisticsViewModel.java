@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.SimpleObjectIdResolver;
 
+import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
@@ -168,7 +169,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private void updatePlayerKills(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
+            var isCbr = file.getPlayerInformation().get(player.getName()).equals(ControlledBy.CBR);
             var name = player.getName();
 
             if (!lastKills.containsKey(name)) {

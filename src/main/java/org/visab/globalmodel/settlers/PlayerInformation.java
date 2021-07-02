@@ -1,5 +1,9 @@
 package org.visab.globalmodel.settlers;
 
+import java.util.List;
+
+import org.visab.globalmodel.Vector2;
+
 /**
  * Represents all available information for a player in (Unity-) Settlers of
  * Catan that is given at a certain time in the game.
@@ -8,82 +12,91 @@ package org.visab.globalmodel.settlers;
  *
  */
 public class PlayerInformation {
-    private String name;
-    private int brick;
-    private int wheat;
-    private int sheep;
-    private int wood;
-    private int stone;
-    private int victoryPoints;
-    private float roadRange;
-    private int longestRoad;
-    private boolean isAi;
-    private boolean freeBuildRoad;
-    private boolean freeBuild;
+
+    private int villageCount;
+    private List<Vector2> villagePositions = null;
+    private int streetCount;
+    private List<Vector2> streetPositions = null;
+    private int cityCount;
+    private List<Vector2> cityPositions = null;
+    private PlayerResources resources;
     private boolean hasLongestRoad;
+    private boolean isAi;
+    private int longestRoad;
+    private String name;
+    private List<String> planActions = null;
+    private int victoryPoints;
 
-    public String getName() {
-        return name;
+    public int getVillageCount() {
+        return villageCount;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVillageCount(int villageCount) {
+        this.villageCount = villageCount;
     }
 
-    public int getBrick() {
-        return brick;
+    public List<Vector2> getVillagePositions() {
+        return villagePositions;
     }
 
-    public void setBrick(int brick) {
-        this.brick = brick;
+    public void setVillagePositions(List<Vector2> villagePositions) {
+        this.villagePositions = villagePositions;
     }
 
-    public int getWheat() {
-        return wheat;
+    public int getStreetCount() {
+        return streetCount;
     }
 
-    public void setWheat(int wheat) {
-        this.wheat = wheat;
+    public void setStreetCount(int streetCount) {
+        this.streetCount = streetCount;
     }
 
-    public int getSheep() {
-        return sheep;
+    public List<Vector2> getStreetPositions() {
+        return streetPositions;
     }
 
-    public void setSheep(int sheep) {
-        this.sheep = sheep;
+    public void setStreetPositions(List<Vector2> streetPositions) {
+        this.streetPositions = streetPositions;
     }
 
-    public int getWood() {
-        return wood;
+    public int getCityCount() {
+        return cityCount;
     }
 
-    public void setWood(int wood) {
-        this.wood = wood;
+    public void setCityCount(int cityCount) {
+        this.cityCount = cityCount;
     }
 
-    public int getStone() {
-        return stone;
+    public List<Vector2> getCityPositions() {
+        return cityPositions;
     }
 
-    public void setStone(int stone) {
-        this.stone = stone;
+    public void setCityPositions(List<Vector2> cityPositions) {
+        this.cityPositions = cityPositions;
     }
 
-    public int getVictoryPoints() {
-        return victoryPoints;
+    public PlayerResources getResources() {
+        return resources;
     }
 
-    public void setVictoryPoints(int victoryPoints) {
-        this.victoryPoints = victoryPoints;
+    public void setResources(PlayerResources resources) {
+        this.resources = resources;
     }
 
-    public float getRoadRange() {
-        return roadRange;
+    public boolean isHasLongestRoad() {
+        return hasLongestRoad;
     }
 
-    public void setRoadRange(float roadRange) {
-        this.roadRange = roadRange;
+    public void setHasLongestRoad(boolean hasLongestRoad) {
+        this.hasLongestRoad = hasLongestRoad;
+    }
+
+    public boolean isIsAi() {
+        return isAi;
+    }
+
+    public void setIsAi(boolean isAi) {
+        this.isAi = isAi;
     }
 
     public int getLongestRoad() {
@@ -94,36 +107,28 @@ public class PlayerInformation {
         this.longestRoad = longestRoad;
     }
 
-    public boolean isAi() {
-        return isAi;
+    public String getName() {
+        return name;
     }
 
-    public void setAi(boolean isAi) {
-        this.isAi = isAi;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isFreeBuildRoad() {
-        return freeBuildRoad;
+    public List<String> getPlanActions() {
+        return planActions;
     }
 
-    public void setFreeBuildRoad(boolean freeBuildRoad) {
-        this.freeBuildRoad = freeBuildRoad;
+    public void setPlanActions(List<String> planActions) {
+        this.planActions = planActions;
     }
 
-    public boolean isFreeBuild() {
-        return freeBuild;
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 
-    public void setFreeBuild(boolean freeBuild) {
-        this.freeBuild = freeBuild;
-    }
-
-    public boolean isHasLongestRoad() {
-        return hasLongestRoad;
-    }
-
-    public void setHasLongestRoad(boolean hasLongestRoad) {
-        this.hasLongestRoad = hasLongestRoad;
+    public void setVictoryPoints(int victoryPoints) {
+        this.victoryPoints = victoryPoints;
     }
 
 }
