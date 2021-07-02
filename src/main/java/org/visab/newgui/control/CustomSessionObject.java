@@ -21,14 +21,14 @@ public class CustomSessionObject extends GridPane {
 
     // closeIcon can be a static class variable because it is always the same
 
-    // Static content
-    private static final Image CLOSE_ICON = new Image("/img/closeIcon.png", 12, 12, false, false);
-    private static final Label SESSION_ID_LABEL = new Label("Session ID:");
-    private static final Label HOST_NAME_LABEL = new Label("Host Name:");
-    private static final Label IP_LABEL = new Label("IP:");
-    private static final Label SESSION_OPENED_LABEL = new Label("Session Opened:");
-    private static final Label SESSION_CLOSED_LABEL = new Label("Session Closed:");
-    private static final Label LAST_REQUEST_LABEL = new Label("Last Request:");
+    // "Static" content
+    private static Image CLOSE_ICON = new Image("/img/closeIcon.png", 12, 12, false, false);
+    private Label sessionIdLabel = new Label("Session ID:");
+    private Label hostNameLabel = new Label("Host Name:");
+    private Label ipLabel = new Label("IP:");
+    private Label sessionOpenedLabel = new Label("Session Opened:");
+    private Label sessionClosedLabel = new Label("Session Closed:");
+    private Label lastRequestLabel = new Label("Last Request:");
 
     // Dynamic content
     private Button closeSessionButton;
@@ -70,17 +70,17 @@ public class CustomSessionObject extends GridPane {
         this.add(this.closeSessionButton, 1, 0);
         this.add(this.gameNameValue, 0, 1);
         this.add(this.gameIconView, 1, 1);
-        this.add(SESSION_ID_LABEL, 0, 2);
+        this.add(sessionIdLabel, 0, 2);
         this.add(this.sessionIdValue, 1, 2);
-        this.add(HOST_NAME_LABEL, 0, 3);
+        this.add(hostNameLabel, 0, 3);
         this.add(this.hostNameValue, 1, 3);
-        this.add(IP_LABEL, 0, 4);
+        this.add(ipLabel, 0, 4);
         this.add(this.ipValue, 1, 4);
-        this.add(SESSION_OPENED_LABEL, 0, 5);
+        this.add(sessionOpenedLabel, 0, 5);
         this.add(this.sessionOpenedValue, 1, 5);
-        this.add(LAST_REQUEST_LABEL, 0, 6);
+        this.add(lastRequestLabel, 0, 6);
         this.add(this.lastRequestValue, 1, 6);
-        this.add(SESSION_CLOSED_LABEL, 0, 7);
+        this.add(sessionClosedLabel, 0, 7);
         this.add(this.sessionClosedValue, 1, 7);
         this.add(this.openLiveViewButton, 0, 8, 2, 1);
     }
