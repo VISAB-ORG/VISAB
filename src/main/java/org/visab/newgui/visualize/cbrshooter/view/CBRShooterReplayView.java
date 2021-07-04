@@ -152,6 +152,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     public void handleFrameSlider() {
         // TODO: Add call to underlying viewmodel to change data?
         System.out.println("Frame Slider moved to value: " + frameSlider.getValue());
+        viewModel.setSelectedFrame((int) frameSlider.getValue()).execute();
     }
 
     public void handleVeloSlider() {

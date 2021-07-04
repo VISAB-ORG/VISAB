@@ -22,6 +22,8 @@ public class CBRShooterReplayViewModel extends ViewModelBase {
 
     private Command setUpdateInterval;
 
+    private Command setSelectedFrame;
+
     private Thread updateLoop;
 
     // Used to control the speed in which the data is updated in the replay view
@@ -42,17 +44,18 @@ public class CBRShooterReplayViewModel extends ViewModelBase {
     public Command playData() {
         playData = runnableCommand(() -> {
             logger.info("Pressed play button.");
-            // Iterate over frames and update data
+            // Start this as a thread to provide the possibility of interrupting it on pause
             updateLoop = new Thread() {
                 @Override
                 public void run() {
-                    // Do whatever
+                    // Iterate over frames and constantly update data
                     for (int i = 0; i < 100; i++) {
                         if (!this.isInterrupted()) {
                             System.out.println("Updated data");
                             try {
                                 sleep((long) updateInterval);
                             } catch (InterruptedException e) {
+                                // Exception is thrown when the stop button interrupts this thread
                                 Thread.currentThread().interrupt();
                             }
                         }
@@ -81,4 +84,10 @@ public class CBRShooterReplayViewModel extends ViewModelBase {
         return setUpdateInterval;
     }
 
+    public Command setSelectedFrame(int frame) {
+        setSelectedFrame = runnableCommand(() -> {
+            selectedFrame = frame;
+        });
+        return setSelectedFrame;
+    }
 }
