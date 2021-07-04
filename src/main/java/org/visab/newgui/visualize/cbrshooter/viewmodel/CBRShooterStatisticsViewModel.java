@@ -106,9 +106,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
-        for (var row : comparisonStatistics) {
-            row.updateValues(file);
-        }
+        // for (var row : comparisonStatistics) {
+        //     row.updateValues(file);
+        // }
     }
 
     public List<String> getPlayerNames() {

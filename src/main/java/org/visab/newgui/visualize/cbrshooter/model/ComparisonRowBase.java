@@ -12,8 +12,8 @@ public abstract class ComparisonRowBase<TProperty extends Property<?>> {
     protected String rowDescription;
     protected Map<String, TProperty> playerValues = new HashMap<>();
 
-    public ComparisonRowBase(String rowDescrition) {
-        this.rowDescription = rowDescrition;
+    public ComparisonRowBase(String rowDescription) {
+        this.rowDescription = rowDescription;
     }
 
     public String getRowDescription() {
