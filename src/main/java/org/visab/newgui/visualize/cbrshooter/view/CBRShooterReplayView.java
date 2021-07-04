@@ -151,12 +151,13 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     public void handleFrameSlider() {
         // TODO: Add call to underlying viewmodel to change data?
-        System.out.println("Frame Slider moved!");
+        System.out.println("Frame Slider moved to value: " + frameSlider.getValue());
     }
 
     public void handleVeloSlider() {
         // TODO: Add call to underlying viewmodel to speed up?
-        System.out.println("Velocity Slider moved!");
+        System.out.println("Velocity Slider moved! " + veloSlider.getValue());
+        viewModel.setUpdateInterval(1 / veloSlider.getValue()).execute();
     }
 
     // Handle Method for user Selection regarding visability of the Script Bot
@@ -178,6 +179,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             cbrbotImageView.setVisible(true);
         } else if (checkBoxCBRBotPlayer.isSelected() == false) {
             cbrbotImageView.setVisible(false);
+        }
+    }
+
+    @FXML
+    public void handlePlayPause(ActionEvent event) {
+        if (playPauseButton.isSelected()) {
+            viewModel.playData().execute();
+        } else {
+            viewModel.pauseData().execute();
         }
     }
 
@@ -340,26 +350,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             }
         });
 
-        // Listener of the velocity slider
-        veloSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, //
-                    Number oldValue, Number newValue) {
-
-                // cases for different sleep values
-                if ((int) Math.round(newValue.doubleValue()) == 0) {
-                    sleepTimer = 1000;
-                } else if ((int) Math.round(newValue.doubleValue()) == 2) {
-                    sleepTimer = 500;
-                } else if ((int) Math.round(newValue.doubleValue()) == 4) {
-                    sleepTimer = 250;
-                } else if ((int) Math.round(newValue.doubleValue()) == 6) {
-                    sleepTimer = 125;
-                } else if ((int) Math.round(newValue.doubleValue()) == 8) {
-                    sleepTimer = 62;
-                }
-            }
-        });
         // setOnAction method of the play and pause button
         playPauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
