@@ -2,9 +2,9 @@ package org.visab.newgui.visualize.settlers;
 
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
+import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 
 import de.saxsys.mvvmfx.InjectScope;
 import javafx.collections.FXCollections;
