@@ -1,9 +1,9 @@
-package org.visab.newgui.visualize.cbrshooter.model;
+package org.visab.newgui.visualize;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.IVISABFile;
 
 import javafx.beans.property.Property;
 
@@ -24,6 +24,6 @@ public abstract class ComparisonRowBase<TProperty extends Property<?>> {
         return playerValues;
     }
 
-    public abstract void updateValues(CBRShooterFile file);
+    public abstract void updateValues(IVISABFile file);
 
 }

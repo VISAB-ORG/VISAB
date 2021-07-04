@@ -1,12 +1,13 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
+import org.visab.newgui.visualize.ComparisonRowBase;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class PlayerTypeComparisonRow extends ComparisonRowBase<StringProperty> {
+public class PlayerTypeComparisonRow extends CBRShooterComparisonRowBase<StringProperty> {
 
     public PlayerTypeComparisonRow() {
         super("Player type");
