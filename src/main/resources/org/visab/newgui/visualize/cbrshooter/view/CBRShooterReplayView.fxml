@@ -3,6 +3,8 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="730.0" prefWidth="1018.0" style="-fx-background-color: white;" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
+<AnchorPane prefHeight="1016.0" prefWidth="1018.0" style="-fx-background-color: white;" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
 		<Label layoutX="367.0" layoutY="92.0" text="CBR Shooter Replay View">
          <font>
@@ -24,7 +26,7 @@
             <Image url="@../../../../../../img/fps_map.png" />
          </image>
       </ImageView>
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="625.0" layoutY="571.0" majorTickUnit="10.0" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" onValueChange="#handleFrameSlider" />
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="625.0" layoutY="571.0" majorTickUnit="10.0" min="1.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
       <Label fx:id="frameLabel" layoutX="722.0" layoutY="544.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -34,8 +36,8 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Slider fx:id="veloSlider" blockIncrement="2.0" layoutX="712.0" layoutY="631.0" majorTickUnit="2.0" max="8.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" onValueChange="#handleVeloSlider"/>
-      <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-color: rgb(68,114,196); -fx-border-width: 2;" visible="true" onAction="#handlePlayPause">
+      <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="712.0" layoutY="631.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
+      <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" onAction="#handlePlayPause" style="-fx-background-color: white; -fx-border-color: rgb(68,114,196); -fx-border-width: 2;" visible="true">
         <graphic>
             <ImageView fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                 <image>
@@ -158,5 +160,12 @@
                </font></Label>
          </children>
       </GridPane>
+      <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Attribute" />
+          <TableColumn prefWidth="75.0" text="Player 1" />
+          <TableColumn prefWidth="75.0" text="Player 2" />
+        </columns>
+      </TableView>
 	</children>
 </AnchorPane>
