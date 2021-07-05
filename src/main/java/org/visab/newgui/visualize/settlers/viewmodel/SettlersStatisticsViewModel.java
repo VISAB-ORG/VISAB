@@ -1,4 +1,4 @@
-package org.visab.newgui.visualize.settlers;
+package org.visab.newgui.visualize.settlers.viewmodel;
 
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;

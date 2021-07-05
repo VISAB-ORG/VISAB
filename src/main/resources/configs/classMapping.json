@@ -15,6 +15,6 @@
         "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
         "file": "org.visab.globalmodel.settlers.SettlersFile",
         "image": "org.visab.globalmodel.settlers.SettlersMapImage",
-        "visualizer": "org.visab.newgui.visualize.cbrshooter.view.SettlersMainView"
+        "visualizer": "org.visab.newgui.visualize.settlers.view.SettlersMainView"
     }
 ]

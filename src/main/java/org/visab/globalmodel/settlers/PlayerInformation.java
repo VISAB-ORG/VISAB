@@ -46,7 +46,7 @@ public class PlayerInformation {
         return isMyTurn;
     }
 
-    public void setIsMyTurn(boolean isMyTurn) {
+    public void setMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }
 

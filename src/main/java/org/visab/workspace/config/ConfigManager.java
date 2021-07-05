@@ -79,14 +79,17 @@ public class ConfigManager {
     private List<Mapping> loadMappings() {
         var json = VISABUtil.readResourceContents("/configs/classMapping.json");
         var mappings = JsonConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
-        });
+        }, JsonConvert.ForgivingMapper);
 
         if (mappings == null) {
             logger.error("Failed to load mappings!");
             throw new RuntimeException("Failed to load mappings!");
         }
 
-        Function<String, Boolean> classExists = s -> {
+        Function<String, Boolean> mappingClassExists = s -> {
+            if (s == null || s.isBlank())
+                return false;
+
             try {
                 Class.forName(s);
                 return true;
@@ -97,31 +100,28 @@ public class ConfigManager {
 
         // Do validation check
         for (var mapping : mappings) {
-            var hasGame = mapping.getGame() != null && !mapping.getGame().isBlank();
-            if (!hasGame)
-                throw new RuntimeException("A mapping needs a game!");
+            if (mapping.getGame() == null || mapping.getGame().isBlank())
+                throw new RuntimeException("A mapping needs a game!:" + mapping.getGame());
 
-            var hasMeta = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
-                    && classExists.apply(mapping.getMetaInformation());
-            if (!hasMeta)
-                throw new RuntimeException("A mapping needs meta information!");
+            if (!mappingClassExists.apply(mapping.getMetaInformation()))
+                throw new RuntimeException("A mapping needs meta information!:" + mapping.getGame());
 
-            var hasStatistics = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
-                    && classExists.apply(mapping.getStatistics());
-            if (!hasStatistics)
-                throw new RuntimeException("A mapping needs statistics!");
+            if (!mappingClassExists.apply(mapping.getStatistics()))
+                throw new RuntimeException("A mapping needs statistics!:" + mapping.getGame());
 
-            var hasListener = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank()
-                    && classExists.apply(mapping.getListener());
-            if (!hasListener)
-                throw new RuntimeException("A mapping needs a listener!");
+            if (!mappingClassExists.apply(mapping.getListener()))
+                throw new RuntimeException("A mapping needs a listener!:" + mapping.getGame());
 
-            var hasFile = mapping.getFile() != null && !mapping.getFile().isBlank()
-                    && classExists.apply(mapping.getFile());
-            if (!hasFile)
+            if (!mappingClassExists.apply(mapping.getFile()))
                 throw new RuntimeException("A mapping needs a file!");
 
-            var hasImage = mapping.getMetaInformation() != null && !mapping.getMetaInformation().isBlank();
+            if (mapping.getImage() != null && !mappingClassExists.apply(mapping.getImage())) {
+                throw new RuntimeException("Image class could not be resolved!:" + mapping.getGame());
+            }
+
+            if (mapping.getVisualizer() != null && !mappingClassExists.apply(mapping.getVisualizer())) {
+                throw new RuntimeException("Visualizer class could not be resolved!:" + mapping.getGame());
+            }
         }
 
         this.mappings = mappings;

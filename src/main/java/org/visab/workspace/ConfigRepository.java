@@ -24,7 +24,7 @@ public class ConfigRepository extends RepositoryBase {
 
         if (settingsFile.exists()) {
             var content = readFileContents(path);
-            return JsonConvert.deserializeJson(content, UserSettings.class);
+            return JsonConvert.deserializeJson(content, UserSettings.class, JsonConvert.UnforgivingMapper);
         } else {
             return null;
         }
