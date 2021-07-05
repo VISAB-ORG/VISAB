@@ -8,6 +8,7 @@ import org.visab.newgui.DynamicViewLoader;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -48,7 +49,7 @@ public class CustomSessionObject extends GridPane {
     public CustomSessionObject(String gameName, String gameIconPath, UUID sessionId, String hostName, String ip,
             String sessionOpened, String sessionStatusType) {
 
-        this.setBackgroundColorByStatus(sessionStatusType);
+        
         this.gameNameValue = new Label(gameName);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
         this.openLiveViewButton = new Button("Open Live View");
@@ -82,7 +83,7 @@ public class CustomSessionObject extends GridPane {
                 WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
             }
         });
-
+        this.closeSessionButton.setAlignment(Pos.CENTER_RIGHT);
         this.add(this.closeSessionButton, 1, 0);
         this.add(this.gameNameValue, 0, 1);
         this.add(this.gameIconView, 1, 1);
@@ -99,6 +100,8 @@ public class CustomSessionObject extends GridPane {
         this.add(sessionClosedLabel, 0, 7);
         this.add(this.sessionClosedValue, 1, 7);
         this.add(this.openLiveViewButton, 0, 8, 2, 1);
+        
+        this.setBackgroundColorByStatus(sessionStatusType);
     }
 
     /**
@@ -110,13 +113,14 @@ public class CustomSessionObject extends GridPane {
     public void setBackgroundColorByStatus(String sessionStatusType) {
         switch (sessionStatusType) {
         case "active":
-            this.setStyle("-fx-background-color: green");
+            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: green; -fx-border-width: 10px;");
+           
             break;
         case "canceled":
-            this.setStyle("-fx-background-color: red");
+            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: red; -fx-border-width: 10px;");
             break;
         case "timeouted":
-            this.setStyle("-fx-background-color: grey");
+            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: grey; -fx-border-width: 10px;");
             break;
         }
     }

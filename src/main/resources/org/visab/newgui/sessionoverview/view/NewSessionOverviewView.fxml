@@ -64,10 +64,13 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="Session Overview" HBox.hgrow="ALWAYS">
+                          <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="Session Overview" HBox.hgrow="ALWAYS">
                               <font>
                                   <Font size="25.0" />
                               </font>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
                           </Label>
                      </children>
                   </HBox>
