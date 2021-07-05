@@ -26,6 +26,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -122,6 +123,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private Image pauseImage;
 
+    @FXML
+    private TableView playerDataTable;
+
     // Images / Icons
     private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
     private Image deathImage = new Image(ConfigManager.IMAGE_PATH + "deathScript.png");
@@ -145,20 +149,18 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
+        frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
     }
 
     // Dummy Handle Method for frame slider
     @FXML
     public void handleFrameSlider() {
-        // TODO: Add call to underlying viewmodel to change data?
-        System.out.println("Frame Slider moved to value: " + frameSlider.getValue());
         viewModel.setSelectedFrame((int) frameSlider.getValue()).execute();
     }
 
     public void handleVeloSlider() {
-        // TODO: Add call to underlying viewmodel to speed up?
-        System.out.println("Velocity Slider moved! " + veloSlider.getValue());
-        viewModel.setUpdateInterval(1 / veloSlider.getValue()).execute();
+        viewModel.setUpdateInterval(1000 / veloSlider.getValue()).execute();
     }
 
     // Handle Method for user Selection regarding visability of the Script Bot
@@ -417,6 +419,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     backgroundThread.start();
                 }
             }
+
         });
 
     }

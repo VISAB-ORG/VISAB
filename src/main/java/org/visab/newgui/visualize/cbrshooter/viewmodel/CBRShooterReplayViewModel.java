@@ -12,6 +12,7 @@ import org.visab.newgui.visualize.VisualizeScope;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -31,6 +32,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     private Thread updateLoop;
 
+    private SimpleIntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
+    private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
+
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
     private int selectedFrame;
@@ -48,6 +52,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         data = file.getStatistics();
         // TODO: Add necessary logic
         // Load all data from the respective file
+        // Initialize frame slider
+        frameSliderMaxProperty.set(data.size());
+        frameSliderTickUnitProperty.set(data.size() / 10);
     }
 
     // ----- Command methods -----
@@ -59,17 +66,19 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                 @Override
                 public void run() {
                     // Iterate over frames and constantly update data
-                    for (int i = 0; i < data.size(); i++) {
+                    for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
                             System.out.println("Updated data to:");
 
                             CBRShooterStatistics stat = data.get(i);
 
+                            System.out.println("Frame: " + i);
                             System.out.println(stat.getPlayers().get(0).getName());
                             System.out.println(stat.getPlayers().get(0).getPosition().getX() + " "
                                     + stat.getPlayers().get(0).getPosition().getY());
-
+                            selectedFrame++;
                             try {
+                                System.out.println("Sleeping: " + updateInterval);
                                 sleep((long) updateInterval);
                             } catch (InterruptedException e) {
                                 // Exception is thrown when the stop button interrupts this thread
@@ -107,4 +116,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         });
         return setSelectedFrame;
     }
+
+    public SimpleIntegerProperty getFrameSliderMaxProperty() {
+        return frameSliderMaxProperty;
+    }
+
+    public void setFrameSliderProperty(SimpleIntegerProperty frameSliderMaxProperty) {
+        this.frameSliderMaxProperty = frameSliderMaxProperty;
+    }
+
+    public SimpleIntegerProperty getFrameSliderTickUnitProperty() {
+        return frameSliderTickUnitProperty;
+    }
+
+    public void setFrameSliderTickUnitProperty(SimpleIntegerProperty frameSliderTickUnitProperty) {
+        this.frameSliderTickUnitProperty = frameSliderTickUnitProperty;
+    }
+
 }
