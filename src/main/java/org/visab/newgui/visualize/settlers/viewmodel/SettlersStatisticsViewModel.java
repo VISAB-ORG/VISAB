@@ -1,5 +1,8 @@
 package org.visab.newgui.visualize.settlers.viewmodel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
@@ -15,7 +18,9 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
     @InjectScope
     VisualizeScope scope;
 
-    ObservableList<ComparisonRowBase<?>> comparisonRows = FXCollections.observableArrayList();
+    private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
+
+    private List<String> playerNames;
 
     /**
      * Called by javafx/mvvmfx once view is loaded - but before initialize in the
@@ -41,12 +46,12 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
                 notifyStatisticsAdded(statistics);
             }
         }
-
-        // DO something with file from scope
     }
 
     private void initializeDataStructures(SettlersFile file) {
+        playerNames = new ArrayList<String>(file.getPlayerInformation().values());
 
+        // TODO:
     }
 
     @Override
@@ -59,6 +64,10 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
     public void notifySessionClosed() {
         // TODO Auto-generated method stub
 
+    }
+
+    public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
+        return comparisonStatistics;
     }
 
 }
