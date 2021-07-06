@@ -7,13 +7,15 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.SimpleObjectIdResolver;
 
+import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
+import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
-import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.processing.ILiveViewable;
@@ -62,16 +64,15 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
             // Notify for all the already received statistics
             for (var statistics : listener.getReceivedStatistics())
-                notifyStatisticsAdded(statistics);
+                onStatisticsAdded(statistics);
         } else {
             super.initialize(scope.getFile());
 
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
 
-            for (var statistics : file.getStatistics()) {
-                notifyStatisticsAdded(statistics);
-            }
+            for (var statistics : file.getStatistics())
+                onStatisticsAdded(statistics);
         }
     }
 
@@ -105,9 +106,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
-        for (var row : comparisonStatistics) {
-            row.updateValues(file);
-        }
+        // for (var row : comparisonStatistics) {
+        // row.updateValues(file);
+        // }
     }
 
     public List<String> getPlayerNames() {
@@ -132,7 +133,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     @Override
-    public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
         updatePlanUsage(newStatistics);
@@ -168,7 +169,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private void updatePlayerKills(CBRShooterStatistics newStatistics) {
         for (var player : newStatistics.getPlayers()) {
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals("cbr");
+            var isCbr = file.getPlayerInformation().get(player.getName()).equals(ControlledBy.CBR);
             var name = player.getName();
 
             if (!lastKills.containsKey(name)) {
@@ -192,14 +193,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void updateComparisonStatistics() {
-        if (isLiveViewProperty.get()) {
-            for (var row : comparisonStatistics)
-                row.updateValues(file);
-        }
+        for (var row : comparisonStatistics)
+            row.updateValues(file);
     }
 
     @Override
-    public void notifySessionClosed() {
+    public void onSessionClosed() {
         liveSessionActiveProperty.set(false);
         // TODO: Render some future "who won" graphs an such
     }

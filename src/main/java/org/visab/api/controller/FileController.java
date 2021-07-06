@@ -36,7 +36,7 @@ public class FileController extends HTTPControllerBase {
         if (json == "")
             return getBadRequestResponse("Failed receiving file from body. Did you not put it in the body?");
 
-        var file = JsonConvert.deserializeJson(json, BasicVISABFile.class);
+        var file = JsonConvert.deserializeJson(json, BasicVISABFile.class, JsonConvert.ForgivingMapper);
         if (file == null)
             return getBadRequestResponse("The file sent did not match the VISAB format.");
 

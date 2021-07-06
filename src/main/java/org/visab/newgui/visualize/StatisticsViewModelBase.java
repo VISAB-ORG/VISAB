@@ -19,7 +19,8 @@ public abstract class StatisticsViewModelBase<TFile extends IVISABFile> extends 
     }
 
     /**
-     * The file to visualize
+     * The file to visualize. The reference contained in this variable should not
+     * change.
      */
     protected TFile file;
 

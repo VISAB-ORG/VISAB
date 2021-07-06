@@ -12,11 +12,11 @@ public interface ILiveStatisticsViewModel<TStatistics extends IStatistics> exten
      * 
      * @param newStatistics The newely received statistics.
      */
-    void notifyStatisticsAdded(TStatistics newStatistics);
+    void onStatisticsAdded(TStatistics newStatistics);
 
     /**
      * Called by the docked listener upon closing the session.
      */
-    void notifySessionClosed();
+    void onSessionClosed();
 
 }
