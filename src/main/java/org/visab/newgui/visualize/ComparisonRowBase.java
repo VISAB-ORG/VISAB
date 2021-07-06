@@ -6,11 +6,13 @@ import java.util.Map;
 import org.visab.globalmodel.IVISABFile;
 
 import javafx.beans.property.Property;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 public abstract class ComparisonRowBase<TProperty extends Property<?>> {
 
     protected String rowDescription;
-    protected Map<String, TProperty> playerValues = new HashMap<>();
+    protected ObservableMap<String, TProperty> playerValues = FXCollections.observableHashMap();
 
     public ComparisonRowBase(String rowDescription) {
         this.rowDescription = rowDescription;

@@ -1,5 +1,7 @@
 package org.visab.globalmodel.settlers;
 
+import org.visab.util.StringFormat;
+
 public class PlayerResources {
 
     private int sheep;
@@ -46,5 +48,33 @@ public class PlayerResources {
 
     public void setWood(int wood) {
         this.wood = wood;
+    }
+
+    public static PlayerResources add(PlayerResources one, PlayerResources two) {
+        var newResources = new PlayerResources();
+        newResources.brick = one.brick + two.brick;
+        newResources.sheep = one.sheep + two.sheep;
+        newResources.stone = one.stone + two.stone;
+        newResources.wheat = one.wheat + two.wheat;
+        newResources.wood = one.wood + two.wood;
+
+        return newResources;
+    }
+
+    public static PlayerResources sub(PlayerResources substractFrom, PlayerResources substract) {
+        var newResources = new PlayerResources();
+        newResources.brick = substractFrom.brick - substract.brick;
+        newResources.sheep = substractFrom.sheep - substract.sheep;
+        newResources.stone = substractFrom.stone - substract.stone;
+        newResources.wheat = substractFrom.wheat - substract.wheat;
+        newResources.wood = substractFrom.wood - substract.wood;
+
+        return newResources;
+    }
+
+    @Override
+    public String toString() {
+        return StringFormat.niceString("{ Brick:{0}, Sheep:{1}, Stone:{2}, Wheat:{3}, Wood:{4}", brick, sheep, stone,
+                wheat, wood);
     }
 }
