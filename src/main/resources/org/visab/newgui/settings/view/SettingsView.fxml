@@ -103,7 +103,7 @@
                         <Insets bottom="10.0" left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="26.0" prefWidth="105.0" text="Return" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="26.0" prefWidth="151.0" text="Restore deafult settings" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="5.0" top="5.0" />
                      </GridPane.margin>
