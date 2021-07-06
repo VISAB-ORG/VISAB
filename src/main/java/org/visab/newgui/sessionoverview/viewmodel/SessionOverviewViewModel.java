@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.api.SessionAdministration;
 import org.visab.api.WebApi;
 import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.GeneralEventBus;
@@ -15,6 +16,8 @@ import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
+import org.visab.processing.ILiveViewable;
+import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -83,7 +86,13 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
                 if (selectedSession != null) {
                     var sessionInfo = selectedSession.get();
 
-                    DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
+                    var listener = SessionListenerAdministration.getSessionListener(sessionInfo.getSessionId());
+                    if (listener != null && !(listener instanceof ILiveViewable<?>)) {
+                        dialogHelper.showError(
+                                "Underlying session listener does not support live viewing!\n It does not implement ILiveViewable<?>.");
+                    } else {
+                        DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
+                    }
                 }
             });
         }
