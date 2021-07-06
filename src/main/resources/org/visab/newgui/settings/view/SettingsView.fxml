@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,76 +17,100 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SettingsView">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SettingsView">
    <children>
-      <BorderPane prefHeight="400.0" prefWidth="800.0" styleClass="body">
+      <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <center>
             <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="506.3408203125" minWidth="10.0" prefWidth="504.95733642578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.08258056640625" minWidth="10.0" prefWidth="28.04266357421875" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.64954376220703" minHeight="10.0" prefHeight="49.237152099609375" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40.762847900390625" minHeight="10.0" prefHeight="40.762847900390625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="141.69992065429688" minHeight="10.0" prefHeight="136.853271484375" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="114.96661376953125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="52.153350830078125" minHeight="0.0" prefHeight="4.03338623046875" vgrow="SOMETIMES" />
                   <RowConstraints />
               </rowConstraints>
                <children>
-                  <Label fx:id="webApiPortLabel" text="Web Api Port:" GridPane.rowIndex="0">
+                  <Label fx:id="webApiPortLabel" text="Web Api Port:" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="sessionTimeoutLabel" text="Session Timeout:" GridPane.rowIndex="1">
+                  <Label fx:id="sessionTimeoutLabel" text="Session Timeout:" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="allowedGamesLabel" text="Allowed Games:" GridPane.rowIndex="2">
+                  <Label fx:id="allowedGamesLabel" text="Allowed Games:" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="webApiPortField" styleClass="listView_box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin></TextField>
+                  <TableView fx:id="sessionTimeoutsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Game">
+                      <TableColumn prefWidth="197.3782196044922" text="Game">
                           <cellValueFactory>
                       	      <PropertyValueFactory property="game" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn fx:id="sessionTimeoutColumn" prefWidth="75.0" text="Session Timeout">
+                      <TableColumn fx:id="sessionTimeoutColumn" prefWidth="297.1218566894531" text="Session Timeout">
                           <cellValueFactory>
                               <PropertyValueFactory property="timeout" />
                           </cellValueFactory>
                       </TableColumn>
                     </columns>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
                   </TableView>
-                  <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <HBox prefHeight="23.0" prefWidth="281.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <children>
-                        <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="28.0" prefWidth="127.0" text="Return">
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButtonAction" prefHeight="26.0" prefWidth="105.0" text="Save" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets right="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButtonAction" prefHeight="28.0" prefWidth="149.0" text="Save">
-                           <HBox.margin>
-                              <Insets top="5.0" />
+                              <Insets left="15.0" top="5.0" />
                            </HBox.margin>
                         </Button>
                      </children>
                   </HBox>
-                  <Button fx:id="editSessionTimeoutButton" mnemonicParsing="false" onAction="#handleEditSessionTimeoutButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button fx:id="editAllowedGamesButton" mnemonicParsing="false" onAction="#handleEditAllowedGamesButtonAction" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <ListView fx:id="allowedGamesList" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button fx:id="editSessionTimeoutButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#handleEditSessionTimeoutButtonAction" prefHeight="26.0" prefWidth="105.0" styleClass="delete-button" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="15.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="editAllowedGamesButton" mnemonicParsing="false" onAction="#handleEditAllowedGamesButtonAction" prefHeight="26.0" prefWidth="105.0" styleClass="delete-button" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="15.0" />
+                     </GridPane.margin></Button>
+                  <ListView fx:id="allowedGamesList" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin></ListView>
+                  <Label text="Settings">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="26.0" prefWidth="105.0" text="Return" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
                </children>
                <BorderPane.margin>
-                  <Insets bottom="15.0" left="10.0" right="10.0" top="5.0" />
+                  <Insets bottom="15.0" left="10.0" right="15.0" top="5.0" />
                </BorderPane.margin>
             </GridPane>
          </center>
@@ -94,7 +119,7 @@
                <children>
                   <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../img/visab_innerLogo1.png" />
+                        <Image url="@../../../../../img/visab_innerLogo1.png" />
                      </image>
                   </ImageView>
                </children>
