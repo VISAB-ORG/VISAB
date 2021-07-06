@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.config.ConfigManager;
@@ -124,7 +125,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private Image pauseImage;
 
     @FXML
-    private TableView playerDataTable;
+    private TableView<PlayerDataRow> playerDataTable;
 
     // Images / Icons
     private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
@@ -148,6 +149,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        viewModel.initializePlayerDataTable(playerDataTable);
 
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());

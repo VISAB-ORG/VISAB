@@ -162,9 +162,16 @@
       </GridPane>
       <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Attribute" />
-          <TableColumn prefWidth="75.0" text="Player 1" />
-          <TableColumn prefWidth="75.0" text="Player 2" />
+          <TableColumn prefWidth="75.0" text="Name" />
+          <TableColumn prefWidth="75.0" text="Health" />
+          <TableColumn prefWidth="75.0" text="Relative Health" />
+          <TableColumn prefWidth="75.0" text="Plan" />
+          <TableColumn prefWidth="75.0" text="Position" />
+          <TableColumn prefWidth="75.0" text="Weapon" />
+          <TableColumn prefWidth="75.0" text="Magazine Ammu" />
+          <TableColumn prefWidth="75.0" text="Total Ammu" />
+          <TableColumn prefWidth="75.0" text="Frags" />
+          <TableColumn prefWidth="75.0" text="Deaths" />
         </columns>
       </TableView>
 	</children>

@@ -9,10 +9,12 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.TableView;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -131,6 +133,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setFrameSliderTickUnitProperty(SimpleIntegerProperty frameSliderTickUnitProperty) {
         this.frameSliderTickUnitProperty = frameSliderTickUnitProperty;
+    }
+
+    public void initializePlayerDataTable(TableView<PlayerDataRow> playerDataTable) {
+
+        CBRShooterStatistics currentFrameStats = data.get(selectedFrame);
+
+        for (int i = 0; i < currentFrameStats.getPlayers().size(); i++) {
+            playerDataTable.getItems().add(i, new PlayerDataRow(currentFrameStats.getPlayers().get(i)));
+        }
     }
 
 }
