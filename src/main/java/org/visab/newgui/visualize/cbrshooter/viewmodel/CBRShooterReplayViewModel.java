@@ -14,6 +14,8 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
@@ -36,6 +38,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     private SimpleIntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
+    private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -52,11 +55,25 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
+
+        setCurrentPlayerStatsByFrame(currentPlayerStats);
         // TODO: Add necessary logic
         // Load all data from the respective file
         // Initialize frame slider
         frameSliderMaxProperty.set(data.size());
         frameSliderTickUnitProperty.set(data.size() / 10);
+    }
+
+    public ObservableList<PlayerDataRow> setCurrentPlayerStatsByFrame(
+            ObservableList<PlayerDataRow> currentPlayerStats) {
+
+        currentPlayerStats.removeAll();
+
+        for (int i = 0; i < data.get(selectedFrame).getPlayers().size(); i++) {
+            currentPlayerStats.add(i, new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i)));
+        }
+
+        return currentPlayerStats;
     }
 
     // ----- Command methods -----
@@ -70,6 +87,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     // Iterate over frames and constantly update data
                     for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
+                            setCurrentPlayerStatsByFrame(currentPlayerStats);
                             System.out.println("Updated data to:");
 
                             CBRShooterStatistics stat = data.get(i);
@@ -133,6 +151,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setFrameSliderTickUnitProperty(SimpleIntegerProperty frameSliderTickUnitProperty) {
         this.frameSliderTickUnitProperty = frameSliderTickUnitProperty;
+    }
+
+    public ObservableList<PlayerDataRow> getCurrentPlayerStats() {
+        return currentPlayerStats;
+    }
+
+    public void setCurrentPlayerStats(ObservableList<PlayerDataRow> currentPlayerStats) {
+        this.currentPlayerStats = currentPlayerStats;
     }
 
     public void initializePlayerDataTable(TableView<PlayerDataRow> playerDataTable) {

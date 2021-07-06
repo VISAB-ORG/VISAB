@@ -152,6 +152,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         viewModel.initializePlayerDataTable(playerDataTable);
 
+        playerDataTable.setItems(viewModel.getCurrentPlayerStats());
+
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
     }

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <AnchorPane prefHeight="1016.0" prefWidth="1018.0" style="-fx-background-color: white;" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
@@ -162,16 +163,66 @@
       </GridPane>
       <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Name" />
-          <TableColumn prefWidth="75.0" text="Health" />
-          <TableColumn prefWidth="75.0" text="Relative Health" />
-          <TableColumn prefWidth="75.0" text="Plan" />
-          <TableColumn prefWidth="75.0" text="Position" />
-          <TableColumn prefWidth="75.0" text="Weapon" />
-          <TableColumn prefWidth="75.0" text="Magazine Ammu" />
-          <TableColumn prefWidth="75.0" text="Total Ammu" />
-          <TableColumn prefWidth="75.0" text="Frags" />
-          <TableColumn prefWidth="75.0" text="Deaths" />
+          <TableColumn prefWidth="75.0" text="Name">
+            <cellValueFactory>
+                <PropertyValueFactory property="name">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Health">
+            <cellValueFactory>
+                <PropertyValueFactory property="health">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Relative Health">
+            <cellValueFactory>
+                <PropertyValueFactory property="relativeHealth">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Plan">
+            <cellValueFactory>
+                <PropertyValueFactory property="plan">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Position">
+            <cellValueFactory>
+                <PropertyValueFactory property="position">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Weapon">
+            <cellValueFactory>
+                <PropertyValueFactory property="weapon">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Magazine Ammu">
+            <cellValueFactory>
+                <PropertyValueFactory property="magazineAmmu">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Total Ammu">
+            <cellValueFactory>
+                <PropertyValueFactory property="totalAmmu">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Frags">
+            <cellValueFactory>
+                <PropertyValueFactory property="frags">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Deaths">
+            <cellValueFactory>
+                <PropertyValueFactory property="deaths">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
         </columns>
       </TableView>
 	</children>

@@ -27,7 +27,7 @@ public class PlayerDataRow {
         this.health = playerInfo.getHealth();
         this.relativeHealth = playerInfo.getRelativeHealth();
         this.plan = playerInfo.getPlan();
-        this.position = playerInfo.getPosition().toString();
+        this.position = playerInfo.getPosition().getX() + ", " + playerInfo.getPosition().getY();
         this.weapon = playerInfo.getWeapon();
         this.magazineAmmu = playerInfo.getMagazineAmmunition();
         this.totalAmmu = playerInfo.getTotalAmmunition();
