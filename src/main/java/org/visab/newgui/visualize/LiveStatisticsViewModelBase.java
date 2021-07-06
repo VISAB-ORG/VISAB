@@ -50,9 +50,9 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     }
 
     @Override
-    public abstract void notifyStatisticsAdded(TStatistics newStatistics);
+    public abstract void onStatisticsAdded(TStatistics newStatistics);
 
     @Override
-    public abstract void notifySessionClosed();
+    public abstract void onSessionClosed();
 
 }

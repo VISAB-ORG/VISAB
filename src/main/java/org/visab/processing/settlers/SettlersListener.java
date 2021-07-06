@@ -60,7 +60,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     @Override
     public void notifySessionClosed() {
         for (var viewModel : viewModels)
-            viewModel.notifySessionClosed();
+            viewModel.onSessionClosed();
 
         viewModels.clear();
     }
@@ -68,7 +68,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.notifyStatisticsAdded(addedStatistics));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override

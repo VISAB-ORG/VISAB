@@ -64,16 +64,15 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
             // Notify for all the already received statistics
             for (var statistics : listener.getReceivedStatistics())
-                notifyStatisticsAdded(statistics);
+                onStatisticsAdded(statistics);
         } else {
             super.initialize(scope.getFile());
 
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
 
-            for (var statistics : file.getStatistics()) {
-                notifyStatisticsAdded(statistics);
-            }
+            for (var statistics : file.getStatistics())
+                onStatisticsAdded(statistics);
         }
     }
 
@@ -108,7 +107,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
         // for (var row : comparisonStatistics) {
-        //     row.updateValues(file);
+        // row.updateValues(file);
         // }
     }
 
@@ -134,7 +133,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     @Override
-    public void notifyStatisticsAdded(CBRShooterStatistics newStatistics) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
         updatePlanUsage(newStatistics);
@@ -194,14 +193,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void updateComparisonStatistics() {
-        if (isLiveViewProperty.get()) {
-            for (var row : comparisonStatistics)
-                row.updateValues(file);
-        }
+        for (var row : comparisonStatistics)
+            row.updateValues(file);
     }
 
     @Override
-    public void notifySessionClosed() {
+    public void onSessionClosed() {
         liveSessionActiveProperty.set(false);
         // TODO: Render some future "who won" graphs an such
     }
