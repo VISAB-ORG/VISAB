@@ -150,8 +150,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        viewModel.initializePlayerDataTable(playerDataTable);
-
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
 
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
