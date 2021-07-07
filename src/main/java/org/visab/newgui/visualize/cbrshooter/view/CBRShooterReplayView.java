@@ -153,6 +153,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
 
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
+        frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
     }
 
@@ -191,8 +192,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     public void handlePlayPause(ActionEvent event) {
         if (playPauseButton.isSelected()) {
+            playPauseButton.setGraphic(pauseImageView);
             viewModel.playData().execute();
         } else {
+            playPauseButton.setGraphic(playImageView);
             viewModel.pauseData().execute();
         }
     }
