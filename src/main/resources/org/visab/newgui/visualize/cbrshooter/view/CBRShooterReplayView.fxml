@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,8 +11,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="1016.0" prefWidth="1018.0" style="-fx-background-color: white;" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
@@ -27,132 +26,18 @@
             <Image url="@../../../../../../img/fps_map.png" />
          </image>
       </ImageView>
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="625.0" layoutY="571.0" majorTickUnit="10.0" min="1.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
-      <Label fx:id="frameLabel" layoutX="722.0" layoutY="544.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="1.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
+      <Label fx:id="frameLabel" layoutX="716.0" layoutY="391.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="veloLabel" layoutX="751.0" layoutY="609.0" text="Velocity" visible="true">
+      <Label fx:id="veloLabel" layoutX="745.0" layoutY="496.0" text="Velocity" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="712.0" layoutY="631.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
-      <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
-      <GridPane layoutX="625.0" layoutY="174.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="166.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="34.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <CheckBox fx:id="checkBoxCBRBotPlayer" mnemonicParsing="false" onAction="#handleCheckBoxCBRPlayer" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkBoxCBRBotDeaths" mnemonicParsing="false" prefHeight="17.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <CheckBox fx:id="checkBoxScriptBotPath" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <CheckBox fx:id="checkBoxScriptBotDeaths" mnemonicParsing="false" prefHeight="17.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-            <CheckBox fx:id="checkBoxScriptBotPlayer" mnemonicParsing="false" onAction="#handleCheckBoxScriptPlayer" prefHeight="17.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <CheckBox fx:id="checkBoxWeapons" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-            <CheckBox fx:id="checkBoxAmmu" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-            <CheckBox fx:id="checkBoxHealth" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            <CheckBox fx:id="checkBoxPlanChange" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
-               <image>
-                  <Image url="@../../../../../../img/deadCBR.png" />
-               </image>
-            </ImageView>
-            <Line endX="140.0" endY="10.0" startX="100.0" startY="10.0" stroke="#fc0505" strokeWidth="2.0" GridPane.rowIndex="6" />
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="7">
-               <image>
-                  <Image url="@../../../../../../img/deathScript.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
-               <image>
-                  <Image url="@../../../../../../img/scriptBot.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../../../../../../img/cbrBot.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="11">
-               <image>
-                  <Image url="@../../../../../../img/weapon.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="8">
-               <image>
-                  <Image url="@../../../../../../img/ammuContainer.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="9">
-               <image>
-                  <Image url="@../../../../../../img/healthContainer.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="10">
-               <image>
-                  <Image url="@../../../../../../img/changePlan.png" />
-               </image>
-            </ImageView>
-            <Label text="Visual" />
-            <Label text="Description" GridPane.columnIndex="1" />
-            <Label text="Show" GridPane.columnIndex="2" />
-            <Label text="CBR Bot Player" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="CBR Bot Path" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="CBR Bot Death" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label text="Script Bot Player" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label text="Script Bot Path" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label text="Script Bot Death" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Label text="Weapon Location" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-            <Label text="Ammunation Location" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label text="Health Item Location" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <Label text="Script Bot Plan Change" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-            <Line endX="140.0" endY="10.0" startX="100.0" startY="10.0" stroke="#05fa53" strokeWidth="2.0" GridPane.rowIndex="2" />
-            <CheckBox fx:id="checkBoxCBRBotPath" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label text="Value?" GridPane.columnIndex="3" />
-            <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../../../../../../img/changePlan.png" />
-               </image>
-            </ImageView>
-            <Label text="CBR Bot Plan Change" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <CheckBox fx:id="checkBoxPlanChange1" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-            <Label text="Coords" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-            <Label text="Nothing" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-            <Label text="Nothing" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Label fx:id="labelCurrentPlanScript" prefHeight="20.0" prefWidth="87.0" textFill="#ff0101" GridPane.columnIndex="3" GridPane.rowIndex="4">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font></Label>
-            <Label fx:id="labelCurrentPlanCBR" prefHeight="20.0" prefWidth="87.0" textFill="#ff0101" GridPane.columnIndex="3" GridPane.rowIndex="10">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font></Label>
-         </children>
-      </GridPane>
+      <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="705.0" layoutY="528.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
+      <ToggleButton fx:id="playPauseButton" layoutX="768.0" layoutY="613.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
       <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Visual">
@@ -229,32 +114,141 @@
           </TableColumn>
         </columns>
       </TableView>
-      <GridPane layoutX="41.0" layoutY="77.0" prefHeight="51.0" prefWidth="550.0">
+      <GridPane layoutX="609.0" layoutY="143.0" prefHeight="210.0" prefWidth="370.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="12.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="13.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="36.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="35.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Total Time" />
-            <Label text="Round" GridPane.columnIndex="1" />
-            <Label text="Round Time" GridPane.columnIndex="2" />
-            <Label text="Health Item" GridPane.columnIndex="3" />
-            <Label text="Weapon" GridPane.columnIndex="4" />
-            <Label text="Ammunition" GridPane.columnIndex="5" />
-            <Label fx:id="totalTimeValueLabel" GridPane.rowIndex="1" />
-            <Label fx:id="roundValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="roundTimeValueLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="healthItemCoordsValueLabel" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label fx:id="weaponCoordsValueLabel" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Label fx:id="ammuCoordsValueLabel" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <HBox prefHeight="73.0" prefWidth="139.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/clock.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Total Time" />
+               </children>
+            </HBox>
+            <HBox GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/round.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Round" />
+               </children>
+            </HBox>
+            <HBox GridPane.rowIndex="2">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/clock.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Round Time" />
+               </children>
+            </HBox>
+            <HBox GridPane.rowIndex="3">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/weapon.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Weapon" />
+               </children>
+            </HBox>
+            <HBox GridPane.rowIndex="4">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/ammuContainer.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Ammunition" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="totalTimeValueLabel" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="roundValueLabel" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Label fx:id="roundTimeValueLabel" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <Label fx:id="healthItemCoordsValueLabel" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <Label fx:id="weaponCoordsValueLabel" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <children>
+                  <Label fx:id="ammuCoordsValueLabel" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/healthContainer.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Health Item" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2">
+               <children>
+                  <Label text="Milliseconds" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <Label text="Milliseconds" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <children>
+                  <Label text="Coordinate" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Coordinate" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <children>
+                  <Label text="Coordinate" />
+               </children>
+            </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Counter" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
 	</children>
