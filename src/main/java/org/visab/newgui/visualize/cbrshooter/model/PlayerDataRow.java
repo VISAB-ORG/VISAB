@@ -3,6 +3,7 @@ package org.visab.newgui.visualize.cbrshooter.model;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
 
 /**
  * Simple POJO-style class that is used to fill the table on the replay view
@@ -13,6 +14,7 @@ import javafx.scene.control.CheckBox;
  */
 public class PlayerDataRow {
 
+    private ImageView playerVisual;
     private String name;
     private int health;
     private float relativeHealth;
@@ -37,9 +39,16 @@ public class PlayerDataRow {
         this.frags = playerInfo.getStatistics().getFrags();
         this.deaths = playerInfo.getStatistics().getDeaths();
         CheckBox showCheck = new CheckBox();
-        showCheck.setId(this.name);
         showCheck.setSelected(true);
         this.showCheckBox = showCheck;
+    }
+
+    public ImageView getPlayerVisual() {
+        return playerVisual;
+    }
+
+    public void setPlayerVisual(ImageView playerVisual) {
+        this.playerVisual = playerVisual;
     }
 
     public String getName() {

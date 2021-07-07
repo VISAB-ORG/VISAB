@@ -8,9 +8,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.PlayerInformation;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
+import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -23,6 +25,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -53,7 +57,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
     private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
 
+    // Simply used to denote whether a player shall be visible on the map or not
     private HashMap<String, Boolean> showPlayers = new HashMap<String, Boolean>();
+
+    // For dynamic player amount we need a flexible map to store visuals in
+    private HashMap<String, HashMap<String, ImageView>> playerVisuals = new HashMap<String, HashMap<String, ImageView>>();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -65,6 +73,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
+
         // Default update interval of 1 second
         updateInterval = 1000;
 
@@ -73,6 +82,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Load data from the scopes file which is initialized after VISUALIZE
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
+
+        initializePlayerVisuals();
 
         initializeShowPlayers();
 
@@ -85,15 +96,38 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderTickUnitProperty.set(data.size() / 10);
     }
 
+    private void initializePlayerVisuals() {
+        List<PlayerInformation> playerInfos = data.get(1).getPlayers();
+
+        for (int i = 0; i < playerInfos.size(); i++) {
+            HashMap<String, ImageView> playerSpecificImageViews = new HashMap<String, ImageView>();
+            ImageView playerIcon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "scriptBot.png"));
+            ImageView playerPlanChange = new ImageView(new Image(ConfigManager.IMAGE_PATH + "changePlan.png"));
+            ImageView playerDeath = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deathScript.png"));
+
+            playerIcon.setFitHeight(16);
+            playerIcon.setFitWidth(16);
+            playerPlanChange.setFitHeight(16);
+            playerPlanChange.setFitWidth(16);
+            playerDeath.setFitHeight(16);
+            playerDeath.setFitWidth(16);
+
+            playerSpecificImageViews.put("playerIcon", playerIcon);
+            playerSpecificImageViews.put("playerPlanChange", playerPlanChange);
+            playerSpecificImageViews.put("playerDeath", playerDeath);
+
+            playerVisuals.put(playerInfos.get(i).getName(), playerSpecificImageViews);
+
+        }
+    }
+
     private void initializeShowPlayers() {
         for (int i = 0; i < data.get(1).getPlayers().size(); i++) {
-            System.out.println(
-                    "Putting visibility entry into map: " + data.get(1).getPlayers().get(i).getName() + " ," + true);
             showPlayers.put(data.get(1).getPlayers().get(i).getName(), true);
         }
     }
 
-    public void updateShowPlayers(String playerName, boolean show) {
+    public void updateShowPlayersMap(String playerName, boolean show) {
         showPlayers.put(playerName, show);
     }
 
@@ -123,19 +157,32 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Update table with current stats based on the selected frame
         for (int i = 0; i < data.get(selectedFrame).getPlayers().size(); i++) {
             PlayerDataRow row = new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i));
+            row.setPlayerVisual(playerVisuals.get(row.getName()).get("playerIcon"));
             row.getShowCheckBox().setSelected(showPlayers.get(row.getName()));
             row.getShowCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println("Checkbox clicked for player: " + row.getName());
                     var box = (CheckBox) event.getSource();
-                    var id = box.getId();
                     var value = box.isSelected();
-                    updateShowPlayers(row.getName(), value);
-
+                    updateShowPlayersMap(row.getName(), value);
+                    updateVisibiltyForPlayer(row.getName());
                 }
             });
-            currentPlayerStats.add(i, new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i)));
+            currentPlayerStats.add(i, row);
+        }
+    }
+
+    private void updateVisibiltyForPlayer(String playerName) {
+        // TODO: All player related UI elements for a specific player shall be updated
+        var visible = showPlayers.get(playerName);
+
+        if (visible) {
+            /*
+             * Make all items visible -> Player icon -> Player Plan Change -> Player Path ->
+             * Player Death
+             */
+        } else {
+            // Make all items invisible
         }
     }
 

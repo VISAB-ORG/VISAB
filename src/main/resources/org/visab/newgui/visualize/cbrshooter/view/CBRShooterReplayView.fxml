@@ -155,6 +155,12 @@
       </GridPane>
       <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
         <columns>
+          <TableColumn prefWidth="75.0" text="Visual">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerVisual">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
           <TableColumn prefWidth="75.0" text="Name">
             <cellValueFactory>
                 <PropertyValueFactory property="name">
