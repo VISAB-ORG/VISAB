@@ -58,10 +58,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private ImageView ammuImage;
     @FXML
     private ImageView weaponImage;
-    @FXML
-    private ImageView playImageView;
-    @FXML
-    private ImageView pauseImageView;
 
     // ----- VISIBILITY CHECKS -----
     @FXML
@@ -120,11 +116,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // --- FXML IMAGES ----
 
     @FXML
-    private Image playImage;
-    @FXML
-    private Image pauseImage;
-
-    @FXML
     private TableView<PlayerDataRow> playerDataTable;
 
     // Images / Icons
@@ -134,11 +125,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private Image imageCbrBot = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
     private Image changePlanCBRImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
     private Image changePlanScriptImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
+    private Image pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
+    private Image playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
 
     private ImageView cbrbotImageView = new ImageView(imageCbrBot);
     private ImageView deathImageView = new ImageView(deathImage);
     private ImageView deathImageViewCBR = new ImageView(deathImageCBR);
     private ImageView scriptbotImageView = new ImageView(imageScriptBot);
+    private ImageView playImageView = new ImageView(playImage);
+    private ImageView pauseImageView = new ImageView(pauseImage);
 
     // Helper variables
     public static int masterIndex;
@@ -152,6 +147,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
 
+        playPauseButton.setGraphic(playImageView);
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());

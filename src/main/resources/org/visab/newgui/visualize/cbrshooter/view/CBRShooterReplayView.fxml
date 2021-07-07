@@ -38,15 +38,7 @@
             <Font name="System Bold" size="16.0" />
          </font></Label>
       <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="712.0" layoutY="631.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
-      <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" onAction="#handlePlayPause" style="-fx-background-color: white; -fx-border-color: rgb(68,114,196); -fx-border-width: 2;" visible="true">
-        <graphic>
-            <ImageView fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../../../../../../img/play.png" />
-                </image>
-            </ImageView>
-        </graphic>
-      </ToggleButton>
+      <ToggleButton fx:id="playPauseButton" layoutX="600.0" layoutY="664.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
       <GridPane layoutX="625.0" layoutY="174.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
