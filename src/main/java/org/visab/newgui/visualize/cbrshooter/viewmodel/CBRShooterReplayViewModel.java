@@ -1,6 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.CheckBox;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -49,6 +53,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
     private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
 
+    private HashMap<String, Boolean> showPlayers = new HashMap<String, Boolean>();
+
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
     private int selectedFrame;
@@ -68,6 +74,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
 
+        initializeShowPlayers();
+
         setCurrentOverallStatsByFrame();
 
         setCurrentPlayerStatsByFrame();
@@ -75,6 +83,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size());
         frameSliderTickUnitProperty.set(data.size() / 10);
+    }
+
+    private void initializeShowPlayers() {
+        for (int i = 0; i < data.get(1).getPlayers().size(); i++) {
+            System.out.println(
+                    "Putting visibility entry into map: " + data.get(1).getPlayers().get(i).getName() + " ," + true);
+            showPlayers.put(data.get(1).getPlayers().get(i).getName(), true);
+        }
+    }
+
+    public void updateShowPlayers(String playerName, boolean show) {
+        showPlayers.put(playerName, show);
     }
 
     public void setCurrentOverallStatsByFrame() {
@@ -102,6 +122,19 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // Update table with current stats based on the selected frame
         for (int i = 0; i < data.get(selectedFrame).getPlayers().size(); i++) {
+            PlayerDataRow row = new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i));
+            row.getShowCheckBox().setSelected(showPlayers.get(row.getName()));
+            row.getShowCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    System.out.println("Checkbox clicked for player: " + row.getName());
+                    var box = (CheckBox) event.getSource();
+                    var id = box.getId();
+                    var value = box.isSelected();
+                    updateShowPlayers(row.getName(), value);
+
+                }
+            });
             currentPlayerStats.add(i, new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i)));
         }
     }
@@ -112,7 +145,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         playData = runnableCommand(() -> {
             logger.debug("Pressed play button.");
             // Start this as a thread to provide the possibility of interrupting it on pause
-
             updateLoop = new Thread() {
                 @Override
                 public void run() {

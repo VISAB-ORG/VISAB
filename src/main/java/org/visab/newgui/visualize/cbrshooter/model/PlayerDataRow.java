@@ -2,6 +2,8 @@ package org.visab.newgui.visualize.cbrshooter.model;
 
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
+import javafx.scene.control.CheckBox;
+
 /**
  * Simple POJO-style class that is used to fill the table on the replay view
  * with data for the participating players in the CBRShooter.
@@ -21,6 +23,7 @@ public class PlayerDataRow {
     private int totalAmmu;
     private int frags;
     private int deaths;
+    private CheckBox showCheckBox;
 
     public PlayerDataRow(PlayerInformation playerInfo) {
         this.name = playerInfo.getName();
@@ -33,6 +36,10 @@ public class PlayerDataRow {
         this.totalAmmu = playerInfo.getTotalAmmunition();
         this.frags = playerInfo.getStatistics().getFrags();
         this.deaths = playerInfo.getStatistics().getDeaths();
+        CheckBox showCheck = new CheckBox();
+        showCheck.setId(this.name);
+        showCheck.setSelected(true);
+        this.showCheckBox = showCheck;
     }
 
     public String getName() {
@@ -113,6 +120,14 @@ public class PlayerDataRow {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
+    }
+
+    public CheckBox getShowCheckBox() {
+        return showCheckBox;
+    }
+
+    public void setShowCheckBox(CheckBox showCheckBox) {
+        this.showCheckBox = showCheckBox;
     }
 
 }

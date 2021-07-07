@@ -215,6 +215,12 @@
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
+          <TableColumn prefWidth="75.0" text="Show">
+            <cellValueFactory>
+                <PropertyValueFactory property="showCheckBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
         </columns>
       </TableView>
       <GridPane layoutX="41.0" layoutY="77.0" prefHeight="51.0" prefWidth="550.0">
