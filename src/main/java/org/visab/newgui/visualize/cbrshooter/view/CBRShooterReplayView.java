@@ -113,6 +113,19 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private Label veloLabel;
 
+    @FXML
+    private Label totalTimeValueLabel;
+    @FXML
+    private Label roundValueLabel;
+    @FXML
+    private Label roundTimeValueLabel;
+    @FXML
+    private Label healthItemCoordsValueLabel;
+    @FXML
+    private Label weaponCoordsValueLabel;
+    @FXML
+    private Label ammuCoordsValueLabel;
+
     // --- FXML IMAGES ----
 
     @FXML
@@ -146,6 +159,13 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     public void initialize(URL location, ResourceBundle resources) {
 
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
+
+        totalTimeValueLabel.textProperty().bindBidirectional(viewModel.getTotalTimeProperty());
+        roundValueLabel.textProperty().bindBidirectional(viewModel.getRoundProperty());
+        roundTimeValueLabel.textProperty().bindBidirectional(viewModel.getRoundTimeProperty());
+        healthItemCoordsValueLabel.textProperty().bindBidirectional(viewModel.getHealthCoordsProperty());
+        weaponCoordsValueLabel.textProperty().bindBidirectional(viewModel.getWeaponCoordsProperty());
+        ammuCoordsValueLabel.textProperty().bindBidirectional(viewModel.getAmmuCoordsProperty());
 
         playPauseButton.setGraphic(playImageView);
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());

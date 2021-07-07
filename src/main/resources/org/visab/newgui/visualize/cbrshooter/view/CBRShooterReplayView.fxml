@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,11 +15,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <AnchorPane prefHeight="1016.0" prefWidth="1018.0" style="-fx-background-color: white;" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
-		<Label layoutX="367.0" layoutY="92.0" text="CBR Shooter Replay View">
+		<Label layoutX="365.0" layoutY="20.0" text="CBR Shooter Replay View">
          <font>
             <Font size="28.0" />
          </font></Label>
@@ -217,5 +217,33 @@
           </TableColumn>
         </columns>
       </TableView>
+      <GridPane layoutX="41.0" layoutY="77.0" prefHeight="51.0" prefWidth="550.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="12.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="13.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Total Time" />
+            <Label text="Round" GridPane.columnIndex="1" />
+            <Label text="Round Time" GridPane.columnIndex="2" />
+            <Label text="Health Item" GridPane.columnIndex="3" />
+            <Label text="Weapon" GridPane.columnIndex="4" />
+            <Label text="Ammunition" GridPane.columnIndex="5" />
+            <Label fx:id="totalTimeValueLabel" GridPane.rowIndex="1" />
+            <Label fx:id="roundValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="roundTimeValueLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="healthItemCoordsValueLabel" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label fx:id="weaponCoordsValueLabel" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Label fx:id="ammuCoordsValueLabel" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
 	</children>
 </AnchorPane>

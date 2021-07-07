@@ -13,8 +13,10 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -26,20 +28,26 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     @InjectScope
     VisualizeScope scope;
 
+    // Controls that are responsible to handle the JavaFX control element actions
     private Command playData;
-
     private Command pauseData;
-
     private Command setUpdateInterval;
-
     private Command setSelectedFrame;
 
+    // Thread necessary to control data updating in the background
     private Thread updateLoop;
 
     private SimpleIntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
     private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
     private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
+
+    private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
+    private SimpleStringProperty roundTimeProperty = new SimpleStringProperty();
+    private SimpleStringProperty roundProperty = new SimpleStringProperty();
+    private SimpleStringProperty healthCoordsProperty = new SimpleStringProperty();
+    private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
+    private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -60,6 +68,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
 
+        setCurrentOverallStatsByFrame();
+
         setCurrentPlayerStatsByFrame();
 
         // Make the frame sliders values always reasonable according to shooter file
@@ -67,7 +77,20 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderTickUnitProperty.set(data.size() / 10);
     }
 
-    public ObservableList<PlayerDataRow> setCurrentPlayerStatsByFrame() {
+    public void setCurrentOverallStatsByFrame() {
+        totalTimeProperty.set(String.valueOf(data.get(selectedFrame).getTotalTime()));
+        roundTimeProperty.set(String.valueOf(data.get(selectedFrame).getRoundTime()));
+        roundProperty.set(String.valueOf(data.get(selectedFrame).getRound()));
+        healthCoordsProperty.set(data.get(selectedFrame).getHealthPosition().getX() + ", "
+                + data.get(selectedFrame).getHealthPosition().getY());
+        weaponCoordsProperty.set(data.get(selectedFrame).getWeaponPosition().getX() + ", "
+                + data.get(selectedFrame).getWeaponPosition().getY());
+        ammuCoordsProperty.set(data.get(selectedFrame).getAmmunitionPosition().getX() + ", "
+                + data.get(selectedFrame).getAmmunitionPosition().getY());
+
+    }
+
+    public void setCurrentPlayerStatsByFrame() {
 
         // Cleaning up the table before new values are put into it
         if (currentPlayerStats.size() > 0) {
@@ -81,8 +104,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         for (int i = 0; i < data.get(selectedFrame).getPlayers().size(); i++) {
             currentPlayerStats.add(i, new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i)));
         }
-
-        return currentPlayerStats;
     }
 
     // --- Command methods ---
@@ -91,13 +112,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         playData = runnableCommand(() -> {
             logger.debug("Pressed play button.");
             // Start this as a thread to provide the possibility of interrupting it on pause
+
             updateLoop = new Thread() {
                 @Override
                 public void run() {
                     // Iterate over frames and constantly update data
                     for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
-                            // always hold the current playerstats cause they are bound to the table
+                            // Always hold the update UI information
+                            // This way is necessary, because UI changes are not allowed from another thread
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setCurrentOverallStatsByFrame();
+                                }
+                            });
                             setCurrentPlayerStatsByFrame();
                             frameSliderValueProperty.set(selectedFrame);
                             selectedFrame++;
@@ -177,4 +206,53 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public void setCurrentPlayerStats(ObservableList<PlayerDataRow> currentPlayerStats) {
         this.currentPlayerStats = currentPlayerStats;
     }
+
+    public SimpleStringProperty getTotalTimeProperty() {
+        return totalTimeProperty;
+    }
+
+    public void setTotalTimeProperty(SimpleStringProperty totalTimeProperty) {
+        this.totalTimeProperty = totalTimeProperty;
+    }
+
+    public SimpleStringProperty getRoundTimeProperty() {
+        return roundTimeProperty;
+    }
+
+    public void setRoundTimeProperty(SimpleStringProperty roundTimeProperty) {
+        this.roundTimeProperty = roundTimeProperty;
+    }
+
+    public SimpleStringProperty getRoundProperty() {
+        return roundProperty;
+    }
+
+    public void setRoundProperty(SimpleStringProperty roundProperty) {
+        this.roundProperty = roundProperty;
+    }
+
+    public SimpleStringProperty getHealthCoordsProperty() {
+        return healthCoordsProperty;
+    }
+
+    public void setHealthCoordsProperty(SimpleStringProperty healthCoordsProperty) {
+        this.healthCoordsProperty = healthCoordsProperty;
+    }
+
+    public SimpleStringProperty getWeaponCoordsProperty() {
+        return weaponCoordsProperty;
+    }
+
+    public void setWeaponCoordsProperty(SimpleStringProperty weaponCoordsProperty) {
+        this.weaponCoordsProperty = weaponCoordsProperty;
+    }
+
+    public SimpleStringProperty getAmmuCoordsProperty() {
+        return ammuCoordsProperty;
+    }
+
+    public void setAmmuCoordsProperty(SimpleStringProperty ammuCoordsProperty) {
+        this.ammuCoordsProperty = ammuCoordsProperty;
+    }
+
 }
