@@ -11,6 +11,7 @@ import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
+import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -22,10 +23,13 @@ import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -36,6 +40,8 @@ import javafx.scene.chart.XYChart.Series;
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
+    
+    private StringProperty yLabel = new SimpleStringProperty();
 
     @InjectScope
     VisualizeScope scope;
@@ -47,11 +53,31 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
     private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
+    
+    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
+    
+    private Command playerStatsChartCommand;
 
     public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
         return this.selectedRow;
     }
+    
+    public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
+        return selectedStatistics;
+    }
+    
+    public StringProperty yLabelProperty() {
+        return yLabel;
+    }
 
+    public Command playerStatsChartCommand() {
+        playerStatsChartCommand = runnableCommand(() -> {
+            if (selectedStatistics != null) {
+                yLabel.set(selectedStatistics.get().getRowDescription());
+            }
+        });
+        return playerStatsChartCommand;
+    }
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */

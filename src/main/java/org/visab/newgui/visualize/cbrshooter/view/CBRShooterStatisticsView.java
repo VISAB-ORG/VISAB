@@ -33,6 +33,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     LineChart<Double, Integer> playerKills;
+    
+    @FXML
+    LineChart<Double, Integer> playerStats;
 
     @FXML
     Label snapshotsPerSecond;
@@ -40,6 +43,13 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
 
+    @FXML
+    private void handleChartButtonAction() {
+       viewModel.playerStatsChartCommand().execute();
+       playerStats.getYAxis().setLabel(viewModel.yLabelProperty().get());
+        
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
@@ -67,6 +77,10 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         comparisonTable.getColumns().addAll(columns);
 
         playerKills.setData(viewModel.getPlayerKillsSeries());
+        
+        // playerStats chart
+        viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
+        
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {
