@@ -47,7 +47,7 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     Button saveButton;
 
     @FXML
-    Button returnButton;
+    Button restoreButton;
 
     @InjectViewModel
     SettingsViewModel viewModel;
@@ -76,11 +76,12 @@ public class SettingsView implements FxmlView<SettingsViewModel>, Initializable 
     }
 
     /**
-     * Closes the settingsView.
+     * Restores the default settings and closes the settingsView.
      */
     @FXML
-    private void handleReturnButtonAction() {
-        Stage stage = (Stage) returnButton.getScene().getWindow();
+    private void handleRestoreButtonAction() {
+        viewModel.restoreDefaultSettingsCommand().execute();
+        Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
 

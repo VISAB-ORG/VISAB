@@ -253,4 +253,15 @@ public class SettingsViewModel extends ViewModelBase {
             Workspace.getInstance().getConfigManager().saveSettings();
         });
     }
+    
+    /**
+     * Restores the default settings.
+     * 
+     * @return REstores the default settings per runnableCommand.
+     */
+    public Command restoreDefaultSettingsCommand() {
+        return runnableCommand(() -> {
+           Workspace.getInstance().getConfigManager().restoreDefaultSettings();
+        });
+    }
 }
