@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 
 <?import org.visab.newgui.control.CustomLabelPieChart?>
 
@@ -50,5 +51,15 @@
                 </TableView>
             </children>
         </VBox>
+        <Button fx:id="chartButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="3">
+        </Button>
+        <LineChart fx:id="playerStats" title="Player Stats" GridPane.columnIndex="4">
+            <xAxis>
+                <NumberAxis label="Rounds" side="bottom" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Kills" side="left" />
+            </yAxis>
+        </LineChart>
     </children>
 </GridPane>
