@@ -57,6 +57,15 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
     
     private Command playerStatsChartCommand;
+    
+    private Series<Double, Integer> statsScript = new Series<>();
+    private Series<Double, Integer> statsCBR = new Series<>();
+    
+    private ObservableList<Series<Double, Integer>> playerStatsSeries = FXCollections.observableArrayList();
+
+    public ObservableList<Series<Double, Integer>> getPlayerStatsSeries() {
+        return playerStatsSeries;
+    }
 
     public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
         return this.selectedRow;
@@ -71,6 +80,19 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     public Command playerStatsChartCommand() {
+        
+        if (statsCBR.getName() != null) {
+            statsCBR = new Series<Double, Integer>();
+            statsScript = new Series<Double, Integer>();
+            playerStatsSeries.clear();
+        }
+        
+        statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
+        statsScript.setName(selectedStatistics.get().getRowDescription() + " Script Bot");
+        
+        playerStatsSeries.add(statsCBR);
+        playerStatsSeries.add(statsScript);
+        
         playerStatsChartCommand = runnableCommand(() -> {
             if (selectedStatistics != null) {
                 yLabel.set(selectedStatistics.get().getRowDescription());

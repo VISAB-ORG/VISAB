@@ -80,6 +80,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
+        playerStats.setData(viewModel.getPlayerStatsSeries());
         
     }
 
