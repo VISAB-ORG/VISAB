@@ -1,7 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.Vector2;
@@ -11,6 +10,41 @@ import org.visab.util.StreamUtil;
 import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
+    
+    public static Map<String, Map<Double, Integer>> shotsPerRound(CBRShooterFile file) {
+        var shotsPerRoundPerPlayer = new HashMap<String, Map<Double,Integer>>();
+        var shotsPerRound = new HashMap<Double, Integer>();
+        var countShots = 0;
+        var maxAmmunition = 60;
+        var currentAmmunition = 0;
+        var round = 0;
+        var iteration = 0;
+        
+        for (var player :  file.getPlayerInformation().keySet()) {
+            
+            for (int i = 0; i < file.getStatistics().size(); i++) {
+                
+                if (round < file.getStatistics().get(i).getRound()) {
+                    shotsPerRound.put((double) countShots, (round + 1));                    
+                    countShots = 0;
+                }
+                maxAmmunition = currentAmmunition;
+                currentAmmunition = file.getStatistics().get(i).getPlayers().get(iteration).getTotalAmmunition();
+                
+                if (currentAmmunition < maxAmmunition) {
+                    countShots += (maxAmmunition - currentAmmunition);
+                }
+
+                round = file.getStatistics().get(i).getRound();
+            }
+            maxAmmunition = 0;
+            currentAmmunition = 0;
+            shotsPerRoundPerPlayer.put(player, shotsPerRound);
+            iteration++;
+        }
+        
+        return shotsPerRoundPerPlayer;
+    }
 
     public static boolean wasCollected(Collectable collectable, CBRShooterStatistics last,
             CBRShooterStatistics current) {
@@ -224,13 +258,11 @@ public final class CBRShooterImplicator {
 
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
-                .loadFile("7b717be5-0696-4c9b-8d1b-4b78a54b8b79.visab2", "CBRShooter");
-        var config = file.getPlayerInformation();
-        var walked = concludeUnitsWalked(file);
-        var hits = concludeHitsTaken(file);
-        var shots = concludeShotsFired(file);
-        var aimRatio = concludeAimRatio(file);
-        System.out.println(walked);
+                .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
+        var test = shotsPerRound(file);
+        System.out.println(test);
+//        var shots = concludeShotsFired(file);
+//        System.out.println(shots);
     }
 
 }

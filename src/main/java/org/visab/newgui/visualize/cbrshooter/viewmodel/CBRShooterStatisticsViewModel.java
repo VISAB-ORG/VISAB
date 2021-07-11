@@ -16,6 +16,7 @@ import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
@@ -79,6 +80,16 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return yLabel;
     }
 
+    private void getShotsFired() {
+        Map<String, Map<Double, Integer>> stats = CBRShooterImplicator.shotsPerRound(file);
+//        var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
+//        newData.setYValue(kills);
+//        newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
+        
+//        statsCBR.getData().add(stats.get("John Doe"));
+
+    }
+    
     public Command playerStatsChartCommand() {
         
         if (statsCBR.getName() != null) {
@@ -86,7 +97,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             statsScript = new Series<Double, Integer>();
             playerStatsSeries.clear();
         }
-        
+        getShotsFired();
         statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
         statsScript.setName(selectedStatistics.get().getRowDescription() + " Script Bot");
         
