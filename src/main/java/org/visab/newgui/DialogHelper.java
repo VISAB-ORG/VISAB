@@ -158,8 +158,7 @@ public class DialogHelper {
     }
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            ViewModel initViewModel, double minHeight, double minWidth) {
-
+            double minHeight, double minWidth) {
         var viewTuple = FluentViewLoader.fxmlView(viewType).load();
         var view = viewTuple.getView();
 
@@ -176,7 +175,6 @@ public class DialogHelper {
             stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.show();
-
     }
 
 }
