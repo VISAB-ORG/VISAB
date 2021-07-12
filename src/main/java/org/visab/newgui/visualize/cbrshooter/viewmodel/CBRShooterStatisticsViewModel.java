@@ -35,6 +35,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
@@ -82,11 +83,23 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private void getShotsFired() {
         Map<String, Map<Double, Integer>> stats = CBRShooterImplicator.shotsPerRound(file);
-//        var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-//        newData.setYValue(kills);
-//        newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
-        
-//        statsCBR.getData().add(stats.get("John Doe"));
+
+        for (var player : stats.keySet()) {
+            for (int i = 0; i < stats.get(player).size(); i++) {
+                
+                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
+//                newData.setYValue(stats.get(player).values().iterator());
+//                newData.setXValue(stats.get(player).keySet());
+
+//                if (player == "John Doe") {
+//                    statsCBR.getData().add(newData);
+//                }
+//                else {
+//                    statsScript.getData().add(newData);
+//                }
+                    
+            }
+        }
 
     }
     

@@ -15,7 +15,7 @@ public final class CBRShooterImplicator {
         var shotsPerRoundPerPlayer = new HashMap<String, Map<Double,Integer>>();
         var shotsPerRound = new HashMap<Double, Integer>();
         var countShots = 0;
-        var maxAmmunition = 60;
+        var maxAmmunition = 0;
         var currentAmmunition = 0;
         var round = 0;
         var iteration = 0;
@@ -27,6 +27,7 @@ public final class CBRShooterImplicator {
                 if (round < file.getStatistics().get(i).getRound()) {
                     shotsPerRound.put((double) countShots, (round + 1));                    
                     countShots = 0;
+                    System.out.println(round + 1);
                 }
                 maxAmmunition = currentAmmunition;
                 currentAmmunition = file.getStatistics().get(i).getPlayers().get(iteration).getTotalAmmunition();
@@ -41,6 +42,7 @@ public final class CBRShooterImplicator {
             currentAmmunition = 0;
             shotsPerRoundPerPlayer.put(player, shotsPerRound);
             iteration++;
+            round = 0;
         }
         
         return shotsPerRoundPerPlayer;
