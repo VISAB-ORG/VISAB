@@ -91,9 +91,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         initializeShowPlayers();
 
-        setCurrentOverallStatsByFrame();
-
-        setCurrentPlayerStatsByFrame();
+        updateCurrentGameStatsByFrame();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size());
@@ -158,22 +156,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         showPlayers.put(playerName, show);
     }
 
-    public void setCurrentOverallStatsByFrame() {
-        totalTimeProperty.set(String.valueOf(data.get(selectedFrame).getTotalTime()));
-        roundTimeProperty.set(String.valueOf(data.get(selectedFrame).getRoundTime()));
-        roundProperty.set(String.valueOf(data.get(selectedFrame).getRound()));
-        healthCoordsProperty.set(data.get(selectedFrame).getHealthPosition().getX() + ", "
-                + data.get(selectedFrame).getHealthPosition().getY());
-        weaponCoordsProperty.set(data.get(selectedFrame).getWeaponPosition().getX() + ", "
-                + data.get(selectedFrame).getWeaponPosition().getY());
-        ammuCoordsProperty.set(data.get(selectedFrame).getAmmunitionPosition().getX() + ", "
-                + data.get(selectedFrame).getAmmunitionPosition().getY());
-
-    }
-
     /**
-     * This method is responsible to update the given player statistics according to
-     * the global variable of the currently selected frame based on various types of
+     * This method is responsible to update the given statistics according to the
+     * global variable of the currently selected frame based on various types of
      * inputs or events.
      * 
      * The view model always refers to a specific index of the overall statistics
@@ -181,35 +166,61 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    public void setCurrentPlayerStatsByFrame() {
+    public void updateCurrentGameStatsByFrame() {
+
+        // This object holds all information that is available
+        CBRShooterStatistics frameBasedStats = data.get(selectedFrame);
+
+        // First, update data that is applicable for every player in the game
+        totalTimeProperty.set(String.valueOf(frameBasedStats.getTotalTime()));
+        roundTimeProperty.set(String.valueOf(frameBasedStats.getRoundTime()));
+        roundProperty.set(String.valueOf(frameBasedStats.getRound()));
+        healthCoordsProperty
+                .set(frameBasedStats.getHealthPosition().getX() + ", " + frameBasedStats.getHealthPosition().getY());
+        weaponCoordsProperty
+                .set(frameBasedStats.getWeaponPosition().getX() + ", " + frameBasedStats.getWeaponPosition().getY());
+        ammuCoordsProperty.set(
+                frameBasedStats.getAmmunitionPosition().getX() + ", " + frameBasedStats.getAmmunitionPosition().getY());
+
+        // Second, update the table that holds player-specific information
 
         // Cleaning up the table before new values are put into it
         if (currentPlayerStats.size() > 0) {
             var lastIndex = currentPlayerStats.size() - 1;
+
+            // Remove from end to start to make sure that the list does not get messed up
             for (int i = lastIndex; i >= 0; i--) {
                 currentPlayerStats.remove(i);
             }
         }
 
         // Update table with current stats based on the selected frame
-        for (int i = 0; i < data.get(selectedFrame).getPlayers().size(); i++) {
-            PlayerDataRow row = new PlayerDataRow(data.get(selectedFrame).getPlayers().get(i));
+        for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
+            PlayerDataRow row = new PlayerDataRow(frameBasedStats.getPlayers().get(i));
             row.setPlayerVisual(playerVisuals.get(row.getName()).get("playerIcon"));
             row.getShowCheckBox().setSelected(showPlayers.get(row.getName()));
+
+            // Custom event handler that is capable of mapping the checkbox correctly
             row.getShowCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
                     updateShowPlayersMap(row.getName(), value);
-                    updateVisibiltyForPlayer(row.getName());
+                    updateVisibilityForPlayer(row.getName());
                 }
             });
             currentPlayerStats.add(i, row);
         }
     }
 
-    private void updateVisibiltyForPlayer(String playerName) {
+    /**
+     * This method shows or hides player specific UI elements in the replay view
+     * based on the information whether it should be visible or not.
+     * 
+     * @param playerName
+     */
+    private void updateVisibilityForPlayer(String playerName) {
         // TODO: All player related UI elements for a specific player shall be updated
         var visible = showPlayers.get(playerName);
 
@@ -240,10 +251,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setCurrentOverallStatsByFrame();
+                                    updateCurrentGameStatsByFrame();
                                 }
                             });
-                            setCurrentPlayerStatsByFrame();
                             frameSliderValueProperty.set(selectedFrame);
                             selectedFrame++;
 
@@ -282,7 +292,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
             selectedFrame = frame;
-            setCurrentPlayerStatsByFrame();
+            updateCurrentGameStatsByFrame();
 
             // TODO: Also call the draw map function here
         });
