@@ -125,7 +125,7 @@ public final class DynamicSerializer {
             return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
         } catch (Exception e) {
             e.printStackTrace();
-            return JsonConvert.deserializeJson(json, DefaultFile.class);
+            return JsonConvert.deserializeJson(json, DefaultFile.class, JsonConvert.UnforgivingMapper);
         }
     }
 
@@ -154,8 +154,8 @@ public final class DynamicSerializer {
                 logger.error("Failed to resolve class for " + className);
             } else {
                 try {
-                    var concrete = (Class<T>) _class;
-                    instance = JsonConvert.deserializeJson(json, concrete);
+                    var concreteClass = (Class<T>) _class;
+                    instance = JsonConvert.deserializeJson(json, concreteClass, JsonConvert.UnforgivingMapper);
                 } catch (Exception e) {
                     logger.error(StringFormat.niceString("Failed to cast {0} to Class<T>.", className));
                 }

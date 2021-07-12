@@ -1,5 +1,7 @@
 package org.visab.globalmodel.settlers;
 
+import java.util.List;
+
 import org.visab.globalmodel.IStatistics;
 
 /**
@@ -11,26 +13,21 @@ import org.visab.globalmodel.IStatistics;
  */
 public class SettlersStatistics implements IStatistics {
 
-    private PlayerInformation player1;
-
-    public PlayerInformation getPlayer1() {
-        return player1;
-    }
-
-    public void setPlayer1(PlayerInformation player1) {
-        this.player1 = player1;
-    }
-
-    public PlayerInformation getPlayer2() {
-        return player2;
-    }
-
-    public void setPlayer2(PlayerInformation player2) {
-        this.player2 = player2;
-    }
+    private int turn;
+    private String turnTimeStamp;
+    private List<PlayerInformation> players;
+    private int diceNumberRolled;
 
     public int getTurn() {
         return turn;
+    }
+
+    public int getDiceNumberRolled() {
+        return diceNumberRolled;
+    }
+
+    public void setDiceNumberRolled(int diceNumberRolled) {
+        this.diceNumberRolled = diceNumberRolled;
     }
 
     public void setTurn(int turn) {
@@ -45,20 +42,12 @@ public class SettlersStatistics implements IStatistics {
         this.turnTimeStamp = turnTimeStamp;
     }
 
-    public void setGame(String game) {
-        this.game = game;
+    public List<PlayerInformation> getPlayers() {
+        return players;
     }
 
-    private PlayerInformation player2;
-
-    private int turn;
-
-    private String turnTimeStamp;
-
-    private String game;
-
-    public String getGame() {
-        return game;
+    public void setPlayers(List<PlayerInformation> players) {
+        this.players = players;
     }
 
 }

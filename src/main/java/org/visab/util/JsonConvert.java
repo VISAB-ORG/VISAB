@@ -23,10 +23,19 @@ public final class JsonConvert {
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(JsonConvert.class);
 
-    public static final ObjectMapper mapper = new ObjectMapper()
+    public static final ObjectMapper UnforgivingMapper = new ObjectMapper()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
             .enable(SerializationFeature.INDENT_OUTPUT)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).registerModule(new JavaTimeModule());
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+            .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true)
+            .registerModule(new JavaTimeModule());
+
+    public static final ObjectMapper ForgivingMapper = new ObjectMapper()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false)
+            .registerModule(new JavaTimeModule());
 
     /**
      * Deserializes a Json string into an object of given class.
@@ -36,7 +45,7 @@ public final class JsonConvert {
      * @param outClass The class to deserialize into
      * @return The deserialized object, null if deserialization failed
      */
-    public static final <T> T deserializeJson(String json, Class<T> outClass) {
+    public static final <T> T deserializeJson(String json, Class<T> outClass, ObjectMapper mapper) {
         try {
             return mapper.readValue(json, outClass);
         } catch (JsonProcessingException e) {
@@ -54,7 +63,7 @@ public final class JsonConvert {
      * @param type The type reference to the generic type.
      * @return The deserialized object, null if deserialization failed
      */
-    public static final <T> T deserializeJson(String json, TypeReference<T> type) {
+    public static final <T> T deserializeJson(String json, TypeReference<T> type, ObjectMapper mapper) {
         try {
             return mapper.readValue(json, type);
         } catch (JsonProcessingException e) {
@@ -65,7 +74,7 @@ public final class JsonConvert {
 
     public static final JsonNode deserializeJsonUnknown(String json) {
         try {
-            return mapper.readTree(json);
+            return ForgivingMapper.readTree(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -81,7 +90,7 @@ public final class JsonConvert {
      */
     public static final String serializeObject(Object o) {
         try {
-            return mapper.writeValueAsString(o);
+            return ForgivingMapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return "";

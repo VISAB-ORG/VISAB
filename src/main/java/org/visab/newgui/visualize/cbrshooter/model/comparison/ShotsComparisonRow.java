@@ -1,13 +1,14 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.newgui.visualize.ComparisonRowBase;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
-import org.visab.newgui.visualize.cbrshooter.model.ComparisonRowBase;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class ShotsComparisonRow extends ComparisonRowBase<IntegerProperty> {
+public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerProperty> {
 
     public ShotsComparisonRow() {
         super("Total shots");

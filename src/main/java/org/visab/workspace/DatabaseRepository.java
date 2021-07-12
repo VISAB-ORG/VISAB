@@ -37,7 +37,7 @@ public class DatabaseRepository extends RepositoryBase {
     public BasicVISABFile loadBasicVISABFile(String filePath) {
         var json = readFileContents(filePath);
 
-        return JsonConvert.deserializeJson(json, BasicVISABFile.class);
+        return JsonConvert.deserializeJson(json, BasicVISABFile.class, JsonConvert.ForgivingMapper);
     }
 
     /**
