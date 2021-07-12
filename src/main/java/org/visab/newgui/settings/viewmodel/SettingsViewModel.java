@@ -214,7 +214,7 @@ public class SettingsViewModel extends ViewModelBase {
                     editTimeoutsSelectedGame.set(gameSessionTimeouts.get(0).getGame());
                     editTimeoutsTimeout.set(gameSessionTimeouts.get(0).getTimeout());
                 }
-                dialogHelper.showView(SessionTimeoutEditView.class, "Session Timeout", true, this);
+                dialogHelper.showView(SessionTimeoutEditView.class, "Session Timeout", true);
             });
         }
         return openSessionTimeoutEditViewCommand;
@@ -234,7 +234,7 @@ public class SettingsViewModel extends ViewModelBase {
                     editAllowedSelectedGame.set(allowedGames.get(0));
                 }
 
-                dialogHelper.showView(AllowedGamesEditView.class, "Allowed Games", true, this);
+                dialogHelper.showView(AllowedGamesEditView.class, "Allowed Games", true);
             });
         }
         return openAllowedGameEditViewCommand;
