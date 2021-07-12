@@ -1,48 +1,43 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.util.StreamUtil;
 import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
     
-    public static Map<String, Map<Double, Integer>> shotsPerRound(CBRShooterFile file) {
-        var shotsPerRoundPerPlayer = new HashMap<String, Map<Double,Integer>>();
-        var shotsPerRound = new HashMap<Double, Integer>();
+    public static ArrayList<StatisticsDataStructure> shotsPerRound(String player, CBRShooterFile file) {
+        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var countShots = 0;
         var maxAmmunition = 0;
         var currentAmmunition = 0;
         var round = 0;
-        var iteration = 0;
-        
-        for (var player :  file.getPlayerInformation().keySet()) {
+        var playerNumber = 0;
+        if (player.contains("Jane Doe")) {
+            playerNumber = 1;
+        }
             
-            for (int i = 0; i < file.getStatistics().size(); i++) {
+        for (int i = 0; i < file.getStatistics().size(); i++) {
                 
-                if (round < file.getStatistics().get(i).getRound()) {
-                    shotsPerRound.put((double) countShots, (round + 1));                    
-                    countShots = 0;
-                    System.out.println(round + 1);
-                }
-                maxAmmunition = currentAmmunition;
-                currentAmmunition = file.getStatistics().get(i).getPlayers().get(iteration).getTotalAmmunition();
-                
-                if (currentAmmunition < maxAmmunition) {
-                    countShots += (maxAmmunition - currentAmmunition);
-                }
-
-                round = file.getStatistics().get(i).getRound();
+            if (round < file.getStatistics().get(i).getRound()) {                
+                shotsPerRoundPerPlayer.add(new StatisticsDataStructure(round + 1, (double) countShots));
+                countShots = 0;
             }
-            maxAmmunition = 0;
-            currentAmmunition = 0;
-            shotsPerRoundPerPlayer.put(player, shotsPerRound);
-            iteration++;
-            round = 0;
+            maxAmmunition = currentAmmunition;
+            currentAmmunition = file.getStatistics().get(i).getPlayers().get(playerNumber).getTotalAmmunition();
+            
+            if (currentAmmunition < maxAmmunition) {
+                countShots += (maxAmmunition - currentAmmunition);
+            }
+            
+            round = file.getStatistics().get(i).getRound();
         }
         
         return shotsPerRoundPerPlayer;
@@ -261,8 +256,18 @@ public final class CBRShooterImplicator {
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = shotsPerRound(file);
-        System.out.println(test);
+        var test = shotsPerRound("John Doe",file);
+        System.out.println("John Doe:");
+        for(int i = 0; i < test.size(); i++) {
+            System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
+        }
+        
+        var t = shotsPerRound("Jane Doe",file);
+        System.out.println("Jane Doe:");
+        for(int i = 0; i < test.size(); i++) {
+            System.out.println(t.get(i).getRound() + " : " + t.get(i).getParameter());
+        }
+        
 //        var shots = concludeShotsFired(file);
 //        System.out.println(shots);
     }

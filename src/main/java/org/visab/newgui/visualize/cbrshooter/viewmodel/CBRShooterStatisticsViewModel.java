@@ -5,22 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.SimpleObjectIdResolver;
-
 import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.UiHelper;
-import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
-import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -33,9 +28,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+
 import javafx.scene.chart.PieChart.Data;
-import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
@@ -82,23 +76,23 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void getShotsFired() {
-        Map<String, Map<Double, Integer>> stats = CBRShooterImplicator.shotsPerRound(file);
-
-        for (var player : stats.keySet()) {
-            for (int i = 0; i < stats.get(player).size(); i++) {
-                
+        ArrayList<StatisticsDataStructure> stats;
+        
+        for (var player : file.getPlayerInformation().keySet()) {
+            stats = CBRShooterImplicator.shotsPerRound(player, file);
+            for (var values : stats) {
                 var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-//                newData.setYValue(stats.get(player).values().iterator());
-//                newData.setXValue(stats.get(player).keySet());
-
-//                if (player == "John Doe") {
-//                    statsCBR.getData().add(newData);
-//                }
-//                else {
-//                    statsScript.getData().add(newData);
-//                }
-                    
+              newData.setYValue(values.getRound());
+              newData.setXValue(values.getParameter());
+              
+              if (player == "John Doe") {
+                  statsCBR.getData().add(newData);
+              } else {
+                  statsScript.getData().add(newData);
+              }
             }
+            
+
         }
 
     }
