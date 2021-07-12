@@ -82,8 +82,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             stats = CBRShooterImplicator.shotsPerRound(player, file);
             for (var values : stats) {
                 var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-              newData.setYValue(values.getRound());
-              newData.setXValue(values.getParameter());
+              newData.setYValue(values.getParameter());
+              newData.setXValue(values.getRound());
               
               if (player == "John Doe") {
                   statsCBR.getData().add(newData);

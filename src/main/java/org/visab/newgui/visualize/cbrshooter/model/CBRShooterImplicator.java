@@ -27,7 +27,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < file.getStatistics().size(); i++) {
                 
             if (round < file.getStatistics().get(i).getRound()) {                
-                shotsPerRoundPerPlayer.add(new StatisticsDataStructure(round + 1, (double) countShots));
+                shotsPerRoundPerPlayer.add(new StatisticsDataStructure((double) round + 1, countShots));
                 countShots = 0;
             }
             maxAmmunition = currentAmmunition;
