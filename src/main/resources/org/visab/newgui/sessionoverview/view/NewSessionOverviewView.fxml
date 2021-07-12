@@ -32,7 +32,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -45,7 +44,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="600.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.sessionoverview.view.NewSessionOverviewView">
+<AnchorPane stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.sessionoverview.view.NewSessionOverviewView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -74,11 +73,14 @@
                           </Label>
                      </children>
                   </HBox>
-                      <AnchorPane fx:id="scrollPane" styleClass="sessiongrid">
+                      <ScrollPane fx:id="scrollPane" fitToHeight="true" maxWidth="850.0" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
-                      </AnchorPane>
+                     <padding>
+                        <Insets right="50.0" />
+                     </padding>
+                      </ScrollPane>
                </children>
                <BorderPane.margin>
                   <Insets top="10.0" />

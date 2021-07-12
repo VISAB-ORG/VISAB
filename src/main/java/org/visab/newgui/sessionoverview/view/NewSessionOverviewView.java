@@ -10,7 +10,7 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ScrollPane;
 
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
 
@@ -18,7 +18,7 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     private Button closeSessionButton;
 
     @FXML
-    private AnchorPane scrollPane;
+    private ScrollPane scrollPane;
 
     @InjectViewModel
     private NewSessionOverviewViewModel viewModel;

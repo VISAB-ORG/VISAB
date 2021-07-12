@@ -91,8 +91,8 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
      * 
      * @param anchorPane the anchorpane where the grid pane should be added to.
      */
-    public void initializeSessionGrid(AnchorPane anchorPane) {
-        ScrollPane scrollPane = new ScrollPane();
+    public void initializeSessionGrid(ScrollPane scrollPane) {
+        AnchorPane anchorPane = new AnchorPane();
         GridPane sessionObjectGrid = new GridPane();
         sessionObjectGrid.setPadding(new Insets(10));
         sessionObjectGrid.setHgap(5);
@@ -128,11 +128,8 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         }
 
         anchorPane.getChildren().add(sessionObjectGrid);
+        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollPane.setContent(anchorPane);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(false);
-        scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-
     }
 
     private Command openLiveViewCommand;
