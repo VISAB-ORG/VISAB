@@ -167,6 +167,17 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
+
+        ImageView playerIcon = new ImageView(imageScriptBot);
+        playerIcon.setScaleX(0.07);
+        playerIcon.setScaleY(0.07);
+        playerIcon.setRotate(+45.0);
+        playerIcon.setX(20);
+        playerIcon.setY(10);
+        playerIcon.setVisible(true);
+
+        drawPane.getChildren().add(playerIcon);
+        // drawPane.getChildren().setAll(viewModel.getMapElements());
     }
 
     // Dummy Handle Method for frame slider

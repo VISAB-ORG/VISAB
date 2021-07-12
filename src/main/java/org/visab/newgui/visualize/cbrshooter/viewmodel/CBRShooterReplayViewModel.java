@@ -49,6 +49,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
     private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
     private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
+    private ObservableList<ImageView> mapElements = FXCollections.observableArrayList();
 
     private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
     private SimpleStringProperty roundTimeProperty = new SimpleStringProperty();
@@ -96,6 +97,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size());
         frameSliderTickUnitProperty.set(data.size() / 10);
+
+        drawElementsOnMap();
     }
 
     /**
@@ -234,6 +237,34 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
     }
 
+    /**
+     * This method directly accesses the draw pane of the replay view and puts the
+     * necessary elements on it to the correct places.
+     * 
+     */
+    public void drawElementsOnMap() {
+        ObservableList<ImageView> mapElementList = FXCollections.observableArrayList();
+
+        CBRShooterStatistics currentStats = data.get(selectedFrame);
+        for (PlayerInformation playerInfo : currentStats.getPlayers()) {
+
+            ImageView playerIcon = playerVisuals.get(playerInfo.getName()).get("playerIcon");
+
+            playerIcon.setScaleX(0.07);
+            playerIcon.setScaleY(0.07);
+            playerIcon.setRotate(+45.0);
+            playerIcon.setX(playerInfo.getPosition().getX());
+            playerIcon.setY(playerInfo.getPosition().getY());
+            playerIcon.setVisible(showPlayers.get(playerInfo.getName()));
+
+            System.out.println("Adding image to drawpane, visible: " + showPlayers.get(playerInfo.getName()));
+
+            mapElementList.add(playerIcon);
+        }
+
+        mapElements = mapElementList;
+    }
+
     // --- Command methods ---
 
     public Command playData() {
@@ -252,9 +283,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                 @Override
                                 public void run() {
                                     updateCurrentGameStatsByFrame();
+                                    drawElementsOnMap();
+                                    frameSliderValueProperty.set(selectedFrame);
                                 }
                             });
-                            frameSliderValueProperty.set(selectedFrame);
                             selectedFrame++;
 
                             // Sleeping time depends on the velocity sliders value
@@ -331,6 +363,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setCurrentPlayerStats(ObservableList<PlayerDataRow> currentPlayerStats) {
         this.currentPlayerStats = currentPlayerStats;
+    }
+
+    public ObservableList<ImageView> getMapElements() {
+        return mapElements;
+    }
+
+    public void setMapElements(ObservableList<ImageView> mapElements) {
+        this.mapElements = mapElements;
     }
 
     public SimpleStringProperty getTotalTimeProperty() {
