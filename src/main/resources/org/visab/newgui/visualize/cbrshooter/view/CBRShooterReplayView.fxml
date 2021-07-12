@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
@@ -21,17 +22,19 @@
          <font>
             <Font size="28.0" />
          </font></Label>
-      <ImageView fitHeight="550.0" fitWidth="550.0" layoutX="41.0" layoutY="143.0">
-         <image>
-            <Image url="@../../../../../../img/fps_map.png" />
-         </image>
-      </ImageView>
       <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="1.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
       <Label fx:id="frameLabel" layoutX="716.0" layoutY="391.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <Pane fx:id="drawPane">
+        <ImageView fitHeight="550.0" fitWidth="550.0" layoutX="41.0" layoutY="143.0">
+         <image>
+            <Image url="@../../../../../../img/fps_map.png" />
+         </image>
+        </ImageView>
+      </Pane>
       <Label fx:id="veloLabel" layoutX="745.0" layoutY="496.0" text="Velocity" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
