@@ -3,15 +3,12 @@ package org.visab.newgui.visualize.cbrshooter.view;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
-import org.visab.util.VISABUtil;
 import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -20,7 +17,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -214,236 +210,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             playPauseButton.setGraphic(playImageView);
             viewModel.pauseData().execute();
         }
-    }
-
-    @SuppressWarnings({ "unchecked", "resource" })
-    private void loadVisabStatistics(String content) {
-
-        // Convert
-        List<List<String>> rawData = VISABUtil.convertStringToList(content);
-
-        // Lists for Path Viewer
-        List<List<Double>> coordinatesCBRBotList = new ArrayList<List<Double>>();
-        List<List<Double>> coordinatesScriptBotList = new ArrayList<List<Double>>();
-
-        List<String> statisticsScriptBotList = new ArrayList<String>();
-        List<String> statisticsCBRBotList = new ArrayList<String>();
-
-        List<String> planCBRBotList = new ArrayList<String>();
-        List<String> planScriptBotList = new ArrayList<String>();
-
-        List<String> healthPositionList = new ArrayList<String>();
-        List<String> weaponPositionList = new ArrayList<String>();
-        List<String> ammuPositionList = new ArrayList<String>();
-
-        List<String> roundCounterList = new ArrayList<String>();
-
-        // TODO: (Skalierbarkeit)
-        // Analoge Listen erstellen (s.o.)
-
-        // Set Values for relevant global variables
-        vBoxView.setVisible(true);
-        panePlan.setVisible(true);
-        frameSlider.setVisible(true);
-        frameLabel.setVisible(true);
-        frameLabel.setText("Selected Frame: " + 0);
-        sleepTimer = 1000;
-        frameSlider.setValue(0);
-        playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
-        playImageView = new ImageView(playImage);
-        pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
-        pauseImageView = new ImageView(pauseImage);
-        playPauseButton.setVisible(true);
-        playPauseButton.setGraphic(playImageView);
-
-        // Get only coordinates from data
-        for (int i = 0; i < rawData.size(); i++) {
-            List<String> rawDataRow = rawData.get(i);
-
-            // loop for extracting data
-            for (int j = 0; j < rawDataRow.size(); j += 2) {
-
-                // TODO: (Skalierbarkeit)
-                // Analoge Schleifeneintr�ge erstellen (s.u.)
-                // Dabei muss der entsprechende Attributsname abgeglichen werden.
-
-                // TODO: (Skalierbarkeit)
-                // Koordinaten extrahieren (s.u.)
-                // F�r Extrahierung der Koordinaten kann der untenstehende Schleifeneintrag
-                // kopiert und angepasst werden.
-
-                // extract coordinates
-                if (rawDataRow.get(j).contains("coordinatesCBRBot")
-                        || rawDataRow.get(j).contains("coordinatesScriptBot")) {
-
-                    // Format Coordinates: remove brackets and change commas to dots
-                    String coordinatesRaw = rawDataRow.get(j + 1);
-                    coordinatesRaw = coordinatesRaw.replaceAll(",", ".").replaceAll("\\(", "").replaceAll("\\)", "");
-
-//                              System.out.println(coordinatesRaw);
-                    // create list for coordinates
-                    List<String> coordinatesList = new ArrayList<String>();
-
-                    // further formatting & adding to list
-                    Scanner scanner = new Scanner(coordinatesRaw).useDelimiter(". ");
-                    scanner.useLocale(Locale.US);
-                    while (scanner.hasNext()) {
-                        coordinatesList.add(scanner.next().replaceAll("\\s+", ""));
-                    }
-                    // close the scanner
-                    scanner.close();
-                    for (String s : coordinatesList) {
-
-                        // add Coordinates to list for CBR Bot
-                        if (rawDataRow.get(j).contains("coordinatesCBRBot")) {
-                            List<Double> temp = new ArrayList<Double>();
-                            temp.add(Double.parseDouble(s));
-                            coordinatesCBRBotList.add(temp);
-                        }
-                        // add Coordinates to list for Script Bot
-                        if (rawDataRow.get(j).contains("coordinatesScriptBot")) {
-                            List<Double> temp = new ArrayList<Double>();
-                            temp.add(Double.parseDouble(s));
-                            coordinatesScriptBotList.add(temp);
-                        }
-                    }
-
-                }
-            }
-        }
-
-        // TODO: (Skalierbarkeit)
-        // Methode zur Erstellung einer neuen Tabelle hinzuf�gen (s.o.)
-        // Der Inhalt der Methode kann kopiert und angepasst werden.
-
-        // preparated Lists for Path Viewer
-        ArrayList<Double> coordinatesCBRBotListPrep = new ArrayList<Double>();
-        ArrayList<Double> coordinatesScriptBotListPrep = new ArrayList<Double>();
-
-        // Preparing List for drawing the Paths
-        for (int i = 0; i < coordinatesCBRBotListPrep.size(); i++) {
-            if (i % 2 == 0) {
-                coordinatesCBRBotListPrep.set(i, coordinatesCBRBotListPrep.get(i) * 3.6986301);
-            } else {
-                coordinatesCBRBotListPrep.set(i, coordinatesCBRBotListPrep.get(i) * 3.7209302);
-            }
-        }
-        for (int i = 0; i < coordinatesScriptBotListPrep.size(); i++) {
-            if (i % 2 == 0) {
-                coordinatesScriptBotListPrep.set(i, coordinatesScriptBotListPrep.get(i) * 3.6986301);
-            } else {
-                coordinatesScriptBotListPrep.set(i, coordinatesScriptBotListPrep.get(i) * 3.7209302);
-            }
-        }
-        // TODO: (Skalierbarkeit)
-        // Analoge Vorbereitungsliste f�r die Koordinaten bef�llen (s.o.)
-        // Draws the map on the first frame
-        drawMap(coordinatesCBRBotListPrep, coordinatesScriptBotListPrep, statisticsCBRBotList, statisticsScriptBotList,
-                1, ammuPositionList, weaponPositionList, healthPositionList, roundCounterList, false, planCBRBotList,
-                planScriptBotList, checkBoxCBRBotPath.isSelected(), checkBoxScriptBotPath.isSelected());
-        // TODO: (Skalierbarkeit)
-        // Paramater f�r weitere Spieler (Bots) �bergeben (s.o)
-
-        frameSlider.setMax(coordinatesScriptBotListPrep.size() / 2 - 1);
-
-        // Listener of the Slider
-        frameSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, //
-                    Number oldValue, Number newValue) {
-                // Initializes masterIndex
-                masterIndex = (int) Math.round(newValue.doubleValue());
-                // Sets text of the frame label
-                frameLabel.setText("Selected Frame: " + masterIndex);
-                if (statisticsScriptBotList.size() > masterIndex) {
-
-                    int i = masterIndex;
-                    // calls drawMap method for first or i frame
-                    if (i == 0) {
-                        drawMap(coordinatesCBRBotListPrep, coordinatesScriptBotListPrep, statisticsCBRBotList,
-                                statisticsScriptBotList, 1, ammuPositionList, weaponPositionList, healthPositionList,
-                                roundCounterList, false, planCBRBotList, planScriptBotList,
-                                checkBoxCBRBotPath.isSelected(), checkBoxScriptBotPath.isSelected());
-                    } else {
-                        i++;
-                        drawMap(coordinatesCBRBotListPrep, coordinatesScriptBotListPrep, statisticsCBRBotList,
-                                statisticsScriptBotList, i * 2, ammuPositionList, weaponPositionList,
-                                healthPositionList, roundCounterList, false, planCBRBotList, planScriptBotList,
-                                checkBoxCBRBotPath.isSelected(), checkBoxScriptBotPath.isSelected());
-                    }
-                }
-            }
-        });
-
-        // setOnAction method of the play and pause button
-        playPauseButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (playPauseButton.isSelected()) {
-                    // Sets visibility of UI components
-                    playPauseButton.setGraphic(pauseImageView);
-                    frameSlider.setVisible(false);
-                    veloLabel.setVisible(true);
-                    veloSlider.setVisible(true);
-
-                    // Starts a new Runnable task
-                    Runnable task = new Runnable() {
-                        public void run() {
-                            // Starts the frame loop and updates the frame label with the current frame
-                            // position
-                            while (masterIndex < coordinatesScriptBotListPrep.size() / 2) {
-                                if (playPauseButton.isSelected()) {
-                                    int i = masterIndex;
-                                    i++;
-                                    drawMap(coordinatesCBRBotListPrep, coordinatesScriptBotListPrep,
-                                            statisticsCBRBotList, statisticsScriptBotList, i * 2, ammuPositionList,
-                                            weaponPositionList, healthPositionList, roundCounterList, true,
-                                            planCBRBotList, planScriptBotList, checkBoxCBRBotPath.isSelected(),
-                                            checkBoxScriptBotPath.isSelected());
-                                    masterIndex++;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            int j = masterIndex;
-                                            j--;
-                                            frameLabel.setText("Selected Frame: " + j);
-                                        }
-                                    });
-                                    // Triggers sleep after each loop run
-                                    try {
-                                        Thread.sleep(sleepTimer);
-                                    } catch (InterruptedException e) {
-                                        logger.error("CAUGHT [" + e + "] on Thread.sleep() - stacktrace:");
-                                        logger.error(e.getStackTrace().toString());
-                                    }
-                                    // Interrupts the loop if toggle button pressed again
-                                } else {
-                                    break;
-                                }
-                            }
-                            // Updates UI compontens after hole loop
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    veloLabel.setVisible(false);
-                                    veloSlider.setVisible(false);
-                                    frameSlider.setValue(masterIndex);
-                                    playPauseButton.setGraphic(playImageView);
-                                    frameSlider.setVisible(true);
-                                    veloSlider.setValue(0);
-                                }
-                            });
-                        }
-                    };
-                    // Starts backgroundThread and activates daemon
-                    Thread backgroundThread = new Thread(task);
-                    backgroundThread.setDaemon(true);
-                    backgroundThread.start();
-                }
-            }
-
-        });
-
     }
 
     /**
