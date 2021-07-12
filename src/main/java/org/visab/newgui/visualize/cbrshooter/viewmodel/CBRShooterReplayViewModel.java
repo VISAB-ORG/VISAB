@@ -65,6 +65,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
+
+    // Global variable that indicates which index shall be referred for data
+    // extraction of the loaded statistics
     private int selectedFrame;
 
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
@@ -83,6 +86,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
 
+        // Dynamically map visuals for given player amount
         initializePlayerVisuals();
 
         initializeShowPlayers();
@@ -96,11 +100,20 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderTickUnitProperty.set(data.size() / 10);
     }
 
+    /**
+     * This method initializes as hash map that can be globally used across the view
+     * model which provides different categories of visuals for a dynamic amount of
+     * players in general.
+     * 
+     */
     private void initializePlayerVisuals() {
         List<PlayerInformation> playerInfos = data.get(1).getPlayers();
 
         for (int i = 0; i < playerInfos.size(); i++) {
             HashMap<String, ImageView> playerSpecificImageViews = new HashMap<String, ImageView>();
+
+            // TODO: Currently static coding, but it proves the concept - Changes to
+            // ConfigManager mandatory to make it really dynamic
             ImageView playerIcon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "scriptBot.png"));
             ImageView playerPlanChange = new ImageView(new Image(ConfigManager.IMAGE_PATH + "changePlan.png"));
             ImageView playerDeath = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deathScript.png"));
@@ -112,6 +125,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerDeath.setFitHeight(16);
             playerDeath.setFitWidth(16);
 
+            // For each player (referred by name) you can retrieve a specified image view
             playerSpecificImageViews.put("playerIcon", playerIcon);
             playerSpecificImageViews.put("playerPlanChange", playerPlanChange);
             playerSpecificImageViews.put("playerDeath", playerDeath);
@@ -121,12 +135,25 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
     }
 
+    /**
+     * This method simply initializes the hash map that is used to decide whether
+     * player visuals should be shown or hidden on the replay view.
+     * 
+     * The default case for each player is of course true.
+     * 
+     */
     private void initializeShowPlayers() {
         for (int i = 0; i < data.get(1).getPlayers().size(); i++) {
             showPlayers.put(data.get(1).getPlayers().get(i).getName(), true);
         }
     }
 
+    /**
+     * This method is used to update the visibility hash map value accordingly.
+     * 
+     * @param playerName the player name for which the visibility has changed.
+     * @param show       indicates whether the player visuals should be seen or not.
+     */
     public void updateShowPlayersMap(String playerName, boolean show) {
         showPlayers.put(playerName, show);
     }
@@ -144,6 +171,16 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     }
 
+    /**
+     * This method is responsible to update the given player statistics according to
+     * the global variable of the currently selected frame based on various types of
+     * inputs or events.
+     * 
+     * The view model always refers to a specific index of the overall statistics
+     * that have been loaded from the file to properly display the relevant
+     * information on the underlying UI of the CBR Shooter visualizer.
+     * 
+     */
     public void setCurrentPlayerStatsByFrame() {
 
         // Cleaning up the table before new values are put into it
