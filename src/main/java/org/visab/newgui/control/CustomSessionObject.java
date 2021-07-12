@@ -49,7 +49,6 @@ public class CustomSessionObject extends GridPane {
     public CustomSessionObject(String gameName, String gameIconPath, UUID sessionId, String hostName, String ip,
             String sessionOpened, String sessionStatusType) {
 
-        
         this.gameNameValue = new Label(gameName);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
         this.openLiveViewButton = new Button("Open Live View");
@@ -100,7 +99,7 @@ public class CustomSessionObject extends GridPane {
         this.add(sessionClosedLabel, 0, 7);
         this.add(this.sessionClosedValue, 1, 7);
         this.add(this.openLiveViewButton, 0, 8, 2, 1);
-        
+
         this.setBackgroundColorByStatus(sessionStatusType);
     }
 
@@ -113,14 +112,17 @@ public class CustomSessionObject extends GridPane {
     public void setBackgroundColorByStatus(String sessionStatusType) {
         switch (sessionStatusType) {
         case "active":
-            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: green; -fx-border-width: 10px;");
-           
+            this.setStyle(
+                    "-fx-border-style: solid hidden hidden hidden; -fx-border-color: green; -fx-border-width: 10px; -fx-border-radius: 0px;");
+
             break;
         case "canceled":
-            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: red; -fx-border-width: 10px;");
+            this.setStyle(
+                    "-fx-border-style: solid hidden hidden hidden; -fx-border-color: red; -fx-border-width: 10px; -fx-border-radius: 0px;");
             break;
         case "timeouted":
-            this.setStyle("-fx-border-style: solid hidden hidden hidden; -fx-border-color: grey; -fx-border-width: 10px;");
+            this.setStyle(
+                    "-fx-border-style: solid hidden hidden hidden; -fx-border-color: grey; -fx-border-width: 10px; -fx-border-radius: 0px;");
             break;
         }
     }

@@ -242,4 +242,5 @@
 	-fx-border-color:#12213a; 
 	-fx-border-width: 2; 
 	-fx-border-radius: 7;
+	-fx-background-radius: 10;
 }
