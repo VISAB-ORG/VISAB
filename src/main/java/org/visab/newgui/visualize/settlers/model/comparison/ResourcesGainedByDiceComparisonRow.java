@@ -21,4 +21,10 @@ public class ResourcesGainedByDiceComparisonRow extends SettlersComparisonRowBas
             playerValues.put(entry.getKey(), new SimpleObjectProperty<PlayerResources>(entry.getValue()));
     }
 
+    @Override
+    public void updateSeries(SettlersFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

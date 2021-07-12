@@ -36,7 +36,7 @@ import javafx.scene.chart.XYChart.Series;
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
-    
+
     private StringProperty yLabel = new SimpleStringProperty();
 
     @InjectScope
@@ -45,79 +45,84 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
-    private ObjectProperty<ComparisonRowBase<?>> selectedRow = new SimpleObjectProperty<>();
-
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
     private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
-    
+
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
-    
+
     private Command playerStatsChartCommand;
-    
+
     private Series<Double, Integer> statsScript = new Series<>();
     private Series<Double, Integer> statsCBR = new Series<>();
-    
-    private ObservableList<Series<Double, Integer>> playerStatsSeries = FXCollections.observableArrayList();
 
-    public ObservableList<Series<Double, Integer>> getPlayerStatsSeries() {
+    private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
+
+    public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }
 
-    public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
-        return this.selectedRow;
-    }
-    
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
     }
-    
+
     public StringProperty yLabelProperty() {
         return yLabel;
     }
 
     private void getShotsFired() {
         ArrayList<StatisticsDataStructure> stats;
-        
+
         for (var player : file.getPlayerInformation().keySet()) {
             stats = CBRShooterImplicator.shotsPerRound(player, file);
             for (var values : stats) {
                 var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-              newData.setYValue(values.getParameter());
-              newData.setXValue(values.getRound());
-              
-              if (player == "John Doe") {
-                  statsCBR.getData().add(newData);
-              } else {
-                  statsScript.getData().add(newData);
-              }
+                newData.setYValue(values.getParameter());
+                newData.setXValue(values.getRound());
+
+                if (player == "John Doe") {
+                    statsCBR.getData().add(newData);
+                } else {
+                    statsScript.getData().add(newData);
+                }
             }
-            
 
         }
 
     }
-    
+
     public Command playerStatsChartCommand() {
-        
-        if (statsCBR.getName() != null) {
-            statsCBR = new Series<Double, Integer>();
-            statsScript = new Series<Double, Integer>();
-            playerStatsSeries.clear();
+        // if (statsCBR.getName() != null) {
+        // statsCBR = new Series<Double, Integer>();
+        // statsScript = new Series<Double, Integer>();
+        // playerStatsSeries.clear();
+        // }
+        // getShotsFired();
+        // statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
+        // statsScript.setName(selectedStatistics.get().getRowDescription() + " Script
+        // Bot");
+
+        // playerStatsSeries.add(statsCBR);
+        // playerStatsSeries.add(statsScript);
+
+        // playerStatsChartCommand = runnableCommand(() -> {
+        // if (selectedStatistics != null) {
+        // yLabel.set(selectedStatistics.get().getRowDescription());
+        // }
+        // });
+        // return playerStatsChartCommand;
+        if (playerStatsChartCommand == null) {
+            playerStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedStatistics.get();
+                if (selectedRow != null) {
+                    selectedRow.updateSeries(file);
+                    playerStatsSeries = FXCollections.observableArrayList(selectedRow.getPlayerSeries().values());
+                    yLabel.set(selectedRow.getRowDescription());
+                }
+            });
         }
-        getShotsFired();
-        statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
-        statsScript.setName(selectedStatistics.get().getRowDescription() + " Script Bot");
-        
-        playerStatsSeries.add(statsCBR);
-        playerStatsSeries.add(statsScript);
-        
-        playerStatsChartCommand = runnableCommand(() -> {
-            if (selectedStatistics != null) {
-                yLabel.set(selectedStatistics.get().getRowDescription());
-            }
-        });
         return playerStatsChartCommand;
     }
+
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */
@@ -259,8 +264,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void updateComparisonStatistics() {
-        for (var row : comparisonStatistics)
+        for (var row : comparisonStatistics) {
             row.updateValues(file);
+        }
     }
 
     @Override

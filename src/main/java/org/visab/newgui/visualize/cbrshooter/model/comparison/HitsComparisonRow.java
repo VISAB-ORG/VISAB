@@ -35,4 +35,10 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
         return "";
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

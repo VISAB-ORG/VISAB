@@ -25,4 +25,10 @@ public class KillsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
         }
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

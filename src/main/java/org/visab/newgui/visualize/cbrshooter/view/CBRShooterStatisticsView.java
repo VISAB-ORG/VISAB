@@ -33,9 +33,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     LineChart<Double, Integer> playerKills;
-    
+
     @FXML
-    LineChart<Double, Integer> playerStats;
+    LineChart<Double, Double> playerStats;
 
     @FXML
     Label snapshotsPerSecond;
@@ -45,11 +45,12 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     private void handleChartButtonAction() {
-       viewModel.playerStatsChartCommand().execute();
-       playerStats.getYAxis().setLabel(viewModel.yLabelProperty().get());
-        
+        viewModel.playerStatsChartCommand().execute();
+        playerStats.setData(viewModel.getPlayerStatsSeries());
+
+        // playerStats.getYAxis().setLabel(viewModel.yLabelProperty().get());
     }
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
@@ -71,17 +72,18 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
+        // viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
 
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 
         playerKills.setData(viewModel.getPlayerKillsSeries());
-        
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
+
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
-        playerStats.setData(viewModel.getPlayerStatsSeries());
-        
+        // playerStats.setData(viewModel.getPlayerStatsSeries());
+
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {

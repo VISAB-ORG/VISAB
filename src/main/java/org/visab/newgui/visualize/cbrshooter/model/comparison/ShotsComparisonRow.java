@@ -25,4 +25,10 @@ public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
         }
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        
+        
+    }
+
 }
