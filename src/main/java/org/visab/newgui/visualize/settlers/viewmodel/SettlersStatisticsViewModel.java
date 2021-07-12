@@ -10,9 +10,11 @@ import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
+import org.visab.newgui.visualize.settlers.model.comparison.PlayerTypeComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
@@ -23,6 +25,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart.Series;
 
 public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<SettlersFile, SettlersStatistics> {
 
@@ -39,6 +42,8 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
     private List<String> playerNames;
     private ObjectProperty<ComparisonRowBase<?>> selectedRowProperty = new SimpleObjectProperty<>();
     private Map<String, ObservableList<Data>> planUsages;
+
+    private Map<String, Series<Integer, Number>> comparisonStatisticsSeries;
 
     /**
      * Called by javafx/mvvmfx once view is loaded - but before initialize in the
@@ -71,6 +76,7 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
 
         // Initialize comparison statistics
         comparisonStatistics = FXCollections.observableArrayList();
+        comparisonStatistics.add(new PlayerTypeComparisonRow());
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Road));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Village));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Town));
@@ -87,12 +93,21 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
             planOccuranceHelperMap.put(name, new PlayerPlanOccurance(name));
         }
 
-        // TODO:
+        comparisonStatisticsSeries = new HashMap<>();
+        for (String name : playerNames) {
+            var series = new Series<Integer, Number>();
+            comparisonStatisticsSeries.put(name, series);
+        }
     }
 
     private void updateComparisonStatistics(SettlersFile file) {
         for (var row : comparisonStatistics)
             row.updateValues(file);
+    }
+
+
+    private void updateComparisonStatisticsSeries(SettlersFile file) {
+        
     }
 
     private void updatePlanUsage(SettlersStatistics newStatistics) {
@@ -123,8 +138,8 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
 
     @Override
     public void onSessionClosed() {
-        // TODO Auto-generated method stub
-
+        liveSessionActiveProperty().set(false);
+        listener.removeViewModel(this);
     }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {

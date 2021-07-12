@@ -5,6 +5,7 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.ILiveStatisticsViewModel;
+import org.visab.newgui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
 
 /**
  * The ILiveViewable interface, that all live viewable SessionListeners have to
@@ -22,6 +23,8 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      * @param viewModel The ViewModel to add
      */
     void addViewModel(ILiveStatisticsViewModel<TStatistics> viewModel);
+
+    void removeViewModel(ILiveStatisticsViewModel<TStatistics> viewModel);
 
     /**
      * Returns the current (unfinished) IVISABFile.
@@ -46,4 +49,5 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      * Notifies the observing ViewModels that the session was closed.
      */
     void notifySessionClosed();
+
 }

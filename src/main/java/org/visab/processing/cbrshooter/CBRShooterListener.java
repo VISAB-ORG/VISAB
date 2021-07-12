@@ -105,4 +105,9 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     public IVISABFile getCurrentFile() {
         return file;
     }
+
+    @Override
+    public void removeViewModel(ILiveStatisticsViewModel<CBRShooterStatistics> viewModel) {
+        viewModels.remove(viewModel);
+    }
 }
