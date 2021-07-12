@@ -30,6 +30,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -90,6 +92,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
      * @param anchorPane the anchorpane where the grid pane should be added to.
      */
     public void initializeSessionGrid(AnchorPane anchorPane) {
+        ScrollPane scrollPane = new ScrollPane();
         GridPane sessionObjectGrid = new GridPane();
         sessionObjectGrid.setPadding(new Insets(10));
         sessionObjectGrid.setHgap(5);
@@ -125,6 +128,11 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         }
 
         anchorPane.getChildren().add(sessionObjectGrid);
+        scrollPane.setContent(anchorPane);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(false);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+
     }
 
     private Command openLiveViewCommand;
