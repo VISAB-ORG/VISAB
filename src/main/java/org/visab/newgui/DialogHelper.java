@@ -17,10 +17,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Window;
 
 // TODO: Include the style sheets here
 public class DialogHelper {
@@ -30,7 +29,7 @@ public class DialogHelper {
     // private Window parentWindow;
 
     // public void setParentWindow(Window parentWindow) {
-    //     this.parentWindow = parentWindow;
+    // this.parentWindow = parentWindow;
     // }
 
     /**
@@ -149,6 +148,24 @@ public class DialogHelper {
 
         var stage = new Stage();
         var scene = new Scene(view);
+        stage.setTitle(title);
+        stage.setScene(scene);
+
+        if (blockWindows)
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            double minHeight, double minWidth) {
+        var viewTuple = FluentViewLoader.fxmlView(viewType).load();
+        var view = viewTuple.getView();
+
+        var stage = new Stage();
+        var scene = new Scene(view);
+        stage.setMinWidth(minWidth);
+        stage.setMinHeight(minHeight);
         stage.setTitle(title);
         stage.setScene(scene);
 

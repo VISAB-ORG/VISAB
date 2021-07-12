@@ -164,7 +164,7 @@ public class HomeViewModel extends ViewModelBase {
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", true);
+                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", true, 400, 400);
             });
         }
 
