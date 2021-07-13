@@ -46,9 +46,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
-        playerStats.setData(viewModel.getPlayerStatsSeries());
-
-        // playerStats.getYAxis().setLabel(viewModel.yLabelProperty().get());
     }
 
     @Override
@@ -82,8 +79,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
-        // playerStats.setData(viewModel.getPlayerStatsSeries());
-
+        playerStats.setData(viewModel.getPlayerStatsSeries());
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {

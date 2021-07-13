@@ -91,31 +91,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     public Command playerStatsChartCommand() {
-        // if (statsCBR.getName() != null) {
-        // statsCBR = new Series<Double, Integer>();
-        // statsScript = new Series<Double, Integer>();
-        // playerStatsSeries.clear();
-        // }
-        // getShotsFired();
-        // statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
-        // statsScript.setName(selectedStatistics.get().getRowDescription() + " Script
-        // Bot");
-
-        // playerStatsSeries.add(statsCBR);
-        // playerStatsSeries.add(statsScript);
-
-        // playerStatsChartCommand = runnableCommand(() -> {
-        // if (selectedStatistics != null) {
-        // yLabel.set(selectedStatistics.get().getRowDescription());
-        // }
-        // });
-        // return playerStatsChartCommand;
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
                 var selectedRow = selectedStatistics.get();
                 if (selectedRow != null) {
                     selectedRow.updateSeries(file);
-                    playerStatsSeries = FXCollections.observableArrayList(selectedRow.getPlayerSeries().values());
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
                     yLabel.set(selectedRow.getRowDescription());
                 }
             });
@@ -267,6 +249,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         for (var row : comparisonStatistics) {
             row.updateValues(file);
         }
+
+        if (selectedStatistics.get() != null)
+            selectedStatistics.get().updateSeries(file);
     }
 
     @Override
