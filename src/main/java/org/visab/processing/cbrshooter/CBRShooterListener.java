@@ -28,11 +28,8 @@ import org.visab.workspace.config.ConfigManager;
  * @author moritz
  *
  */
-public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage>
+public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterMapImage>
         implements ILiveViewable<CBRShooterStatistics> {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
 
     private CBRShooterFile file;
 
@@ -77,14 +74,13 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-    public void onSessionStarted(IMetaInformation metaInformation) {
-        var concrete = (CBRShooterMetaInformation) metaInformation;
+    public void onSessionStarted(CBRShooterMetaInformation metaInformation) {
         file = new CBRShooterFile();
-        file.setGameSpeed(concrete.getGameSpeed());
-        file.setMapRectangle(concrete.getMapRectangle());
-        file.setPlayerCount(concrete.getPlayerCount());
-        file.getPlayerInformation().putAll(concrete.getPlayerInformation());
-        file.getWeaponInformation().addAll(concrete.getWeaponInformation());
+        file.setGameSpeed(metaInformation.getGameSpeed());
+        file.setMapRectangle(metaInformation.getMapRectangle());
+        file.setPlayerCount(metaInformation.getPlayerCount());
+        file.getPlayerInformation().putAll(metaInformation.getPlayerInformation());
+        file.getWeaponInformation().addAll(metaInformation.getWeaponInformation());
     }
 
     @Override

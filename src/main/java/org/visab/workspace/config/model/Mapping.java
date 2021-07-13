@@ -1,11 +1,8 @@
 package org.visab.workspace.config.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Pojo representing a mapping configuration. Each of these fields has the fully
- * qualifying name of the class to initialize / deserialize into as their value.
+ * qualifying name of a java class as their value.
  */
 public class Mapping {
 

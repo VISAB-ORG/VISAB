@@ -33,8 +33,6 @@ public class Workspace {
 
     private DatabaseManager databaseManager = new DatabaseManager();
 
-    private LogManager logManager = new LogManager();
-
     /**
      * For singelton
      */
@@ -47,10 +45,6 @@ public class Workspace {
 
     public DatabaseManager getDatabaseManager() {
         return this.databaseManager;
-    }
-
-    public LogManager getLogManager() {
-        return this.logManager;
     }
 
 }

@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class SessionListenerAdministration {
 
-    private static List<ISessionListener<?>> activeListeners = new ArrayList<>();
+    private static List<ISessionListener> activeListeners = new ArrayList<>();
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerAdministration.class);
@@ -28,7 +28,7 @@ public final class SessionListenerAdministration {
      * 
      * @param listener The listener to add
      */
-    protected static void addListener(ISessionListener<?> listener) {
+    protected static void addListener(ISessionListener listener) {
         if (listener != null)
             activeListeners.add(listener);
     }
@@ -40,8 +40,8 @@ public final class SessionListenerAdministration {
      * 
      * @return A copy of the currently active listeners
      */
-    public static List<ISessionListener<?>> getActiveListeners() {
-        return new ArrayList<ISessionListener<?>>(activeListeners);
+    public static List<ISessionListener> getActiveListeners() {
+        return new ArrayList<ISessionListener>(activeListeners);
     }
 
     /**
@@ -50,7 +50,7 @@ public final class SessionListenerAdministration {
      * @param game The game of which to get the listeners
      * @return The list of listeners
      */
-    public static List<ISessionListener<?>> getActiveListeners(String game) {
+    public static List<ISessionListener> getActiveListeners(String game) {
         return activeListeners.stream().filter(x -> x.getGame() == game).collect(Collectors.toList());
     }
 
@@ -60,7 +60,7 @@ public final class SessionListenerAdministration {
      * @param sessionId The sessionId to get the listener for
      * @return The session listener if found, null else
      */
-    public static ISessionListener<?> getSessionListener(UUID sessionId) {
+    public static ISessionListener getSessionListener(UUID sessionId) {
         for (var listener : activeListeners) {
             if (listener.getSessionId().equals(sessionId))
                 return listener;
@@ -75,7 +75,7 @@ public final class SessionListenerAdministration {
      * 
      * @param listener The listener to remove
      */
-    protected static void removeListener(ISessionListener<?> listener) {
+    protected static void removeListener(ISessionListener listener) {
         activeListeners.remove(listener);
     }
 }

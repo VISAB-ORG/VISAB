@@ -28,7 +28,8 @@ import org.visab.workspace.Workspace;
  * @author moritz
  *
  */
-public abstract class SessionListenerBase<TStatistics extends IStatistics> implements ISessionListener<TStatistics> {
+public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStatistics extends IStatistics>
+        implements ISessionListener {
 
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
@@ -94,8 +95,7 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     protected LocalTime lastReceived = LocalTime.now();
 
     /**
-     * The logger. TODO: Check if this shows the inheriting class (I believe it
-     * should).
+     * The logger.
      */
     protected Logger logger = LogManager.getLogger(this.getClass());
 
@@ -144,13 +144,10 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
     }
 
     @Override
-    public abstract void onSessionClosed();
-
-    @Override
-    public abstract void onSessionStarted(IMetaInformation metaInformation);
-
-    @Override
-    public abstract void processStatistics(TStatistics statistics);
+    @SuppressWarnings("unchecked")
+    public void initialize(IMetaInformation metaInformation) {
+        onSessionStarted((TMeta) metaInformation);
+    }
 
     /**
      * Writes to the log using a prefix containing session information.
@@ -163,4 +160,26 @@ public abstract class SessionListenerBase<TStatistics extends IStatistics> imple
 
         logger.log(logLevel, prefix + message);
     }
+
+    /**
+     * Called when the listeners corresponding session is closed.
+     */
+    protected abstract void onSessionClosed();
+
+    /**
+     * Called when the listeners is started.
+     * 
+     * @param metaInformation The meta information object using which the session
+     *                        was opened.
+     */
+    protected abstract void onSessionStarted(TMeta metaInformation);
+
+    /**
+     * Called upon reciving statistics for the current session. Is only called if
+     * the received Statistics object was not null.
+     * 
+     * @param statistics The received TStatistics object
+     */
+    protected abstract void processStatistics(TStatistics statistics);
+
 }
