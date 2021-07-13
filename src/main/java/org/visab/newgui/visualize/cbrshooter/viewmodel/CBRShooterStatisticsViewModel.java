@@ -26,6 +26,8 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -128,6 +130,20 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
+
+        // Selected comparison row item changed
+        selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
+            @Override
+            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable,
+                    ComparisonRowBase<?> oldValue, ComparisonRowBase<?> newValue) {
+                if (newValue != null) {
+                    newValue.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(newValue.getPlayerSeries().values());
+                    yLabel.set(newValue.getRowDescription());
+                }
+            }
+        });
     }
 
     public List<String> getPlayerNames() {
