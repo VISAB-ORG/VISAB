@@ -37,8 +37,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
-    private StringProperty yLabel = new SimpleStringProperty();
-
     @InjectScope
     VisualizeScope scope;
 
@@ -51,9 +49,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
 
     private Command playerStatsChartCommand;
-
-    private Series<Double, Integer> statsScript = new Series<>();
-    private Series<Double, Integer> statsCBR = new Series<>();
 
     private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
 
@@ -69,26 +64,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return yLabel;
     }
 
-    private void getShotsFired() {
-        ArrayList<StatisticsDataStructure> stats;
-
-        for (var player : file.getPlayerInformation().keySet()) {
-            stats = CBRShooterImplicator.shotsPerRound(player, file);
-            for (var values : stats) {
-                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-                newData.setYValue(values.getParameter());
-                newData.setXValue(values.getRound());
-
-                if (player == "John Doe") {
-                    statsCBR.getData().add(newData);
-                } else {
-                    statsScript.getData().add(newData);
-                }
-            }
-
-        }
-
-    }
+    private StringProperty yLabel = new SimpleStringProperty();
 
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
@@ -130,12 +106,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void initializeDataStructures(CBRShooterFile file) {
-        killsScript.setName("Kills Script Bot");
-        killsCBR.setName("Kills CBR Bot");
-
-        playerKillsSeries.add(killsCBR);
-        playerKillsSeries.add(killsScript);
-
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
@@ -158,10 +128,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
-
-        // for (var row : comparisonStatistics) {
-        // row.updateValues(file);
-        // }
     }
 
     public List<String> getPlayerNames() {
@@ -176,9 +142,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return planUsages.get(playerName);
     }
 
-    private Series<Double, Integer> killsScript = new Series<>();
-    private Series<Double, Integer> killsCBR = new Series<>();
-
     private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
 
     public ObservableList<Series<Double, Integer>> getPlayerKillsSeries() {
@@ -190,7 +153,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
         updatePlanUsage(newStatistics);
-        updatePlayerKills(newStatistics);
         updateComparisonStatistics();
     }
 
@@ -214,33 +176,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 data.pieValueProperty().bind(playerPlanTime.getTimeProperty(plan));
 
                 dataList.add(data);
-            }
-        }
-    }
-
-    private Map<String, Integer> lastKills = new HashMap<>();
-
-    private void updatePlayerKills(CBRShooterStatistics newStatistics) {
-        for (var player : newStatistics.getPlayers()) {
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals(ControlledBy.CBR);
-            var name = player.getName();
-
-            if (!lastKills.containsKey(name)) {
-                lastKills.put(name, 0);
-            }
-
-            var kills = player.getStatistics().getFrags();
-            if (lastKills.get(name) != kills) {
-                lastKills.put(name, kills);
-
-                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-                newData.setYValue(kills);
-                newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
-
-                if (isCbr)
-                    killsCBR.getData().add(newData);
-                else
-                    killsScript.getData().add(newData);
             }
         }
     }

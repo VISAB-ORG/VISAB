@@ -32,9 +32,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     CustomLabelPieChart planUsageTwo;
 
     @FXML
-    LineChart<Double, Integer> playerKills;
-
-    @FXML
     LineChart<Double, Double> playerStats;
 
     @FXML
@@ -69,17 +66,14 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        // viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
 
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 
-        playerKills.setData(viewModel.getPlayerKillsSeries());
-        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
-
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
         playerStats.setData(viewModel.getPlayerStatsSeries());
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {
