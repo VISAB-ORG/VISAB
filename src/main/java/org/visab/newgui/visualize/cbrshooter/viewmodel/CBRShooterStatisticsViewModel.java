@@ -26,6 +26,8 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -36,8 +38,6 @@ import javafx.scene.chart.XYChart.Series;
 public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
-    
-    private StringProperty yLabel = new SimpleStringProperty();
 
     @InjectScope
     VisualizeScope scope;
@@ -45,79 +45,44 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
-    private ObjectProperty<ComparisonRowBase<?>> selectedRow = new SimpleObjectProperty<>();
-
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
     private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
-    
-    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
-    
-    private Command playerStatsChartCommand;
-    
-    private Series<Double, Integer> statsScript = new Series<>();
-    private Series<Double, Integer> statsCBR = new Series<>();
-    
-    private ObservableList<Series<Double, Integer>> playerStatsSeries = FXCollections.observableArrayList();
 
-    public ObservableList<Series<Double, Integer>> getPlayerStatsSeries() {
+    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
+
+    private Command playerStatsChartCommand;
+
+    private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
+
+    public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }
 
-    public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
-        return this.selectedRow;
-    }
-    
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
     }
-    
+
     public StringProperty yLabelProperty() {
         return yLabel;
     }
 
-    private void getShotsFired() {
-        ArrayList<StatisticsDataStructure> stats;
-        
-        for (var player : file.getPlayerInformation().keySet()) {
-            stats = CBRShooterImplicator.shotsPerRound(player, file);
-            for (var values : stats) {
-                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-              newData.setYValue(values.getParameter());
-              newData.setXValue(values.getRound());
-              
-              if (player == "John Doe") {
-                  statsCBR.getData().add(newData);
-              } else {
-                  statsScript.getData().add(newData);
-              }
-            }
-            
+    private StringProperty yLabel = new SimpleStringProperty();
 
-        }
-
-    }
-    
     public Command playerStatsChartCommand() {
-        
-        if (statsCBR.getName() != null) {
-            statsCBR = new Series<Double, Integer>();
-            statsScript = new Series<Double, Integer>();
-            playerStatsSeries.clear();
+        if (playerStatsChartCommand == null) {
+            playerStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedStatistics.get();
+                if (selectedRow != null) {
+                    selectedRow.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
+                    yLabel.set(selectedRow.getRowDescription());
+                }
+            });
         }
-        getShotsFired();
-        statsCBR.setName(selectedStatistics.get().getRowDescription() + " CBR Bot");
-        statsScript.setName(selectedStatistics.get().getRowDescription() + " Script Bot");
-        
-        playerStatsSeries.add(statsCBR);
-        playerStatsSeries.add(statsScript);
-        
-        playerStatsChartCommand = runnableCommand(() -> {
-            if (selectedStatistics != null) {
-                yLabel.set(selectedStatistics.get().getRowDescription());
-            }
-        });
         return playerStatsChartCommand;
     }
+
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */
@@ -143,12 +108,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void initializeDataStructures(CBRShooterFile file) {
-        killsScript.setName("Kills Script Bot");
-        killsCBR.setName("Kills CBR Bot");
-
-        playerKillsSeries.add(killsCBR);
-        playerKillsSeries.add(killsScript);
-
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
@@ -172,9 +131,19 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
-        // for (var row : comparisonStatistics) {
-        // row.updateValues(file);
-        // }
+        // Selected comparison row item changed
+        selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
+            @Override
+            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable,
+                    ComparisonRowBase<?> oldValue, ComparisonRowBase<?> newValue) {
+                if (newValue != null) {
+                    newValue.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(newValue.getPlayerSeries().values());
+                    yLabel.set(newValue.getRowDescription());
+                }
+            }
+        });
     }
 
     public List<String> getPlayerNames() {
@@ -189,9 +158,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return planUsages.get(playerName);
     }
 
-    private Series<Double, Integer> killsScript = new Series<>();
-    private Series<Double, Integer> killsCBR = new Series<>();
-
     private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
 
     public ObservableList<Series<Double, Integer>> getPlayerKillsSeries() {
@@ -203,7 +169,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
         updatePlanUsage(newStatistics);
-        updatePlayerKills(newStatistics);
         updateComparisonStatistics();
     }
 
@@ -231,36 +196,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
     }
 
-    private Map<String, Integer> lastKills = new HashMap<>();
-
-    private void updatePlayerKills(CBRShooterStatistics newStatistics) {
-        for (var player : newStatistics.getPlayers()) {
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals(ControlledBy.CBR);
-            var name = player.getName();
-
-            if (!lastKills.containsKey(name)) {
-                lastKills.put(name, 0);
-            }
-
-            var kills = player.getStatistics().getFrags();
-            if (lastKills.get(name) != kills) {
-                lastKills.put(name, kills);
-
-                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-                newData.setYValue(kills);
-                newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
-
-                if (isCbr)
-                    killsCBR.getData().add(newData);
-                else
-                    killsScript.getData().add(newData);
-            }
-        }
-    }
-
     private void updateComparisonStatistics() {
-        for (var row : comparisonStatistics)
+        for (var row : comparisonStatistics) {
             row.updateValues(file);
+        }
+
+        if (selectedStatistics.get() != null)
+            selectedStatistics.get().updateSeries(file);
     }
 
     @Override

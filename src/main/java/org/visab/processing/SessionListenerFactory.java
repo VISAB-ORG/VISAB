@@ -46,7 +46,7 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
         var newListener = DynamicInstatiator.instantiateSessionListener(metaInformation.getGame(), sessionId);
         SessionListenerAdministration.addListener(newListener);
         // Notify the listener that the session started
-        newListener.onSessionStarted(metaInformation);
+        newListener.initialize(metaInformation);
     }
 
     @Override

@@ -32,10 +32,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     CustomLabelPieChart planUsageTwo;
 
     @FXML
-    LineChart<Double, Integer> playerKills;
-    
-    @FXML
-    LineChart<Double, Integer> playerStats;
+    LineChart<Double, Double> playerStats;
 
     @FXML
     Label snapshotsPerSecond;
@@ -45,11 +42,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     private void handleChartButtonAction() {
-       viewModel.playerStatsChartCommand().execute();
-       playerStats.getYAxis().setLabel(viewModel.yLabelProperty().get());
-        
+        viewModel.playerStatsChartCommand().execute();
     }
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
@@ -71,17 +66,14 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
 
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 
-        playerKills.setData(viewModel.getPlayerKillsSeries());
-        
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
         playerStats.setData(viewModel.getPlayerStatsSeries());
-        
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {

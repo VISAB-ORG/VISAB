@@ -25,14 +25,6 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <LineChart fx:id="playerKills" title="Player Kills">
-            <xAxis>
-                <NumberAxis label="Seconds" side="bottom" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis label="Kills" side="left" />
-            </yAxis>
-        </LineChart>
         <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
         <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">

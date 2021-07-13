@@ -25,4 +25,10 @@ public class MovementComparisonRow extends CBRShooterComparisonRowBase<DoublePro
         }
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
