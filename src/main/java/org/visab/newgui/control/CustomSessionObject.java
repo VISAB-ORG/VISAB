@@ -51,7 +51,14 @@ public class CustomSessionObject extends GridPane {
 
         this.gameNameValue = new Label(gameName);
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));
-        this.openLiveViewButton = new Button("Open Live View");
+        String viewDescription;
+        
+        if (sessionStatusType.equals("active")) {
+        	viewDescription="Open Live View";
+        } else {
+        	viewDescription="Visualize";
+        }
+        this.openLiveViewButton = new Button(viewDescription);
         this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -125,5 +132,6 @@ public class CustomSessionObject extends GridPane {
                     "-fx-border-style: solid hidden hidden hidden; -fx-border-color: grey; -fx-border-width: 10px; -fx-border-radius: 0px;");
             break;
         }
-    }
+    }   
+    
 }
