@@ -12,6 +12,7 @@ import org.visab.globalmodel.cbrshooter.PlayerInformation;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
 import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -24,9 +25,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -49,7 +53,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
     private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
     private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
-    private ObservableList<ImageView> mapElements = FXCollections.observableArrayList();
+    private ObservableList<Node> mapElements = FXCollections.observableArrayList();
 
     private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
     private SimpleStringProperty roundTimeProperty = new SimpleStringProperty();
@@ -62,7 +66,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private HashMap<String, Boolean> showPlayers = new HashMap<String, Boolean>();
 
     // For dynamic player amount we need a flexible map to store visuals in
-    private HashMap<String, HashMap<String, ImageView>> playerVisuals = new HashMap<String, HashMap<String, ImageView>>();
+    private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -72,6 +76,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private int selectedFrame;
 
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
+
+    // Viewmodel always has a reference to the statistics of the current stat
+    private CBRShooterStatistics frameBasedStats;
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
@@ -86,9 +93,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Load data from the scopes file which is initialized after VISUALIZE
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
+        frameBasedStats = data.get(0);
 
         // Dynamically map visuals for given player amount
         initializePlayerVisuals();
+
+        initializeMapView();
 
         initializeShowPlayers();
 
@@ -106,8 +116,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         frameSliderTickUnitProperty.set(tickUnit);
 
-        System.out.println("Viewmodel call");
-        drawElementsOnMap();
+        updateMapElements();
     }
 
     /**
@@ -117,16 +126,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializePlayerVisuals() {
-        List<PlayerInformation> playerInfos = data.get(1).getPlayers();
+        List<PlayerInformation> playerInfos = frameBasedStats.getPlayers();
 
         for (int i = 0; i < playerInfos.size(); i++) {
-            HashMap<String, ImageView> playerSpecificImageViews = new HashMap<String, ImageView>();
 
             // TODO: Currently static coding, but it proves the concept - Changes to
             // ConfigManager mandatory to make it really dynamic
             ImageView playerIcon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "scriptBot.png"));
             ImageView playerPlanChange = new ImageView(new Image(ConfigManager.IMAGE_PATH + "changePlan.png"));
             ImageView playerDeath = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deathScript.png"));
+
+            // TODO: Add random color provision
+            Color color = Color.GREEN;
 
             playerIcon.setFitHeight(16);
             playerIcon.setFitWidth(16);
@@ -135,12 +146,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerDeath.setFitHeight(16);
             playerDeath.setFitWidth(16);
 
-            // For each player (referred by name) you can retrieve a specified image view
-            playerSpecificImageViews.put("playerIcon", playerIcon);
-            playerSpecificImageViews.put("playerPlanChange", playerPlanChange);
-            playerSpecificImageViews.put("playerDeath", playerDeath);
-
-            playerVisuals.put(playerInfos.get(i).getName(), playerSpecificImageViews);
+            PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, color);
+            playerVisualsMap.put(playerInfos.get(i).getName(), playerVisuals);
 
         }
     }
@@ -153,8 +160,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializeShowPlayers() {
-        for (int i = 0; i < data.get(1).getPlayers().size(); i++) {
-            showPlayers.put(data.get(1).getPlayers().get(i).getName(), true);
+        for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
+            showPlayers.put(frameBasedStats.getPlayers().get(i).getName(), true);
         }
     }
 
@@ -181,7 +188,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public void updateCurrentGameStatsByFrame() {
 
         // This object holds all information that is available
-        CBRShooterStatistics frameBasedStats = data.get(selectedFrame);
+        frameBasedStats = data.get(selectedFrame);
 
         // First, update data that is applicable for every player in the game
         totalTimeProperty.set(String.valueOf(frameBasedStats.getTotalTime()));
@@ -209,7 +216,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Update table with current stats based on the selected frame
         for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
             PlayerDataRow row = new PlayerDataRow(frameBasedStats.getPlayers().get(i));
-            row.setPlayerVisual(playerVisuals.get(row.getName()).get("playerIcon"));
+            row.setPlayerVisual(playerVisualsMap.get(row.getName()).getPlayerIcon());
             row.getShowCheckBox().setSelected(showPlayers.get(row.getName()));
 
             // Custom event handler that is capable of mapping the checkbox correctly
@@ -246,59 +253,66 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
     }
 
-    /**
-     * This method directly accesses the draw pane of the replay view and puts the
-     * necessary elements on it to the correct places.
-     * 
-     */
-    public void drawElementsOnMap() {
-        System.out.println("Draw elements start");
-        ObservableList<ImageView> mapElementList = FXCollections.observableArrayList();
+    private void initializeMapView() {
+
+        // Map should always be contained in the elements exactly as it is
         ImageView map = new ImageView(new Image(ConfigManager.IMAGE_PATH + "fps_map.png"));
         map.setX(41);
         map.setY(143);
         map.setFitHeight(550);
         map.setFitWidth(550);
 
-        ImageView death = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deadCBR.png"));
-        death.setX(41);
-        death.setY(143);
-        death.setFitHeight(50);
-        death.setFitWidth(50);
-        death.setViewOrder(-1);
+        // Putting one level higher, so it is always in the background
+        map.setViewOrder(1);
 
-        CBRShooterStatistics currentStats = data.get(selectedFrame);
-        for (PlayerInformation playerInfo : currentStats.getPlayers()) {
+        // First add the fixed items to the replay view
+        ImageView health = new ImageView(new Image(ConfigManager.IMAGE_PATH + "healthContainer.png"));
+        health.setX(170);
+        health.setY(170);
+        health.setFitHeight(16);
+        health.setFitWidth(16);
 
-            ImageView playerIcon = playerVisuals.get(playerInfo.getName()).get("playerIcon");
+        ImageView ammu = new ImageView(new Image(ConfigManager.IMAGE_PATH + "ammuContainer.png"));
+        ammu.setX(80);
+        ammu.setY(300);
+        ammu.setFitHeight(16);
+        ammu.setFitWidth(16);
 
-            // Calculate relative coordinates
+        ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "weapon.png"));
+        weapon.setX(60);
+        weapon.setY(250);
+        weapon.setFitHeight(16);
+        weapon.setFitWidth(16);
 
-            // X = 41 + 550 = 591
-            // Y = 143 + 550 = 693
-            var relativeX = 41 + 591 * (playerInfo.getPosition().getX() / 100);
-            var relativeY = 143 + 693 * (playerInfo.getPosition().getY() / 100);
+        // Then add the players dynamically, because there can be any amount
+        for (PlayerInformation currentPlayers : frameBasedStats.getPlayers()) {
+            ImageView player = new ImageView(new Image(ConfigManager.IMAGE_PATH + "cbrBot.png"));
+            player.setX(41 + currentPlayers.getPosition().getX());
+            player.setY(143);
+            player.setFitHeight(16);
+            player.setFitWidth(16);
 
-            System.out.println("Position X ingame: " + playerInfo.getPosition().getX());
-            System.out.println("Position Y ingame: " + playerInfo.getPosition().getY());
+            // TODO: How to handle this?
+            Path playerPath = new Path();
+            playerPath.setStroke(Color.GREEN);
 
-            System.out.println("Relative X: " + relativeX);
-            System.out.println("Relative Y: " + relativeY);
-
-            playerIcon.setX(relativeX);
-            playerIcon.setY(relativeY);
-            playerIcon.setVisible(showPlayers.get(playerInfo.getName()));
-            playerIcon.setViewOrder(-1);
-
-            System.out.println("Adding image to drawpane, visible: " + showPlayers.get(playerInfo.getName()));
-
-            mapElementList.add(playerIcon);
+            mapElements.add(player);
         }
 
-        mapElementList.add(death);
-        mapElementList.add(map);
-        mapElements = mapElementList;
-        System.out.println("Draw elements end");
+        mapElements.add(map);
+        mapElements.add(health);
+        mapElements.add(weapon);
+        mapElements.add(ammu);
+
+    }
+
+    /**
+     * This method directly accesses the draw pane of the replay view and puts the
+     * necessary elements on it to the correct places.
+     * 
+     */
+    private void updateMapElements() {
+
     }
 
     // --- Command methods ---
@@ -311,8 +325,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                 @Override
                 public void run() {
                     // Iterate over frames and constantly update data
-                    System.out
-                            .println("Starting play data loop with boundaries: " + selectedFrame + " - " + data.size());
                     for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
                             // Always hold the update UI information
@@ -321,17 +333,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                 @Override
                                 public void run() {
                                     updateCurrentGameStatsByFrame();
-                                    drawElementsOnMap();
+                                    updateMapElements();
                                     selectedFrame++;
                                     frameSliderValueProperty.set(selectedFrame);
                                 }
                             });
-                            System.out.println("i is: " + i + ", limit is: " + data.size());
                             // Sleeping time depends on the velocity sliders value
                             try {
                                 sleep((long) updateInterval);
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
                                 // Exception is thrown when the stop button interrupts this thread
                                 Thread.currentThread().interrupt();
                             }
@@ -363,7 +373,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
             selectedFrame = frame;
-            System.out.println("Updating selected frame to : " + selectedFrame);
             updateCurrentGameStatsByFrame();
 
             // TODO: Also call the draw map function here
@@ -375,6 +384,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public SimpleIntegerProperty getFrameSliderMaxProperty() {
         return frameSliderMaxProperty;
+    }
+
+    public int getSelectedFrame() {
+        return selectedFrame;
     }
 
     public void setFrameSliderProperty(SimpleIntegerProperty frameSliderMaxProperty) {
@@ -405,11 +418,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         this.currentPlayerStats = currentPlayerStats;
     }
 
-    public ObservableList<ImageView> getMapElements() {
+    public ObservableList<Node> getMapElements() {
         return mapElements;
     }
 
-    public void setMapElements(ObservableList<ImageView> mapElements) {
+    public void setMapElements(ObservableList<Node> mapElements) {
         this.mapElements = mapElements;
     }
 
