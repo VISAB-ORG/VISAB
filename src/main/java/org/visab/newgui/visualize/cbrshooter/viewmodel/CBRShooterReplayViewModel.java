@@ -81,7 +81,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Default update interval of 1 second
         updateInterval = 1000;
 
-        selectedFrame = 1;
+        selectedFrame = 0;
 
         // Load data from the scopes file which is initialized after VISUALIZE
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
@@ -95,7 +95,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         updateCurrentGameStatsByFrame();
 
         // Make the frame sliders values always reasonable according to shooter file
-        frameSliderMaxProperty.set(data.size());
+        frameSliderMaxProperty.set(data.size() - 1);
 
         var tickUnit = data.size() / 10;
 
@@ -313,8 +313,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     // Iterate over frames and constantly update data
                     System.out
                             .println("Starting play data loop with boundaries: " + selectedFrame + " - " + data.size());
-                    var startPoint = selectedFrame;
-                    for (int i = startPoint; i < data.size() - 1; i++) {
+                    for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
                             // Always hold the update UI information
                             // This way is necessary, because UI changes are not allowed from another thread
@@ -324,7 +323,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                     updateCurrentGameStatsByFrame();
                                     drawElementsOnMap();
                                     selectedFrame++;
-                                    frameSliderValueProperty.set(selectedFrame + 1);
+                                    frameSliderValueProperty.set(selectedFrame);
                                 }
                             });
                             System.out.println("i is: " + i + ", limit is: " + data.size());
@@ -363,7 +362,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
-            selectedFrame = frame - 1;
+            selectedFrame = frame;
             System.out.println("Updating selected frame to : " + selectedFrame);
             updateCurrentGameStatsByFrame();
 

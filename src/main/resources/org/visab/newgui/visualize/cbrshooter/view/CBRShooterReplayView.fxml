@@ -22,7 +22,7 @@
          <font>
             <Font size="28.0" />
          </font></Label>
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="1.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="0.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
       <Label fx:id="frameLabel" layoutX="716.0" layoutY="391.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
