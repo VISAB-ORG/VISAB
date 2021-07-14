@@ -311,7 +311,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                 @Override
                 public void run() {
                     // Iterate over frames and constantly update data
-                    for (int i = selectedFrame; i < data.size(); i++) {
+                    System.out
+                            .println("Starting play data loop with boundaries: " + selectedFrame + " - " + data.size());
+                    var startPoint = selectedFrame;
+                    for (int i = startPoint; i < data.size() - 1; i++) {
                         if (!this.isInterrupted()) {
                             // Always hold the update UI information
                             // This way is necessary, because UI changes are not allowed from another thread
@@ -320,11 +323,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                 public void run() {
                                     updateCurrentGameStatsByFrame();
                                     drawElementsOnMap();
-                                    frameSliderValueProperty.set(selectedFrame);
+                                    selectedFrame++;
+                                    frameSliderValueProperty.set(selectedFrame + 1);
                                 }
                             });
-                            selectedFrame++;
-
+                            System.out.println("i is: " + i + ", limit is: " + data.size());
                             // Sleeping time depends on the velocity sliders value
                             try {
                                 sleep((long) updateInterval);
