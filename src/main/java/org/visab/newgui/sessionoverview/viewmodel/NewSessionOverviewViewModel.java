@@ -134,7 +134,9 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 }
 
                 anchorPane.getChildren().add(sessionObjectGrid);
+                
                 scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+                
                 scrollPane.setContent(anchorPane);
 
             });

@@ -64,7 +64,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" text="Dummies" onAction="#createDummySessions"/>
+                        <Button mnemonicParsing="false" onAction="#createDummySessions" text="Dummies" />
                           <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="Session Overview" HBox.hgrow="ALWAYS">
                               <font>
                                   <Font size="25.0" />
@@ -75,7 +75,7 @@
                           </Label>
                      </children>
                   </HBox>
-                      <ScrollPane fx:id="scrollPane" fitToHeight="true" maxWidth="850.0" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
+                      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefViewportWidth="600.0" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>

@@ -173,7 +173,6 @@ public class DialogHelper {
 
         if (blockWindows)
             stage.initModality(Modality.APPLICATION_MODAL);
-
         stage.show();
     }
 
