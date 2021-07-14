@@ -4,6 +4,7 @@ public class Rectangle {
 
     private int width;
     private int height;
+    private Vector2 topLeftAnchorPoint;
 
     public int getWidth() {
         return this.width;
@@ -19,6 +20,14 @@ public class Rectangle {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public Vector2 getTopLeftAnchorPoint() {
+        return topLeftAnchorPoint;
+    }
+
+    public void setTopLeftAnchorPoint(Vector2 topLeftAnchorPoint) {
+        this.topLeftAnchorPoint = topLeftAnchorPoint;
     }
 
 }
