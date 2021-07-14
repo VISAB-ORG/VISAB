@@ -24,6 +24,10 @@ public class PlayerVisuals {
         this.playerDeath = playerDeath;
         this.playerPlanChange = playerPlanChange;
         this.playerColor = playerColor;
+
+        // Default is false because they will only be shown if necessary
+        this.playerDeath.setVisible(false);
+        this.playerPlanChange.setVisible(false);
     }
 
     public ImageView getPlayerIcon() {

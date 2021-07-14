@@ -30,7 +30,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Path;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -93,7 +92,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Load data from the scopes file which is initialized after VISUALIZE
         CBRShooterFile file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
-        frameBasedStats = data.get(0);
+        updateCurrentGameStatsByFrame();
 
         // Dynamically map visuals for given player amount
         initializePlayerVisuals();
@@ -101,8 +100,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         initializeMapView();
 
         initializeShowPlayers();
-
-        updateCurrentGameStatsByFrame();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size() - 1);
@@ -284,25 +281,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         weapon.setFitHeight(16);
         weapon.setFitWidth(16);
 
-        // Then add the players dynamically, because there can be any amount
-        for (PlayerInformation currentPlayers : frameBasedStats.getPlayers()) {
-            ImageView player = new ImageView(new Image(ConfigManager.IMAGE_PATH + "cbrBot.png"));
-            player.setX(41 + currentPlayers.getPosition().getX());
-            player.setY(143);
-            player.setFitHeight(16);
-            player.setFitWidth(16);
-
-            // TODO: How to handle this?
-            Path playerPath = new Path();
-            playerPath.setStroke(Color.GREEN);
-
-            mapElements.add(player);
-        }
-
         mapElements.add(map);
         mapElements.add(health);
         mapElements.add(weapon);
         mapElements.add(ammu);
+
+        // Then add the players dynamically, because there can be any amount
+        for (String playerKey : playerVisualsMap.keySet()) {
+            playerVisualsMap.get(playerKey).getPlayerIcon();
+            mapElements.add(playerVisualsMap.get(playerKey).getPlayerIcon());
+            mapElements.add(playerVisualsMap.get(playerKey).getPlayerDeath());
+            mapElements.add(playerVisualsMap.get(playerKey).getPlayerPlanChange());
+        }
 
     }
 
