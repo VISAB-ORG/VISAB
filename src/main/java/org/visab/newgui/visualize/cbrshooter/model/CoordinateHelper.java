@@ -28,8 +28,6 @@ public class CoordinateHelper {
         // TODO: Logic in here does not function properly and just serves as a
         // placeholder
 
-        Vector2 relativePositioning = new Vector2();
-
         // Bullshit, just a placeholder to indicate planned logic
         var unityXDifference = mapRectangle.getTopLeftAnchorPoint().getX() - coordinatesUnity.getX();
         var unityYDifference = mapRectangle.getTopLeftAnchorPoint().getY() - coordinatesUnity.getY();
@@ -39,10 +37,7 @@ public class CoordinateHelper {
         var relativeX = panePositioning.getX() + percentageXDifference * width;
         var relativeY = panePositioning.getY() + percentageYDifference * height;
 
-        relativePositioning.setX(relativeX);
-        relativePositioning.setY(relativeY);
-
-        return relativePositioning;
+        return new Vector2(relativeX, relativeY);
     }
 
 }

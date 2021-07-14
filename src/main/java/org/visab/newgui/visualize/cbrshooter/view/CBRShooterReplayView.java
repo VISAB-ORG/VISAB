@@ -160,7 +160,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
 
-        drawPane.getChildren().setAll(viewModel.getMapElements());
+        drawPane.getChildren().setAll(viewModel.getMapElements().values());
     }
 
     // Dummy Handle Method for frame slider

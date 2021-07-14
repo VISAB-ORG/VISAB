@@ -36,6 +36,22 @@ public class PlayerVisuals {
         this.playerIcon.setVisible(false);
         this.playerDeath.setVisible(false);
         this.playerPlanChange.setVisible(false);
+        this.playerPath.setVisible(false);
+    }
+
+    public void show() {
+        this.playerIcon.setVisible(true);
+        this.playerDeath.setVisible(true);
+        this.playerPlanChange.setVisible(true);
+        this.playerPath.setVisible(true);
+    }
+
+    public boolean isVisible() {
+        if (this.playerIcon.isVisible() && this.playerPath.isVisible()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ImageView getPlayerIcon() {
