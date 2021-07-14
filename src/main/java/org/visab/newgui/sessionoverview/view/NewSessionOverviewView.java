@@ -33,6 +33,11 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
         viewModel.openLiveViewCommand().execute();
     }
 
+    @FXML
+    public void createDummySessions() {
+        viewModel.createDummySessionsCommand(this.scrollPane).execute();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.viewModel.initializeSessionGrid(this.scrollPane);

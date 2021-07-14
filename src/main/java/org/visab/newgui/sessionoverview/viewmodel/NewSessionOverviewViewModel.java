@@ -74,6 +74,8 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
     private Command closeSessionCommand;
 
+    private Command createDummySessionsCommand;
+
     public Command closeSessionCommand() {
         if (closeSessionCommand == null) {
             closeSessionCommand = runnableCommand(() -> {
@@ -83,6 +85,62 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         }
 
         return closeSessionCommand;
+    }
+
+    public Command createDummySessionsCommand(ScrollPane scrollPane) {
+        if (createDummySessionsCommand == null) {
+            createDummySessionsCommand = runnableCommand(() -> {
+
+                AnchorPane anchorPane = new AnchorPane();
+                GridPane sessionObjectGrid = new GridPane();
+                sessionObjectGrid.setPadding(new Insets(10));
+                sessionObjectGrid.setHgap(5);
+                sessionObjectGrid.setVgap(5);
+
+                // Used to calculate coordinates on which the session objects should be placed
+                gridColSize = 3;
+                var rowIterator = 0;
+                var colIterator = 0;
+
+                String status;
+
+                for (int i = 0; i < 8; i++) {
+
+                    if (i % 2 == 0) {
+                        status = "active";
+                    } else if (i % 3 == 0) {
+                        status = "timeouted";
+                    } else {
+                        status = "canceled";
+                    }
+
+                    var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
+
+                    // Customized JavaFX Gridpane which displays relevant session information
+                    CustomSessionObject sessionObject = new CustomSessionObject("DummyGame", logoPath, new UUID(0, 10),
+                            "localhost", "127.0.0.1", "Dummy clock time", status);
+
+                    sessionObject.setBackgroundColorByStatus(status);
+
+                    sessionObjectGrid.add(sessionObject, colIterator, rowIterator);
+
+                    colIterator++;
+
+                    // Once there the col size is reached, move on to the next row
+                    if (colIterator == gridColSize) {
+                        rowIterator++;
+                        colIterator = 0;
+                    }
+                }
+
+                anchorPane.getChildren().add(sessionObjectGrid);
+                scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+                scrollPane.setContent(anchorPane);
+
+            });
+        }
+
+        return createDummySessionsCommand;
     }
 
     /**
