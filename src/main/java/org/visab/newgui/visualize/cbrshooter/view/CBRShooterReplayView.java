@@ -176,8 +176,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         playerIcon.setY(10);
         playerIcon.setVisible(true);
 
-        drawPane.getChildren().add(playerIcon);
-        // drawPane.getChildren().setAll(viewModel.getMapElements());
+        drawPane.getChildren().setAll(viewModel.getMapElements());
     }
 
     // Dummy Handle Method for frame slider

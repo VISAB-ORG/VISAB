@@ -96,8 +96,17 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size());
-        frameSliderTickUnitProperty.set(data.size() / 10);
 
+        var tickUnit = data.size() / 10;
+
+        // Make sure it is at least 1,
+        if (tickUnit == 0) {
+            tickUnit = 1;
+        }
+
+        frameSliderTickUnitProperty.set(tickUnit);
+
+        System.out.println("Viewmodel call");
         drawElementsOnMap();
     }
 
@@ -243,26 +252,53 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     public void drawElementsOnMap() {
+        System.out.println("Draw elements start");
         ObservableList<ImageView> mapElementList = FXCollections.observableArrayList();
+        ImageView map = new ImageView(new Image(ConfigManager.IMAGE_PATH + "fps_map.png"));
+        map.setX(41);
+        map.setY(143);
+        map.setFitHeight(550);
+        map.setFitWidth(550);
+
+        ImageView death = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deadCBR.png"));
+        death.setX(41);
+        death.setY(143);
+        death.setFitHeight(50);
+        death.setFitWidth(50);
+        death.setViewOrder(-1);
 
         CBRShooterStatistics currentStats = data.get(selectedFrame);
         for (PlayerInformation playerInfo : currentStats.getPlayers()) {
 
             ImageView playerIcon = playerVisuals.get(playerInfo.getName()).get("playerIcon");
 
-            playerIcon.setScaleX(0.07);
-            playerIcon.setScaleY(0.07);
-            playerIcon.setRotate(+45.0);
-            playerIcon.setX(playerInfo.getPosition().getX());
-            playerIcon.setY(playerInfo.getPosition().getY());
+            // Calculate relative coordinates
+
+            // X = 41 + 550 = 591
+            // Y = 143 + 550 = 693
+            var relativeX = 41 + 591 * (playerInfo.getPosition().getX() / 100);
+            var relativeY = 143 + 693 * (playerInfo.getPosition().getY() / 100);
+
+            System.out.println("Position X ingame: " + playerInfo.getPosition().getX());
+            System.out.println("Position Y ingame: " + playerInfo.getPosition().getY());
+
+            System.out.println("Relative X: " + relativeX);
+            System.out.println("Relative Y: " + relativeY);
+
+            playerIcon.setX(relativeX);
+            playerIcon.setY(relativeY);
             playerIcon.setVisible(showPlayers.get(playerInfo.getName()));
+            playerIcon.setViewOrder(-1);
 
             System.out.println("Adding image to drawpane, visible: " + showPlayers.get(playerInfo.getName()));
 
             mapElementList.add(playerIcon);
         }
 
+        mapElementList.add(death);
+        mapElementList.add(map);
         mapElements = mapElementList;
+        System.out.println("Draw elements end");
     }
 
     // --- Command methods ---
@@ -293,6 +329,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             try {
                                 sleep((long) updateInterval);
                             } catch (InterruptedException e) {
+                                e.printStackTrace();
                                 // Exception is thrown when the stop button interrupts this thread
                                 Thread.currentThread().interrupt();
                             }
@@ -323,7 +360,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
-            selectedFrame = frame;
+            selectedFrame = frame - 1;
+            System.out.println("Updating selected frame to : " + selectedFrame);
             updateCurrentGameStatsByFrame();
 
             // TODO: Also call the draw map function here
