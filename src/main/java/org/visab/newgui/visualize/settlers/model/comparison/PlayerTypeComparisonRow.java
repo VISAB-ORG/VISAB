@@ -20,4 +20,10 @@ public class PlayerTypeComparisonRow extends SettlersComparisonRowBase<StringPro
         }
     }
 
+    @Override
+    public void updateSeries(SettlersFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
