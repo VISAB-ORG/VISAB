@@ -5,20 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.SimpleObjectIdResolver;
-
-import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
-import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -26,9 +20,13 @@ import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
@@ -43,14 +41,29 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
-    private ObjectProperty<ComparisonRowBase<?>> selectedRow = new SimpleObjectProperty<>();
-
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
     private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
 
-    public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
-        return this.selectedRow;
+    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
+
+    private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
+
+    // Set in command on show stats button click
+    private ComparisonRowBase<?> graphComparisonRow;
+
+    public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
+        return playerStatsSeries;
     }
+
+    public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
+        return selectedStatistics;
+    }
+
+    public StringProperty yLabelProperty() {
+        return yLabel;
+    }
+
+    private StringProperty yLabel = new SimpleStringProperty();
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
@@ -77,12 +90,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private void initializeDataStructures(CBRShooterFile file) {
-        killsScript.setName("Kills Script Bot");
-        killsCBR.setName("Kills CBR Bot");
-
-        playerKillsSeries.add(killsCBR);
-        playerKillsSeries.add(killsScript);
-
         // Add the player names
         playerNames.addAll(file.getPlayerInformation().keySet());
 
@@ -106,9 +113,24 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
-        // for (var row : comparisonStatistics) {
-        // row.updateValues(file);
-        // }
+
+        // TODO: Make it command again and set the graphComparisonRow 
+        // Selected comparison row item changed
+        selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
+            @Override
+            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable, ComparisonRowBase<?> oldRow,
+                    ComparisonRowBase<?> newRow) {
+                if (newRow != null) {
+                    newRow.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(newRow.getPlayerSeries().values());
+
+                    if (newRow.getRowDescription().equals("Kills")) {
+                    }
+                    yLabel.set(newRow.getRowDescription());
+                }
+            }
+        });
     }
 
     public List<String> getPlayerNames() {
@@ -123,9 +145,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return planUsages.get(playerName);
     }
 
-    private Series<Double, Integer> killsScript = new Series<>();
-    private Series<Double, Integer> killsCBR = new Series<>();
-
     private ObservableList<Series<Double, Integer>> playerKillsSeries = FXCollections.observableArrayList();
 
     public ObservableList<Series<Double, Integer>> getPlayerKillsSeries() {
@@ -137,7 +156,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
 
         updatePlanUsage(newStatistics);
-        updatePlayerKills(newStatistics);
         updateComparisonStatistics();
     }
 
@@ -165,36 +183,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
     }
 
-    private Map<String, Integer> lastKills = new HashMap<>();
-
-    private void updatePlayerKills(CBRShooterStatistics newStatistics) {
-        for (var player : newStatistics.getPlayers()) {
-            var isCbr = file.getPlayerInformation().get(player.getName()).equals(ControlledBy.CBR);
-            var name = player.getName();
-
-            if (!lastKills.containsKey(name)) {
-                lastKills.put(name, 0);
-            }
-
-            var kills = player.getStatistics().getFrags();
-            if (lastKills.get(name) != kills) {
-                lastKills.put(name, kills);
-
-                var newData = new javafx.scene.chart.LineChart.Data<Double, Integer>();
-                newData.setYValue(kills);
-                newData.setXValue(Double.valueOf(newStatistics.getTotalTime()));
-
-                if (isCbr)
-                    killsCBR.getData().add(newData);
-                else
-                    killsScript.getData().add(newData);
-            }
-        }
-    }
-
     private void updateComparisonStatistics() {
-        for (var row : comparisonStatistics)
+        for (var row : comparisonStatistics) {
             row.updateValues(file);
+        }
+
+        if (graphComparisonRow != null)
+            graphComparisonRow.updateSeries(file);
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.starter.DefaultFile;
+import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
 
@@ -12,7 +13,7 @@ import org.visab.processing.SessionListenerBase;
  * (added in settings) but there is no SessionListener implementation for them
  * yet.
  */
-public class DefaultSessionListener extends SessionListenerBase<DefaultStatistics> {
+public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInformation, DefaultStatistics> {
 
     private DefaultFile file;
 
@@ -26,7 +27,7 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultStatistic
     }
 
     @Override
-    public void onSessionStarted(IMetaInformation metaInformation) {
+    public void onSessionStarted(DefaultMetaInformation metaInformation) {
         file = new DefaultFile(game);
         // TODO: Do something with the meta information
     }

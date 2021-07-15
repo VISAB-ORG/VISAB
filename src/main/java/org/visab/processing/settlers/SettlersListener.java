@@ -28,11 +28,8 @@ import org.visab.workspace.config.ConfigManager;
  * @author leonr
  *
  */
-public class SettlersListener extends ReplaySessionListenerBase<SettlersStatistics, SettlersMapImage>
+public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
         implements ILiveViewable<SettlersStatistics> {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(SettlersListener.class);
 
     private SettlersFile file;
 
@@ -77,12 +74,11 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     }
 
     @Override
-    public void onSessionStarted(IMetaInformation metaInformation) {
+    public void onSessionStarted(SettlersMetaInformation metaInformation) {
         file = new SettlersFile();
-        var asSettler = (SettlersMetaInformation) metaInformation;
-        file.setMapRectangle(asSettler.getMapRectangle());
-        file.setPlayerCount(asSettler.getPlayerCount());
-        file.setPlayerInformation(asSettler.getPlayerInformation());
+        file.setMapRectangle(metaInformation.getMapRectangle());
+        file.setPlayerCount(metaInformation.getPlayerCount());
+        file.setPlayerInformation(metaInformation.getPlayerInformation());
     }
 
     @Override
@@ -102,5 +98,10 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersStatisti
     @Override
     public IVISABFile getCurrentFile() {
         return file;
+    }
+
+    @Override
+    public void removeViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+        viewModels.remove(viewModel);
     }
 }

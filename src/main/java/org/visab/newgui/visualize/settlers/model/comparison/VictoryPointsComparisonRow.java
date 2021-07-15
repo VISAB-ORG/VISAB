@@ -24,4 +24,10 @@ public class VictoryPointsComparisonRow extends SettlersComparisonRowBase<Intege
         }
     }
 
+    @Override
+    public void updateSeries(SettlersFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -129,14 +129,6 @@ public final class DynamicSerializer {
         }
     }
 
-    public static void main(String[] args) {
-        var dyna = new DynamicSerializer();
-        var json = "{\"creationDate\" : [ 2021, 5, 10, 18, 13, 52, 770199300 ],\"game\" : \"CBRShooter\"}";
-
-        var stats = DynamicSerializer.deserializeStatistics(json, "CBRShooter");
-
-    }
-
     /**
      * Attempts to deserialize a json string into an object of class T.
      * 

@@ -25,4 +25,10 @@ public class PlayerTypeComparisonRow extends CBRShooterComparisonRowBase<StringP
         }
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

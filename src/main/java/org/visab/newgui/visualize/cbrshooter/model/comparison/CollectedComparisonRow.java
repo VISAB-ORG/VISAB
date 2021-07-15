@@ -28,4 +28,9 @@ public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerP
         }
     }
 
+    @Override
+    public void updateSeries(CBRShooterFile file) {
+        
+    }
+
 }

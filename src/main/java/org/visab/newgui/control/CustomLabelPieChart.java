@@ -3,16 +3,9 @@ package org.visab.newgui.control;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 /**

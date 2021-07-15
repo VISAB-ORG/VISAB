@@ -14,7 +14,7 @@ import org.visab.globalmodel.IStatistics;
  * @author moritz
  *
  */
-public interface ISessionListener<TStatistics extends IStatistics> {
+public interface ISessionListener {
 
     /**
      * Returns the game of the listener.
@@ -44,25 +44,6 @@ public interface ISessionListener<TStatistics extends IStatistics> {
      */
     boolean isActive();
 
-    /**
-     * Called when the listeners corresponding session is closed.
-     */
-    void onSessionClosed();
-
-    /**
-     * Called when the listeners is started.
-     * 
-     * @param metaInformation The meta information object using which the session
-     *                        was opened.
-     */
-    void onSessionStarted(IMetaInformation metaInformation);
-
-    /**
-     * Called upon reciving statistics for the current session. Is only called if
-     * the received Statistics object was not null.
-     * 
-     * @param statistics The received TStatistics object
-     */
-    void processStatistics(TStatistics statistics);
+    void initialize(IMetaInformation metaInformation);
 
 }

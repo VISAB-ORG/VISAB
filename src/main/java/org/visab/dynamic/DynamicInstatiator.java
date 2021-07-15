@@ -28,14 +28,14 @@ public final class DynamicInstatiator {
      * @param sessionId The sessionId
      * @return A SessionListener instance if successful, null else
      */
-    public static ISessionListener<?> instantiateSessionListener(String game, UUID sessionId) {
+    public static ISessionListener instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getListener() != null)
             className = mapping.getListener();
 
-        ISessionListener<?> sessionListener = null;
+        ISessionListener sessionListener = null;
         if (className.isBlank()) {
             // Instantiate a default listener
             sessionListener = new DefaultSessionListener(game, sessionId);
@@ -45,9 +45,9 @@ public final class DynamicInstatiator {
                 logger.error("Couldent create instance of " + className);
             } else {
                 try {
-                    sessionListener = (ISessionListener<?>) instance;
+                    sessionListener = (ISessionListener) instance;
                 } catch (Exception e) {
-                    logger.error(StringFormat.niceString("Failed to cast instance of {0} to ISessionListener<?>.",
+                    logger.error(StringFormat.niceString("Failed to cast instance of {0} to ISessionListener.",
                             className));
                 }
             }
@@ -82,7 +82,7 @@ public final class DynamicInstatiator {
      * @param arguments The constructor arguments
      * @return An instance of the class if successful, null else
      */
-    public static Object instantiateClass(Class<?> class_, Object... arguments) {
+    public static Object instantiateClass(Class class_, Object... arguments) {
         if (class_ == null) {
             logger.info("Cant create an instance of null.");
             return null;
@@ -147,7 +147,7 @@ public final class DynamicInstatiator {
      *                  constructors of
      * @return A list of the constructors
      */
-    private static List<Constructor<?>> getConstructors(Class<?> class_) {
+    private static List<Constructor<?>> getConstructors(Class class_) {
         var constructors = new ArrayList<Constructor<?>>();
 
         try {
@@ -159,15 +159,6 @@ public final class DynamicInstatiator {
         }
 
         return constructors;
-    }
-
-    public static void main(String[] args) {
-        var cbrListenerName = "org.visab.processing.cbrshooter.CBRShooterListener";
-        var dyna = new DynamicInstatiator();
-
-        var listener = DynamicInstatiator.instantiateSessionListener("CBRShooter", UUID.randomUUID());
-
-        var uuid = listener.getSessionId();
     }
 
 }

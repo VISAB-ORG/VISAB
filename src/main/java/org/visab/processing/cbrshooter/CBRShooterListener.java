@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterMapImage;
+import org.visab.globalmodel.cbrshooter.CBRShooterMapImages;
 import org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
@@ -28,11 +28,9 @@ import org.visab.workspace.config.ConfigManager;
  * @author moritz
  *
  */
-public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStatistics, CBRShooterMapImage>
+public class CBRShooterListener
+        extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterMapImages>
         implements ILiveViewable<CBRShooterStatistics> {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(CBRShooterListener.class);
 
     private CBRShooterFile file;
 
@@ -77,19 +75,20 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     }
 
     @Override
-    public void onSessionStarted(IMetaInformation metaInformation) {
-        var concrete = (CBRShooterMetaInformation) metaInformation;
+    public void onSessionStarted(CBRShooterMetaInformation metaInformation) {
         file = new CBRShooterFile();
-        file.setGameSpeed(concrete.getGameSpeed());
-        file.setMapRectangle(concrete.getMapRectangle());
-        file.setPlayerCount(concrete.getPlayerCount());
-        file.getPlayerInformation().putAll(concrete.getPlayerInformation());
-        file.getWeaponInformation().addAll(concrete.getWeaponInformation());
+        file.setGameSpeed(metaInformation.getGameSpeed());
+        file.setMapRectangle(metaInformation.getMapRectangle());
+        file.setPlayerCount(metaInformation.getPlayerCount());
+        file.getPlayerInformation().putAll(metaInformation.getPlayerInformation());
+        file.getWeaponInformation().addAll(metaInformation.getWeaponInformation());
     }
 
     @Override
-    public void processImage(CBRShooterMapImage mapImage) {
-        // TODO Auto-generated method stub
+    public void processImage(CBRShooterMapImages mapImage) {
+        for (var entry : mapImage.getMoveableObjects().entrySet()) {
+            writeLog(Level.INFO, StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
+        }
     }
 
     @Override
@@ -104,5 +103,10 @@ public class CBRShooterListener extends ReplaySessionListenerBase<CBRShooterStat
     @Override
     public IVISABFile getCurrentFile() {
         return file;
+    }
+
+    @Override
+    public void removeViewModel(ILiveStatisticsViewModel<CBRShooterStatistics> viewModel) {
+        viewModels.remove(viewModel);
     }
 }

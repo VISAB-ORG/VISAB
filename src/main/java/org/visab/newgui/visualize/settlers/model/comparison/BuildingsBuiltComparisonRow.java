@@ -41,4 +41,10 @@ public class BuildingsBuiltComparisonRow extends SettlersComparisonRowBase<Integ
         }
     }
 
+    @Override
+    public void updateSeries(SettlersFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

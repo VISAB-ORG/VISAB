@@ -23,6 +23,8 @@ public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage ext
      */
     void addViewModel(ILiveReplayViewModel<TStatistics, TImage> viewModel);
 
+    void removeViewModel(ILiveReplayViewModel<TStatistics, TImage> viewModel);
+
     /**
      * Returns the images that were received.
      * 

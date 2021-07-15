@@ -32,7 +32,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     CustomLabelPieChart planUsageTwo;
 
     @FXML
-    LineChart<Double, Integer> playerKills;
+    LineChart<Double, Double> playerStats;
 
     @FXML
     Label snapshotsPerSecond;
@@ -45,6 +45,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
 
         // Initialize pie charts
+        // TODO: Do like in settlers
         if (viewModel.getPlayerNames().size() == 2) {
             var name = viewModel.getPlayerNames().get(0);
             planUsageOne.setData(viewModel.getPlanUsage(name));
@@ -61,12 +62,14 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-        viewModel.selectedRowProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
 
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 
-        playerKills.setData(viewModel.getPlayerKillsSeries());
+        // playerStats chart
+        viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
+        playerStats.setData(viewModel.getPlayerStatsSeries());
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
     }
 
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {

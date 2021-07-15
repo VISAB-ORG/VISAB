@@ -44,6 +44,7 @@ public class ConfigManager {
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_APPENDIX);
 
     private static final String SETTINGS_PATH = "settings.json";
+    private static final String DEFAULT_SETTINGS_PATH = "/configs/defaultSettings.json";
 
     private ConfigRepository repo = new ConfigRepository(CONFIG_PATH);
 
@@ -138,7 +139,7 @@ public class ConfigManager {
         UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         if (loadedSettings == null) {
             logger.info("User settings do not exist yet, loading defaults.");
-            String defaultSettings = VISABUtil.readResourceContents("/configs/defaultSettings.json");
+            String defaultSettings = VISABUtil.readResourceContents(DEFAULT_SETTINGS_PATH);
             repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
             loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         }
@@ -149,11 +150,19 @@ public class ConfigManager {
 
     /**
      * Saves the settings to the file system using the repository.
-     * 
-     * @param settingsObject The object of the settings.
      */
     public void saveSettings() {
         repo.saveSettings(this.settings, SETTINGS_PATH);
+    }
+    
+    /**
+     * Restores the default settings to the file system using the repository.
+     */
+    public void restoreDefaultSettings() {
+        String defaultSettings = VISABUtil.readResourceContents(DEFAULT_SETTINGS_PATH);
+        repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
+        UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        this.settings = loadedSettings;
     }
 
     /**
