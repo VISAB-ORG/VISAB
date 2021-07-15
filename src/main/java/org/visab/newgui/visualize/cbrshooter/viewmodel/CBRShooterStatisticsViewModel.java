@@ -48,6 +48,9 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
 
+    // Set in command on show stats button click
+    private ComparisonRowBase<?> graphComparisonRow;
+
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }
@@ -110,18 +113,19 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
+
+        // TODO: Make it command again and set the graphComparisonRow 
         // Selected comparison row item changed
         selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
             @Override
-            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable,
-                    ComparisonRowBase<?> oldRow, ComparisonRowBase<?> newRow) {
+            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable, ComparisonRowBase<?> oldRow,
+                    ComparisonRowBase<?> newRow) {
                 if (newRow != null) {
                     newRow.updateSeries(file);
                     playerStatsSeries.clear();
                     playerStatsSeries.addAll(newRow.getPlayerSeries().values());
 
                     if (newRow.getRowDescription().equals("Kills")) {
-                        
                     }
                     yLabel.set(newRow.getRowDescription());
                 }
@@ -184,8 +188,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
             row.updateValues(file);
         }
 
-        if (selectedStatistics.get() != null)
-            selectedStatistics.get().updateSeries(file);
+        if (graphComparisonRow != null)
+            graphComparisonRow.updateSeries(file);
     }
 
     @Override
