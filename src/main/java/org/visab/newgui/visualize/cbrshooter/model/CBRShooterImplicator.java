@@ -97,6 +97,27 @@ public final class CBRShooterImplicator {
 
         return accumulatedDeathsPerRoundPerPlayer;
     }
+    
+    public static ArrayList<StatisticsDataStructure> accumulatedKillsPerRound(String player, CBRShooterFile file) {
+        var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var round = 0;
+        var playerNumber = 1;
+        if (player.contains("Jane Doe")) {
+            playerNumber = 0;
+        }
+
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+
+            if (round < file.getStatistics().get(i).getRound()) {
+                accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure((double) round, 
+                        file.getStatistics().get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
+            }
+
+            round = file.getStatistics().get(i).getRound();
+        }
+
+        return accumulatedKillsPerRoundPerPlayer;
+    }
 
     public static boolean wasCollected(Collectable collectable, CBRShooterStatistics last,
             CBRShooterStatistics current) {
