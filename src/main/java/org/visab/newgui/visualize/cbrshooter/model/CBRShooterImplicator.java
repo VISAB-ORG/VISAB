@@ -2,9 +2,7 @@ package org.visab.newgui.visualize.cbrshooter.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
@@ -34,9 +32,30 @@ public final class CBRShooterImplicator {
             }
             maxAmmunition = currentAmmunition;
             currentAmmunition = file.getStatistics().get(i).getPlayers().get(playerNumber).getTotalAmmunition();
-
+            
             if (currentAmmunition < maxAmmunition) {
                 countShots += (maxAmmunition - currentAmmunition);
+            }
+
+            round = file.getStatistics().get(i).getRound();
+        }
+
+        return shotsPerRoundPerPlayer;
+    }
+    
+    public static ArrayList<StatisticsDataStructure> accumulatedDeathsPerRound(String player, CBRShooterFile file) {
+        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var round = 0;
+        var playerNumber = 0;
+        if (player.contains("Jane Doe")) {
+            playerNumber = 1;
+        }
+
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+
+            if (round < file.getStatistics().get(i).getRound()) {
+                shotsPerRoundPerPlayer.add(new StatisticsDataStructure((double) round, 
+                        file.getStatistics().get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
             round = file.getStatistics().get(i).getRound();
@@ -258,29 +277,9 @@ public final class CBRShooterImplicator {
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = shotsPerRound("John Doe", file);
-        var total = concludeShotsFired(file);
-        System.out.println("John Doe:");
-
-        Function<List<StatisticsDataStructure>, Integer> sumValues = l -> {
-            int sum = 0;
-            for (var data : l) {
-                sum += data.getParameter();
-            }
-            return sum;
-        };
-
-        System.out.println(total.get("John Doe") == sumValues.apply(test));
+        var test = accumulatedDeathsPerRound("John Doe", file);
         for (int i = 0; i < test.size(); i++) {
             System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
-        }
-
-        var t = shotsPerRound("Jane Doe", file);
-        System.out.println(total.get("Jane Doe") == sumValues.apply(t));
-
-        System.out.println("Jane Doe:");
-        for (int i = 0; i < test.size(); i++) {
-            System.out.println(t.get(i).getRound() + " : " + t.get(i).getParameter());
         }
 
         // var shots = concludeShotsFired(file);
