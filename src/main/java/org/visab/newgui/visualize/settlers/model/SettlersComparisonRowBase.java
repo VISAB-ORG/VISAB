@@ -14,7 +14,7 @@ public abstract class SettlersComparisonRowBase<T extends Property<?>> extends C
 
     @Override
     public void updateValues(IVISABFile file) {
-        updateValues((SettlersFile)file);
+        updateValues((SettlersFile) file);
     }
 
     @Override

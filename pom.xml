@@ -154,8 +154,23 @@
                     </execution>
                 </executions>
             </plugin>
-
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <docletPath>${project.basedir}/doc/docfx-doclet-1.0-SNAPSHOT-jar-with-dependencies.jar</docletPath>
+                  <doclet>com.microsoft.doclet.DocFxDoclet</doclet>
+                  <!-- <docletArtifact>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                  </docletArtifact> -->
+                  <useStandardDocletOptions>false</useStandardDocletOptions>
+                  <additionalOptions>-outputpath ${project.basedir}/doc/yml-files</additionalOptions>
+                  <!-- Add additional options here when needed -->
+                </configuration>
+              </plugin>
         </plugins>
     </build>
 </project>

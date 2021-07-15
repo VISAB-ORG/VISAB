@@ -161,13 +161,4 @@ public final class DynamicInstatiator {
         return constructors;
     }
 
-    public static void main(String[] args) {
-        var cbrListenerName = "org.visab.processing.cbrshooter.CBRShooterListener";
-        var dyna = new DynamicInstatiator();
-
-        var listener = DynamicInstatiator.instantiateSessionListener("CBRShooter", UUID.randomUUID());
-
-        var uuid = listener.getSessionId();
-    }
-
 }

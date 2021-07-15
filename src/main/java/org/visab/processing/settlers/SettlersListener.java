@@ -99,4 +99,9 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     public IVISABFile getCurrentFile() {
         return file;
     }
+
+    @Override
+    public void removeViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+        viewModels.remove(viewModel);
+    }
 }
