@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;

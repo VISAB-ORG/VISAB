@@ -5,21 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.visab.globalmodel.ControlledBy;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
-import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
-import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -50,8 +46,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
 
-    private Command playerStatsChartCommand;
-
     private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
 
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
@@ -67,21 +61,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private StringProperty yLabel = new SimpleStringProperty();
-
-    public Command playerStatsChartCommand() {
-        if (playerStatsChartCommand == null) {
-            playerStatsChartCommand = runnableCommand(() -> {
-                var selectedRow = selectedStatistics.get();
-                if (selectedRow != null) {
-                    selectedRow.updateSeries(file);
-                    playerStatsSeries.clear();
-                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
-                    yLabel.set(selectedRow.getRowDescription());
-                }
-            });
-        }
-        return playerStatsChartCommand;
-    }
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
