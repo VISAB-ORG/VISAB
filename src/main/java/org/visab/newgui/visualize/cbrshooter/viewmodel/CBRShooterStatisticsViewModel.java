@@ -114,12 +114,16 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
             @Override
             public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable,
-                    ComparisonRowBase<?> oldValue, ComparisonRowBase<?> newValue) {
-                if (newValue != null) {
-                    newValue.updateSeries(file);
+                    ComparisonRowBase<?> oldRow, ComparisonRowBase<?> newRow) {
+                if (newRow != null) {
+                    newRow.updateSeries(file);
                     playerStatsSeries.clear();
-                    playerStatsSeries.addAll(newValue.getPlayerSeries().values());
-                    yLabel.set(newValue.getRowDescription());
+                    playerStatsSeries.addAll(newRow.getPlayerSeries().values());
+
+                    if (newRow.getRowDescription().equals("Kills")) {
+                        
+                    }
+                    yLabel.set(newRow.getRowDescription());
                 }
             }
         });
