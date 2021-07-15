@@ -40,11 +40,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
 
-    @FXML
-    private void handleChartButtonAction() {
-        viewModel.playerStatsChartCommand().execute();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
