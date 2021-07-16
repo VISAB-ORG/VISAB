@@ -43,6 +43,8 @@
                 </TableView>
             </children>
         </VBox>
+        <Button fx:id="chartButton" mnemonicParsing="false" onAction="#handleChartButtonAction" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="3">
+        </Button>
         <LineChart fx:id="playerStats" title="Player Stats" GridPane.columnIndex="4">
             <xAxis>
                 <NumberAxis label="Rounds" side="bottom" />

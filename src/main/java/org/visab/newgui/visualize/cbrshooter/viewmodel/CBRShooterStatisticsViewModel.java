@@ -16,14 +16,13 @@ import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -50,6 +49,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
+    
+    private Command playerStatsChartCommand;
 
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
@@ -64,6 +65,31 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private StringProperty yLabel = new SimpleStringProperty();
+    
+    public Command playerStatsChartCommand() {
+        if (playerStatsChartCommand == null) {
+            playerStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedStatistics.get();
+                if (selectedRow != null) {
+                    
+                    selectedRow.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
+
+                    if (selectedRow.getRowDescription().equals("Kills") || selectedRow.getRowDescription().equals("Deaths")
+                            || selectedRow.getRowDescription().equals("Health items collected")
+                            || selectedRow.getRowDescription().equals("Ammunition items collected")
+                            || selectedRow.getRowDescription().equals("Weapon items collected")) {
+                        yLabel.set("accumulated " + selectedRow.getRowDescription());
+                    } else {
+                        yLabel.set(selectedRow.getRowDescription());
+                    }
+                }
+            });
+        }
+        return playerStatsChartCommand;
+    }
+    
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
@@ -102,7 +128,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
 
         // Add the comparison rows.
-        comparisonStatistics.add(new PlayerTypeComparisonRow());
+//        comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType in column header description
         comparisonStatistics.add(new KillsComparisonRow());
         comparisonStatistics.add(new DeathsComparisonRow());
         comparisonStatistics.add(new ShotsComparisonRow());
@@ -112,31 +138,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
-
-
-        // TODO: Make it command again and set the graphComparisonRow 
-        // Selected comparison row item changed
-        selectedStatisticsProperty().addListener(new ChangeListener<ComparisonRowBase<?>>() {
-            @Override
-            public void changed(ObservableValue<? extends ComparisonRowBase<?>> observable, ComparisonRowBase<?> oldRow,
-                    ComparisonRowBase<?> newRow) {
-                if (newRow != null) {
-                    newRow.updateSeries(file);
-                    playerStatsSeries.clear();
-                    playerStatsSeries.addAll(newRow.getPlayerSeries().values());
-
-                    if (newRow.getRowDescription().equals("Kills") || newRow.getRowDescription().equals("Deaths")
-                            || newRow.getRowDescription().equals("Health items collected")
-                            || newRow.getRowDescription().equals("Ammunition items collected")
-                            || newRow.getRowDescription().equals("Weapon items collected")) {
-                        yLabel.set("accumulated " + newRow.getRowDescription());
-                    } else {
-                        yLabel.set(newRow.getRowDescription());
-                    }
-                    
-                }
-            }
-        });
+        
     }
 
     public List<String> getPlayerNames() {
