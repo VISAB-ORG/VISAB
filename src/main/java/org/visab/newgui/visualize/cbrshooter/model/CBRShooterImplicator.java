@@ -43,6 +43,58 @@ public final class CBRShooterImplicator {
         return shotsPerRoundPerPlayer;
     }
     
+    public static ArrayList<StatisticsDataStructure> collectedCollectablesPerRound(String player, CBRShooterFile file,
+            Collectable collectable) {
+        var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var countCollectedCollectables = 0;
+        var round = 0;
+        var playerNumber = 0;
+        if (player.contains("Jane Doe")) {
+            playerNumber = 1;
+        }
+        
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+
+            if (round < file.getStatistics().get(i).getRound()) {
+                collectedCollectablesPerRoundPerPlayer.add(new StatisticsDataStructure((double) round, countCollectedCollectables));
+                countCollectedCollectables = 0;
+            }
+            
+            switch (collectable) {
+            case Health:
+                var lastHealth = file.getStatistics().get(i).getPlayers().get(playerNumber).getHealth();
+                var currentHealth = file.getStatistics().get(i).getPlayers().get(playerNumber).getHealth();
+                
+                if (currentHealth > lastHealth) {
+                    countCollectedCollectables++;
+                }
+                break;
+            case Ammunition:
+                var lastAmmu = file.getStatistics().get(i).getPlayers().get(playerNumber).getTotalAmmunition();
+                var currentAmmu = file.getStatistics().get(i).getPlayers().get(playerNumber).getTotalAmmunition();
+                
+                if (currentAmmu > lastAmmu) {
+                    countCollectedCollectables++;
+                }
+                break;
+            case Weapon:
+                var lastWeapon = file.getStatistics().get(i).getPlayers().get(playerNumber).getWeapon();
+                var currentWeapon = file.getStatistics().get(i).getPlayers().get(playerNumber).getWeapon();
+
+                if (!currentWeapon.equals(lastWeapon)) {
+                    countCollectedCollectables++;
+                }
+                break;
+            default:
+                break;
+            }
+
+            round = file.getStatistics().get(i).getRound();
+        }
+
+        return collectedCollectablesPerRoundPerPlayer;
+    }
+    
     public static ArrayList<StatisticsDataStructure> aimRatioPerRound(String player, CBRShooterFile file) {
         // aim Ratio = hits / shotsFired
         var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
@@ -382,7 +434,7 @@ public final class CBRShooterImplicator {
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = aimRatioPerRound("John Doe", file);
+        var test = collectedCollectablesPerRound("John Doe", file, Collectable.Ammunition);
         for (int i = 0; i < test.size(); i++) {
             System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
         }
