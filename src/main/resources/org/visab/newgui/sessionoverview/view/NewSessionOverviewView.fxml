@@ -75,7 +75,8 @@
                           </Label>
                      </children>
                   </HBox>
-                      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefViewportWidth="600.0" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
+                  <HBox fx:id="overviewBox" prefHeight="25.0" prefWidth="657.0" />
+                      <ScrollPane fx:id="scrollPane" fitToHeight="true" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
