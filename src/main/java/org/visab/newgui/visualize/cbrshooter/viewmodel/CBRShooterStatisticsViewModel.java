@@ -125,9 +125,15 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                     playerStatsSeries.clear();
                     playerStatsSeries.addAll(newRow.getPlayerSeries().values());
 
-                    if (newRow.getRowDescription().equals("Kills")) {
+                    if (newRow.getRowDescription().equals("Kills") || newRow.getRowDescription().equals("Deaths")
+                            || newRow.getRowDescription().equals("Health items collected")
+                            || newRow.getRowDescription().equals("Ammunition items collected")
+                            || newRow.getRowDescription().equals("Weapon items collected")) {
+                        yLabel.set("accumulated " + newRow.getRowDescription());
+                    } else {
+                        yLabel.set(newRow.getRowDescription());
                     }
-                    yLabel.set(newRow.getRowDescription());
+                    
                 }
             }
         });
