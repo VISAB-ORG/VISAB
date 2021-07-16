@@ -38,10 +38,29 @@ public final class CBRShooterImplicator {
             }
 
             round = file.getStatistics().get(i).getRound();
-            file.getStatistics().get(i).getPlayers().get(playerNumber).getPosition();
         }
 
         return shotsPerRoundPerPlayer;
+    }
+    
+    public static ArrayList<StatisticsDataStructure> aimRatioPerRound(String player, CBRShooterFile file) {
+        // aim Ratio = hits / shotsFired
+        var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var shotsFired = shotsPerRound(player, file);
+        var hits = hitsOnEnemyPerRound(player, file);
+
+        for (int i = 0; i < shotsFired.size(); i++) {
+
+            if (shotsFired.get(i).getParameter() > 0) {
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure((double) i, 
+                        (hits.get(i).getParameter() / shotsFired.get(i).getParameter())));
+            } else {
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure((double) i, 0));
+            }
+                
+        }
+
+        return aimRatioPerRoundPerPlayer;
     }
     
     public static ArrayList<StatisticsDataStructure> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
@@ -363,7 +382,7 @@ public final class CBRShooterImplicator {
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = hitsOnEnemyPerRound("John Doe", file);
+        var test = aimRatioPerRound("John Doe", file);
         for (int i = 0; i < test.size(); i++) {
             System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
         }
