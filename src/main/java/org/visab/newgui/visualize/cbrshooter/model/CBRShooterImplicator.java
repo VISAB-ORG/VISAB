@@ -57,7 +57,6 @@ public final class CBRShooterImplicator {
 
             if (round < file.getStatistics().get(i).getRound()) {
                 collectedCollectablesPerRoundPerPlayer.add(new StatisticsDataStructure((double) round, countCollectedCollectables));
-                countCollectedCollectables = 0;
             }
             
             switch (collectable) {
