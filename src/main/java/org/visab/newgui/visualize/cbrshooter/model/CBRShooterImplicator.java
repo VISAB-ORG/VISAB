@@ -44,6 +44,37 @@ public final class CBRShooterImplicator {
         return shotsPerRoundPerPlayer;
     }
     
+    public static ArrayList<StatisticsDataStructure> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
+        var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var countHits = 0;
+        var lastHealth = 100;
+        var currentHealth = 0;
+        var round = 0;
+        var playerNumber = 1;
+        if (player.contains("Jane Doe")) {
+            playerNumber = 0;
+        }
+
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+
+            if (round < file.getStatistics().get(i).getRound()) {
+                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure((double) round, countHits));
+                countHits = 0;
+            }
+            lastHealth = currentHealth;
+            currentHealth = file.getStatistics().get(i).getPlayers().get(playerNumber).getHealth();
+            
+            if (currentHealth < lastHealth) {
+                countHits += (int) Math.ceil((lastHealth - currentHealth) / file.getWeaponInformation().get(playerNumber).getDamage());
+            }
+
+            round = file.getStatistics().get(i).getRound();
+            file.getStatistics().get(i).getPlayers().get(playerNumber).getPosition();
+        }
+
+        return hitsTakenPerRoundPerPlayer;
+    }
+    
     public static ArrayList<StatisticsDataStructure> unitsWalkedPerRound(String player, CBRShooterFile file) {
         var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var unitsWalked = 0;
@@ -332,7 +363,7 @@ public final class CBRShooterImplicator {
     public static void main(String[] args) {
         var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = unitsWalkedPerRound("John Doe", file);
+        var test = hitsOnEnemyPerRound("John Doe", file);
         for (int i = 0; i < test.size(); i++) {
             System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
         }
