@@ -38,7 +38,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
-    private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
 
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
 
@@ -160,8 +159,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     @Override
     public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
-        snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
-
         updatePlanUsage(newStatistics);
         updateComparisonStatistics();
     }
@@ -203,10 +200,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     public void onSessionClosed() {
         liveSessionActiveProperty.set(false);
         // TODO: Render some future "who won" graphs an such
-    }
-
-    public FloatProperty snapshotPerIngameSecondProperty() {
-        return snapshotsPerIngamesSecond;
     }
 
 }
