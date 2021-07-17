@@ -15,13 +15,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
-    private IntegerProperty roundsProperty = new SimpleIntegerProperty();
-    private FloatProperty statisticsPerSecondProperty = new SimpleFloatProperty();
-    private DoubleProperty ingameTimeProperty = new SimpleDoubleProperty();
+    private IntegerProperty roundsProperty;
+    private FloatProperty statisticsPerSecondProperty;
+    private DoubleProperty ingameTimeProperty;
     private ObservableList<WeaponInformation> weaponInformation;
     private ObservableList<PlayerInformation> playerInformation;
 
@@ -37,12 +38,13 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
             return;
 
         var lastStatistics = statistics.get(statistics.size() - 1);
-        roundsProperty.set(lastStatistics.getRound());
-        ingameTimeProperty.set(lastStatistics.getTotalTime());
-        statisticsPerSecondProperty.set(statistics.size() / lastStatistics.getTotalTime());
+        roundsProperty = new SimpleIntegerProperty(lastStatistics.getRound());
+        ingameTimeProperty = new SimpleDoubleProperty(lastStatistics.getTotalTime());
+        statisticsPerSecondProperty = new SimpleFloatProperty(statistics.size() / lastStatistics.getTotalTime());
 
-        weaponInformation.addAll(file.getWeaponInformation());
+        weaponInformation = FXCollections.observableArrayList(file.getWeaponInformation());
 
+        playerInformation = FXCollections.observableArrayList();
         for (var entry : file.getPlayerInformation().entrySet())
             playerInformation.add(new PlayerInformation(entry.getKey(), entry.getValue()));
 
