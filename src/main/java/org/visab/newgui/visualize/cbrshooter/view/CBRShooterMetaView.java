@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.globalmodel.cbrshooter.WeaponInformation;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerInformation;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterMetaViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -11,11 +12,10 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class CBRShooterMetaView implements FxmlView<CBRShooterMetaViewModel>, Initializable {
-    
+
     @FXML
     Label rounds;
 
@@ -38,22 +38,27 @@ public class CBRShooterMetaView implements FxmlView<CBRShooterMetaViewModel>, In
     Label game;
 
     @FXML
-    TableColumn<String, String> playerNameColumn;
-    
-    @FXML
-    TableColumn<String, String> playerTypeColumn;
+    TableView<WeaponInformation> weaponInformationTable;
 
     @FXML
-    TableView<WeaponInformation> weaponInformationTable;
+    TableView<PlayerInformation> playerInformationTable;
 
     @InjectViewModel
     CBRShooterMetaViewModel viewModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO Auto-generated method stub
-        
+        rounds.textProperty().bind(viewModel.getRoundsProperty().asString());
+        statisticsPerSecond.textProperty().bind(viewModel.getStatisticsPerSecondProperty().asString());
+        ingameTime.textProperty().bind(viewModel.getIngameTimeProperty().asString());
+
+        gameSpeed.setText(viewModel.getGameSpeed().toString());
+        creationDate.setText(viewModel.getCreationDate().toString());
+        fileFormatVersion.setText(viewModel.getFileFormatVersion());
+        game.setText(viewModel.getGame());
+
+        weaponInformationTable.setItems(viewModel.getWeaponInformation());
+        playerInformationTable.setItems(viewModel.getPlayerInformation());
     }
 
-    
 }

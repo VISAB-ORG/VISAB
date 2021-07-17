@@ -34,9 +34,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
-    @InjectScope
-    VisualizeScope scope;
-
     private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
@@ -49,8 +46,33 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
+    private StringProperty yLabel = new SimpleStringProperty();
 
     private Command playerStatsChartCommand;
+
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        if (scope.isLive()) {
+            super.initializeLive(scope.getSessionListener());
+
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
+
+            // Notify for all the already received statistics
+            for (var statistics : listener.getReceivedStatistics())
+                onStatisticsAdded(statistics);
+        } else {
+            super.initialize(scope.getFile());
+
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
+
+            for (var statistics : file.getStatistics())
+                onStatisticsAdded(statistics);
+        }
+    }
 
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
@@ -63,8 +85,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     public StringProperty yLabelProperty() {
         return yLabel;
     }
-
-    private StringProperty yLabel = new SimpleStringProperty();
 
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
@@ -91,30 +111,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
             });
         }
         return playerStatsChartCommand;
-    }
-
-    /**
-     * Called after the instance was constructed by javafx/mvvmfx.
-     */
-    public void initialize() {
-        if (scope.isLive()) {
-            super.initializeLive(scope.getSessionListener());
-
-            // Initialize the data structures used for visualization
-            initializeDataStructures(file);
-
-            // Notify for all the already received statistics
-            for (var statistics : listener.getReceivedStatistics())
-                onStatisticsAdded(statistics);
-        } else {
-            super.initialize(scope.getFile());
-
-            // Initialize the data structures used for visualization
-            initializeDataStructures(file);
-
-            for (var statistics : file.getStatistics())
-                onStatisticsAdded(statistics);
-        }
     }
 
     private void initializeDataStructures(CBRShooterFile file) {

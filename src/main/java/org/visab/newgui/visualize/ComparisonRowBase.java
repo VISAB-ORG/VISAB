@@ -1,6 +1,5 @@
 package org.visab.newgui.visualize;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.globalmodel.IVISABFile;
@@ -11,6 +10,7 @@ import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart.Series;
 
 public abstract class ComparisonRowBase<TProperty extends Property<?>> {
+    
     protected String rowDescription;
     protected ObservableMap<String, TProperty> playerValues = FXCollections.observableHashMap();
     protected ObservableMap<String, Series<Double, Double>> playerSeries = FXCollections.observableHashMap();

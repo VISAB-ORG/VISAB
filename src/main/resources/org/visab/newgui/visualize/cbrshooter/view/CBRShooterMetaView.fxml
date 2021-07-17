@@ -27,8 +27,8 @@
                </font></Label>
             <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
               <columns>
-                <TableColumn fx:id="playerNameColumn" prefWidth="75.0" text="Player name" />
-                <TableColumn fx:id="playerTypeColumn" prefWidth="75.0" text="Operated by" />
+                <TableColumn prefWidth="75.0" text="Player name" />
+                <TableColumn prefWidth="75.0" text="Operated by" />
               </columns>
             </TableView>
          </children>
