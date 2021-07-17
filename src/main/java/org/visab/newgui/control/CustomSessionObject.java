@@ -89,12 +89,13 @@ public class CustomSessionObject extends GridPane {
                 WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
             }
         });
-        this.closeSessionButton.setAlignment(Pos.CENTER_RIGHT);
-        this.add(this.closeSessionButton, 1, 0);
+        this.closeSessionButton.setAlignment(Pos.TOP_RIGHT);
+        this.add(this.closeSessionButton, 2, 0);
         this.add(this.gameNameValue, 0, 1);
         this.add(this.gameIconView, 1, 1);
-        this.add(sessionIdLabel, 0, 2);
-        this.add(this.sessionIdValue, 1, 2);
+        // this.add(sessionIdLabel, 0, 2);
+        this.add(this.sessionIdValue, 0, 0, 2, 1);
+        // this.add(this.sessionIdValue, 0, 0);
         this.add(hostNameLabel, 0, 3);
         this.add(this.hostNameValue, 1, 3);
         this.add(ipLabel, 0, 4);
@@ -105,7 +106,7 @@ public class CustomSessionObject extends GridPane {
         this.add(this.lastRequestValue, 1, 6);
         this.add(sessionClosedLabel, 0, 7);
         this.add(this.sessionClosedValue, 1, 7);
-        this.add(this.openLiveViewButton, 0, 8, 2, 1);
+        this.addRow(8, this.openLiveViewButton);
 
         this.setBackgroundColorByStatus(sessionStatusType);
     }
