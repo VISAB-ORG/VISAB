@@ -66,7 +66,7 @@ public class CBRShooterListener
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
     }
 
     @Override
@@ -87,7 +87,8 @@ public class CBRShooterListener
     @Override
     public void processImage(CBRShooterMapImages mapImage) {
         for (var entry : mapImage.getMoveableObjects().entrySet()) {
-            writeLog(Level.INFO, StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
+            writeLog(Level.INFO,
+                    StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
         }
     }
 

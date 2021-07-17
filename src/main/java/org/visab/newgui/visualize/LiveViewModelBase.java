@@ -1,5 +1,7 @@
 package org.visab.newgui.visualize;
 
+import java.util.List;
+
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
@@ -49,7 +51,7 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
     }
 
     @Override
-    public abstract void onStatisticsAdded(TStatistics newStatistics);
+    public abstract void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
 
     @Override
     public abstract void onSessionClosed();

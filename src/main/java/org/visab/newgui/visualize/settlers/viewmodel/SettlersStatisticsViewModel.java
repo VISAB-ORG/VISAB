@@ -58,7 +58,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
             // Notify for all the already received statistics
             for (var statistics : listener.getStatisticsCopy())
-                onStatisticsAdded(statistics);
+                onStatisticsAdded(statistics, listener.getStatisticsCopy());
         } else {
             super.initialize(scope.getFile());
 
@@ -66,7 +66,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
             initializeDataStructures(file);
 
             for (var statistics : file.getStatistics())
-                onStatisticsAdded(statistics);
+                onStatisticsAdded(statistics, file.getStatistics());
         }
     }
 
@@ -105,9 +105,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
             row.updateValues(file);
     }
 
-
     private void updateComparisonStatisticsSeries(SettlersFile file) {
-        
+
     }
 
     private void updatePlanUsage(SettlersStatistics newStatistics) {
@@ -131,7 +130,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     }
 
     @Override
-    public void onStatisticsAdded(SettlersStatistics newStatistics) {
+    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
         updateComparisonStatistics(file);
         updatePlanUsage(newStatistics);
     }

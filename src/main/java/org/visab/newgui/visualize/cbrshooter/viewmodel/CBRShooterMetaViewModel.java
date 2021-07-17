@@ -1,6 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
@@ -91,10 +92,10 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
     }
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
         roundsProperty.set(newStatistics.getRound());
         ingameTimeProperty.set(newStatistics.getTotalTime());
-        statisticsPerSecondProperty.set(file.getStatistics().size() / newStatistics.getTotalTime());
+        statisticsPerSecondProperty.set(statisticsCopy.size() / newStatistics.getTotalTime());
     }
 
     @Override

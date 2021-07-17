@@ -28,7 +28,8 @@ import org.visab.workspace.config.ConfigManager;
  * @author leonr
  *
  */
-public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
+public class SettlersListener
+        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
         implements ILiveViewable<SettlersStatistics> {
 
     private SettlersFile file;
@@ -65,7 +66,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
     }
 
     @Override
