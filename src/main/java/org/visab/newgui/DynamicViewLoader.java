@@ -54,7 +54,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
             // Resolve the main view
             var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
 
-            showView(view, "Visualizer View");
+            showView(view, "Visualizer View", scope);
         }
     }
 
@@ -92,8 +92,8 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
 
             // Resolve the main view
             var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
-            
-            showView(view, "Visualizer View");
+
+            showView(view, "Visualizer View", scope);
         }
     }
 
@@ -103,13 +103,14 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
      * @param viewTuple
      * @param title
      */
-    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple,
-            String title) {
+    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title,
+            VisualizeScope scope) {
         // TODO: Get the style here
         var parent = viewTuple.getView();
         var stage = new Stage();
         stage.setTitle(title);
         stage.setScene(new Scene(parent));
+        stage.setOnCloseRequest(e -> scope.notifyStageClosing());
         stage.show();
     }
 

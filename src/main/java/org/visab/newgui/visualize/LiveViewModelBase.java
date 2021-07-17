@@ -54,6 +54,10 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
     public abstract void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
 
     @Override
-    public abstract void onSessionClosed();
+    public void onSessionClosed() {
+        liveSessionActiveProperty.set(false);
+        if (listener != null)
+            listener.removeViewModel(this);
+    }
 
 }

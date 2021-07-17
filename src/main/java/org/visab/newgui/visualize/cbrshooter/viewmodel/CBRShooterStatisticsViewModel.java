@@ -16,11 +16,8 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.util.StreamUtil;
 
-import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -55,7 +52,8 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     public void initialize() {
         if (scope.isLive()) {
             super.initializeLive(scope.getSessionListener());
-
+            // Register ourselves, for when the view closes
+            scope.registerForStageClosing(this);
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
         } else {
@@ -191,14 +189,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
                 dataList.add(data);
             }
         }
-    }
-
-    @Override
-    public void onSessionClosed() {
-        liveSessionActiveProperty.set(false);
-        if (listener != null)
-            listener.removeViewModel(this);
-        // TODO: Render some future "who won" graphs an such
     }
 
 }

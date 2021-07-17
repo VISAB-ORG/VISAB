@@ -9,6 +9,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.WeaponInformation;
 import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerInformation;
+import org.visab.processing.ILiveViewable;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.FloatProperty;
@@ -28,13 +29,18 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
     private ObservableList<PlayerInformation> playerInformation;
 
     public void initialize() {
+        List<CBRShooterStatistics> statistics = null;
         if (scope.isLive()) {
             super.initializeLive(scope.getSessionListener());
+            // Register ourselves, for when the view closes
+            scope.registerForStageClosing(this);
+
+            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatisticsCopy();
         } else {
             super.initialize(scope.getFile());
+            statistics = file.getStatistics();
         }
 
-        var statistics = file.getStatistics();
         if (statistics.size() == 0)
             return;
 
@@ -100,7 +106,6 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
 
     @Override
     public void onSessionClosed() {
-        // TODO Auto-generated method stub
         if (listener != null)
             listener.removeViewModel(this);
     }
