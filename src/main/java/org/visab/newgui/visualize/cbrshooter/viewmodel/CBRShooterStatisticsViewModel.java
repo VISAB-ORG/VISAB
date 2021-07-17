@@ -8,7 +8,7 @@ import java.util.Map;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
-import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
@@ -30,7 +30,7 @@ import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
-public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
-    
+
     private Command playerStatsChartCommand;
 
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
@@ -65,18 +65,19 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     private StringProperty yLabel = new SimpleStringProperty();
-    
+
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
                 var selectedRow = selectedStatistics.get();
                 if (selectedRow != null) {
-                    
+
                     selectedRow.updateSeries(file);
                     playerStatsSeries.clear();
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
 
-                    if (selectedRow.getRowDescription().equals("Kills") || selectedRow.getRowDescription().equals("Deaths")
+                    if (selectedRow.getRowDescription().equals("Kills")
+                            || selectedRow.getRowDescription().equals("Deaths")
                             || selectedRow.getRowDescription().equals("Health items collected")
                             || selectedRow.getRowDescription().equals("Ammunition items collected")
                             || selectedRow.getRowDescription().equals("Weapon items collected")) {
@@ -84,12 +85,13 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                     } else {
                         yLabel.set(selectedRow.getRowDescription());
                     }
+
+                    graphComparisonRow = selectedRow;
                 }
             });
         }
         return playerStatsChartCommand;
     }
-    
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
@@ -128,7 +130,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
 
         // Add the comparison rows.
-//        comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType in column header description
+        // comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType
+        // in column header description
         comparisonStatistics.add(new KillsComparisonRow());
         comparisonStatistics.add(new DeathsComparisonRow());
         comparisonStatistics.add(new ShotsComparisonRow());
@@ -138,7 +141,7 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
-        
+
     }
 
     public List<String> getPlayerNames() {

@@ -3,7 +3,7 @@ package org.visab.newgui.visualize;
 import org.visab.globalmodel.IStatistics;
 import org.visab.processing.ILiveViewable;
 
-public interface ILiveStatisticsViewModel<TStatistics extends IStatistics> extends IStatisticsViewModel {
+public interface ILiveViewModel<TStatistics extends IStatistics> extends IVisualizeViewModel {
 
     void initializeLive(ILiveViewable<? extends IStatistics> listener);
 

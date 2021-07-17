@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 
-<?import org.visab.newgui.control.CustomLabelPieChart?>
+<!-- <?import org.visab.newgui.control.CustomLabelPieChart?> -->
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
     <columnConstraints>
@@ -25,13 +25,16 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0">
+            <children>
+               <CheckBox fx:id="isLiveView" mnemonicParsing="false" text="Is LiveView" />
+               <CheckBox fx:id="IsLiveViewActive" mnemonicParsing="false" text="LiveView still active" />
+            </children>
+         </HBox>
         <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
         <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
             <children>
-                <Label text="Snapshots per ingame second" />
-                <Label fx:id="snapshotsPerSecond" />
-
                 <TableView fx:id="comparisonTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="302.0">
                     <columns>
                         <TableColumn prefWidth="75.0" text="Statistics">

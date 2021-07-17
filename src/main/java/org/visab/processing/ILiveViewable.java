@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.newgui.visualize.ILiveStatisticsViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
 
 /**
@@ -22,9 +22,9 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      * 
      * @param viewModel The ViewModel to add
      */
-    void addViewModel(ILiveStatisticsViewModel<TStatistics> viewModel);
+    void addViewModel(ILiveViewModel<TStatistics> viewModel);
 
-    void removeViewModel(ILiveStatisticsViewModel<TStatistics> viewModel);
+    void removeViewModel(ILiveViewModel<TStatistics> viewModel);
 
     /**
      * Returns the current (unfinished) IVISABFile.

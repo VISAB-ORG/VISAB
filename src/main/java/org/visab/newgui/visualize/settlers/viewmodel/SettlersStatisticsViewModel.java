@@ -8,7 +8,7 @@ import java.util.Map;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
-import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
@@ -27,7 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
-public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<SettlersFile, SettlersStatistics> {
+public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile, SettlersStatistics> {
 
     @InjectScope
     VisualizeScope scope;

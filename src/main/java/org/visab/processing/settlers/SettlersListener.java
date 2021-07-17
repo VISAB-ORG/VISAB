@@ -14,7 +14,7 @@ import org.visab.globalmodel.settlers.SettlersMapImage;
 import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveStatisticsViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.StringFormat;
@@ -33,14 +33,14 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
 
     private SettlersFile file;
 
-    private List<ILiveStatisticsViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
+    private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
     public SettlersListener(UUID sessionId) {
         super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
     }
 
     @Override
-    public void addViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+    public void addViewModel(ILiveViewModel<SettlersStatistics> viewModel) {
         viewModels.add(viewModel);
 
         // If the session isnt active anymore, instantly notify, that it was closed.
@@ -101,7 +101,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     }
 
     @Override
-    public void removeViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+    public void removeViewModel(ILiveViewModel<SettlersStatistics> viewModel) {
         viewModels.remove(viewModel);
     }
 }
