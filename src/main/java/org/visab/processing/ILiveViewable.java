@@ -36,7 +36,7 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      * 
      * @return The list of received statistics
      */
-    List<TStatistics> getReceivedStatistics();
+    List<TStatistics> getStatisticsCopy();
 
     /**
      * Notifies the observing ViewModels that statistics were added.

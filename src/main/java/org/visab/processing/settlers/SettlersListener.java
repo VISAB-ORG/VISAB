@@ -49,7 +49,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     }
 
     @Override
-    public List<SettlersStatistics> getReceivedStatistics() {
+    public List<SettlersStatistics> getStatisticsCopy() {
         // Return a copy to avoid concurrent modification
         return new ArrayList<SettlersStatistics>(file.getStatistics());
     }

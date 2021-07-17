@@ -57,7 +57,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
             initializeDataStructures(file);
 
             // Notify for all the already received statistics
-            for (var statistics : listener.getReceivedStatistics())
+            for (var statistics : listener.getStatisticsCopy())
                 onStatisticsAdded(statistics);
         } else {
             super.initialize(scope.getFile());
