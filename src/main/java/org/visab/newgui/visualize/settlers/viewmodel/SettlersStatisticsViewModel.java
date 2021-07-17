@@ -72,7 +72,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private void initializeDataStructures(SettlersFile file) {
         // Initialize player names
-        playerNames = new ArrayList<String>(file.getPlayerInformation().keySet());
+        playerNames = new ArrayList<String>(file.getPlayerNames());
 
         // Initialize comparison statistics
         comparisonStatistics = FXCollections.observableArrayList();

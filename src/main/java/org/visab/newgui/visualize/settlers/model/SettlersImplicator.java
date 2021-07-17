@@ -15,7 +15,7 @@ public final class SettlersImplicator {
 
     public static final Map<String, PlayerResources> concludeResourcesGainedByDice(SettlersFile file) {
         var resourcesGained = new HashMap<String, PlayerResources>();
-        for (String name : file.getPlayerInformation().keySet())
+        for (String name : file.getPlayerNames())
             resourcesGained.put(name, new PlayerResources());
 
         for (var statistics : file.getStatistics()) {
@@ -34,7 +34,7 @@ public final class SettlersImplicator {
 
     public static final Map<String, PlayerResources> concludeResourcesSpent(SettlersFile file) {
         var resourcesSpent = new HashMap<String, PlayerResources>();
-        for (String name : file.getPlayerInformation().keySet())
+        for (String name : file.getPlayerNames())
             resourcesSpent.put(name, new PlayerResources());
 
         var resourcesLastTurn = new HashMap<String, PlayerResources>();

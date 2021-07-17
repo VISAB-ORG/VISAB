@@ -58,4 +58,8 @@ public class CBRShooterFile extends BasicVISABFile {
         this.gameSpeed = gameSpeed;
     }
 
+    public List<String> getPlayerNames() {
+        return new ArrayList<>(playerInformation.keySet());
+    }
+
 }

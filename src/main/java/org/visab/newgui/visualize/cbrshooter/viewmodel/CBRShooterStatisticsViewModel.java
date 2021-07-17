@@ -1,6 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
-    private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
@@ -58,18 +58,11 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
-
-            // Notify for all the already received statistics
-            for (var statistics : listener.getReceivedStatistics())
-                onStatisticsAdded(statistics);
         } else {
             super.initialize(scope.getFile());
 
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
-
-            for (var statistics : file.getStatistics())
-                onStatisticsAdded(statistics);
         }
     }
 
@@ -113,10 +106,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     }
 
     private void initializeDataStructures(CBRShooterFile file) {
-        // Add the player names
-        playerNames.addAll(file.getPlayerInformation().keySet());
-
-        for (var name : playerNames) {
+        for (var name : file.getPlayerNames()) {
             // Initialize plan visualization
             var planTime = new PlayerPlanTime(name);
             planTimes.add(planTime);
@@ -137,10 +127,20 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
 
+        // Set to the current values
+        for (var row : comparisonStatistics) {
+            row.updateValues(file);
+            row.updateSeries(file);
+        }
+
+        var statisticsCopy = new ArrayList<>(file.getStatistics());
+        for (var statistics : statisticsCopy)
+            updatePlanUsage(statistics);
+
     }
 
     public List<String> getPlayerNames() {
-        return playerNames;
+        return file.getPlayerNames();
     }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
@@ -160,7 +160,13 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     @Override
     public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         updatePlanUsage(newStatistics);
-        updateComparisonStatistics();
+
+        for (var row : comparisonStatistics) {
+            row.updateValues(file);
+        }
+
+        if (graphComparisonRow != null)
+            graphComparisonRow.updateSeries(file);
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -187,18 +193,11 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         }
     }
 
-    private void updateComparisonStatistics() {
-        for (var row : comparisonStatistics) {
-            row.updateValues(file);
-        }
-
-        if (graphComparisonRow != null)
-            graphComparisonRow.updateSeries(file);
-    }
-
     @Override
     public void onSessionClosed() {
         liveSessionActiveProperty.set(false);
+        if (listener != null)
+            listener.removeViewModel(this);
         // TODO: Render some future "who won" graphs an such
     }
 

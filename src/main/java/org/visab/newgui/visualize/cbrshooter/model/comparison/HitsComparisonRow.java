@@ -33,7 +33,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
     }
 
     private String getOtherPlayerName(CBRShooterFile file, String myPlayer) {
-        for (var name : file.getPlayerInformation().keySet()) {
+        for (var name : file.getPlayerNames()) {
             if (name != myPlayer)
                 return name;
         }
@@ -44,7 +44,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
     @Override
     public void updateSeries(CBRShooterFile file) {
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
-        for (var name : file.getPlayerInformation().keySet())
+        for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.hitsOnEnemyPerRound(name, file));
 
         for (var statistics : file.getStatistics()) {

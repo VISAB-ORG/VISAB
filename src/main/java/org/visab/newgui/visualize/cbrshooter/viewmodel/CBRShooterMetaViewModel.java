@@ -100,7 +100,8 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
     @Override
     public void onSessionClosed() {
         // TODO Auto-generated method stub
-        listener.removeViewModel(this);
+        if (listener != null)
+            listener.removeViewModel(this);
     }
 
 }
