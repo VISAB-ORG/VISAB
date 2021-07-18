@@ -32,7 +32,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     CustomLabelPieChart planUsageTwo;
 
     @FXML
-    LineChart<Double, Double> playerStats;
+    LineChart<Integer, Number> playerStats;
 
     @FXML
     Label snapshotsPerSecond;
@@ -76,6 +76,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
     }
 
+    @SuppressWarnings("unchecked")
     private List<TableColumn<ComparisonRowBase<?>, ?>> createComparisonColumns() {
         var columns = new ArrayList<TableColumn<ComparisonRowBase<?>, ?>>();
 

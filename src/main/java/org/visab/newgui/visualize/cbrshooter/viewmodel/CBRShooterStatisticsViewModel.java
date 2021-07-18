@@ -1,7 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveViewModelBase;
-import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
@@ -38,7 +36,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
 
-    private ObservableList<Series<Double, Double>> playerStatsSeries = FXCollections.observableArrayList();
+    private ObservableList<Series<Integer, Number>> playerStatsSeries = FXCollections.observableArrayList();
 
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
@@ -64,7 +62,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         }
     }
 
-    public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
+    public ObservableList<Series<Integer, Number>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }
 
