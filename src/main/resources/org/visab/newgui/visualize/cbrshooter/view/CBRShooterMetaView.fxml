@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            <children>
+                <Label prefHeight="17.0" prefWidth="302.0" text="Player Information">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="playerInformationTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="Player name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Controlled by">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="controlledBy" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <children>
+                <Label prefHeight="17.0" prefWidth="302.0" text="Weapon Information">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="weaponInformationTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                    <columns>
+                        <TableColumn prefWidth="79.0" text="Weapon name" >
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="71.0" text="Damage per shot" >
+                            <cellValueFactory>
+                                <PropertyValueFactory property="damage" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="71.0" text="Fire rate" >
+                            <cellValueFactory>
+                                <PropertyValueFactory property="fireRate" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="71.0" text="Magazine size">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="magazineSize" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="71.0" text="Maximum Ammunition" >
+                            <cellValueFactory>
+                                <PropertyValueFactory property="maximumAmmunition" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES">
+            <children>
+                <Label prefHeight="17.0" prefWidth="335.0" text="Session Information">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <GridPane prefHeight="135.0" prefWidth="300.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="158.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="142.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Rounds" />
+                        <Label fx:id="rounds" text="Label" GridPane.columnIndex="1" />
+                        <Label text="Statistics per ingame second" GridPane.rowIndex="3" />
+                        <Label fx:id="statisticsPerSecond" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Game speed" GridPane.rowIndex="2" />
+                        <Label fx:id="gameSpeed" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Cumulated ingame time" GridPane.rowIndex="1" />
+                        <Label fx:id="ingameTime" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <VBox prefHeight="126.0" prefWidth="300.0" VBox.vgrow="SOMETIMES">
+                    <children>
+                        <Label prefHeight="17.0" prefWidth="352.0" text="File Information">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label text="Creation date" GridPane.rowIndex="1" />
+                                <Label text="File format version" GridPane.rowIndex="2" />
+                                <Label fx:id="creationDate" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label fx:id="fileFormatVersion" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label text="GameId" />
+                                <Label fx:id="game" text="Label" GridPane.columnIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</GridPane>

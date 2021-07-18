@@ -14,7 +14,7 @@ import org.visab.globalmodel.settlers.SettlersMapImage;
 import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveStatisticsViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.StringFormat;
@@ -28,19 +28,20 @@ import org.visab.workspace.config.ConfigManager;
  * @author leonr
  *
  */
-public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
+public class SettlersListener
+        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
         implements ILiveViewable<SettlersStatistics> {
 
     private SettlersFile file;
 
-    private List<ILiveStatisticsViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
+    private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
     public SettlersListener(UUID sessionId) {
         super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
     }
 
     @Override
-    public void addViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+    public void addViewModel(ILiveViewModel<SettlersStatistics> viewModel) {
         viewModels.add(viewModel);
 
         // If the session isnt active anymore, instantly notify, that it was closed.
@@ -49,7 +50,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     }
 
     @Override
-    public List<SettlersStatistics> getReceivedStatistics() {
+    public List<SettlersStatistics> getStatisticsCopy() {
         // Return a copy to avoid concurrent modification
         return new ArrayList<SettlersStatistics>(file.getStatistics());
     }
@@ -65,7 +66,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
     }
 
     @Override
@@ -101,7 +102,7 @@ public class SettlersListener extends ReplaySessionListenerBase<SettlersMetaInfo
     }
 
     @Override
-    public void removeViewModel(ILiveStatisticsViewModel<SettlersStatistics> viewModel) {
+    public void removeViewModel(ILiveViewModel<SettlersStatistics> viewModel) {
         viewModels.remove(viewModel);
     }
 }

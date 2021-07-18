@@ -54,4 +54,8 @@ public class SettlersFile extends BasicVISABFile {
         return statistics;
     }
 
+    public List<String> getPlayerNames() {
+        return new ArrayList<>(playerInformation.values());
+    }
+
 }

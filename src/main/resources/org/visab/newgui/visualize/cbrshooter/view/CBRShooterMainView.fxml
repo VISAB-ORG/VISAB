@@ -7,6 +7,9 @@
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView">
 
     <tabs>
+        <Tab text="Meta information">
+            <fx:include source="CBRShooterMetaView.fxml"></fx:include>
+        </Tab>
         <Tab text="Statistics">
             <fx:include source="CBRShooterStatisticsView.fxml"></fx:include>
         </Tab>

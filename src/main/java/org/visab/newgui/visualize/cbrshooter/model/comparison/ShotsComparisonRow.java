@@ -33,12 +33,14 @@ public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
 
     @Override
     public void updateSeries(CBRShooterFile file) {
+        var statistics = makeStatisticsCopy(file);
+
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
-        for (var name : file.getPlayerInformation().keySet())
+        for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.shotsPerRound(name, file));
 
-        for (var statistics : file.getStatistics()) {
-            for (var player : statistics.getPlayers()) {
+        for (var snapshot : statistics) {
+            for (var player : snapshot.getPlayers()) {
                 var name = player.getName();
 
                 if (!playerSeries.containsKey(name)) {

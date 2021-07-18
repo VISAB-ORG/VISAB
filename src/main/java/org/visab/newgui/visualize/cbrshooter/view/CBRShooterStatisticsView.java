@@ -48,8 +48,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        snapshotsPerSecond.textProperty().bind(viewModel.snapshotPerIngameSecondProperty().asString());
-
         // Initialize pie charts
         // TODO: Do like in settlers
         if (viewModel.getPlayerNames().size() == 2) {

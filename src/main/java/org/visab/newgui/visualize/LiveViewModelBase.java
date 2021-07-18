@@ -1,5 +1,7 @@
 package org.visab.newgui.visualize;
 
+import java.util.List;
+
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
@@ -7,8 +9,8 @@ import org.visab.processing.ILiveViewable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
-        extends StatisticsViewModelBase<TFile> implements ILiveStatisticsViewModel<TStatistics> {
+public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
+        extends VisualizeViewModelBase<TFile> implements ILiveViewModel<TStatistics> {
 
     /**
      * The listener that the viewmodel is docked onto.
@@ -42,7 +44,6 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
         // dock onto listener
         this.listener.addViewModel(this);
 
-        isLiveViewProperty.set(true);
         liveSessionActiveProperty.set(true);
 
         // Set the file
@@ -50,9 +51,13 @@ public abstract class LiveStatisticsViewModelBase<TFile extends IVISABFile, TSta
     }
 
     @Override
-    public abstract void onStatisticsAdded(TStatistics newStatistics);
+    public abstract void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
 
     @Override
-    public abstract void onSessionClosed();
+    public void onSessionClosed() {
+        liveSessionActiveProperty.set(false);
+        if (listener != null)
+            listener.removeViewModel(this);
+    }
 
 }

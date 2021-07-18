@@ -10,7 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.visab.globalmodel.starter.DefaultFile;
-import org.visab.newgui.visualize.StatisticsViewModelBase;
+import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.util.JsonConvert;
 import org.visab.workspace.DatabaseRepository;
@@ -20,7 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
-public class DefaultStatisticsViewModel extends StatisticsViewModelBase<DefaultFile> {
+public class DefaultStatisticsViewModel extends VisualizeViewModelBase<DefaultFile> {
 
     @InjectScope
     VisualizeScope scope;

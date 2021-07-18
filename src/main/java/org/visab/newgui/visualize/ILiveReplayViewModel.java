@@ -4,7 +4,7 @@ import org.visab.globalmodel.IImage;
 import org.visab.globalmodel.IStatistics;
 import org.visab.processing.IReplayLiveViewable;
 
-public interface ILiveReplayViewModel<TStatistics extends IStatistics, TImage extends IImage> extends IReplayViewModel {
+public interface ILiveReplayViewModel<TStatistics extends IStatistics, TImage extends IImage> extends IVisualizeViewModel {
 
     void initialize(IReplayLiveViewable<? extends IStatistics, ? extends IImage> listener);
 

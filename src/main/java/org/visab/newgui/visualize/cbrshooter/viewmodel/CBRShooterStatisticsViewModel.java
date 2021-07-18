@@ -1,6 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,18 +9,15 @@ import java.util.Map;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
-import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
 import org.visab.util.StreamUtil;
 
-import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.beans.property.FloatProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -30,18 +28,13 @@ import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 // TODO: Add end of game thingy.
-public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 
-    @InjectScope
-    VisualizeScope scope;
-
-    private List<String> playerNames = new ArrayList<>();
     private Map<String, ObservableList<Data>> planUsages = new HashMap<>();
 
     private ObservableList<ComparisonRowBase<?>> comparisonStatistics = FXCollections.observableArrayList();
-    private FloatProperty snapshotsPerIngamesSecond = new SimpleFloatProperty();
 
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
 
@@ -49,8 +42,27 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
 
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
-    
+    private StringProperty yLabel = new SimpleStringProperty();
+
     private Command playerStatsChartCommand;
+
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        if (scope.isLive()) {
+            super.initializeLive(scope.getSessionListener());
+            // Register ourselves, for when the view closes
+            scope.registerForStageClosing(this);
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
+        } else {
+            super.initialize(scope.getFile());
+
+            // Initialize the data structures used for visualization
+            initializeDataStructures(file);
+        }
+    }
 
     public ObservableList<Series<Double, Double>> getPlayerStatsSeries() {
         return playerStatsSeries;
@@ -64,14 +76,12 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         return yLabel;
     }
 
-    private StringProperty yLabel = new SimpleStringProperty();
-    
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
                 var selectedRow = selectedStatistics.get();
                 if (selectedRow != null) {
-                    
+
                     selectedRow.updateSeries(file);
                     playerStatsSeries.clear();
                     while (!playerStatsSeries.isEmpty()) {
@@ -80,7 +90,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                     }
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
 
-                    if (selectedRow.getRowDescription().equals("Kills") || selectedRow.getRowDescription().equals("Deaths")
+                    if (selectedRow.getRowDescription().equals("Kills")
+                            || selectedRow.getRowDescription().equals("Deaths")
                             || selectedRow.getRowDescription().equals("Health items collected")
                             || selectedRow.getRowDescription().equals("Ammunition items collected")
                             || selectedRow.getRowDescription().equals("Weapon items collected")) {
@@ -88,42 +99,16 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                     } else {
                         yLabel.set(selectedRow.getRowDescription());
                     }
+
+                    graphComparisonRow = selectedRow;
                 }
             });
         }
         return playerStatsChartCommand;
     }
-    
-
-    /**
-     * Called after the instance was constructed by javafx/mvvmfx.
-     */
-    public void initialize() {
-        if (scope.isLive()) {
-            super.initializeLive(scope.getSessionListener());
-
-            // Initialize the data structures used for visualization
-            initializeDataStructures(file);
-
-            // Notify for all the already received statistics
-            for (var statistics : listener.getReceivedStatistics())
-                onStatisticsAdded(statistics);
-        } else {
-            super.initialize(scope.getFile());
-
-            // Initialize the data structures used for visualization
-            initializeDataStructures(file);
-
-            for (var statistics : file.getStatistics())
-                onStatisticsAdded(statistics);
-        }
-    }
 
     private void initializeDataStructures(CBRShooterFile file) {
-        // Add the player names
-        playerNames.addAll(file.getPlayerInformation().keySet());
-
-        for (var name : playerNames) {
+        for (var name : file.getPlayerNames()) {
             // Initialize plan visualization
             var planTime = new PlayerPlanTime(name);
             planTimes.add(planTime);
@@ -132,7 +117,8 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         }
 
         // Add the comparison rows.
-//        comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType in column header description
+        // comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType
+        // in column header description
         comparisonStatistics.add(new KillsComparisonRow());
         comparisonStatistics.add(new DeathsComparisonRow());
         comparisonStatistics.add(new ShotsComparisonRow());
@@ -142,11 +128,21 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Health));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Ammunition));
         comparisonStatistics.add(new CollectedComparisonRow(Collectable.Weapon));
-        
+
+        // Set to the current values
+        for (var row : comparisonStatistics) {
+            row.updateValues(file);
+            row.updateSeries(file);
+        }
+
+        var statisticsCopy = new ArrayList<>(file.getStatistics());
+        for (var statistics : statisticsCopy)
+            updatePlanUsage(statistics);
+
     }
 
     public List<String> getPlayerNames() {
-        return playerNames;
+        return file.getPlayerNames();
     }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
@@ -164,11 +160,15 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
     }
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
-        snapshotsPerIngamesSecond.set(comparisonStatistics.size() / newStatistics.getTotalTime());
-
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
         updatePlanUsage(newStatistics);
-        updateComparisonStatistics();
+
+        for (var row : comparisonStatistics) {
+            row.updateValues(file);
+        }
+
+        if (graphComparisonRow != null)
+            graphComparisonRow.updateSeries(file);
     }
 
     private void updatePlanUsage(CBRShooterStatistics newStatistics) {
@@ -193,25 +193,6 @@ public class CBRShooterStatisticsViewModel extends LiveStatisticsViewModelBase<C
                 dataList.add(data);
             }
         }
-    }
-
-    private void updateComparisonStatistics() {
-        for (var row : comparisonStatistics) {
-            row.updateValues(file);
-        }
-
-        if (graphComparisonRow != null)
-            graphComparisonRow.updateSeries(file);
-    }
-
-    @Override
-    public void onSessionClosed() {
-        liveSessionActiveProperty.set(false);
-        // TODO: Render some future "who won" graphs an such
-    }
-
-    public FloatProperty snapshotPerIngameSecondProperty() {
-        return snapshotsPerIngamesSecond;
     }
 
 }

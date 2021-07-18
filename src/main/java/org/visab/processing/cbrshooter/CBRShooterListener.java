@@ -14,7 +14,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterMapImages;
 import org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveStatisticsViewModel;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.StringFormat;
@@ -34,14 +34,14 @@ public class CBRShooterListener
 
     private CBRShooterFile file;
 
-    private List<ILiveStatisticsViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
+    private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
         super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
     }
 
     @Override
-    public void addViewModel(ILiveStatisticsViewModel<CBRShooterStatistics> viewModel) {
+    public void addViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
         viewModels.add(viewModel);
 
         // If the session isnt active anymore, instantly notify, that it was closed.
@@ -50,7 +50,7 @@ public class CBRShooterListener
     }
 
     @Override
-    public List<CBRShooterStatistics> getReceivedStatistics() {
+    public List<CBRShooterStatistics> getStatisticsCopy() {
         // Return a copy to avoid concurrent modification
         return new ArrayList<CBRShooterStatistics>(file.getStatistics());
     }
@@ -66,7 +66,7 @@ public class CBRShooterListener
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
     }
 
     @Override
@@ -87,7 +87,8 @@ public class CBRShooterListener
     @Override
     public void processImage(CBRShooterMapImages mapImage) {
         for (var entry : mapImage.getMoveableObjects().entrySet()) {
-            writeLog(Level.INFO, StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
+            writeLog(Level.INFO,
+                    StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
         }
     }
 
@@ -106,7 +107,7 @@ public class CBRShooterListener
     }
 
     @Override
-    public void removeViewModel(ILiveStatisticsViewModel<CBRShooterStatistics> viewModel) {
+    public void removeViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
         viewModels.remove(viewModel);
     }
 }

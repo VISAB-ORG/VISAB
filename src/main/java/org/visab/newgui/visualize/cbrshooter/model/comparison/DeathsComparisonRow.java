@@ -35,12 +35,14 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
 
     @Override
     public void updateSeries(CBRShooterFile file) {
+        var statistics = makeStatisticsCopy(file);
+
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
-        for (var name : file.getPlayerInformation().keySet())
+        for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.accumulatedDeathsPerRound(name, file));
 
-        for (var statistics : file.getStatistics()) {
-            for (var player : statistics.getPlayers()) {
+        for (var snapshot : statistics) {
+            for (var player : snapshot.getPlayers()) {
                 var name = player.getName();
 
                 if (!playerSeries.containsKey(name)) {
