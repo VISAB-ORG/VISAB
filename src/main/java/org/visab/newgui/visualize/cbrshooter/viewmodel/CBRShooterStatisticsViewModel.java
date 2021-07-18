@@ -88,6 +88,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
                     }
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
 
+                    // check if Row needs accumulated prefix
                     if (selectedRow.getRowDescription().equals("Kills")
                             || selectedRow.getRowDescription().equals("Deaths")
                             || selectedRow.getRowDescription().equals("Health items collected")
