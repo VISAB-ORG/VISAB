@@ -64,7 +64,6 @@
                <children>
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" onAction="#refreshSessions" text="Refresh" />
                         <Button mnemonicParsing="false" onAction="#createDummySessions" text="Dummies" />
                           <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="Session Overview" HBox.hgrow="ALWAYS">
                               <font>
