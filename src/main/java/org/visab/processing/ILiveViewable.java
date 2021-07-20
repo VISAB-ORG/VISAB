@@ -5,7 +5,6 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.ILiveViewModel;
-import org.visab.newgui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
 
 /**
  * The ILiveViewable interface, that all live viewable SessionListeners have to

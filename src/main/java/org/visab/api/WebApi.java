@@ -11,14 +11,12 @@ import org.visab.api.controller.ImageController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.api.model.SessionWatchdog;
-import org.visab.eventbus.event.SessionClosedEvent;
-import org.visab.processing.SessionListenerAdministration;
 import org.visab.processing.SessionListenerFactory;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.router.RouterNanoHTTPD;
+import org.nanohttpd.protocols.http.NanoHTTPD;
+import org.nanohttpd.router.RouterNanoHTTPD;
 
 /**
  * The main WebApi that hosts a small HTTP server. This is the entry point for

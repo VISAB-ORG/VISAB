@@ -5,15 +5,14 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.nanohttpd.protocols.http.IHTTPSession;
+import org.nanohttpd.protocols.http.response.Response;
+import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
-
-import fi.iki.elonen.NanoHTTPD.IHTTPSession;
-import fi.iki.elonen.NanoHTTPD.Response;
-import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
 
 /**
  * The SessionController, used for opening and closing VISAB transmission
@@ -147,7 +146,7 @@ public class SessionController extends HTTPControllerBase {
         var newSessionId = UUID.randomUUID();
 
         var success = WebApi.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
-                httpSession.getRemoteIpAddress(), httpSession.getRemoteHostName());
+                httpSession.getRemoteIpAddress(), "");
 
         logger.info(StringFormat.niceString("Opened session with ID '{0}'", newSessionId));
         return getJsonResponse(newSessionId);

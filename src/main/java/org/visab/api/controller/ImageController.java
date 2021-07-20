@@ -8,9 +8,9 @@ import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.workspace.Workspace;
 
-import fi.iki.elonen.NanoHTTPD.IHTTPSession;
-import fi.iki.elonen.NanoHTTPD.Response;
-import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
+import org.nanohttpd.protocols.http.IHTTPSession;
+import org.nanohttpd.protocols.http.response.Response;
+import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
 public class ImageController extends HTTPControllerBase {
 
