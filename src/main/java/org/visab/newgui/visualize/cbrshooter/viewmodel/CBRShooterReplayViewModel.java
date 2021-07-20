@@ -16,6 +16,7 @@ import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -58,6 +59,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
     private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
     private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
+    private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
 
     private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
@@ -107,6 +109,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Dynamically map visuals for given player amount
         initializePlayerVisuals();
 
+        initializeVisualsTable();
+
         updatePlayerTableByFrame();
 
         initializeMapElements();
@@ -124,31 +128,102 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderTickUnitProperty.set(tickUnit);
     }
 
-    private void updatePlayerTableByFrame() {
-        // Update table with current stats based on the selected frame
-        for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
-            PlayerDataRow row = new PlayerDataRow(frameBasedStats.getPlayers().get(i));
-            row.setPlayerVisual(playerVisualsMap.get(row.getName()).getPlayerIcon());
-            row.getShowCheckBox().setSelected(playerVisualsMap.get(row.getName()).isVisible());
+    private void initializeVisualsTable() {
+        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+
+            // Create new visuals from to make them decoupled from the map view
+            ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon().getImage());
+            Color playerColor = playerVisualsMap.get(playerInfo.getName()).getPlayerColor();
+            ImageView playerPlanChange = new ImageView(
+                    playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange().getImage());
+            ImageView playerDeath = new ImageView(
+                    playerVisualsMap.get(playerInfo.getName()).getPlayerDeath().getImage());
+
+            playerIcon.setFitHeight(16);
+            playerIcon.setFitWidth(16);
+            playerPlanChange.setFitHeight(16);
+            playerPlanChange.setFitWidth(16);
+            playerDeath.setFitHeight(16);
+            playerDeath.setFitWidth(16);
+
+            PlayerVisualsRow playerVisualsRow = new PlayerVisualsRow(playerInfo.getName(), playerIcon, playerPlanChange,
+                    playerDeath, playerColor);
 
             // Custom event handler that is capable of mapping the checkbox correctly
-            row.getShowCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+            playerVisualsRow.getShowPlayerCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
-                    if (value == false) {
-                        playerVisualsMap.get(row.getName()).hide();
-                    } else {
-                        playerVisualsMap.get(row.getName()).show();
-                    }
+                    playerVisualsMap.get(playerInfo.getName()).showAll(value);
 
                     updateMapElements();
                 }
             });
+            playerVisualsRow.getShowPlayerIconCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+
+                    var box = (CheckBox) event.getSource();
+                    var value = box.isSelected();
+
+                    playerVisualsMap.get(playerInfo.getName()).showIcon(value);
+
+                    updateMapElements();
+                }
+            });
+            playerVisualsRow.getShowPlayerPathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+
+                    var box = (CheckBox) event.getSource();
+                    var value = box.isSelected();
+
+                    playerVisualsMap.get(playerInfo.getName()).showPath(value);
+
+                    updateMapElements();
+                }
+            });
+            playerVisualsRow.getShowPlayerPlanChangeCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+
+                    var box = (CheckBox) event.getSource();
+                    var value = box.isSelected();
+
+                    playerVisualsMap.get(playerInfo.getName()).showPlanChange(value);
+
+                    updateMapElements();
+                }
+            });
+
+            playerVisualsRow.getShowPlayerDeathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+
+                    var box = (CheckBox) event.getSource();
+                    var value = box.isSelected();
+
+                    playerVisualsMap.get(playerInfo.getName()).showDeath(value);
+
+                    updateMapElements();
+                }
+            });
+
+            playerVisualsRows.add(playerVisualsRow);
+        }
+    }
+
+    private void updatePlayerTableByFrame() {
+        // Update table with current stats based on the selected frame
+
+        for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
+            PlayerDataRow row = new PlayerDataRow(frameBasedStats.getPlayers().get(i));
             currentPlayerStats.add(i, row);
         }
+
     }
 
     /**
@@ -421,6 +496,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setCurrentPlayerStats(ObservableList<PlayerDataRow> currentPlayerStats) {
         this.currentPlayerStats = currentPlayerStats;
+    }
+
+    public ObservableList<PlayerVisualsRow> getPlayerVisualsRows() {
+        return playerVisualsRows;
+    }
+
+    public void setPlayerVisualsRows(ObservableList<PlayerVisualsRow> playerVisualsRows) {
+        this.playerVisualsRows = playerVisualsRows;
     }
 
     public ObservableMap<String, Node> getMapElements() {
