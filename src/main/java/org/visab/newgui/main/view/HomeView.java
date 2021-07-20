@@ -106,6 +106,16 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     public void openSettings() {
         viewModel.openSettings().execute();
     }
+    
+    @FXML
+    public void openNewAbout() {
+        viewModel.openNewAbout().execute();
+    }
+    
+    @FXML
+    public void openNewHelp() {
+        viewModel.openNewHelp().execute();
+    }
 
     /**
      * The explorer view
