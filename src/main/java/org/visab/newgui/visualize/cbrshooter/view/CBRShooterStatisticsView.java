@@ -104,7 +104,8 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         var playerNames = viewModel.getPlayerNames();
         for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
-            var column = new TableColumn<ComparisonRowBase<?>, Object>(name);
+            var type = viewModel.getPlayerInformation().get(name);
+            var column = new TableColumn<ComparisonRowBase<?>, Object>(name + " (" + type + ")");
 
             // Create cell value factory
             column.setCellValueFactory(

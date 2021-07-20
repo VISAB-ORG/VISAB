@@ -82,10 +82,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
                     selectedRow.updateSeries(file);
                     playerStatsSeries.clear();
-                    while (!playerStatsSeries.isEmpty()) {
-                        // just make sure that the series is empty before new data is added
-                        // so that the graph can�t be destroyed by row switching
-                    }
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
 
                     // check if Row needs accumulated prefix
@@ -94,7 +90,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
                             || selectedRow.getRowDescription().equals("Health items collected")
                             || selectedRow.getRowDescription().equals("Ammunition items collected")
                             || selectedRow.getRowDescription().equals("Weapon items collected")) {
-                        yLabel.set("accumulated " + selectedRow.getRowDescription());
+                        yLabel.set("Accumulated " + selectedRow.getRowDescription());
                     } else {
                         yLabel.set(selectedRow.getRowDescription());
                     }
@@ -142,6 +138,10 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     public List<String> getPlayerNames() {
         return file.getPlayerNames();
+    }
+
+    public Map<String, String> getPlayerInformation() {
+        return file.getPlayerInformation();
     }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
