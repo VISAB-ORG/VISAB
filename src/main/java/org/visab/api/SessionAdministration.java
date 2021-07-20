@@ -40,6 +40,7 @@ public class SessionAdministration {
     private List<UUID> sessionIds = new ArrayList<>();
 
     /**
+     * TODO: REMOVE remoteCallerHostName!
      * Opens a new transmission session and publishes a SessionOpenedEvent.
      * 
      * @param sessionId            The sessionId to open a session for

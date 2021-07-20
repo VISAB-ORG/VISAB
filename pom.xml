@@ -9,6 +9,13 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
@@ -29,17 +36,10 @@
             <version>2.14.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd -->
         <dependency>
-            <groupId>org.nanohttpd</groupId>
+            <groupId>com.github.visab-org</groupId>
             <artifactId>nanohttpd</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd-nanolets -->
-        <dependency>
-            <groupId>org.nanohttpd</groupId>
-            <artifactId>nanohttpd-nanolets</artifactId>
-            <version>2.3.1</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->

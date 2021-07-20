@@ -2,15 +2,13 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
+import org.nanohttpd.protocols.http.IHTTPSession;
+import org.nanohttpd.protocols.http.response.Response;
+import org.nanohttpd.protocols.http.response.Status;
+import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
+import org.nanohttpd.router.RouterNanoHTTPD.UriResponder;
 import org.visab.util.JsonConvert;
 import org.visab.workspace.config.ConfigManager;
-
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.NanoHTTPD.IHTTPSession;
-import fi.iki.elonen.NanoHTTPD.Response;
-import fi.iki.elonen.NanoHTTPD.Response.Status;
-import fi.iki.elonen.router.RouterNanoHTTPD.UriResource;
-import fi.iki.elonen.router.RouterNanoHTTPD.UriResponder;
 
 /**
  * The base controller that all new controllers should inherit from.
@@ -27,7 +25,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getBadRequestResponse(String error) {
-        return NanoHTTPD.newFixedLengthResponse(Status.BAD_REQUEST, "application/json",
+        return Response.newFixedLengthResponse(Status.BAD_REQUEST, "application/json",
                 "400: BadRequest with error: [" + error + "].");
     }
 
@@ -38,7 +36,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getForbiddenResponse(String error) {
-        return NanoHTTPD.newFixedLengthResponse(Status.FORBIDDEN, "application/json",
+        return Response.newFixedLengthResponse(Status.FORBIDDEN, "application/json",
                 "403: BadRequest with error: [" + error + "].");
     }
 
@@ -49,7 +47,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(Object o) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE,
+        return Response.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE,
                 JsonConvert.serializeObject(o));
     }
 
@@ -60,7 +58,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     protected static final Response getJsonResponse(String json) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE, json);
+        return Response.newFixedLengthResponse(Status.OK, ConfigManager.JSON_MIME_TYPE, json);
     }
 
     /**
@@ -74,7 +72,7 @@ public abstract class HTTPControllerBase implements UriResponder {
     protected static final Response getNotFoundResponse(UriResource uriResource) {
         var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found.";
 
-        return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
+        return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
 
     /**
@@ -90,7 +88,7 @@ public abstract class HTTPControllerBase implements UriResponder {
         var responseMessage = "404: Adress: " + uriResource.getUri() + " was not found." + "Additional info: ["
                 + additionalMessage + "]";
 
-        return NanoHTTPD.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
+        return Response.newFixedLengthResponse(Status.NOT_FOUND, "text/html", responseMessage);
     }
 
     /**
@@ -100,7 +98,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return The Http response
      */
     public static final Response getOkResponse(String message) {
-        return NanoHTTPD.newFixedLengthResponse(Status.OK, "text/html",
+        return Response.newFixedLengthResponse(Status.OK, "text/html",
                 "200: Request Ok with message:[" + message + "]");
     }
 
