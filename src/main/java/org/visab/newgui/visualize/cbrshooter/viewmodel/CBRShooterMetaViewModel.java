@@ -52,9 +52,10 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
         weaponInformation = FXCollections.observableArrayList(file.getWeaponInformation());
 
         playerInformation = FXCollections.observableArrayList();
-        for (var entry : file.getPlayerInformation().entrySet())
-            playerInformation.add(new PlayerInformation(entry.getKey(), entry.getValue()));
-
+        for (var entry : file.getPlayerInformation().entrySet()) {
+            var color = file.getPlayerColors().get(entry.getKey());
+            playerInformation.add(new PlayerInformation(entry.getKey(), entry.getValue(), color));
+        }
     }
 
     public IntegerProperty getRoundsProperty() {
