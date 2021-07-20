@@ -5,7 +5,7 @@
         "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
         "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
         "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
-        "image": "org.visab.globalmodel.cbrshooter.CBRShooterMapImages",
+        "image": "org.visab.globalmodel.cbrshooter.CBRShooterImages",
         "visualizer": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView"
     },
     {

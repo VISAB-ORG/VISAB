@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.subscriber.ApiSubscriberBase;
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
 
@@ -16,7 +16,7 @@ import org.visab.globalmodel.IStatistics;
  *                      listener
  * @param <TImage>      The image type that will be processed by the listener
  */
-public abstract class ReplaySessionListenerBase<TMeta extends IMetaInformation, TStatistics extends IStatistics, TImage extends IImage>
+public abstract class ReplaySessionListenerBase<TMeta extends IMetaInformation, TStatistics extends IStatistics, TImage extends IImageContainer>
         extends SessionListenerBase<TMeta, TStatistics> {
 
     /**

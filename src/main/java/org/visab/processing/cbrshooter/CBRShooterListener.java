@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterMapImages;
+import org.visab.globalmodel.cbrshooter.CBRShooterImages;
 import org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
@@ -29,7 +29,7 @@ import org.visab.workspace.config.ConfigManager;
  *
  */
 public class CBRShooterListener
-        extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterMapImages>
+        extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterImages>
         implements ILiveViewable<CBRShooterStatistics> {
 
     private CBRShooterFile file;
@@ -86,11 +86,9 @@ public class CBRShooterListener
     }
 
     @Override
-    public void processImage(CBRShooterMapImages mapImage) {
-        for (var entry : mapImage.getMoveableObjects().entrySet()) {
-            writeLog(Level.INFO,
-                    StringFormat.niceString("{0} with image {1}", entry.getKey(), entry.getValue().toString()));
-        }
+    public void processImage(CBRShooterImages mapImage) {
+        writeLog(Level.DEBUG, "Received images");
+        file.setImages(mapImage);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package org.visab.globalmodel.starter;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 
-public class DefaultImage implements IImage {
+public class DefaultImage implements IImageContainer {
 
     private String json;
 

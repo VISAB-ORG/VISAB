@@ -3,9 +3,9 @@ package org.visab.globalmodel.cbrshooter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 
-public class CBRShooterMapImages implements IImage {
+public class CBRShooterImages implements IImageContainer {
 
     private Map<String, byte[]> staticObjects = new HashMap<>();
     private Map<String, byte[]> moveableObjects = new HashMap<>();

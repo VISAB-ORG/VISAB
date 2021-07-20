@@ -1,12 +1,12 @@
 package org.visab.newgui.visualize;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.IStatistics;
 import org.visab.processing.IReplayLiveViewable;
 
-public interface ILiveReplayViewModel<TStatistics extends IStatistics, TImage extends IImage> extends IVisualizeViewModel {
+public interface ILiveReplayViewModel<TStatistics extends IStatistics, TImage extends IImageContainer> extends IVisualizeViewModel {
 
-    void initialize(IReplayLiveViewable<? extends IStatistics, ? extends IImage> listener);
+    void initialize(IReplayLiveViewable<? extends IStatistics, ? extends IImageContainer> listener);
 
     /**
      * Called by the docked listener upon reciving new statistics.

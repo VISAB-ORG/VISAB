@@ -5,6 +5,6 @@ package org.visab.globalmodel;
  * are essentially mirrors of the class which was serialized on the game side.
  *
  */
-public interface IImage {
+public interface IImageContainer {
 
 }

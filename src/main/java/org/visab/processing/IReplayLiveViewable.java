@@ -1,6 +1,6 @@
 package org.visab.processing;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.IStatistics;
 import org.visab.newgui.visualize.ILiveReplayViewModel;
 
@@ -12,7 +12,7 @@ import org.visab.newgui.visualize.ILiveReplayViewModel;
  * @param <TStatistics> The statistics type received and added by the listener
  * @param <TImage>      The image type received by the listener
  */
-public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage extends IImage>
+public interface IReplayLiveViewable<TStatistics extends IStatistics, TImage extends IImageContainer>
         extends ILiveViewable<TStatistics> {
 
     /**

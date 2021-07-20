@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.BasicVISABFile;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.Rectangle;
 import org.visab.workspace.config.ConfigManager;
 
@@ -18,9 +19,18 @@ public class CBRShooterFile extends BasicVISABFile {
     private float gameSpeed;
     private List<WeaponInformation> weaponInformation = new ArrayList<>();
     private Map<String, String> playerColors = new HashMap<>();
+    private CBRShooterImages images;
 
     public CBRShooterFile() {
         super(ConfigManager.CBR_SHOOTER_STRING, "2.0");
+    }
+
+    public CBRShooterImages getImages() {
+        return images;
+    }
+
+    public void setImages(CBRShooterImages images) {
+        this.images = images;
     }
 
     public Map<String, String> getPlayerColors() {

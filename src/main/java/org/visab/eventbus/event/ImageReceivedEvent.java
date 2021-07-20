@@ -2,7 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.SessionStatus;
 
 /**
@@ -11,16 +11,16 @@ import org.visab.globalmodel.SessionStatus;
  */
 public class ImageReceivedEvent extends ApiEventBase {
 
-    private IImage mapImage;
+    private IImageContainer mapImage;
     private String game;
 
-    public ImageReceivedEvent(UUID sessionId, SessionStatus status, String game, IImage mapImage) {
+    public ImageReceivedEvent(UUID sessionId, SessionStatus status, String game, IImageContainer mapImage) {
         super(sessionId, status);
         this.game = game;
         this.mapImage = mapImage;
     }
 
-    public IImage getImage() {
+    public IImageContainer getImage() {
         return this.mapImage;
     }
 

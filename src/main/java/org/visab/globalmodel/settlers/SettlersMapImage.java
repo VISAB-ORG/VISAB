@@ -1,6 +1,6 @@
 package org.visab.globalmodel.settlers;
 
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 
 /**
  * This class represents the map image of Settlers
@@ -9,6 +9,6 @@ import org.visab.globalmodel.IImage;
  * @author leonr
  *
  */
-public class SettlersMapImage implements IImage {
+public class SettlersMapImage implements IImageContainer {
 
 }

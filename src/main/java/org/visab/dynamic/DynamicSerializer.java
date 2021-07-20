@@ -2,7 +2,7 @@ package org.visab.dynamic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.IImage;
+import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
@@ -66,18 +66,18 @@ public final class DynamicSerializer {
      * @param game The game for which to deserialize a image
      * @return An IImage object if successful, null else
      */
-    public static IImage deserializeImage(String json, String game) {
+    public static IImageContainer deserializeImage(String json, String game) {
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping != null && mapping.getImage() != null)
             className = mapping.getImage();
 
-        IImage image = null;
+        IImageContainer image = null;
         if (className.isBlank()) {
             image = new DefaultImage(json);
         } else {
-            image = DynamicSerializer.<IImage>tryDeserialize(className, json);
+            image = DynamicSerializer.<IImageContainer>tryDeserialize(className, json);
         }
 
         return image;
