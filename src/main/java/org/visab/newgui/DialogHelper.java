@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -136,8 +137,13 @@ public class DialogHelper {
         return files;
     }
 
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
-        var viewTuple = FluentViewLoader.fxmlView(viewType).load();
+    private Stage getStage(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            ViewModel viewModel) {
+        var viewStep = FluentViewLoader.fxmlView(viewType);
+        if (viewModel != null)
+            viewStep.viewModel(viewModel);
+
+        var viewTuple = viewStep.load();
         var view = viewTuple.getView();
 
         var stage = new Stage();
@@ -148,43 +154,45 @@ public class DialogHelper {
         if (blockWindows)
             stage.initModality(Modality.APPLICATION_MODAL);
 
+        return stage;
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
+        getStage(viewType, title, blockWindows, null).show();
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            Consumer<Stage> stageClosedHandler) {
+        var stage = getStage(viewType, title, blockWindows, null);
+        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
         stage.show();
     }
 
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows, ViewModel viewModel) {
-        var viewStep = FluentViewLoader.fxmlView(viewType);
-        viewStep.viewModel(viewModel);
-        var viewTuple = viewStep.load();
-        
-        var view = viewTuple.getView();
-
-        var stage = new Stage();
-        var scene = new Scene(view);
-        stage.setTitle(title);
-        stage.setScene(scene);
-
-        if (blockWindows)
-            stage.initModality(Modality.APPLICATION_MODAL);
-
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            ViewModel viewModel, Consumer<Stage> stageClosedHandler) {
+        var stage = getStage(viewType, title, blockWindows, viewModel);
+        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
         stage.show();
     }
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
             double minHeight, double minWidth) {
-        var viewTuple = FluentViewLoader.fxmlView(viewType).load();
-        var view = viewTuple.getView();
-
-        var stage = new Stage();
-        var scene = new Scene(view);
+        var stage = getStage(viewType, title, blockWindows, null);
 
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
 
-        stage.setTitle(title);
-        stage.setScene(scene);
+        stage.show();
+    }
 
-        if (blockWindows)
-            stage.initModality(Modality.APPLICATION_MODAL);
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            double minHeight, double minWidth, Consumer<Stage> stageClosedHandler) {
+        var stage = getStage(viewType, title, blockWindows, null);
+        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
+
+        stage.setMinWidth(minWidth);
+        stage.setMinHeight(minHeight);
+
         stage.show();
     }
 
