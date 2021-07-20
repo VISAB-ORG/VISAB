@@ -86,7 +86,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
                     playerStatsSeries.clear();
                     while (!playerStatsSeries.isEmpty()) {
                         // just make sure that the series is empty before new data is added
-                        // so that the graph can´t be destroyed by row switching
+                        // so that the graph canï¿½t be destroyed by row switching
                     }
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
 

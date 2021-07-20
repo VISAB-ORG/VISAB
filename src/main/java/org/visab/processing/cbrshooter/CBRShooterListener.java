@@ -82,6 +82,7 @@ public class CBRShooterListener
         file.setPlayerCount(metaInformation.getPlayerCount());
         file.getPlayerInformation().putAll(metaInformation.getPlayerInformation());
         file.getWeaponInformation().addAll(metaInformation.getWeaponInformation());
+        file.getPlayerColors().putAll(metaInformation.getPlayerColors());
     }
 
     @Override

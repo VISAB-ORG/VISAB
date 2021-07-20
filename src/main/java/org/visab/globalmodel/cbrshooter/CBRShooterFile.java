@@ -17,9 +17,18 @@ public class CBRShooterFile extends BasicVISABFile {
     private Map<String, String> playerInformation = new HashMap<>();
     private float gameSpeed;
     private List<WeaponInformation> weaponInformation = new ArrayList<>();
+    private Map<String, String> playerColors = new HashMap<>();
 
     public CBRShooterFile() {
         super(ConfigManager.CBR_SHOOTER_STRING, "2.0");
+    }
+
+    public Map<String, String> getPlayerColors() {
+        return playerColors;
+    }
+
+    public void setPlayerColors(Map<String, String> playerColors) {
+        this.playerColors = playerColors;
     }
 
     public List<WeaponInformation> getWeaponInformation() {

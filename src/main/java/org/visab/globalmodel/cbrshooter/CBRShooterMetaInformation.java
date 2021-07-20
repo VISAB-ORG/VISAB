@@ -3,28 +3,38 @@ package org.visab.globalmodel.cbrshooter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.Rectangle;
 
-// TODO: Decide what to put here.
 public class CBRShooterMetaInformation implements IMetaInformation {
 
     private String game;
     private int playerCount;
     private Rectangle mapRectangle;
-    private HashMap<String, String> playerInformation = new HashMap<>();
+    private Map<String, String> playerInformation = new HashMap<>();
     private float gameSpeed;
     private List<WeaponInformation> weaponInformation = new ArrayList<>();
+    private Map<String, String> playerColors = new HashMap<>();
 
     public List<WeaponInformation> getWeaponInformation() {
         return weaponInformation;
     }
+
+    public Map<String, String> getPlayerColors() {
+        return playerColors;
+    }
+
+    public void setPlayerColors(Map<String, String> playerColors) {
+        this.playerColors = playerColors;
+    }
+
     public int getPlayerCount() {
         return this.playerCount;
     }
 
-    public HashMap<String, String> getPlayerInformation() {
+    public Map<String, String> getPlayerInformation() {
         return playerInformation;
     }
 
