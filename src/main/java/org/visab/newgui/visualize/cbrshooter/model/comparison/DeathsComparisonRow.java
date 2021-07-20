@@ -35,16 +35,18 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
 
     @Override
     public void updateSeries(CBRShooterFile file) {
+        var statistics = makeStatisticsCopy(file);
+
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
-        for (var name : file.getPlayerInformation().keySet())
+        for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.accumulatedDeathsPerRound(name, file));
 
-        for (var statistics : file.getStatistics()) {
-            for (var player : statistics.getPlayers()) {
+        for (var snapshot : statistics) {
+            for (var player : snapshot.getPlayers()) {
                 var name = player.getName();
 
                 if (!playerSeries.containsKey(name)) {
-                    var newSeries = new Series<Double, Double>();
+                    var newSeries = new Series<Integer, Number>();
                     newSeries.setName(name);
                     playerSeries.put(name, newSeries);
                 }
@@ -53,7 +55,7 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
                 var graphData = playerSeries.get(name).getData();
                 for (var data : deathsPerRound) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Double, Double>((double) data.getRound(), (double) data.getParameter()));
+                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
                     }
                 }
             }

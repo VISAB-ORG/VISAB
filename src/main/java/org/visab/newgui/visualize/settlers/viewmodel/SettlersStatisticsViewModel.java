@@ -8,7 +8,7 @@ import java.util.Map;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
-import org.visab.newgui.visualize.LiveStatisticsViewModelBase;
+import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
@@ -27,7 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
-public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<SettlersFile, SettlersStatistics> {
+public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile, SettlersStatistics> {
 
     @InjectScope
     VisualizeScope scope;
@@ -53,12 +53,15 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
         if (scope.isLive()) {
             super.initializeLive(scope.getSessionListener());
 
+            // Register ourselves, for when the view closes
+            scope.registerForStageClosing(this);
+
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
 
             // Notify for all the already received statistics
-            for (var statistics : listener.getReceivedStatistics())
-                onStatisticsAdded(statistics);
+            for (var statistics : listener.getStatisticsCopy())
+                onStatisticsAdded(statistics, listener.getStatisticsCopy());
         } else {
             super.initialize(scope.getFile());
 
@@ -66,13 +69,13 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
             initializeDataStructures(file);
 
             for (var statistics : file.getStatistics())
-                onStatisticsAdded(statistics);
+                onStatisticsAdded(statistics, file.getStatistics());
         }
     }
 
     private void initializeDataStructures(SettlersFile file) {
         // Initialize player names
-        playerNames = new ArrayList<String>(file.getPlayerInformation().keySet());
+        playerNames = new ArrayList<String>(file.getPlayerNames());
 
         // Initialize comparison statistics
         comparisonStatistics = FXCollections.observableArrayList();
@@ -105,9 +108,8 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
             row.updateValues(file);
     }
 
-
     private void updateComparisonStatisticsSeries(SettlersFile file) {
-        
+
     }
 
     private void updatePlanUsage(SettlersStatistics newStatistics) {
@@ -131,7 +133,7 @@ public class SettlersStatisticsViewModel extends LiveStatisticsViewModelBase<Set
     }
 
     @Override
-    public void onStatisticsAdded(SettlersStatistics newStatistics) {
+    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
         updateComparisonStatistics(file);
         updatePlanUsage(newStatistics);
     }

@@ -2,20 +2,20 @@ package org.visab.newgui.visualize;
 
 public class StatisticsDataStructure {
     
-    private double round;
-    private int parameter;
+    private int round;
+    private double value;
     
-    public StatisticsDataStructure(Double round, Integer param) {
+    public StatisticsDataStructure(Integer round, Double value) {
         this.round = round;
-        this.parameter = param;
+        this.value = value;
     }
     
-    public double getRound() {
+    public int getRound() {
         return round;
     }
     
-    public int getParameter() {
-        return parameter;
+    public double getValue() {
+        return value;
     }
 
 }
