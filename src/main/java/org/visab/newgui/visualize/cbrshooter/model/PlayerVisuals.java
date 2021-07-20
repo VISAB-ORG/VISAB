@@ -32,26 +32,27 @@ public class PlayerVisuals {
         this.playerPlanChange.setVisible(false);
     }
 
-    public void hide() {
-        this.playerIcon.setVisible(false);
-        this.playerDeath.setVisible(false);
-        this.playerPlanChange.setVisible(false);
-        this.playerPath.setVisible(false);
+    public void showAll(boolean value) {
+        this.playerIcon.setVisible(value);
+        this.playerDeath.setVisible(value);
+        this.playerPlanChange.setVisible(value);
+        this.playerPath.setVisible(value);
     }
 
-    public void show() {
-        this.playerIcon.setVisible(true);
-        this.playerDeath.setVisible(true);
-        this.playerPlanChange.setVisible(true);
-        this.playerPath.setVisible(true);
+    public void showIcon(boolean value) {
+        this.playerIcon.setVisible(value);
     }
 
-    public boolean isVisible() {
-        if (this.playerIcon.isVisible() && this.playerPath.isVisible()) {
-            return true;
-        } else {
-            return false;
-        }
+    public void showPath(boolean value) {
+        this.playerPath.setVisible(value);
+    }
+
+    public void showPlanChange(boolean value) {
+        this.playerPlanChange.setVisible(value);
+    }
+
+    public void showDeath(boolean value) {
+        this.playerDeath.setVisible(value);
     }
 
     public ImageView getPlayerIcon() {

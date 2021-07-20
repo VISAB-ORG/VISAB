@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
+import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
 import org.visab.workspace.config.ConfigManager;
 
@@ -119,6 +120,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private TableView<PlayerDataRow> playerDataTable;
 
+    @FXML
+    private TableView<PlayerVisualsRow> playerVisualsTable;
+
     // Images / Icons
     private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
     private Image deathImage = new Image(ConfigManager.IMAGE_PATH + "deathScript.png");
@@ -148,6 +152,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
 
+        System.out.println("VIEW: Setting the visuals rows content to table");
+
+        playerVisualsTable.setItems(viewModel.getPlayerVisualsRows());
+
         totalTimeValueLabel.textProperty().bindBidirectional(viewModel.getTotalTimeProperty());
         roundValueLabel.textProperty().bindBidirectional(viewModel.getRoundProperty());
         roundTimeValueLabel.textProperty().bindBidirectional(viewModel.getRoundTimeProperty());
@@ -167,6 +175,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     public void handleFrameSlider() {
         viewModel.setSelectedFrame((int) frameSlider.getValue()).execute();
+        playerDataTable.refresh();
     }
 
     public void handleVeloSlider() {
