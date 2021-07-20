@@ -158,6 +158,10 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         return playerKillsSeries;
     }
 
+    public Map<String, String> getPlayerColors() {
+        return file.getPlayerColors();
+    }
+
     @Override
     public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
         updatePlanUsage(newStatistics);
