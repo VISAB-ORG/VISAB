@@ -41,7 +41,7 @@ import javafx.scene.shape.Path;
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(CBRShooterMainViewModel.class);
+    private static Logger logger = LogManager.getLogger(CBRShooterReplayViewModel.class);
 
     @InjectScope
     VisualizeScope scope;
