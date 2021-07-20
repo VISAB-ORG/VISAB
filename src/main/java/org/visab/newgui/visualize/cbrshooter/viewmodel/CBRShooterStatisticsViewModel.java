@@ -51,7 +51,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         if (scope.isLive()) {
             super.initializeLive(scope.getSessionListener());
             // Register ourselves, for when the view closes
-            scope.registerForStageClosing(this);
+            scope.registerOnStageClosing(e -> onSessionClosed());
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
         } else {

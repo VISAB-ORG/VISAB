@@ -169,6 +169,12 @@ public class DialogHelper {
     }
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
+            ViewModel viewModel) {
+        var stage = getStage(viewType, title, blockWindows, viewModel);
+        stage.show();
+    }
+
+    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
             ViewModel viewModel, Consumer<Stage> stageClosedHandler) {
         var stage = getStage(viewType, title, blockWindows, viewModel);
         stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
