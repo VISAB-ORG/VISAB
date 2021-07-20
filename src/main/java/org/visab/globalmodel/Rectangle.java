@@ -2,7 +2,6 @@ package org.visab.globalmodel;
 
 public class Rectangle {
 
-    private Vector2 topLeftAnchorPoint;
     private int width;
     private int height;
 
