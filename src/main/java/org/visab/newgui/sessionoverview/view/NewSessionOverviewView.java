@@ -32,6 +32,11 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     }
 
     @FXML
+    public void refreshSessions() {
+        viewModel.initializeSessionGrid(this.scrollPane);
+    }
+
+    @FXML
     public void openLiveViewAction() {
         viewModel.openLiveViewCommand().execute();
     }
