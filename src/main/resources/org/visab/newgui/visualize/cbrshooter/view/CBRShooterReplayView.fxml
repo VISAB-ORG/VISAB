@@ -246,7 +246,7 @@
             </HBox>
          </children>
       </GridPane>
-      <TableView fx:id="playerVisualsTable" layoutX="740.0" layoutY="737.0" prefHeight="200.0" prefWidth="250.0">
+      <TableView fx:id="playerVisualsTable" layoutX="794.0" layoutY="737.0" prefHeight="200.0" prefWidth="196.0">
         <columns>
           <TableColumn prefWidth="80.0" text="Player">
             <cellValueFactory>
