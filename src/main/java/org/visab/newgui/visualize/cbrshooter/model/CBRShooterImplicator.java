@@ -108,8 +108,8 @@ public final class CBRShooterImplicator {
 
         for (int i = 0; i < shotsFired.size(); i++) {
 
-            if (shotsFired.get(i).getParameter() > 0) {
-                var aimRatio = (hits.get(i).getParameter() / shotsFired.get(i).getParameter());
+            if (shotsFired.get(i).getValue() > 0) {
+                var aimRatio = (hits.get(i).getValue() / shotsFired.get(i).getValue());
                 aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, 
                         aimRatio));
             } else {
@@ -463,7 +463,7 @@ public final class CBRShooterImplicator {
                 .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
         var test = collectedCollectablesPerRound("John Doe", file, Collectable.Ammunition);
         for (int i = 0; i < test.size(); i++) {
-            System.out.println(test.get(i).getRound() + " : " + test.get(i).getParameter());
+            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
         }
 
         // var shots = concludeShotsFired(file);

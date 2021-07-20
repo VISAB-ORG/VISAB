@@ -63,7 +63,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
                 var graphData = playerSeries.get(name).getData();
                 for (var data : hitsOnEnemyPerRound) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getParameter()));
+                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
                     }
                 }
             }

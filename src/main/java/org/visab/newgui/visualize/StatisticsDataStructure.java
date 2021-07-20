@@ -3,19 +3,19 @@ package org.visab.newgui.visualize;
 public class StatisticsDataStructure {
     
     private int round;
-    private double parameter;
+    private double value;
     
-    public StatisticsDataStructure(Integer round, Double param) {
+    public StatisticsDataStructure(Integer round, Double value) {
         this.round = round;
-        this.parameter = param;
+        this.value = value;
     }
     
     public int getRound() {
         return round;
     }
     
-    public double getParameter() {
-        return parameter;
+    public double getValue() {
+        return value;
     }
 
 }

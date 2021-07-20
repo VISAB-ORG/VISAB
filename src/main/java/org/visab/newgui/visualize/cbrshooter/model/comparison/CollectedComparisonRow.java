@@ -57,7 +57,7 @@ public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerP
                 var graphData = playerSeries.get(name).getData();
                 for (var data : collectedCollectablesPerRound) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getParameter()));
+                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
                     }
                 }
             }

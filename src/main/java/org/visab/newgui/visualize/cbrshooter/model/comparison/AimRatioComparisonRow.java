@@ -28,7 +28,7 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleDoubleProperty(0));
 
-            playerValues.get(name).set(result.get(name));
+            playerValues.get(name).set(result.get(name) * 100);
         }
     }
 
@@ -53,8 +53,9 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
 
                 var graphData = playerSeries.get(name).getData();
                 for (var data : aimRatioPerRound) {
+                    // If there is no value for this round
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getParameter()));
+                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue() * 100));
                     }
                 }
             }
