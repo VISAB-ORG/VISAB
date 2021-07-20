@@ -12,7 +12,9 @@ import java.util.HashMap;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
+import org.visab.newgui.about.view.AboutView;
 import org.visab.newgui.control.ExplorerFile;
+import org.visab.newgui.help.view.HelpView;
 import org.visab.newgui.main.MainScope;
 import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
@@ -160,6 +162,8 @@ public class HomeViewModel extends ViewModelBase {
 
     private Command openApiDashboard;
     private Command openSettings;
+    private Command openNewAbout;
+    private Command openNewHelp;
 
     public Command openApi() {
         if (openApiDashboard == null) {
@@ -179,6 +183,26 @@ public class HomeViewModel extends ViewModelBase {
         }
 
         return openSettings;
+    }
+    
+    public Command openNewHelp() {
+        if (openNewHelp == null) {
+            openNewHelp = runnableCommand(() -> {
+                dialogHelper.showView(HelpView.class, "Help", true);
+            });
+        }
+
+        return openNewHelp;
+    }
+    
+    public Command openNewAbout() {
+        if (openNewAbout == null) {
+            openNewAbout = runnableCommand(() -> {
+                dialogHelper.showView(AboutView.class, "About", true);
+            });
+        }
+
+        return openNewAbout;
     }
 
     /** REGION: DATABASE VIEW */
