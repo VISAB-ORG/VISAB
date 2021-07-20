@@ -54,7 +54,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
                 var name = player.getName();
 
                 if (!playerSeries.containsKey(name)) {
-                    var newSeries = new Series<Double, Double>();
+                    var newSeries = new Series<Integer, Number>();
                     newSeries.setName(name);
                     playerSeries.put(name, newSeries);
                 }
@@ -63,7 +63,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
                 var graphData = playerSeries.get(name).getData();
                 for (var data : hitsOnEnemyPerRound) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Double, Double>((double) data.getRound(), (double) data.getParameter()));
+                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getParameter()));
                     }
                 }
             }
