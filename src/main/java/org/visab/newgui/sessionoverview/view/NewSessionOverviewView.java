@@ -7,12 +7,15 @@ import org.visab.newgui.sessionoverview.viewmodel.NewSessionOverviewViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
+
+    private Thread updateLoop;
 
     @FXML
     private Button closeSessionButton;
@@ -29,11 +32,6 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     }
 
     @FXML
-    public void refreshSessions() {
-        viewModel.initializeSessionGrid(this.scrollPane);
-    }
-
-    @FXML
     public void openLiveViewAction() {
         viewModel.openLiveViewCommand().execute();
     }
@@ -41,11 +39,37 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     @FXML
     public void createDummySessions() {
         viewModel.createDummySessionsCommand(this.scrollPane).execute();
+        updateLoop.interrupt();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.viewModel.initializeSessionGrid(this.scrollPane);
+        startUpdateLoop();
+    }
+
+    public void startUpdateLoop() {
+        updateLoop = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewModel.getSortedSessionGrid(scrollPane);
+                        }
+                    });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        };
+        updateLoop.start();
+    }
+
+    private void stopUpdateLoop() {
+        updateLoop.interrupt();
     }
 
 }
