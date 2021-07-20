@@ -68,7 +68,7 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
         updateLoop.start();
     }
 
-    private void stopUpdateLoop() {
+    public void stopUpdateLoop() {
         updateLoop.interrupt();
     }
 
