@@ -38,8 +38,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.util.Pair;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
 
@@ -76,7 +76,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     // Contains color-coded visuals for each player in the game
     private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
-    private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
+    private ObservableMap<String, Pair<Node, Boolean>> mapElements = FXCollections.observableHashMap();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -108,9 +108,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      */
     public void initialize() {
 
-        // Default update interval of 1 second
+        // Defaults
         updateInterval = 1000;
-
         selectedFrame = 0;
 
         // Load data from the scopes file which is initialized after VISUALIZE
@@ -118,18 +117,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         data = file.getStatistics();
         mapRectangle = file.getMapRectangle();
 
+        // Coordinate helper used to compute positioning on the replay view
         coordinateHelper = new CoordinateHelper(mapRectangle, paneSize.getY(), paneSize.getX(), panePositioning);
 
+        // Initialize all relevant data
         updateCurrentGameStatsByFrame();
-
-        // Dynamically map visuals for given player amount
         initializePlayerVisuals();
-
         initializeVisualsTable();
-
-        updatePlayerTableByFrame();
-
         initializeMapElements();
+        updatePlayerTableByFrame();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size() - 1);
@@ -144,6 +140,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderTickUnitProperty.set(tickUnit);
     }
 
+    /**
+     * Initializes the table that contains all visuals for each player and
+     * checkboxes that are capable of showing and hiding specific elements for each
+     * player.
+     * 
+     */
     private void initializeVisualsTable() {
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
 
@@ -154,6 +156,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange());
             ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
 
+            // Sizing to default icon size
             playerIcon.setFitHeight(16);
             playerIcon.setFitWidth(16);
             playerPlanChange.setFitHeight(16);
@@ -164,7 +167,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             PlayerVisualsRow playerVisualsRow = new PlayerVisualsRow(playerInfo.getName(), playerIcon, playerPlanChange,
                     playerDeath, playerColor);
 
-            // Custom event handler that is capable of mapping the checkbox correctly
+            // Update visibility every player specific element
             playerVisualsRow.getShowPlayerCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -172,9 +175,20 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
+                    mapElements.put(playerInfo.getName() + "_playerIcon", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerIcon").getKey(), value));
+                    mapElements.put(playerInfo.getName() + "_playerPlanChange", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerPlanChange").getKey(), value));
+                    mapElements.put(playerInfo.getName() + "_playerDeath", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerDeath").getKey(), value));
+                    mapElements.put(playerInfo.getName() + "_playerPath", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerPath").getKey(), value));
+
                     updateMapElements();
                 }
             });
+
+            // Update visibility of player icon
             playerVisualsRow.getShowPlayerIconCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -182,9 +196,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
+                    mapElements.put(playerInfo.getName() + "_playerIcon", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerIcon").getKey(), value));
+
                     updateMapElements();
                 }
             });
+
+            // Update visibility of player path
             playerVisualsRow.getShowPlayerPathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -192,9 +211,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
+                    mapElements.put(playerInfo.getName() + "_playerPath", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerPath").getKey(), value));
+
                     updateMapElements();
                 }
             });
+
+            // Update visibility of player plan change
             playerVisualsRow.getShowPlayerPlanChangeCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -202,16 +226,23 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
+                    mapElements.put(playerInfo.getName() + "_playerPlanChange", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerPlanChange").getKey(), value));
+
                     updateMapElements();
                 }
             });
 
+            // Update visibility of player death
             playerVisualsRow.getShowPlayerDeathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
 
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
+
+                    mapElements.put(playerInfo.getName() + "_playerDeath", new Pair<Node, Boolean>(
+                            mapElements.get(playerInfo.getName() + "_playerDeath").getKey(), value));
 
                     updateMapElements();
                 }
@@ -221,14 +252,16 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
     }
 
+    /**
+     * This methods fills the player data table with custom rows containing all
+     * relevant player specific information for the selected frame.
+     * 
+     */
     private void updatePlayerTableByFrame() {
-        // Update table with current stats based on the selected frame
-
         for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
             PlayerDataRow row = new PlayerDataRow(frameBasedStats.getPlayers().get(i));
             currentPlayerStats.add(i, row);
         }
-
     }
 
     /**
@@ -305,6 +338,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * This method directly accesses the draw pane of the replay view and puts the
      * necessary elements on it to the correct places.
      * 
+     * On every call it checks whether or not any element should be visible
+     * according to the respective check box selection and sets it accordingly.
+     * 
      */
     private void updateMapElements() {
 
@@ -314,51 +350,67 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // If the respective vector is (0,0) the item did not spawn yet
         if (healthItemPosition.getX() != 0 && healthItemPosition.getY() != 0) {
-            ImageView healthItem = (ImageView) mapElements.get("healthItem");
+            ImageView healthItem = (ImageView) mapElements.get("healthItem").getKey();
             Vector2 translatedHealthItemPosition = coordinateHelper.translateAccordingToMap(healthItemPosition);
             healthItem.setX(translatedHealthItemPosition.getX());
             healthItem.setY(translatedHealthItemPosition.getY());
-            mapElements.put("healthItem", healthItem);
+            boolean shallBeVisible = mapElements.get("healthItem").getValue();
+            healthItem.setVisible(shallBeVisible);
+            mapElements.put("healthItem", new Pair<Node, Boolean>(healthItem, shallBeVisible));
         } else {
-            mapElements.get("healthItem").setVisible(false);
+            mapElements.get("healthItem").getKey().setVisible(false);
         }
 
         if (ammuItemPosition.getX() != 0 && ammuItemPosition.getY() != 0) {
-            ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
+            ImageView ammuItem = (ImageView) mapElements.get("ammuItem").getKey();
             Vector2 translatedAmmuItemPosition = coordinateHelper.translateAccordingToMap(ammuItemPosition);
             ammuItem.setX(translatedAmmuItemPosition.getX());
             ammuItem.setY(translatedAmmuItemPosition.getY());
-            mapElements.put("ammuItem", ammuItem);
+            boolean shallBeVisible = mapElements.get("ammuItem").getValue();
+            ammuItem.setVisible(shallBeVisible);
+            mapElements.put("ammuItem", new Pair<Node, Boolean>(ammuItem, shallBeVisible));
 
         } else {
-            mapElements.get("ammuItem").setVisible(false);
+            mapElements.get("ammuItem").getKey().setVisible(false);
         }
 
         if (weaponPosition.getX() != 0 && weaponPosition.getY() != 0) {
-            ImageView weapon = (ImageView) mapElements.get("weapon");
+            ImageView weapon = (ImageView) mapElements.get("weapon").getKey();
             Vector2 translatedWeaponPosition = coordinateHelper.translateAccordingToMap(weaponPosition);
             weapon.setX(translatedWeaponPosition.getX());
             weapon.setY(translatedWeaponPosition.getY());
-            mapElements.put("weapon", weapon);
+            boolean shallBeVisible = mapElements.get("weapon").getValue();
+            weapon.setVisible(shallBeVisible);
+            mapElements.put("weapon", new Pair<Node, Boolean>(weapon, shallBeVisible));
         } else {
-            mapElements.get("weapon").setVisible(false);
+            mapElements.get("weapon").getKey().setVisible(false);
         }
 
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
-            ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon");
+            ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
             playerIcon.setY(playerPosition.getY());
+            boolean iconShallBeVisible = mapElements.get(playerInfo.getName() + "_playerIcon").getValue();
+            playerIcon.setVisible(iconShallBeVisible);
 
-            Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath");
+            Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
             playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                     playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
+            boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
+            playerPath.setVisible(pathShallBeVisible);
+            System.out.println("Player path has elements: " + playerPath.getElements().size());
 
-            mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
-            mapElements.put(playerInfo.getName() + "_playerPath", playerPath);
+            mapElements.put(playerInfo.getName() + "_playerIcon",
+                    new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
+            mapElements.put(playerInfo.getName() + "_playerPath",
+                    new Pair<Node, Boolean>(playerPath, pathShallBeVisible));
         }
     }
 
+    /**
+     * Initializes all map elements once the replay view is loaded.
+     */
     private void initializeMapElements() {
 
         // Map should always be contained in the elements exactly as it is
@@ -393,10 +445,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         weapon.setFitWidth(16);
         weapon.setVisible(false);
 
-        mapElements.put("map", map);
-        mapElements.put("healthItem", healthItem);
-        mapElements.put("weapon", weapon);
-        mapElements.put("ammuItem", ammuItem);
+        // True because items should be visible as soon as they appear
+        mapElements.put("map", new Pair<Node, Boolean>(map, true));
+        mapElements.put("healthItem", new Pair<Node, Boolean>(healthItem, true));
+        mapElements.put("weapon", new Pair<Node, Boolean>(weapon, true));
+        mapElements.put("ammuItem", new Pair<Node, Boolean>(ammuItem, true));
 
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
@@ -424,13 +477,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Path playerPath = new Path();
             playerPath.setStroke(playerVisualsMap.get(playerInfo.getName()).getPlayerColor());
             playerPath.setStrokeWidth(2);
-            playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
+            playerPath.getElements().add(new LineTo(playerPosition.getX(), playerPosition.getY()));
             playerPath.setVisible(true);
 
-            mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
-            mapElements.put(playerInfo.getName() + "_playerDeath", playerDeath);
-            mapElements.put(playerInfo.getName() + "_playerPlanChange", playerPlanChange);
-            mapElements.put(playerInfo.getName() + "_playerPath", playerPath);
+            mapElements.put(playerInfo.getName() + "_playerIcon", new Pair<Node, Boolean>(playerIcon, true));
+            mapElements.put(playerInfo.getName() + "_playerDeath", new Pair<Node, Boolean>(playerDeath, false));
+            mapElements.put(playerInfo.getName() + "_playerPlanChange",
+                    new Pair<Node, Boolean>(playerPlanChange, false));
+            mapElements.put(playerInfo.getName() + "_playerPath", new Pair<Node, Boolean>(playerPath, true));
         }
 
     }
@@ -509,7 +563,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command visualizeMapElement(String key, boolean value) {
         visualizeMapElement = runnableCommand(() -> {
-            mapElements.get(key).setVisible(value);
+            mapElements.put(key, new Pair<Node, Boolean>(mapElements.get(key).getKey(), value));
+            updateMapElements();
         });
         return visualizeMapElement;
     }
@@ -560,12 +615,13 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         this.playerVisualsRows = playerVisualsRows;
     }
 
-    public ObservableMap<String, Node> getMapElements() {
-        return mapElements;
-    }
+    public ObservableList<Node> getMapElements() {
+        ObservableList<Node> mapElementsList = FXCollections.observableArrayList();
 
-    public void setMapElements(ObservableMap<String, Node> mapElements) {
-        this.mapElements = mapElements;
+        for (Pair<Node, Boolean> mapPair : mapElements.values()) {
+            mapElementsList.add(mapPair.getKey());
+        }
+        return mapElementsList;
     }
 
     public SimpleStringProperty getTotalTimeProperty() {
