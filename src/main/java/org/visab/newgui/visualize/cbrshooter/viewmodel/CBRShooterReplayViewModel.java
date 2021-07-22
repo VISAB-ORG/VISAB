@@ -17,6 +17,8 @@ import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
+import org.visab.util.VISABUtil;
+import org.visab.workspace.Workspace;
 import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -55,13 +57,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Thread necessary to control data updating in the background
     private Thread updateLoop;
 
+    // Custom row lists for the table views
+    private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
+    private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
+
+    // Generic properties of the replay view to display information
     private SimpleIntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
     private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
     private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
-    private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
-    private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
-    private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
-
     private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
     private SimpleStringProperty roundTimeProperty = new SimpleStringProperty();
     private SimpleStringProperty roundProperty = new SimpleStringProperty();
@@ -69,8 +72,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
     private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
 
-    // For dynamic player amount we need a flexible map to store visuals in
+    // Contains color-coded visuals for each player in the game
     private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
+    private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -79,16 +83,23 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // extraction of the loaded statistics
     private int selectedFrame;
 
+    // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
     // Viewmodel always has a reference to the statistics of the current stat
     private CBRShooterStatistics frameBasedStats;
 
+    // The underlying file of the opened view
+    private CBRShooterFile file;
+
+    // A model rectangle that is used to calculate map positioning
     private Rectangle mapRectangle;
 
     // Used for static indication of the layout of the drawpane for the replay view
     private Vector2 panePositioning = new Vector2(41, 143);
     private Vector2 paneSize = new Vector2(550, 550);
+
+    private CoordinateHelper coordinateHelper;
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
@@ -101,9 +112,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         selectedFrame = 0;
 
         // Load data from the scopes file which is initialized after VISUALIZE
-        CBRShooterFile file = (CBRShooterFile) scope.getFile();
+        file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
         mapRectangle = file.getMapRectangle();
+
+        coordinateHelper = new CoordinateHelper(mapRectangle, paneSize.getY(), paneSize.getX(), panePositioning);
+
         updateCurrentGameStatsByFrame();
 
         // Dynamically map visuals for given player amount
@@ -132,12 +146,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
 
             // Create new visuals from to make them decoupled from the map view
-            ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon().getImage());
+            ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
             Color playerColor = playerVisualsMap.get(playerInfo.getName()).getPlayerColor();
             ImageView playerPlanChange = new ImageView(
-                    playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange().getImage());
-            ImageView playerDeath = new ImageView(
-                    playerVisualsMap.get(playerInfo.getName()).getPlayerDeath().getImage());
+                    playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange());
+            ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
 
             playerIcon.setFitHeight(16);
             playerIcon.setFitWidth(16);
@@ -157,8 +170,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
-                    playerVisualsMap.get(playerInfo.getName()).showAll(value);
-
                     updateMapElements();
                 }
             });
@@ -168,8 +179,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
-
-                    playerVisualsMap.get(playerInfo.getName()).showIcon(value);
 
                     updateMapElements();
                 }
@@ -181,8 +190,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
 
-                    playerVisualsMap.get(playerInfo.getName()).showPath(value);
-
                     updateMapElements();
                 }
             });
@@ -192,8 +199,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
-
-                    playerVisualsMap.get(playerInfo.getName()).showPlanChange(value);
 
                     updateMapElements();
                 }
@@ -205,8 +210,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
                     var box = (CheckBox) event.getSource();
                     var value = box.isSelected();
-
-                    playerVisualsMap.get(playerInfo.getName()).showDeath(value);
 
                     updateMapElements();
                 }
@@ -235,26 +238,24 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private void initializePlayerVisuals() {
         List<PlayerInformation> playerInfos = frameBasedStats.getPlayers();
 
-        for (int i = 0; i < playerInfos.size(); i++) {
+        for (PlayerInformation playerInfo : playerInfos) {
+            // Unity Game provides Hex code which has to be translated to a JavaFx color
+            Color playerColor = VISABUtil.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
 
-            // TODO: Currently static coding, but it proves the concept - Changes to
-            // ConfigManager mandatory to make it really dynamic
-            ImageView playerIcon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "scriptBot.png"));
-            ImageView playerPlanChange = new ImageView(new Image(ConfigManager.IMAGE_PATH + "changePlan.png"));
-            ImageView playerDeath = new ImageView(new Image(ConfigManager.IMAGE_PATH + "deathScript.png"));
+            // Get base icons from the game manager which need to be recolored
+            // @TODO: Use sent player images by unity
+            Image playerIcon = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+            Image playerPlanChange = new Image(
+                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerPlanChange"));
+            Image playerDeath = new Image(
+                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerDeath"));
 
-            // TODO: Add random color provision
-            Color color = Color.GREEN;
+            // Recolor images
+            playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
+            playerDeath = VISABUtil.recolorImage(playerDeath, playerColor);
 
-            playerIcon.setFitHeight(16);
-            playerIcon.setFitWidth(16);
-            playerPlanChange.setFitHeight(16);
-            playerPlanChange.setFitWidth(16);
-            playerDeath.setFitHeight(16);
-            playerDeath.setFitWidth(16);
-
-            PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, color);
-            playerVisualsMap.put(playerInfos.get(i).getName(), playerVisuals);
+            PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, playerColor);
+            playerVisualsMap.put(playerInfo.getName(), playerVisuals);
 
         }
     }
@@ -298,10 +299,70 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
     }
 
+    /**
+     * This method directly accesses the draw pane of the replay view and puts the
+     * necessary elements on it to the correct places.
+     * 
+     */
+    private void updateMapElements() {
+
+        Vector2 healthItemPosition = frameBasedStats.getHealthPosition();
+        Vector2 ammuItemPosition = frameBasedStats.getAmmunitionPosition();
+        Vector2 weaponPosition = frameBasedStats.getWeaponPosition();
+
+        // If the respective vector is (0,0) the item did not spawn yet
+        if (healthItemPosition.getX() != 0 && healthItemPosition.getY() != 0) {
+            ImageView healthItem = (ImageView) mapElements.get("healthItem");
+            Vector2 translatedHealthItemPosition = coordinateHelper.translateAccordingToMap(healthItemPosition);
+            healthItem.setX(translatedHealthItemPosition.getX());
+            healthItem.setY(translatedHealthItemPosition.getY());
+            healthItem.setVisible(true);
+            mapElements.put("healthItem", healthItem);
+        } else {
+            mapElements.get("healthItem").setVisible(false);
+        }
+
+        if (ammuItemPosition.getX() != 0 && ammuItemPosition.getY() != 0) {
+            ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
+            Vector2 translatedAmmuItemPosition = coordinateHelper.translateAccordingToMap(ammuItemPosition);
+            ammuItem.setX(translatedAmmuItemPosition.getX());
+            ammuItem.setY(translatedAmmuItemPosition.getY());
+            ammuItem.setVisible(true);
+            mapElements.put("ammuItem", ammuItem);
+
+        } else {
+            mapElements.get("ammuItem").setVisible(false);
+        }
+
+        if (weaponPosition.getX() != 0 && weaponPosition.getY() != 0) {
+            ImageView weapon = (ImageView) mapElements.get("weapon");
+            Vector2 translatedWeaponPosition = coordinateHelper.translateAccordingToMap(weaponPosition);
+            weapon.setX(translatedWeaponPosition.getX());
+            weapon.setY(translatedWeaponPosition.getY());
+            weapon.setVisible(true);
+            mapElements.put("weapon", weapon);
+        } else {
+            mapElements.get("weapon").setVisible(false);
+        }
+
+        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+            ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon");
+            Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
+            playerIcon.setX(playerPosition.getX());
+            playerIcon.setY(playerPosition.getY());
+
+            Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath");
+            playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
+
+            mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
+            mapElements.put(playerInfo.getName() + "_playerPath", playerPath);
+        }
+    }
+
     private void initializeMapElements() {
 
         // Map should always be contained in the elements exactly as it is
-        ImageView map = new ImageView(new Image(ConfigManager.IMAGE_PATH + "fps_map.png"));
+        ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH + "fps_map.png"));
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());
         map.setFitHeight(paneSize.getY());
@@ -312,82 +373,62 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // First add the fixed items to the replay view
         ImageView healthItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "healthContainer.png"));
-        healthItem.setX(170);
-        healthItem.setY(170);
+        healthItem.setX(panePositioning.getX());
+        healthItem.setY(panePositioning.getY());
         healthItem.setFitHeight(16);
         healthItem.setFitWidth(16);
+        healthItem.setVisible(false);
 
         ImageView ammuItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "ammuContainer.png"));
-        ammuItem.setX(80);
-        ammuItem.setY(300);
+        ammuItem.setX(panePositioning.getX());
+        ammuItem.setY(panePositioning.getY());
         ammuItem.setFitHeight(16);
         ammuItem.setFitWidth(16);
+        ammuItem.setVisible(false);
 
         ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "weapon.png"));
-        weapon.setX(60);
-        weapon.setY(250);
+        weapon.setX(panePositioning.getX());
+        weapon.setY(panePositioning.getY());
         weapon.setFitHeight(16);
         weapon.setFitWidth(16);
+        weapon.setVisible(false);
 
         mapElements.put("map", map);
         mapElements.put("healthItem", healthItem);
         mapElements.put("weapon", weapon);
         mapElements.put("ammuItem", ammuItem);
 
-        // Then add the players dynamically, because there can be any amount
-        for (String playerKey : playerVisualsMap.keySet()) {
-            mapElements.put(playerKey + "_playerIcon", playerVisualsMap.get(playerKey).getPlayerIcon());
-            mapElements.put(playerKey + "_playerDeath", playerVisualsMap.get(playerKey).getPlayerDeath());
-            mapElements.put(playerKey + "_playerPlanChange", playerVisualsMap.get(playerKey).getPlayerPlanChange());
-            mapElements.put(playerKey + "_playerPath", playerVisualsMap.get(playerKey).getPlayerPath());
-        }
-
-    }
-
-    /**
-     * This method directly accesses the draw pane of the replay view and puts the
-     * necessary elements on it to the correct places.
-     * 
-     */
-    private void updateMapElements() {
-
-        // Accessing the Path
-        // cbrPath.getElements().add(new MoveTo(coordinatesCBRBotListPrep.get(i),
-        // coordinatesCBRBotListPrep.get(i + 1)));
-
-        ImageView weapon = (ImageView) mapElements.get("weapon");
-        Vector2 newCoordinatesWeapon = CoordinateHelper.translateAccordingToMap(mapRectangle,
-                frameBasedStats.getWeaponPosition(), panePositioning, paneSize.getY(), paneSize.getX());
-        weapon.setX(newCoordinatesWeapon.getX());
-        weapon.setY(newCoordinatesWeapon.getY());
-        mapElements.put("weapon", weapon);
-
-        ImageView healthItem = (ImageView) mapElements.get("healthItem");
-        Vector2 newCoordinatesHealthItem = CoordinateHelper.translateAccordingToMap(mapRectangle,
-                frameBasedStats.getHealthPosition(), panePositioning, paneSize.getY(), paneSize.getX());
-        healthItem.setX(newCoordinatesHealthItem.getX());
-        healthItem.setY(newCoordinatesHealthItem.getY());
-        mapElements.put("healthItem", healthItem);
-
-        ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
-        Vector2 newCoordinatesAmmuItem = CoordinateHelper.translateAccordingToMap(mapRectangle,
-                frameBasedStats.getAmmunitionPosition(), panePositioning, paneSize.getY(), paneSize.getX());
-        ammuItem.setX(newCoordinatesAmmuItem.getX());
-        ammuItem.setY(newCoordinatesAmmuItem.getY());
-        mapElements.put("ammuItem", ammuItem);
-
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
-            ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon");
-            Vector2 newCoordinatesPlayerIcon = CoordinateHelper.translateAccordingToMap(mapRectangle,
-                    playerInfo.getPosition(), panePositioning, paneSize.getY(), paneSize.getX());
-            playerIcon.setX(newCoordinatesPlayerIcon.getX());
-            playerIcon.setY(newCoordinatesPlayerIcon.getY());
-            mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
+            ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
+            Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
+            playerIcon.setX(playerPosition.getX());
+            playerIcon.setY(playerPosition.getY());
+            playerIcon.setFitHeight(16);
+            playerIcon.setFitWidth(16);
+
+            ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
+            playerDeath.setX(panePositioning.getX());
+            playerDeath.setY(panePositioning.getY());
+            playerDeath.setFitHeight(16);
+            playerDeath.setFitWidth(16);
+            playerDeath.setVisible(false);
+
+            ImageView playerPlanChange = new ImageView(
+                    playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange());
+            playerPlanChange.setX(panePositioning.getX());
+            playerPlanChange.setY(panePositioning.getY());
+            playerPlanChange.setFitHeight(16);
+            playerPlanChange.setFitWidth(16);
+            playerPlanChange.setVisible(false);
+
+            Path playerPath = new Path();
+            playerPath.setStroke(playerVisualsMap.get(playerInfo.getName()).getPlayerColor());
+            playerPath.setStrokeWidth(2);
+            playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
 
             mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
-
-            Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath");
-            playerPath.getElements().add(new MoveTo(newCoordinatesPlayerIcon.getX(), newCoordinatesPlayerIcon.getY()));
+            mapElements.put(playerInfo.getName() + "_playerDeath", playerDeath);
+            mapElements.put(playerInfo.getName() + "_playerPlanChange", playerPlanChange);
             mapElements.put(playerInfo.getName() + "_playerPath", playerPath);
         }
 
@@ -454,7 +495,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             selectedFrame = frame;
             updateCurrentGameStatsByFrame();
             updatePlayerTableByFrame();
-
+            updateMapElements();
             // TODO: Also call the draw map function here
         });
         return setSelectedFrame;

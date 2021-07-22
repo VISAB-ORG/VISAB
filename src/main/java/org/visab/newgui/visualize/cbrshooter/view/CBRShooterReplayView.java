@@ -124,19 +124,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private TableView<PlayerVisualsRow> playerVisualsTable;
 
     // Images / Icons
-    private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
-    private Image deathImage = new Image(ConfigManager.IMAGE_PATH + "deathScript.png");
-    private Image deathImageCBR = new Image(ConfigManager.IMAGE_PATH + "deadCBR.png");
-    private Image imageCbrBot = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
-    private Image changePlanCBRImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
-    private Image changePlanScriptImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
     private Image pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
     private Image playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
 
-    private ImageView cbrbotImageView = new ImageView(imageCbrBot);
-    private ImageView deathImageView = new ImageView(deathImage);
-    private ImageView deathImageViewCBR = new ImageView(deathImageCBR);
-    private ImageView scriptbotImageView = new ImageView(imageScriptBot);
     private ImageView playImageView = new ImageView(playImage);
     private ImageView pauseImageView = new ImageView(pauseImage);
 
@@ -180,28 +170,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     public void handleVeloSlider() {
         viewModel.setUpdateInterval(1000 / veloSlider.getValue()).execute();
-    }
-
-    // Handle Method for user Selection regarding visability of the Script Bot
-    // Player Icon
-    @FXML
-    public void handleCheckBoxScriptPlayer(ActionEvent event) {
-        if (checkBoxScriptBotPlayer.isSelected()) {
-            scriptbotImageView.setVisible(true);
-        } else if (checkBoxScriptBotPlayer.isSelected() == false) {
-            scriptbotImageView.setVisible(false);
-        }
-    }
-
-    // Handle Method for user Selection regarding visability of the CBR Bot Player
-    // Icon
-    @FXML
-    public void handleCheckBoxCBRPlayer(ActionEvent event) {
-        if (checkBoxCBRBotPlayer.isSelected()) {
-            cbrbotImageView.setVisible(true);
-        } else if (checkBoxCBRBotPlayer.isSelected() == false) {
-            cbrbotImageView.setVisible(false);
-        }
     }
 
     @FXML
