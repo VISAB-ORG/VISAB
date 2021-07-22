@@ -21,7 +21,9 @@ import org.visab.workspace.DatabaseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -80,6 +82,14 @@ public final class VISABUtil {
             }
         }
         return outputImage;
+    }
+
+    public static ImageView greyScaleImage(Image inputImage) {
+        ColorAdjust monochrome = new ColorAdjust();
+        monochrome.setSaturation(-1);
+        ImageView grayScaledImage = new ImageView(inputImage);
+        grayScaledImage.setEffect(monochrome);
+        return grayScaledImage;
     }
 
     public static Color translateHexToRgbColor(String hexCode) {
