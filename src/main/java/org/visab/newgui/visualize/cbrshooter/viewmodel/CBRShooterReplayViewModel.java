@@ -38,6 +38,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Pair;
 
@@ -395,11 +396,17 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerIcon.setVisible(iconShallBeVisible);
 
             Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
+
+            if (playerPath.getElements().size() > selectedFrame) {
+                for (int i = playerPath.getElements().size() - 1; i > selectedFrame; i--) {
+                    playerPath.getElements().remove(i);
+                }
+            }
+
             playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                     playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
             boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
-            System.out.println("Player path has elements: " + playerPath.getElements().size());
 
             mapElements.put(playerInfo.getName() + "_playerIcon",
                     new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
@@ -477,7 +484,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Path playerPath = new Path();
             playerPath.setStroke(playerVisualsMap.get(playerInfo.getName()).getPlayerColor());
             playerPath.setStrokeWidth(2);
-            playerPath.getElements().add(new LineTo(playerPosition.getX(), playerPosition.getY()));
+            playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
             playerPath.setVisible(true);
 
             mapElements.put(playerInfo.getName() + "_playerIcon", new Pair<Node, Boolean>(playerIcon, true));
