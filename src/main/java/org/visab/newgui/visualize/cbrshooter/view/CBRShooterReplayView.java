@@ -39,34 +39,18 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
 
-    // ----- IMAGE VIEWS -------
-
     @FXML
     private ImageView healthImage;
     @FXML
     private ImageView ammuImage;
     @FXML
     private ImageView weaponImage;
-
-    // ----- VISIBILITY CHECKS -----
     @FXML
-    private CheckBox checkBoxScriptBotPath;
+    private CheckBox checkBoxWeapon;
     @FXML
-    private CheckBox checkBoxScriptBotDeaths;
+    private CheckBox checkBoxAmmuItem;
     @FXML
-    private CheckBox checkBoxScriptBotPlayer;
-    @FXML
-    private CheckBox checkBoxCBRBotPath;
-    @FXML
-    private CheckBox checkBoxCBRBotDeaths;
-    @FXML
-    private CheckBox checkBoxCBRBotPlayer;
-    @FXML
-    private CheckBox checkBoxWeapons;
-    @FXML
-    private CheckBox checkBoxAmmu;
-    @FXML
-    private CheckBox checkBoxHealth;
+    private CheckBox checkBoxHealthItem;
 
     // ----- CONTROLS ----
     @FXML
@@ -161,15 +145,29 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         drawPane.getChildren().setAll(viewModel.getMapElements().values());
     }
 
-    // Dummy Handle Method for frame slider
     @FXML
     public void handleFrameSlider() {
         viewModel.setSelectedFrame((int) frameSlider.getValue()).execute();
-        playerDataTable.refresh();
     }
 
+    @FXML
     public void handleVeloSlider() {
         viewModel.setUpdateInterval(1000 / veloSlider.getValue()).execute();
+    }
+
+    @FXML
+    public void visualizeWeapon() {
+        viewModel.visualizeMapElement("weapon", this.checkBoxWeapon.isSelected()).execute();
+    }
+
+    @FXML
+    public void visualizeAmmuItem() {
+        viewModel.visualizeMapElement("ammuItem", this.checkBoxAmmuItem.isSelected()).execute();
+    }
+
+    @FXML
+    public void visualizeHealthItem() {
+        viewModel.visualizeMapElement("healthItem", this.checkBoxHealthItem.isSelected()).execute();
     }
 
     @FXML

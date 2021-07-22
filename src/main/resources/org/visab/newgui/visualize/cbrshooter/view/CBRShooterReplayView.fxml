@@ -29,13 +29,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="drawPane">
-        <ImageView fitHeight="550.0" fitWidth="550.0" layoutX="41.0" layoutY="143.0">
-         <image>
-            <Image url="@../../../../../../img/fps_map.png" />
-         </image>
-        </ImageView>
-      </Pane>
+      <Pane fx:id="drawPane" />
       <Label fx:id="veloLabel" layoutX="745.0" layoutY="496.0" text="Velocity" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -153,7 +147,7 @@
             </HBox>
             <HBox GridPane.rowIndex="3">
                <children>
-                  <CheckBox mnemonicParsing="false" />
+                  <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" onAction="#visualizeWeapon" selected="true" />
                   <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/weapon.png" />
@@ -164,13 +158,24 @@
             </HBox>
             <HBox GridPane.rowIndex="4">
                <children>
-                  <CheckBox mnemonicParsing="false" />
+                  <CheckBox fx:id="checkBoxAmmuItem" mnemonicParsing="false" onAction="#visualizeAmmuItem" selected="true" />
                   <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/ammuContainer.png" />
                      </image>
                   </ImageView>
                   <Label text="Ammunition" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <CheckBox fx:id="checkBoxHealthItem" mnemonicParsing="false" onAction="#visualizeHealthItem" selected="true" />
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/healthContainer.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Health Item" />
                </children>
             </HBox>
             <HBox GridPane.columnIndex="1">
@@ -203,17 +208,7 @@
                   <Label fx:id="ammuCoordsValueLabel" />
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
-               <children>
-                  <CheckBox mnemonicParsing="false" />
-                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../img/healthContainer.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="Health Item" />
-               </children>
-            </HBox>
+
             <HBox GridPane.columnIndex="2">
                <children>
                   <Label text="Milliseconds" />
