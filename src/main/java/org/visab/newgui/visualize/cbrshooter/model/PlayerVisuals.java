@@ -1,6 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
@@ -12,79 +12,56 @@ import javafx.scene.shape.Path;
  */
 public class PlayerVisuals {
 
-    private ImageView playerIcon;
+    private Image playerIcon;
 
-    private ImageView playerDeath;
+    private Image playerDeath;
 
-    private ImageView playerPlanChange;
+    private Image playerPlanChange;
+
+    private Color playerColor;
 
     private Path playerPath;
 
-    public PlayerVisuals(ImageView playerIcon, ImageView playerDeath, ImageView playerPlanChange, Color playerColor) {
+    public PlayerVisuals(Image playerIcon, Image playerDeath, Image playerPlanChange, Color playerColor) {
+
         this.playerIcon = playerIcon;
         this.playerDeath = playerDeath;
         this.playerPlanChange = playerPlanChange;
+        this.playerColor = playerColor;
         this.playerPath = new Path();
-        this.playerPath.setStroke(playerColor);
-
-        // Default is false because they will only be shown if necessary
-        this.playerDeath.setVisible(false);
-        this.playerPlanChange.setVisible(false);
+        this.playerPath.setStroke(this.playerColor);
     }
 
-    public void showAll(boolean value) {
-        this.playerIcon.setVisible(value);
-        this.playerDeath.setVisible(value);
-        this.playerPlanChange.setVisible(value);
-        this.playerPath.setVisible(value);
-    }
-
-    public void showIcon(boolean value) {
-        this.playerIcon.setVisible(value);
-    }
-
-    public void showPath(boolean value) {
-        this.playerPath.setVisible(value);
-    }
-
-    public void showPlanChange(boolean value) {
-        this.playerPlanChange.setVisible(value);
-    }
-
-    public void showDeath(boolean value) {
-        this.playerDeath.setVisible(value);
-    }
-
-    public ImageView getPlayerIcon() {
+    public Image getPlayerIcon() {
         return playerIcon;
     }
 
-    public void setPlayerIcon(ImageView playerIcon) {
+    public void setPlayerIcon(Image playerIcon) {
         this.playerIcon = playerIcon;
     }
 
-    public ImageView getPlayerDeath() {
+    public Image getPlayerDeath() {
         return playerDeath;
     }
 
-    public void setPlayerDeath(ImageView playerDeath) {
+    public void setPlayerDeath(Image playerDeath) {
         this.playerDeath = playerDeath;
     }
 
-    public ImageView getPlayerPlanChange() {
+    public Image getPlayerPlanChange() {
         return playerPlanChange;
     }
 
-    public void setPlayerPlanChange(ImageView playerPlanChange) {
+    public void setPlayerPlanChange(Image playerPlanChange) {
         this.playerPlanChange = playerPlanChange;
     }
 
     public Color getPlayerColor() {
-        return (Color) playerPath.getStroke();
+        return this.playerColor;
     }
 
     public void setPlayerColor(Color playerColor) {
-        this.playerPath.setStroke(playerColor);
+        this.playerColor = playerColor;
     }
 
     public Path getPlayerPath() {
