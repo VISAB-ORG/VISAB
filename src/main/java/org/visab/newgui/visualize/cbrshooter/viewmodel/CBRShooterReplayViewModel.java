@@ -37,6 +37,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
@@ -53,6 +54,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private Command pauseData;
     private Command setUpdateInterval;
     private Command setSelectedFrame;
+    private Command visualizeMapElement;
 
     // Thread necessary to control data updating in the background
     private Thread updateLoop;
@@ -316,7 +318,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Vector2 translatedHealthItemPosition = coordinateHelper.translateAccordingToMap(healthItemPosition);
             healthItem.setX(translatedHealthItemPosition.getX());
             healthItem.setY(translatedHealthItemPosition.getY());
-            healthItem.setVisible(true);
             mapElements.put("healthItem", healthItem);
         } else {
             mapElements.get("healthItem").setVisible(false);
@@ -327,7 +328,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Vector2 translatedAmmuItemPosition = coordinateHelper.translateAccordingToMap(ammuItemPosition);
             ammuItem.setX(translatedAmmuItemPosition.getX());
             ammuItem.setY(translatedAmmuItemPosition.getY());
-            ammuItem.setVisible(true);
             mapElements.put("ammuItem", ammuItem);
 
         } else {
@@ -339,7 +339,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Vector2 translatedWeaponPosition = coordinateHelper.translateAccordingToMap(weaponPosition);
             weapon.setX(translatedWeaponPosition.getX());
             weapon.setY(translatedWeaponPosition.getY());
-            weapon.setVisible(true);
             mapElements.put("weapon", weapon);
         } else {
             mapElements.get("weapon").setVisible(false);
@@ -352,7 +351,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerIcon.setY(playerPosition.getY());
 
             Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath");
-            playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
+            playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
+                    playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
 
             mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
             mapElements.put(playerInfo.getName() + "_playerPath", playerPath);
@@ -425,6 +425,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerPath.setStroke(playerVisualsMap.get(playerInfo.getName()).getPlayerColor());
             playerPath.setStrokeWidth(2);
             playerPath.getElements().add(new MoveTo(playerPosition.getX(), playerPosition.getY()));
+            playerPath.setVisible(true);
 
             mapElements.put(playerInfo.getName() + "_playerIcon", playerIcon);
             mapElements.put(playerInfo.getName() + "_playerDeath", playerDeath);
@@ -492,13 +493,25 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
-            selectedFrame = frame;
+            // Prevent selected frame to be out of bound when play is running and the
+            // frameslider gets shifted unfortunately
+            if (frame > data.size()) {
+                selectedFrame = frame - 1;
+            } else {
+                selectedFrame = frame;
+            }
             updateCurrentGameStatsByFrame();
             updatePlayerTableByFrame();
             updateMapElements();
-            // TODO: Also call the draw map function here
         });
         return setSelectedFrame;
+    }
+
+    public Command visualizeMapElement(String key, boolean value) {
+        visualizeMapElement = runnableCommand(() -> {
+            mapElements.get(key).setVisible(value);
+        });
+        return visualizeMapElement;
     }
 
     // --- Property getters and setters ---
