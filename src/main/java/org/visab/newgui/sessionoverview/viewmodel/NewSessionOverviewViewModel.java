@@ -1,6 +1,9 @@
 package org.visab.newgui.sessionoverview.viewmodel;
 
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -117,8 +120,9 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                     var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
 
                     // Customized JavaFX Gridpane which displays relevant session information
-                    CustomSessionObject sessionObject = new CustomSessionObject("DummyGame", logoPath, new UUID(0, 10),
-                            "localhost", "127.0.0.1", "Dummy clock time", status);
+                    SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
+                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "localhost", "127.0.0.1", status);
+                    CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath);
 
                     sessionObject.setBackgroundColorByStatus(status);
 
@@ -134,9 +138,9 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 }
 
                 anchorPane.getChildren().add(sessionObjectGrid);
-                
+
                 scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-                
+
                 scrollPane.setContent(anchorPane);
 
             });
@@ -151,7 +155,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
      * 
      * @param anchorPane the anchorpane where the grid pane should be added to.
      */
-    public void initializeSessionGrid(ScrollPane scrollPane) {
+    public void getSortedSessionGrid(ScrollPane scrollPane) {
         AnchorPane anchorPane = new AnchorPane();
         GridPane sessionObjectGrid = new GridPane();
         sessionObjectGrid.setPadding(new Insets(10));
@@ -163,15 +167,15 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         var rowIterator = 0;
         var colIterator = 0;
 
-        for (UUID sessionId : WebApi.getInstance().getSessionAdministration().getSessionIds()) {
-            SessionStatus sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
+        List<SessionStatus> sortedSessionstatuses = sortSessionStatuses(
+                WebApi.getInstance().getSessionAdministration().getSessionStatuses());
+
+        for (SessionStatus sessionStatus : sortedSessionstatuses) {
 
             var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
-            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus.getGame(), logoPath, sessionId,
-                    sessionStatus.getHostName(), sessionStatus.getIp(), sessionStatus.getSessionOpened().toString(),
-                    sessionStatus.getStatusType());
+            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath);
 
             sessionObject.setBackgroundColorByStatus(sessionStatus.getStatusType());
 
@@ -190,6 +194,11 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         anchorPane.getChildren().add(sessionObjectGrid);
         scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollPane.setContent(anchorPane);
+    }
+
+    private List<SessionStatus> sortSessionStatuses(List<SessionStatus> sessionStatusList) {
+        Collections.sort(sessionStatusList, byLastRequest);
+        return sessionStatusList;
     }
 
     private Command openLiveViewCommand;
@@ -211,6 +220,12 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
     public ObjectProperty<SessionStatus> selectedSessionProperty() {
         return selectedSession;
     }
+
+    Comparator<SessionStatus> byLastRequest = new Comparator<SessionStatus>() {
+        public int compare(SessionStatus o1, SessionStatus o2) {
+            return (-1) * o1.getLastRequest().compareTo(o2.getLastRequest());
+        }
+    };
 
     public NewSessionOverviewViewModel() {
         ApiEventBus.getInstance().subscribe(this);
