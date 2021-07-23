@@ -10,11 +10,9 @@ import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
-import org.visab.newgui.visualize.settlers.model.comparison.PlayerTypeComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
@@ -68,6 +66,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
+    }
+    
+    public Map<String, String> getPlayerInformation() {
+        return file.getPlayerInformation();
     }
     
     public Command playerStatsChartCommand() {
@@ -124,7 +126,6 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
         // Initialize comparison statistics
         comparisonStatistics = FXCollections.observableArrayList();
-        comparisonStatistics.add(new PlayerTypeComparisonRow());
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Road));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Village));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Town));

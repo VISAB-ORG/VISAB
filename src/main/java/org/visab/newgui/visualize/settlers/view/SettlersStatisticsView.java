@@ -1,9 +1,7 @@
 package org.visab.newgui.visualize.settlers.view;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.control.CustomLabelPieChart;
@@ -63,14 +61,16 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void addComparisonColumns() {
         var columns = new ArrayList<TableColumn<ComparisonRowBase<?>, ?>>();
 
         var playerNames = viewModel.getPlayerNames();
         for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
-            var column = new TableColumn<ComparisonRowBase<?>, Object>(name);
-
+            var type = viewModel.getPlayerInformation().get(name);
+            var column = new TableColumn<ComparisonRowBase<?>, Object>(name + " (" + type + ")");
+            
             // Create cell value factory
             column.setCellValueFactory(
                     cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerValues().get(name));
