@@ -58,6 +58,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private ComparisonRowBase<?> graphComparisonRow;
     private StringProperty yLabel = new SimpleStringProperty();
     
+    public StringProperty yLabelProperty() {
+        return yLabel;
+    }
+    
     public ObservableList<Series<Integer, Number>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }

@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsView">
     <columnConstraints>
@@ -18,7 +20,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TableView fx:id="comparisonStatistics">
+        <TableView fx:id="comparisonStatistics" GridPane.columnIndex="1">
             <columns>
                 <TableColumn prefWidth="75.0" text="Measure">
                     <cellValueFactory>
@@ -29,6 +31,14 @@
         </TableView>
         <HBox GridPane.rowIndex="1" fx:id="planUsageHBox"></HBox>
     </children>
-    <Button fx:id="chartButton" mnemonicParsing="false" onAction="#handleChartButtonAction" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="3">
+    <Button fx:id="chartButton" mnemonicParsing="false" onAction="#handleChartButtonAction" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="2">
     </Button>
+    <LineChart fx:id="playerStats" title="Player Stats" GridPane.columnIndex="3">
+        <xAxis>
+            <NumberAxis label="Turns" side="bottom" />
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Placeholder Label" side="left" />
+        </yAxis>
+    </LineChart>
 </GridPane>

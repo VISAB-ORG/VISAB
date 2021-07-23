@@ -14,6 +14,7 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
@@ -31,6 +32,9 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     HBox planUsageHBox;
     
     @FXML
+    LineChart<Integer, Number> playerStats;
+    
+    @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
     }
@@ -40,7 +44,9 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         comparisonStatistics.setItems(viewModel.getComparisonStatistics());
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());
-
+        playerStats.setData(viewModel.getPlayerStatsSeries());
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
+        
         addComparisonColumns();
         addPlanPieCharts();
     }
