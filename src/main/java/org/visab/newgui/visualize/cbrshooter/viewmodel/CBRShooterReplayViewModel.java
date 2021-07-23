@@ -102,7 +102,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     // Used for static indication of the layout of the drawpane for the replay view
     private Vector2 panePositioning = new Vector2(41, 143);
-    private Vector2 paneSize = new Vector2(550, 550);
+    private Vector2 paneSize = new Vector2();
 
     private CoordinateHelper coordinateHelper;
 
@@ -119,6 +119,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         file = (CBRShooterFile) scope.getFile();
         data = file.getStatistics();
         mapRectangle = file.getMapRectangle();
+
+        // Ensure that the pane has the same relative format as the game map
+        paneSize.setX(550);
+        double computedPaneHeight = ((double) mapRectangle.getHeight() / (double) mapRectangle.getWidth())
+                * (double) paneSize.getX();
+        paneSize.setY((int) computedPaneHeight);
 
         // Coordinate helper used to compute positioning on the replay view
         coordinateHelper = new CoordinateHelper(mapRectangle, paneSize.getY(), paneSize.getX(), panePositioning);
