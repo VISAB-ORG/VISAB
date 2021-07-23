@@ -88,6 +88,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // extraction of the loaded statistics
     private int selectedFrame;
 
+    // Necessary to decide which elements shall be "resetted" for each round
+    private int roundCounter;
+
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
@@ -120,7 +123,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         data = file.getStatistics();
         mapRectangle = file.getMapRectangle();
 
-        // Ensure that the pane has the same relative format as the game map
+        // Ensure that the pane has the same relative format as the game
         paneSize.setX(550);
         double computedPaneHeight = ((double) mapRectangle.getHeight() / (double) mapRectangle.getWidth())
                 * (double) paneSize.getX();
@@ -135,6 +138,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         initializeVisualsTable();
         initializeMapElements();
         updatePlayerTableByFrame();
+
+        roundCounter = frameBasedStats.getRound();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size() - 1);
@@ -405,30 +410,26 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
             Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
 
-            System.out.println("Selected frame: " + selectedFrame + ", path size: " + playerPath.getElements().size());
-            if (playerPath.getElements().size() - 1 > selectedFrame) {
-                for (int i = playerPath.getElements().size() - 1; i >= selectedFrame; i--) {
-                    System.out.println("removing index of list: " + i);
-                    playerPath.getElements().remove(i);
-                }
+            if (roundCounter == frameBasedStats.getRound()) {
+                playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
+                        playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
+            } else {
+                playerPath.getElements().clear();
+                playerPath.getElements().add(new MoveTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
+                        playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
             }
-
-            playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
-                    playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
             boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
 
             // Decide if a plan change must be visualized on the map
             if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
                 if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
-                    System.out.println("Plan change triggered");
                     ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
                             .getKey();
                     playerPlanChange.setX(playerPosition.getX());
                     playerPlanChange.setY(playerPosition.getY());
                     boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
                             .getValue();
-                    System.out.println("And shall be visible: " + planChangeShallBeVisible);
                     playerPlanChange.setVisible(planChangeShallBeVisible);
                     mapElements.put(playerInfo.getName() + "_playerPlanChange",
                             new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
@@ -441,6 +442,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             mapElements.put(playerInfo.getName() + "_playerPath",
                     new Pair<Node, Boolean>(playerPath, pathShallBeVisible));
         }
+        roundCounter = frameBasedStats.getRound();
     }
 
     /**
