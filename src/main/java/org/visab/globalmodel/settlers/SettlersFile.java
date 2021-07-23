@@ -55,7 +55,7 @@ public class SettlersFile extends BasicVISABFile {
     }
 
     public List<String> getPlayerNames() {
-        return new ArrayList<>(playerInformation.values());
+        return new ArrayList<>(playerInformation.keySet());
     }
 
 }
