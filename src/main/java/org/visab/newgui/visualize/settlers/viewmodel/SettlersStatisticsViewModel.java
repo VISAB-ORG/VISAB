@@ -74,7 +74,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
-                var selectedRow = selectedStatistics.get();
+                var selectedRow = selectedRowProperty.get();
                 if (selectedRow != null) {
 
                     selectedRow.updateSeries(file);
