@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.Button?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsView">
     <columnConstraints>
@@ -28,4 +29,6 @@
         </TableView>
         <HBox GridPane.rowIndex="1" fx:id="planUsageHBox"></HBox>
     </children>
+    <Button fx:id="chartButton" mnemonicParsing="false" onAction="#handleChartButtonAction" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="3">
+    </Button>
 </GridPane>

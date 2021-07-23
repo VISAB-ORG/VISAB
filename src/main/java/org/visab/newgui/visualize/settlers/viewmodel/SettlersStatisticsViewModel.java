@@ -20,8 +20,11 @@ import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentCompar
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
 
 import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
@@ -44,6 +47,43 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private Map<String, ObservableList<Data>> planUsages;
 
     private Map<String, Series<Integer, Number>> comparisonStatisticsSeries;
+    
+    private Command playerStatsChartCommand;
+    
+    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
+    
+    private ObservableList<Series<Integer, Number>> playerStatsSeries = FXCollections.observableArrayList();
+    
+    // Set in command on show stats button click
+    private ComparisonRowBase<?> graphComparisonRow;
+    private StringProperty yLabel = new SimpleStringProperty();
+    
+    public ObservableList<Series<Integer, Number>> getPlayerStatsSeries() {
+        return playerStatsSeries;
+    }
+    
+    public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
+        return selectedStatistics;
+    }
+    
+    public Command playerStatsChartCommand() {
+        if (playerStatsChartCommand == null) {
+            playerStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedStatistics.get();
+                if (selectedRow != null) {
+
+                    selectedRow.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
+                    
+                    yLabel.set(selectedRow.getRowDescription());
+
+                    graphComparisonRow = selectedRow;
+                }
+            });
+        }
+        return playerStatsChartCommand;
+    }
 
     /**
      * Called by javafx/mvvmfx once view is loaded - but before initialize in the
