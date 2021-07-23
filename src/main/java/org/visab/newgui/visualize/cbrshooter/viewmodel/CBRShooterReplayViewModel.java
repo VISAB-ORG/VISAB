@@ -92,15 +92,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
-
         // Default update interval of 1 second
         updateInterval = 1000;
 
         selectedFrame = 0;
 
+        // TODO: Might not be to hard to have this work live aswell
         // Load data from the scopes file which is initialized after VISUALIZE
-        CBRShooterFile file = (CBRShooterFile) scope.getFile();
+        if (scope.isLive()) {
+            file = (CBRShooterFile) scope.getSessionListener().getCurrentFile();
+        } else {
+            initialize(scope.getFile());
+        }
+
         data = file.getStatistics();
+
         mapRectangle = file.getMapRectangle();
         updateCurrentGameStatsByFrame();
 
