@@ -102,7 +102,6 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
         isLiveViewActive.disableProperty().set(true);
         isLiveViewActive.selectedProperty().bind(viewModel.liveViewActiveProperty());
-
         isLiveViewActive.setVisible(viewModel.liveViewActiveProperty().get());
     }
 
