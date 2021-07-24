@@ -25,7 +25,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
-// TODO: Add end of game thingy.
 public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
@@ -38,9 +37,9 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     private ObservableList<Series<Integer, Number>> playerStatsSeries = FXCollections.observableArrayList();
 
-    // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
-    private StringProperty yLabel = new SimpleStringProperty();
+
+    private StringProperty graphYLabel = new SimpleStringProperty();
 
     private Command playerStatsChartCommand;
 
@@ -49,9 +48,11 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
      */
     public void initialize() {
         if (scope.isLive()) {
-            super.initializeLive(scope.getSessionListener());
+            super.initialize(scope.getSessionListener());
+            
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(e -> onSessionClosed());
+            
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
         } else {
@@ -70,8 +71,8 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         return selectedStatistics;
     }
 
-    public StringProperty yLabelProperty() {
-        return yLabel;
+    public StringProperty graphYLabelProperty() {
+        return graphYLabel;
     }
 
     public Command playerStatsChartCommand() {
@@ -90,9 +91,9 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
                             || selectedRow.getRowDescription().equals("Health items collected")
                             || selectedRow.getRowDescription().equals("Ammunition items collected")
                             || selectedRow.getRowDescription().equals("Weapon items collected")) {
-                        yLabel.set("Accumulated " + selectedRow.getRowDescription());
+                        graphYLabel.set("Accumulated " + selectedRow.getRowDescription());
                     } else {
-                        yLabel.set(selectedRow.getRowDescription());
+                        graphYLabel.set(selectedRow.getRowDescription());
                     }
 
                     graphComparisonRow = selectedRow;
@@ -111,9 +112,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
         }
 
-        // Add the comparison rows.
-        // comparisonStatistics.add(new PlayerTypeComparisonRow()); TODO: set PlayerType
-        // in column header description
         comparisonStatistics.add(new KillsComparisonRow());
         comparisonStatistics.add(new DeathsComparisonRow());
         comparisonStatistics.add(new ShotsComparisonRow());
@@ -133,7 +131,6 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         var statisticsCopy = new ArrayList<>(file.getStatistics());
         for (var statistics : statisticsCopy)
             updatePlanUsage(statistics);
-
     }
 
     public List<String> getPlayerNames() {

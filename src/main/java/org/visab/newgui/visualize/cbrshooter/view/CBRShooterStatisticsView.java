@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,6 +42,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
     @FXML
     Label snapshotsPerSecond;
+
+    @FXML
+    CheckBox isLiveViewActive;
 
     @InjectViewModel
     CBRShooterStatisticsViewModel viewModel;
@@ -77,7 +81,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         // playerStats chart
         viewModel.selectedStatisticsProperty().bind(comparisonTable.getSelectionModel().selectedItemProperty());
         playerStats.setData(viewModel.getPlayerStatsSeries());
-        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
+        playerStats.getYAxis().labelProperty().bind(viewModel.graphYLabelProperty());
 
         playerStats.dataProperty().get().addListener(new ListChangeListener<LineChart.Series<Integer, Number>>() {
             @Override
@@ -95,6 +99,11 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
                 playerStats.setStyle(style);
             }
         });
+
+        isLiveViewActive.disableProperty().set(true);
+        isLiveViewActive.selectedProperty().bind(viewModel.liveViewActiveProperty());
+
+        isLiveViewActive.setVisible(viewModel.liveViewActiveProperty().get());
     }
 
     @SuppressWarnings("unchecked")

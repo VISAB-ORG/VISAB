@@ -51,7 +51,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
      */
     public void initialize() {
         if (scope.isLive()) {
-            super.initializeLive(scope.getSessionListener());
+            super.initialize(scope.getSessionListener());
 
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(e -> onSessionClosed());
@@ -140,7 +140,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     @Override
     public void onSessionClosed() {
-        liveSessionActiveProperty().set(false);
+        liveViewActiveProperty().set(false);
         listener.removeViewModel(this);
     }
 

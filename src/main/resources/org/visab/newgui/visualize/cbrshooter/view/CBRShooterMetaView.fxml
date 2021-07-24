@@ -10,31 +10,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
+        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints/>
     </rowConstraints>
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+        <VBox GridPane.rowIndex="1">
             <children>
-                <Label prefHeight="17.0" prefWidth="302.0" text="Player Information">
+                <Label text="Player Information">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <TableView fx:id="playerInformationTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                <TableView fx:id="playerInformationTable">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Player name">
+                        <TableColumn text="Player name">
                             <cellValueFactory>
                                 <PropertyValueFactory property="name" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Controlled by">
+                        <TableColumn text="Controlled by">
                             <cellValueFactory>
                                 <PropertyValueFactory property="controlledBy" />
                             </cellValueFactory>
@@ -43,36 +44,36 @@
                 </TableView>
             </children>
         </VBox>
-        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <Label prefHeight="17.0" prefWidth="302.0" text="Weapon Information">
+                <Label text="Weapon Information">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <TableView fx:id="weaponInformationTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                <TableView fx:id="weaponInformationTable">
                     <columns>
-                        <TableColumn prefWidth="79.0" text="Weapon name" >
+                        <TableColumn text="Weapon name">
                             <cellValueFactory>
                                 <PropertyValueFactory property="name" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="71.0" text="Damage per shot" >
+                        <TableColumn text="Damage per shot">
                             <cellValueFactory>
                                 <PropertyValueFactory property="damage" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="71.0" text="Fire rate" >
+                        <TableColumn text="Fire rate">
                             <cellValueFactory>
                                 <PropertyValueFactory property="fireRate" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="71.0" text="Magazine size">
+                        <TableColumn text="Magazine size">
                             <cellValueFactory>
                                 <PropertyValueFactory property="magazineSize" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="71.0" text="Maximum Ammunition" >
+                        <TableColumn text="Maximum Ammunition">
                             <cellValueFactory>
                                 <PropertyValueFactory property="maximumAmmunition" />
                             </cellValueFactory>
@@ -81,23 +82,23 @@
                 </TableView>
             </children>
         </VBox>
-        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES">
+        <VBox GridPane.columnIndex="1">
             <children>
-                <Label prefHeight="17.0" prefWidth="335.0" text="Session Information">
+                <Label text="Session Information">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <GridPane prefHeight="135.0" prefWidth="300.0">
+                <GridPane>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="158.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="142.0" />
+                        <ColumnConstraints />
+                        <ColumnConstraints halignment="RIGHT" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
                     </rowConstraints>
                     <children>
                         <Label text="Rounds" />
@@ -112,24 +113,24 @@
                 </GridPane>
             </children>
         </VBox>
-        <VBox prefHeight="200.0" prefWidth="100.0">
+        <VBox>
             <children>
-                <VBox prefHeight="126.0" prefWidth="300.0" VBox.vgrow="SOMETIMES">
+                <VBox>
                     <children>
-                        <Label prefHeight="17.0" prefWidth="352.0" text="File Information">
+                        <Label text="File Information">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints />
+                                <ColumnConstraints halignment="RIGHT" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
                             </rowConstraints>
                             <children>
                                 <Label text="Creation date" GridPane.rowIndex="1" />
