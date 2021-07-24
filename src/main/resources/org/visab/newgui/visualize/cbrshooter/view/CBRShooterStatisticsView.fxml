@@ -2,16 +2,17 @@
 
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
 
 <?import org.visab.newgui.control.CustomLabelPieChart?>
 
@@ -24,15 +25,16 @@
         <RowConstraints />
         <RowConstraints />
         <RowConstraints />
+      <RowConstraints />
     </rowConstraints>
     <children>
-        <HBox GridPane.columnIndex="1">
-            <children>
+        <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <right>
                 <CheckBox fx:id="isLiveViewActive" text="LiveView still active" />
-            </children>
-        </HBox>
+            </right>
+        </BorderPane>
 
-        <VBox GridPane.columnIndex="0">
+        <VBox GridPane.rowIndex="1">
             <children>
                 <TableView fx:id="comparisonTable">
                     <columns>
@@ -47,7 +49,7 @@
             </children>
         </VBox>
 
-        <LineChart fx:id="playerStats" title="Comparison Graph" GridPane.columnIndex="1">
+        <LineChart fx:id="playerStats" title="Comparison Graph" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <xAxis>
                 <NumberAxis label="Round" side="bottom" />
             </xAxis>
@@ -56,7 +58,7 @@
             </yAxis>
         </LineChart>
 
-        <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
-        <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="3" />
+        <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </children>
 </GridPane>
