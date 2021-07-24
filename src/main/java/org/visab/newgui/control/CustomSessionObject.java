@@ -91,7 +91,8 @@ public class CustomSessionObject extends GridPane {
         this.closeSessionButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                WebApi.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
+                if (sessionStatus.isActive())
+                    WebApi.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
             }
         });
         this.closeSessionButton.setAlignment(Pos.TOP_RIGHT);

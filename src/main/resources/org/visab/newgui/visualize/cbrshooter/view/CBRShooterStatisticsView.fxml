@@ -26,7 +26,7 @@
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="10" />
+        <RowConstraints maxHeight="20" />
         <RowConstraints percentHeight="40" />
         <RowConstraints percentHeight="58" />
         <RowConstraints />
