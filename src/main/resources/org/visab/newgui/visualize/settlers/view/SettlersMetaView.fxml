@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
+        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints/>
+    </rowConstraints>
+    <children>
+        <VBox GridPane.rowIndex="1">
+            <children>
+                <Label text="Player Information">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="playerInformationTable">
+                    <columns>
+                        <TableColumn text="Player name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Controlled by">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="controlledBy" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <VBox GridPane.columnIndex="1">
+            <children>
+                <Label text="Session Information">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints halignment="RIGHT" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Rounds" />
+                        <Label fx:id="rounds" text="Label" GridPane.columnIndex="1" />
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+        <VBox>
+            <children>
+                <VBox>
+                    <children>
+                        <Label text="File Information">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints />
+                                <ColumnConstraints halignment="RIGHT" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <Label text="Creation date" GridPane.rowIndex="1" />
+                                <Label text="File format version" GridPane.rowIndex="2" />
+                                <Label fx:id="creationDate" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label fx:id="fileFormatVersion" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label text="GameId" />
+                                <Label fx:id="game" text="Label" GridPane.columnIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</GridPane>
