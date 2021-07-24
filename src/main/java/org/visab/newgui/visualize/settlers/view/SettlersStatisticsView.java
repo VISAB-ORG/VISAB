@@ -1,9 +1,7 @@
 package org.visab.newgui.visualize.settlers.view;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.control.CustomLabelPieChart;
@@ -14,6 +12,7 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
@@ -29,13 +28,23 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
     @FXML
     HBox planUsageHBox;
+    
+    @FXML
+    LineChart<Integer, Number> playerStats;
+    
+    @FXML
+    private void handleChartButtonAction() {
+        viewModel.playerStatsChartCommand().execute();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         comparisonStatistics.setItems(viewModel.getComparisonStatistics());
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());
-
+        playerStats.setData(viewModel.getPlayerStatsSeries());
+        playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
+        
         addComparisonColumns();
         addPlanPieCharts();
     }
@@ -52,14 +61,16 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void addComparisonColumns() {
         var columns = new ArrayList<TableColumn<ComparisonRowBase<?>, ?>>();
 
         var playerNames = viewModel.getPlayerNames();
         for (int i = 0; i < playerNames.size(); i++) {
             var name = playerNames.get(i);
-            var column = new TableColumn<ComparisonRowBase<?>, Object>(name);
-
+            var type = viewModel.getPlayerInformation().get(name);
+            var column = new TableColumn<ComparisonRowBase<?>, Object>(name + " (" + type + ")");
+            
             // Create cell value factory
             column.setCellValueFactory(
                     cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerValues().get(name));
