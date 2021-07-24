@@ -38,7 +38,7 @@ public class VictoryPointsComparisonRow extends SettlersComparisonRowBase<Intege
 
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, SettlersImplicator.victoryPointsPerTurn(name, file));
+            playerData.put(name, SettlersImplicator.accumulatedVictoryPointsPerTurn(name, file));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
