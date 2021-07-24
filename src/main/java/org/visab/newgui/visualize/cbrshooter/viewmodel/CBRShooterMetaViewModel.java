@@ -109,6 +109,7 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
     public void onSessionClosed() {
         if (listener != null)
             listener.removeViewModel(this);
+        liveViewActiveProperty.set(false);
     }
 
 }
