@@ -10,50 +10,53 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 
 <?import org.visab.newgui.control.CustomLabelPieChart?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints halignment="CENTER" />
+        <ColumnConstraints halignment="CENTER" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
     </rowConstraints>
     <children>
-        <!-- <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0">
+        <HBox GridPane.columnIndex="1">
             <children>
-               <CheckBox fx:id="IsLiveViewActive" mnemonicParsing="false" text="LiveView still active" />
+                <CheckBox fx:id="isLiveViewActive" text="LiveView still active" />
             </children>
-         </HBox> -->
-        <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
-        <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+        </HBox>
+
+        <VBox GridPane.columnIndex="0">
             <children>
-                <TableView fx:id="comparisonTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="302.0">
+                <TableView fx:id="comparisonTable">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Statistics">
+                        <TableColumn text="Statistics">
                             <cellValueFactory>
                                 <PropertyValueFactory property="rowDescription" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
                 </TableView>
+                <Button fx:id="chartButton" onAction="#handleChartButtonAction" text="Show in chart" />
             </children>
         </VBox>
-        <Button fx:id="chartButton" mnemonicParsing="false" onAction="#handleChartButtonAction" prefHeight="26.0" prefWidth="151.0" text="Show in chart" GridPane.halignment="RIGHT" GridPane.columnIndex="3">
-        </Button>
-        <LineChart fx:id="playerStats" title="Player Stats" GridPane.columnIndex="4">
+
+        <LineChart fx:id="playerStats" title="Comparison Graph" GridPane.columnIndex="1">
             <xAxis>
-                <NumberAxis label="Rounds" side="bottom" />
+                <NumberAxis label="Round" side="bottom" />
             </xAxis>
             <yAxis>
-                <NumberAxis label="Placeholder Label" side="left" />
+                <NumberAxis label="" side="left" />
             </yAxis>
         </LineChart>
+
+        <CustomLabelPieChart fx:id="planUsageOne" title="CBR Player Plan Usage" GridPane.rowIndex="2" />
+        <CustomLabelPieChart fx:id="planUsageTwo" title="Script Player Plan Usage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </children>
 </GridPane>
