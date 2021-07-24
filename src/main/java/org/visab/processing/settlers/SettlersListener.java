@@ -71,7 +71,18 @@ public class SettlersListener
 
     @Override
     public void onSessionClosed() {
+        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+
+        var playerName = "";
+        for (var player : lastStatistics.getPlayers()) {
+            if (player.getVictoryPoints() == 10)
+                playerName = player.getName();
+        }
+        file.setWinner(playerName);
+
         manager.saveFile(file, sessionId.toString(), sessionId);
+
+        notifySessionClosed();
     }
 
     @Override

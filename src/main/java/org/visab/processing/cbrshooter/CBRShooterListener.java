@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterImages;
@@ -71,7 +68,21 @@ public class CBRShooterListener
 
     @Override
     public void onSessionClosed() {
+        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+
+        int mostKills = 0;
+        var playerName = "";
+        for (var player : lastStatistics.getPlayers()) {
+            if (player.getStatistics().getFrags() > mostKills) {
+                playerName = player.getName();
+                mostKills = player.getStatistics().getFrags();
+            }
+        }
+        file.setWinner(playerName);
+
         manager.saveFile(file, sessionId.toString(), sessionId);
+
+        notifySessionClosed();
     }
 
     @Override

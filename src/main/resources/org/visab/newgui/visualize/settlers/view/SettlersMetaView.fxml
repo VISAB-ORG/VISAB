@@ -12,13 +12,13 @@
 
 <GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
-        <ColumnConstraints halignment="CENTER" percentWidth="50"/>
+        <ColumnConstraints halignment="CENTER" percentWidth="50" />
+        <ColumnConstraints halignment="CENTER" percentWidth="50" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="15"/>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints/>
+        <RowConstraints percentHeight="15" />
+        <RowConstraints percentHeight="20" />
+        <RowConstraints />
     </rowConstraints>
     <children>
         <VBox GridPane.rowIndex="1">
@@ -59,12 +59,12 @@
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
                     </rowConstraints>
                     <children>
-                        <Label text="Rounds" />
-                        <Label fx:id="rounds" text="Label" GridPane.columnIndex="1" />
+                        <Label text="Winner" />
+                        <Label fx:id="winner" text="Label" GridPane.columnIndex="1" />
+                        <Label text="Turns" GridPane.rowIndex="1" />
+                        <Label fx:id="rounds" text="Label" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>
