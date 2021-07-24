@@ -13,6 +13,7 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
@@ -28,10 +29,13 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
     @FXML
     HBox planUsageHBox;
-    
+
+    @FXML
+    CheckBox isLiveViewActive;
+
     @FXML
     LineChart<Integer, Number> playerStats;
-    
+
     @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
@@ -44,7 +48,7 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());
         playerStats.setData(viewModel.getPlayerStatsSeries());
         playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
-        
+
         addComparisonColumns();
         addPlanPieCharts();
     }
@@ -70,7 +74,7 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
             var name = playerNames.get(i);
             var type = viewModel.getPlayerInformation().get(name);
             var column = new TableColumn<ComparisonRowBase<?>, Object>(name + " (" + type + ")");
-            
+
             // Create cell value factory
             column.setCellValueFactory(
                     cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerValues().get(name));
