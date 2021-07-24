@@ -51,6 +51,10 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
         addComparisonColumns();
         addPlanPieCharts();
+
+        isLiveViewActive.selectedProperty().bind(viewModel.liveViewActiveProperty());
+        isLiveViewActive.setDisable(true);
+        isLiveViewActive.setVisible(viewModel.liveViewActiveProperty().get());
     }
 
     private void addPlanPieCharts() {
