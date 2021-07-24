@@ -49,10 +49,10 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     public void initialize() {
         if (scope.isLive()) {
             super.initialize(scope.getSessionListener());
-            
+
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(e -> onSessionClosed());
-            
+
             // Initialize the data structures used for visualization
             initializeDataStructures(file);
         } else {
@@ -79,8 +79,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
                 var selectedRow = selectedStatistics.get();
-                if (selectedRow != null) {
-
+                if (selectedRow != null && graphComparisonRow != selectedRow) {
                     selectedRow.updateSeries(file);
                     playerStatsSeries.clear();
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
