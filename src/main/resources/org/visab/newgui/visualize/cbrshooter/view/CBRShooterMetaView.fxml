@@ -112,7 +112,6 @@
                         <Label fx:id="gameSpeed" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="Statistics per ingame second" GridPane.rowIndex="4" />
                         <Label fx:id="statisticsPerSecond" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
                     </children>
                 </GridPane>
             </children>

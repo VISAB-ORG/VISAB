@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.visualize.PlayerInformation;
-import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterMetaViewModel;
 import org.visab.newgui.visualize.settlers.viewmodel.SettlersMetaViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -14,7 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
-public class SettlersMetaView implements FxmlView<CBRShooterMetaViewModel>, Initializable {
+public class SettlersMetaView implements FxmlView<SettlersMetaViewModel>, Initializable {
 
     @FXML
     Label rounds;

@@ -91,6 +91,7 @@ public class SettlersListener
         file.setMapRectangle(metaInformation.getMapRectangle());
         file.setPlayerCount(metaInformation.getPlayerCount());
         file.setPlayerInformation(metaInformation.getPlayerInformation());
+        file.setPlayerColors(metaInformation.getPlayerColors());
     }
 
     @Override

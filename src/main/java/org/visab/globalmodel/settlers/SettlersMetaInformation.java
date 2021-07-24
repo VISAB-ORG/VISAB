@@ -12,9 +12,18 @@ public class SettlersMetaInformation implements IMetaInformation {
     private Map<String, String> playerInformation;
     private int playerCount;
     private Rectangle mapRectangle;
+    private Map<String, String> playerColors;
 
     public String setGame() {
         return game;
+    }
+
+    public Map<String, String> getPlayerColors() {
+        return playerColors;
+    }
+
+    public void setPlayerColors(Map<String, String> playerColors) {
+        this.playerColors = playerColors;
     }
 
     public Rectangle getMapRectangle() {
