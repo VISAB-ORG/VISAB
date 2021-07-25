@@ -11,6 +11,8 @@ import org.visab.newgui.main.viewmodel.HomeViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import de.saxsys.mvvmfx.MvvmFX;
+import de.saxsys.mvvmfx.utils.notifications.NotificationObserver;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -166,6 +168,7 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        viewModel.subscribe("FILE_ADDED", (e, o) -> refreshFileExplorer());
 
         refreshFileExplorer();
 
@@ -173,15 +176,6 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         fileExplorer.addRemoveFileHandler(ef -> viewModel.deleteFile(ef));
 
         viewModel.selectedExplorerFileProperty().bind(fileExplorer.getSelectionModel().selectedItemProperty());
-
-        // TODO: Check if this is still necessary
-        // After the primaryStage.show() was called from AppMain.
-        // Has to be called here, because the elements we want to reference, are only
-        // loaded upon the stage being shown.
-        // AppMain.getPrimaryStage().setOnShowing(e -> {
-        // viewModel.getDialogHelper().setParentWindow(fileExplorer.getScene().getWindow());
-        // });
-
     }
 
 }

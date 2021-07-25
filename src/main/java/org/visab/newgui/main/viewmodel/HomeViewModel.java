@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.visab.dynamic.DynamicSerializer;
+import org.visab.eventbus.GeneralEventBus;
+import org.visab.eventbus.ISubscriber;
+import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.about.view.AboutView;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.help.view.HelpView;
-import org.visab.newgui.main.MainScope;
+
 import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
@@ -25,8 +28,6 @@ import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
 
-import de.saxsys.mvvmfx.InjectScope;
-import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -35,11 +36,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 
-@ScopeProvider(MainScope.class)
-public class HomeViewModel extends ViewModelBase {
-
-    @InjectScope
-    MainScope scope;
+public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFileSavedEvent> {
 
     // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
     // ----- Command class variables -----
@@ -168,7 +165,7 @@ public class HomeViewModel extends ViewModelBase {
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", true, 600, 1300);
+                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
             });
         }
 
@@ -566,4 +563,17 @@ public class HomeViewModel extends ViewModelBase {
 
     /** ENDREGION: DATABASE VIEW */
 
+    public void initialize() {
+        GeneralEventBus.getInstance().subscribe(this);
+    }
+
+    @Override
+    public String getSubscribedEventType() {
+        return VISABFileSavedEvent.class.getName();
+    }
+
+    @Override
+    public void notify(VISABFileSavedEvent event) {
+        publish("FILE_ADDED");
+    }
 }

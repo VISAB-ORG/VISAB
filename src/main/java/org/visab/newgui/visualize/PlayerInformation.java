@@ -1,4 +1,4 @@
-package org.visab.newgui.visualize.cbrshooter.model;
+package org.visab.newgui.visualize;
 
 public class PlayerInformation {
     private String name;
