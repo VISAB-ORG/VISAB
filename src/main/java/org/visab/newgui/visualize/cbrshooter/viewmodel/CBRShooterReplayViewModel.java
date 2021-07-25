@@ -439,22 +439,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
             // Decide if a plan change must be visualized on the map
             if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
+                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
+                        .getKey();
                 if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
-
-                    ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                            .getKey();
 
                     if (playerPlanChange.getX() != playerPosition.getX()
                             && playerPlanChange.getY() != playerPosition.getY()) {
                         playerPlanChange.setX(playerPosition.getX());
                         playerPlanChange.setY(playerPosition.getY());
                     }
-                    boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                            .getValue();
-                    playerPlanChange.setVisible(planChangeShallBeVisible);
-                    mapElements.put(playerInfo.getName() + "_playerPlanChange",
-                            new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
                 }
+                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
+                        .getValue();
+                playerPlanChange.setVisible(planChangeShallBeVisible);
+                mapElements.put(playerInfo.getName() + "_playerPlanChange",
+                        new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
             }
             latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
 
