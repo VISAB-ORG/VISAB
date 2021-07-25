@@ -160,7 +160,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", true, 600, 930);
+                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
             });
         }
 
