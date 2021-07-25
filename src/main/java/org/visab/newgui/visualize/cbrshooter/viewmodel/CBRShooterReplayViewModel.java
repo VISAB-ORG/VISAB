@@ -81,6 +81,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private ObservableMap<String, Pair<Node, Boolean>> mapElements = FXCollections.observableHashMap();
 
     private HashMap<String, String> latestPlansOfPlayers = new HashMap<String, String>();
+    private HashMap<String, Integer> latestDeathsOfPlayers = new HashMap<String, Integer>();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -111,8 +112,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
-        // Default update interval of 1 second
-        updateInterval = 1000;
+        // Default update interval of 0.1 seconds
+        updateInterval = 100;
         selectedFrame = 0;
 
         // TODO: Might not be to hard to have this work live aswell
@@ -437,25 +438,37 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
 
-            // Decide if a plan change must be visualized on the map
-            if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
-                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                        .getKey();
-                if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
-
-                    if (playerPlanChange.getX() != playerPosition.getX()
-                            && playerPlanChange.getY() != playerPosition.getY()) {
-                        playerPlanChange.setX(playerPosition.getX());
-                        playerPlanChange.setY(playerPosition.getY());
-                    }
+            if (latestDeathsOfPlayers.get(playerInfo.getName()) != null) {
+                ImageView playerDeath = (ImageView) mapElements.get(playerInfo.getName() + "_playerDeath").getKey();
+                if (latestDeathsOfPlayers.get(playerInfo.getName()) < playerInfo.getStatistics().getDeaths()) {
+                    playerDeath.setX(playerPosition.getX());
+                    playerDeath.setY(playerPosition.getY());
+                    boolean playerDeathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerDeath")
+                            .getValue();
+                    playerDeath.setVisible(playerDeathShallBeVisible);
                 }
-                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                        .getValue();
-                playerPlanChange.setVisible(planChangeShallBeVisible);
-                mapElements.put(playerInfo.getName() + "_playerPlanChange",
-                        new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
             }
-            latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
+//            latestDeathsOfPlayers.put(playerInfo.getName(), playerInfo.getStatistics().getDeaths());
+//
+//            // Decide if a plan change must be visualized on the map
+//            if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
+//                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
+//                        .getKey();
+//                if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
+//
+//                    if (playerPlanChange.getX() != playerPosition.getX()
+//                            && playerPlanChange.getY() != playerPosition.getY()) {
+//                        playerPlanChange.setX(playerPosition.getX());
+//                        playerPlanChange.setY(playerPosition.getY());
+//                    }
+//                }
+//                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
+//                        .getValue();
+//                playerPlanChange.setVisible(planChangeShallBeVisible);
+//                mapElements.put(playerInfo.getName() + "_playerPlanChange",
+//                        new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
+//            }
+//            latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
 
             mapElements.put(playerInfo.getName() + "_playerIcon",
                     new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
@@ -528,8 +541,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
             playerIcon.setY(playerPosition.getY());
-            playerIcon.setFitHeight(16);
-            playerIcon.setFitWidth(16);
+            playerIcon.setFitHeight(10);
+            playerIcon.setFitWidth(10);
 
             ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
             playerDeath.setX(panePositioning.getX());

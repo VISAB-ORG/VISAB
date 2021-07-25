@@ -117,7 +117,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @FXML
     public void handleVeloSlider() {
-        viewModel.setUpdateInterval(1000 / veloSlider.getValue()).execute();
+        viewModel.setUpdateInterval(100 / veloSlider.getValue()).execute();
     }
 
     @FXML
