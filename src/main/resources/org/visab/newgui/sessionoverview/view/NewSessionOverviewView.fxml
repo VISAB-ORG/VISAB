@@ -67,6 +67,7 @@
                <children>
                   <HBox>
                      <children>
+                        <VBox HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
