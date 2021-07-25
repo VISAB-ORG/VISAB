@@ -58,15 +58,15 @@ public class SettlersListener
     @Override
     public void notifySessionClosed() {
         for (var viewModel : viewModels)
-            viewModel.onSessionClosed();
-
-        viewModels.clear();
+            UiHelper.inovkeOnUiThread(() -> viewModel.onSessionClosed());
     }
 
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
             UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+        
+        viewModels.clear();
     }
 
     @Override

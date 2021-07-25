@@ -62,9 +62,9 @@
                     </rowConstraints>
                     <children>
                         <Label text="Winner" />
-                        <Label fx:id="winner" text="Label" GridPane.columnIndex="1" />
+                        <Label fx:id="winner" GridPane.columnIndex="1" />
                         <Label text="Turns" GridPane.rowIndex="1" />
-                        <Label fx:id="rounds" text="Label" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                        <Label fx:id="rounds" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>
