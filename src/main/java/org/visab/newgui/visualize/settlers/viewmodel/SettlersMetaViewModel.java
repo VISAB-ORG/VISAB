@@ -1,21 +1,16 @@
-package org.visab.newgui.visualize.cbrshooter.viewmodel;
+package org.visab.newgui.visualize.settlers.viewmodel;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.WeaponInformation;
+import org.visab.globalmodel.settlers.SettlersFile;
+import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.PlayerInformation;
 import org.visab.processing.ILiveViewable;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,23 +18,20 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+public class SettlersMetaViewModel extends LiveViewModelBase<SettlersFile, SettlersStatistics> {
 
     private IntegerProperty roundsProperty;
-    private FloatProperty statisticsPerSecondProperty;
-    private DoubleProperty ingameTimeProperty;
-    private ObservableList<WeaponInformation> weaponInformation;
     private ObservableList<PlayerInformation> playerInformation;
     private StringProperty winnerProperty;
 
     public void initialize() {
-        List<CBRShooterStatistics> statistics = null;
+        List<SettlersStatistics> statistics = null;
         if (scope.isLive()) {
             super.initialize(scope.getSessionListener());
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(s -> onSessionClosed());
 
-            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatisticsCopy();
+            statistics = ((ILiveViewable<SettlersStatistics>) scope.getSessionListener()).getStatisticsCopy();
         } else {
             super.initialize(scope.getFile());
             statistics = file.getStatistics();
@@ -49,34 +41,19 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
             return;
 
         var lastStatistics = statistics.get(statistics.size() - 1);
-        roundsProperty = new SimpleIntegerProperty(lastStatistics.getRound());
-        ingameTimeProperty = new SimpleDoubleProperty(lastStatistics.getTotalTime());
-        statisticsPerSecondProperty = new SimpleFloatProperty(statistics.size() / lastStatistics.getTotalTime());
-        winnerProperty = new SimpleStringProperty(file.getWinner());
-
-        weaponInformation = FXCollections.observableArrayList(file.getWeaponInformation());
+        roundsProperty = new SimpleIntegerProperty(lastStatistics.getTurn());
 
         playerInformation = FXCollections.observableArrayList();
         for (var entry : file.getPlayerInformation().entrySet()) {
             var color = file.getPlayerColors().get(entry.getKey());
             playerInformation.add(new PlayerInformation(entry.getKey(), entry.getValue(), color));
         }
+
+        winnerProperty = new SimpleStringProperty(file.getWinner());
     }
 
     public IntegerProperty getRoundsProperty() {
         return this.roundsProperty;
-    }
-
-    public FloatProperty getStatisticsPerSecondProperty() {
-        return this.statisticsPerSecondProperty;
-    }
-
-    public DoubleProperty getIngameTimeProperty() {
-        return this.ingameTimeProperty;
-    }
-
-    public void setIngameTimeProperty(DoubleProperty ingameTimeProperty) {
-        this.ingameTimeProperty = ingameTimeProperty;
     }
 
     public LocalDateTime getCreationDate() {
@@ -91,23 +68,8 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
         return file.getFileFormatVersion();
     }
 
-    public Float getGameSpeed() {
-        return file.getGameSpeed();
-    }
-
-    public ObservableList<WeaponInformation> getWeaponInformation() {
-        return weaponInformation;
-    }
-
     public ObservableList<PlayerInformation> getPlayerInformation() {
         return playerInformation;
-    }
-
-    @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
-        roundsProperty.set(newStatistics.getRound());
-        ingameTimeProperty.set(newStatistics.getTotalTime());
-        statisticsPerSecondProperty.set(statisticsCopy.size() / newStatistics.getTotalTime());
     }
 
     @Override
@@ -116,6 +78,11 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
         if (listener != null)
             listener.removeViewModel(this);
         liveViewActiveProperty.set(false);
+    }
+
+    @Override
+    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
+        roundsProperty.set(newStatistics.getTurn());
     }
 
     public StringProperty winnerProperty() {

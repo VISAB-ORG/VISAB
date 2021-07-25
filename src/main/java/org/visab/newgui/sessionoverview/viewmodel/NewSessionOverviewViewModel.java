@@ -1,32 +1,30 @@
 package org.visab.newgui.sessionoverview.viewmodel;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
-import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.GeneralEventBus;
-import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.ISubscriber;
-import org.visab.eventbus.event.SessionClosedEvent;
-import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
-import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
-import org.visab.util.StreamUtil;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -35,7 +33,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class NewSessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+public class NewSessionOverviewViewModel extends ViewModelBase {
 
     private int gridColSize;
 
@@ -63,12 +61,14 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
     private Logger logger = LogManager.getLogger(NewSessionOverviewViewModel.class);
 
-    private IntegerProperty activeTransmissionSessions = new SimpleIntegerProperty(0);
+    private SimpleStringProperty totalSessionsProperty = new SimpleStringProperty("0");
+    private SimpleStringProperty activeSessionsProperty = new SimpleStringProperty("0");
+    private SimpleStringProperty timeoutedSessionsProperty = new SimpleStringProperty("0");
+    private SimpleStringProperty canceledSessionsProperty = new SimpleStringProperty("0");
+    private SimpleStringProperty webApiAdressProperty = new SimpleStringProperty();
 
     // TODO: Dont know how to track this.
     private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
-
-    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
 
     private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
 
@@ -87,6 +87,20 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         return closeSessionCommand;
     }
 
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        try {
+            this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
+                    + Workspace.getInstance().getConfigManager().getWebApiPort());
+        } catch (UnknownHostException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     public Command createDummySessionsCommand(ScrollPane scrollPane) {
         if (createDummySessionsCommand == null) {
             createDummySessionsCommand = runnableCommand(() -> {
@@ -96,6 +110,10 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 sessionObjectGrid.setPadding(new Insets(10));
                 sessionObjectGrid.setHgap(5);
                 sessionObjectGrid.setVgap(5);
+
+                var activeSessionsCount = 0;
+                var timeoutedSessionsCount = 0;
+                var canceledSessionsCount = 0;
 
                 // Used to calculate coordinates on which the session objects should be placed
                 gridColSize = 3;
@@ -108,17 +126,21 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
                     if (i % 2 == 0) {
                         status = "active";
+                        activeSessionsCount++;
                     } else if (i % 3 == 0) {
                         status = "timeouted";
+                        timeoutedSessionsCount++;
                     } else {
                         status = "canceled";
+                        canceledSessionsCount++;
                     }
 
                     var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
 
                     // Customized JavaFX Gridpane which displays relevant session information
-                    CustomSessionObject sessionObject = new CustomSessionObject("DummyGame", logoPath, new UUID(0, 10),
-                            "localhost", "127.0.0.1", "Dummy clock time", status);
+                    SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
+                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "localhost", "127.0.0.1", status);
+                    CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath);
 
                     sessionObject.setBackgroundColorByStatus(status);
 
@@ -134,10 +156,15 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 }
 
                 anchorPane.getChildren().add(sessionObjectGrid);
-                
+
                 scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-                
+
                 scrollPane.setContent(anchorPane);
+
+                this.totalSessionsProperty.set("8");
+                this.activeSessionsProperty.set(String.valueOf(activeSessionsCount));
+                this.timeoutedSessionsProperty.set(String.valueOf(timeoutedSessionsCount));
+                this.canceledSessionsProperty.set(String.valueOf(canceledSessionsCount));
 
             });
         }
@@ -151,7 +178,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
      * 
      * @param anchorPane the anchorpane where the grid pane should be added to.
      */
-    public void initializeSessionGrid(ScrollPane scrollPane) {
+    public void getSortedSessionGrid(ScrollPane scrollPane) {
         AnchorPane anchorPane = new AnchorPane();
         GridPane sessionObjectGrid = new GridPane();
         sessionObjectGrid.setPadding(new Insets(10));
@@ -163,15 +190,27 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         var rowIterator = 0;
         var colIterator = 0;
 
-        for (UUID sessionId : WebApi.getInstance().getSessionAdministration().getSessionIds()) {
-            SessionStatus sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
+        List<SessionStatus> sortedSessionstatuses = sortSessionStatuses(
+                WebApi.getInstance().getSessionAdministration().getSessionStatuses());
+
+        var activeSessionsCount = 0;
+        var timeoutedSessionsCount = 0;
+        var canceledSessionsCount = 0;
+
+        for (SessionStatus sessionStatus : sortedSessionstatuses) {
+
+            if (sessionStatus.getStatusType().equals("active")) {
+                activeSessionsCount++;
+            } else if (sessionStatus.getStatusType().equals("timeouted")) {
+                timeoutedSessionsCount++;
+            } else {
+                canceledSessionsCount++;
+            }
 
             var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
-            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus.getGame(), logoPath, sessionId,
-                    sessionStatus.getHostName(), sessionStatus.getIp(), sessionStatus.getSessionOpened().toString(),
-                    sessionStatus.getStatusType());
+            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath);
 
             sessionObject.setBackgroundColorByStatus(sessionStatus.getStatusType());
 
@@ -190,75 +229,62 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         anchorPane.getChildren().add(sessionObjectGrid);
         scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollPane.setContent(anchorPane);
+
+        this.totalSessionsProperty.set(String.valueOf(sortedSessionstatuses.size()));
+        this.activeSessionsProperty.set(String.valueOf(activeSessionsCount));
+        this.timeoutedSessionsProperty.set(String.valueOf(timeoutedSessionsCount));
+        this.canceledSessionsProperty.set(String.valueOf(canceledSessionsCount));
     }
 
-    private Command openLiveViewCommand;
+    private List<SessionStatus> sortSessionStatuses(List<SessionStatus> sessionStatusList) {
+        Collections.sort(sessionStatusList, byLastRequest);
+        return sessionStatusList;
+    }
 
-    public Command openLiveViewCommand() {
-        if (openLiveViewCommand == null) {
-            openLiveViewCommand = runnableCommand(() -> {
-                if (selectedSession != null) {
-                    var sessionInfo = selectedSession.get();
-
-                    DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
-                }
-            });
+    Comparator<SessionStatus> byLastRequest = new Comparator<SessionStatus>() {
+        public int compare(SessionStatus o1, SessionStatus o2) {
+            return (-1) * o1.getLastRequest().compareTo(o2.getLastRequest());
         }
+    };
 
-        return openLiveViewCommand;
+    public SimpleStringProperty getTotalSessionsProperty() {
+        return totalSessionsProperty;
     }
 
-    public ObjectProperty<SessionStatus> selectedSessionProperty() {
-        return selectedSession;
+    public void setTotalSessionsProperty(SimpleStringProperty totalSessionsProperty) {
+        this.totalSessionsProperty = totalSessionsProperty;
     }
 
-    public NewSessionOverviewViewModel() {
-        ApiEventBus.getInstance().subscribe(this);
-
-        // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
-            sessionList.add(status);
-
-        // Set active session count
-        activeTransmissionSessions
-                .set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
+    public SimpleStringProperty getActiveSessionsProperty() {
+        return activeSessionsProperty;
     }
 
-    public ObservableList<SessionStatus> getSessionList() {
-        return sessionList;
+    public void setActiveSessionsProperty(SimpleStringProperty activeSessionsProperty) {
+        this.activeSessionsProperty = activeSessionsProperty;
     }
 
-    @Override
-    public String getSubscribedEventType() {
-        return IApiEvent.class.getName();
+    public SimpleStringProperty getTimeoutedSessionsProperty() {
+        return timeoutedSessionsProperty;
     }
 
-    private LocalTime lastRequestTime;
+    public void setTimeoutedSessionsProperty(SimpleStringProperty timeoutedSessionsProperty) {
+        this.timeoutedSessionsProperty = timeoutedSessionsProperty;
+    }
 
-    @Override
-    public void notify(IApiEvent event) {
-        var status = event.getStatus();
+    public SimpleStringProperty getCanceledSessionsProperty() {
+        return canceledSessionsProperty;
+    }
 
-        if (event instanceof SessionOpenedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() + 1);
-            sessionList.add(status);
-        } else if (event instanceof SessionClosedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
-        }
+    public void setCanceledSessionsProperty(SimpleStringProperty canceledSessionsProperty) {
+        this.canceledSessionsProperty = canceledSessionsProperty;
+    }
 
-        // TODO: Is not needed if we use the same status object.
-        var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
-        if (existing != null) {
-            existing.setIsActive(status.isActive());
-            existing.setLastRequest(status.getLastRequest());
-            existing.setReceivedImages(status.getReceivedImages());
-            existing.setReceivedStatistics(status.getReceivedStatistics());
-            existing.setSessionClosed(status.getSessionClosed());
-            existing.setTotalRequests(status.getTotalRequests());
-        } else {
-            logger.error("Received request with non existant session status outside of session opened event.");
-        }
+    public SimpleStringProperty getWebApiAdressProperty() {
+        return webApiAdressProperty;
+    }
 
+    public void setWebApiAdressProperty(SimpleStringProperty webApiAdressProperty) {
+        this.webApiAdressProperty = webApiAdressProperty;
     }
 
 }
