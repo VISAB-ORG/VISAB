@@ -202,4 +202,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         return planUsages;
     }
 
+    public Map<String, String> getPlayerColors() {
+        return file.getPlayerColors();
+    }
+
 }

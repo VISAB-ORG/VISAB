@@ -40,6 +40,11 @@
                                 <PropertyValueFactory property="controlledBy" />
                             </cellValueFactory>
                         </TableColumn>
+                        <TableColumn text="Color">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="color" />
+                            </cellValueFactory>
+                        </TableColumn>
                     </columns>
                 </TableView>
             </children>
