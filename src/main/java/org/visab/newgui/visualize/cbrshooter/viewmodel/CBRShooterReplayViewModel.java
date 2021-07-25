@@ -7,17 +7,20 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
+import org.visab.processing.ILiveViewable;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.ConfigManager;
@@ -43,7 +46,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Pair;
 
-public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile> {
+public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile>
+        implements ILiveViewModel<CBRShooterStatistics> {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayViewModel.class);
@@ -119,7 +123,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // TODO: Might not be to hard to have this work live aswell
         // Load data from the scopes file which is initialized after VISUALIZE
         if (scope.isLive()) {
-            file = (CBRShooterFile) scope.getSessionListener().getCurrentFile();
+            initialize(scope.getSessionListener());
         } else {
             initialize(scope.getFile());
         }
@@ -756,6 +760,30 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setAmmuCoordsProperty(SimpleStringProperty ammuCoordsProperty) {
         this.ammuCoordsProperty = ammuCoordsProperty;
+    }
+
+    @Override
+    public void initialize(ILiveViewable<? extends IStatistics> listener) {
+        var concreteListener = (ILiveViewable<CBRShooterStatistics>) listener;
+        concreteListener.addViewModel(this);
+
+        initialize(concreteListener.getCurrentFile());
+    }
+
+    private int statisticsReceived = 0;
+
+    @Override
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+        statisticsReceived += 1;
+        data.add(newStatistics);
+
+        if (statisticsReceived % 20 == 0)
+            frameSliderMaxProperty.set(data.size());
+        // TODO: If current frame is last, advance.
+    }
+
+    @Override
+    public void onSessionClosed() {
     }
 
 }
