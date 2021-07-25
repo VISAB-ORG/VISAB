@@ -297,7 +297,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
             // Get base icons from the game manager which need to be recolored
             // @TODO: Use sent player images by unity
-            Image playerIcon = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+            // Currently only "hacked" workaround because images sent by the game dont work
+            Image playerIcon;
+            if (playerInfo.getName().equals("John Doe")) {
+                playerIcon = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+            } else {
+                playerIcon = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
+            }
+
             Image playerPlanChange = new Image(
                     Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerPlanChange"));
             Image playerDeath = new Image(
