@@ -1,5 +1,7 @@
 package org.visab.newgui.sessionoverview.viewmodel;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,27 +11,22 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
-import org.visab.eventbus.ApiEventBus;
 import org.visab.eventbus.GeneralEventBus;
-import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.ISubscriber;
-import org.visab.eventbus.event.SessionClosedEvent;
-import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
-import org.visab.newgui.DynamicViewLoader;
+import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
-import org.visab.util.StreamUtil;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -38,7 +35,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class NewSessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+public class NewSessionOverviewViewModel extends ViewModelBase {
 
     private int gridColSize;
 
@@ -66,12 +63,14 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
     private Logger logger = LogManager.getLogger(NewSessionOverviewViewModel.class);
 
-    private IntegerProperty activeTransmissionSessions = new SimpleIntegerProperty(0);
+    private SimpleStringProperty totalSessionsProperty = new SimpleStringProperty();
+    private SimpleStringProperty activeSessionsProperty = new SimpleStringProperty();
+    private SimpleStringProperty timeoutedSessionsProperty = new SimpleStringProperty();
+    private SimpleStringProperty canceledSessionsProperty = new SimpleStringProperty();
+    private SimpleStringProperty webApiAdressProperty = new SimpleStringProperty();
 
     // TODO: Dont know how to track this.
     private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
-
-    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
 
     private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
 
@@ -89,6 +88,19 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
         return closeSessionCommand;
     }
+    
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        try {
+			this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":" + Workspace.getInstance().getConfigManager().getWebApiPort());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
 
     public Command createDummySessionsCommand(ScrollPane scrollPane) {
         if (createDummySessionsCommand == null) {
@@ -99,6 +111,10 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 sessionObjectGrid.setPadding(new Insets(10));
                 sessionObjectGrid.setHgap(5);
                 sessionObjectGrid.setVgap(5);
+                
+                var activeSessionsCount = 0;
+                var timeoutedSessionsCount = 0;
+                var canceledSessionsCount = 0;
 
                 // Used to calculate coordinates on which the session objects should be placed
                 gridColSize = 3;
@@ -111,10 +127,13 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
 
                     if (i % 2 == 0) {
                         status = "active";
+                        activeSessionsCount++;
                     } else if (i % 3 == 0) {
                         status = "timeouted";
+                        timeoutedSessionsCount++;
                     } else {
                         status = "canceled";
+                        canceledSessionsCount++;
                     }
 
                     var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
@@ -142,6 +161,11 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
                 scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 
                 scrollPane.setContent(anchorPane);
+                
+                this.totalSessionsProperty.set("8");
+                this.activeSessionsProperty.set(String.valueOf(activeSessionsCount));
+                this.timeoutedSessionsProperty.set(String.valueOf(timeoutedSessionsCount));
+                this.canceledSessionsProperty.set(String.valueOf(canceledSessionsCount));
 
             });
         }
@@ -201,79 +225,52 @@ public class NewSessionOverviewViewModel extends ViewModelBase implements ISubsc
         return sessionStatusList;
     }
 
-    private Command openLiveViewCommand;
-
-    public Command openLiveViewCommand() {
-        if (openLiveViewCommand == null) {
-            openLiveViewCommand = runnableCommand(() -> {
-                if (selectedSession != null) {
-                    var sessionInfo = selectedSession.get();
-
-                    DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
-                }
-            });
-        }
-
-        return openLiveViewCommand;
-    }
-
-    public ObjectProperty<SessionStatus> selectedSessionProperty() {
-        return selectedSession;
-    }
-
     Comparator<SessionStatus> byLastRequest = new Comparator<SessionStatus>() {
         public int compare(SessionStatus o1, SessionStatus o2) {
             return (-1) * o1.getLastRequest().compareTo(o2.getLastRequest());
         }
     };
 
-    public NewSessionOverviewViewModel() {
-        ApiEventBus.getInstance().subscribe(this);
+	public SimpleStringProperty getTotalSessionsProperty() {
+		return totalSessionsProperty;
+	}
 
-        // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
-            sessionList.add(status);
+	public void setTotalSessionsProperty(SimpleStringProperty totalSessionsProperty) {
+		this.totalSessionsProperty = totalSessionsProperty;
+	}
 
-        // Set active session count
-        activeTransmissionSessions
-                .set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
-    }
+	public SimpleStringProperty getActiveSessionsProperty() {
+		return activeSessionsProperty;
+	}
 
-    public ObservableList<SessionStatus> getSessionList() {
-        return sessionList;
-    }
+	public void setActiveSessionsProperty(SimpleStringProperty activeSessionsProperty) {
+		this.activeSessionsProperty = activeSessionsProperty;
+	}
 
-    @Override
-    public String getSubscribedEventType() {
-        return IApiEvent.class.getName();
-    }
+	public SimpleStringProperty getTimeoutedSessionsProperty() {
+		return timeoutedSessionsProperty;
+	}
 
-    private LocalTime lastRequestTime;
+	public void setTimeoutedSessionsProperty(SimpleStringProperty timeoutedSessionsProperty) {
+		this.timeoutedSessionsProperty = timeoutedSessionsProperty;
+	}
 
-    @Override
-    public void notify(IApiEvent event) {
-        var status = event.getStatus();
+	public SimpleStringProperty getCanceledSessionsProperty() {
+		return canceledSessionsProperty;
+	}
 
-        if (event instanceof SessionOpenedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() + 1);
-            sessionList.add(status);
-        } else if (event instanceof SessionClosedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
-        }
+	public void setCanceledSessionsProperty(SimpleStringProperty canceledSessionsProperty) {
+		this.canceledSessionsProperty = canceledSessionsProperty;
+	}
 
-        // TODO: Is not needed if we use the same status object.
-        var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
-        if (existing != null) {
-            existing.setIsActive(status.isActive());
-            existing.setLastRequest(status.getLastRequest());
-            existing.setReceivedImages(status.getReceivedImages());
-            existing.setReceivedStatistics(status.getReceivedStatistics());
-            existing.setSessionClosed(status.getSessionClosed());
-            existing.setTotalRequests(status.getTotalRequests());
-        } else {
-            logger.error("Received request with non existant session status outside of session opened event.");
-        }
+	public SimpleStringProperty getWebApiAdressProperty() {
+		return webApiAdressProperty;
+	}
 
-    }
+	public void setWebApiAdressProperty(SimpleStringProperty webApiAdressProperty) {
+		this.webApiAdressProperty = webApiAdressProperty;
+	} 
+    
+    
 
 }
