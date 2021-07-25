@@ -16,19 +16,19 @@ import javafx.scene.control.ScrollPane;
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
 
     private Thread updateLoop;
-    
+
     @FXML
     private Label webApiAdressLabel;
-    
+
     @FXML
     private Label sessionsTotalLabel;
-    
+
     @FXML
     private Label sessionsActiveLabel;
-    
+
     @FXML
     private Label sessionsTimeoutedLabel;
-    
+
     @FXML
     private Label sessionsCanceledLabel;
 
@@ -40,22 +40,26 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
 
     @FXML
     public void createDummySessions() {
-    	// stopUpdateLoop();
+        stopUpdateLoop();
         viewModel.createDummySessionsCommand(this.scrollPane).execute();
+    }
+
+    @FXML
+    public void clearInactiveSessions() {
+        // TODO: Add logic
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	
-    	// Bind properties
-    	webApiAdressLabel.textProperty().bindBidirectional(viewModel.getWebApiAdressProperty());
-    	sessionsTotalLabel.textProperty().bindBidirectional(viewModel.getTotalSessionsProperty());
-    	sessionsActiveLabel.textProperty().bindBidirectional(viewModel.getActiveSessionsProperty());
-    	sessionsTimeoutedLabel.textProperty().bindBidirectional(viewModel.getTimeoutedSessionsProperty());
-    	sessionsCanceledLabel.textProperty().bindBidirectional(viewModel.getCanceledSessionsProperty());
 
-    	
-        // startUpdateLoop();
+        // Bind properties
+        webApiAdressLabel.textProperty().bindBidirectional(viewModel.getWebApiAdressProperty());
+        sessionsTotalLabel.textProperty().bindBidirectional(viewModel.getTotalSessionsProperty());
+        sessionsActiveLabel.textProperty().bindBidirectional(viewModel.getActiveSessionsProperty());
+        sessionsTimeoutedLabel.textProperty().bindBidirectional(viewModel.getTimeoutedSessionsProperty());
+        sessionsCanceledLabel.textProperty().bindBidirectional(viewModel.getCanceledSessionsProperty());
+
+        startUpdateLoop();
     }
 
     public void startUpdateLoop() {
@@ -63,15 +67,18 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
             @Override
             public void run() {
                 while (true) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewModel.getSortedSessionGrid(scrollPane);
+                    if (!this.isInterrupted()) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewModel.getSortedSessionGrid(scrollPane);
+                            }
+                        });
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
                         }
-                    });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
                     }
                 }
             }
