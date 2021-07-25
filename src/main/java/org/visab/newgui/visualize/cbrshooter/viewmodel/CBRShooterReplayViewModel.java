@@ -341,7 +341,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     public void updateCurrentGameStatsByFrame() {
-
         // This object holds all information that is available
         frameBasedStats = data.get(selectedFrame);
 
@@ -452,27 +451,32 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     playerDeath.setVisible(playerDeathShallBeVisible);
                 }
             }
-//            latestDeathsOfPlayers.put(playerInfo.getName(), playerInfo.getStatistics().getDeaths());
-//
-//            // Decide if a plan change must be visualized on the map
-//            if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
-//                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
-//                        .getKey();
-//                if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
-//
-//                    if (playerPlanChange.getX() != playerPosition.getX()
-//                            && playerPlanChange.getY() != playerPosition.getY()) {
-//                        playerPlanChange.setX(playerPosition.getX());
-//                        playerPlanChange.setY(playerPosition.getY());
-//                    }
-//                }
-//                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
-//                        .getValue();
-//                playerPlanChange.setVisible(planChangeShallBeVisible);
-//                mapElements.put(playerInfo.getName() + "_playerPlanChange",
-//                        new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
-//            }
-//            latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
+            // latestDeathsOfPlayers.put(playerInfo.getName(),
+            // playerInfo.getStatistics().getDeaths());
+            //
+            // // Decide if a plan change must be visualized on the map
+            // if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
+            // ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName()
+            // + "_playerPlanChange")
+            // .getKey();
+            // if
+            // (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan()))
+            // {
+            //
+            // if (playerPlanChange.getX() != playerPosition.getX()
+            // && playerPlanChange.getY() != playerPosition.getY()) {
+            // playerPlanChange.setX(playerPosition.getX());
+            // playerPlanChange.setY(playerPosition.getY());
+            // }
+            // }
+            // boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() +
+            // "_playerPlanChange")
+            // .getValue();
+            // playerPlanChange.setVisible(planChangeShallBeVisible);
+            // mapElements.put(playerInfo.getName() + "_playerPlanChange",
+            // new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
+            // }
+            // latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
 
             mapElements.put(playerInfo.getName() + "_playerIcon",
                     new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
