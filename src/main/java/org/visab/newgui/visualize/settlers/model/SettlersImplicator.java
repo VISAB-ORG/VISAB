@@ -223,7 +223,7 @@ public final class SettlersImplicator {
 
     public static void main(String[] args) {
         var file = (SettlersFile) Workspace.getInstance().getDatabaseManager()
-                .loadFile("8d977e30-6209-446f-ba52-e612d6a77a3e.visab2", "Settlers");
+                .loadFile("563f919a-0991-4d08-8a96-22d86a3f7198.visab2", "Settlers");
 
         var resourcesGained = SettlersImplicator.concludeResourcesGainedByDice(file);
         var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
