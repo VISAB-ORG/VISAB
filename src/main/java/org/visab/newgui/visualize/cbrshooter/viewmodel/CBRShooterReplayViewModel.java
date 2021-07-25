@@ -1,5 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,9 +94,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     // Viewmodel always has a reference to the statistics of the current stat
     private CBRShooterStatistics frameBasedStats;
-
-    // The underlying file of the opened view
-    private CBRShooterFile file;
 
     // A model rectangle that is used to calculate map positioning
     private Rectangle mapRectangle;
@@ -449,7 +447,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private void initializeMapElements() {
 
         // Map should always be contained in the elements exactly as it is
-        ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH + "fps_map.png"));
+        // ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH +
+        // "fps_map.png"));
+        ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
+
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());
         map.setFitHeight(paneSize.getY());
