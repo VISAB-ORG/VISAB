@@ -533,6 +533,21 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
                 if (visabFile != null)
                     DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
             }
+            // if (selectedFile != null && selectedFile != baseFile) {
+            // if (selectedFile.isDirectory()) {
+            // for (var file : selectedFile.getFiles()) {
+            // var visabFile = Workspace.getInstance().getDatabaseManager()
+            // .loadFile(file.getAbsolutePath());
+            // if (visabFile != null)
+            // DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
+            // }
+            // } else {
+            // var visabFile = Workspace.getInstance().getDatabaseManager()
+            // .loadFile(selectedFile.getAbsolutePath());
+            // if (visabFile != null)
+            // DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
+            // }
+            // }
         });
     }
 
