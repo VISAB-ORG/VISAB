@@ -94,8 +94,8 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#createDummySessions" prefHeight="26.0" prefWidth="174.0" text="Create Dummy Session!" />
-                              <Button mnemonicParsing="false" onAction="#createDummySessions" prefHeight="26.0" prefWidth="174.0" text="Clear Inactive Sessions!" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onAction="#createDummySessions" prefHeight="26.0" prefWidth="174.0" text="Create Dummy Sessions!" />
+                              <Button mnemonicParsing="false" onAction="#clearInactiveSessions" prefHeight="26.0" prefWidth="174.0" text="Clear Inactive Sessions!" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -144,6 +144,9 @@
                            </children>
                         </HBox>
                      </children>
+                     <VBox.margin>
+                        <Insets left="15.0" right="10.0" top="10.0" />
+                     </VBox.margin>
                   </GridPane>
                       <ScrollPane fx:id="scrollPane" fitToHeight="true" styleClass="sessiongrid" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
