@@ -28,11 +28,13 @@ public final class SettlersImplicator {
                 victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure(turn, (double) countVictoryPoints));
             }
             
-            countVictoryPoints += file.getStatistics().get(i).getPlayers().get(playerNumber).getVictoryPoints();
+            countVictoryPoints = file.getStatistics().get(i).getPlayers().get(playerNumber).getVictoryPoints();
 
             turn = file.getStatistics().get(i).getTurn();            
             
         }
+        
+        victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure(turn, (double) countVictoryPoints));
 
         return victoryPointsPerTurnPerPlayer;
     }
@@ -229,9 +231,9 @@ public final class SettlersImplicator {
         var resourcesGained = SettlersImplicator.concludeResourcesGainedByDice(file);
         var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
         
-        var test = accumulatedBuildingBuiltPerTurn("Player2", file, BuildingType.Town);
+        var test = accumulatedVictoryPointsPerTurn("Player2", file);
         for (int i = 0; i < test.size(); i++) {
-            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
+//            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
         }
     }
 }
