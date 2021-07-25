@@ -55,7 +55,7 @@ public class CBRShooterListener
     @Override
     public void notifySessionClosed() {
         for (var viewModel : viewModels)
-            viewModel.onSessionClosed();
+            UiHelper.inovkeOnUiThread(() -> viewModel.onSessionClosed());
 
         viewModels.clear();
     }
