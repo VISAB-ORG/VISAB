@@ -10,18 +10,19 @@ import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
-import org.visab.newgui.visualize.settlers.model.comparison.PlayerTypeComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
 
 import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
@@ -44,6 +45,52 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private Map<String, ObservableList<Data>> planUsages;
 
     private Map<String, Series<Integer, Number>> comparisonStatisticsSeries;
+    
+    private Command playerStatsChartCommand;
+    
+    private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
+    
+    private ObservableList<Series<Integer, Number>> playerStatsSeries = FXCollections.observableArrayList();
+    
+    // Set in command on show stats button click
+    private ComparisonRowBase<?> graphComparisonRow;
+    private StringProperty yLabel = new SimpleStringProperty();
+    
+    public StringProperty yLabelProperty() {
+        return yLabel;
+    }
+    
+    public ObservableList<Series<Integer, Number>> getPlayerStatsSeries() {
+        return playerStatsSeries;
+    }
+    
+    public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
+        return selectedStatistics;
+    }
+    
+    public Map<String, String> getPlayerInformation() {
+        return file.getPlayerInformation();
+    }
+    
+    public Command playerStatsChartCommand() {
+        
+        if (playerStatsChartCommand == null) {
+            playerStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedRowProperty.get();
+                if (selectedRow != null) {
+
+                    selectedRow.updateSeries(file);
+                    playerStatsSeries.clear();
+                    playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
+                    
+                    yLabel.set(selectedRow.getRowDescription());
+
+                    graphComparisonRow = selectedRow;
+                }
+            });
+        }
+        return playerStatsChartCommand;
+    }
 
     /**
      * Called by javafx/mvvmfx once view is loaded - but before initialize in the
@@ -51,7 +98,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
      */
     public void initialize() {
         if (scope.isLive()) {
-            super.initializeLive(scope.getSessionListener());
+            super.initialize(scope.getSessionListener());
 
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(e -> onSessionClosed());
@@ -79,7 +126,6 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
         // Initialize comparison statistics
         comparisonStatistics = FXCollections.observableArrayList();
-        comparisonStatistics.add(new PlayerTypeComparisonRow());
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Road));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Village));
         comparisonStatistics.add(new BuildingsBuiltComparisonRow(BuildingType.Town));
@@ -140,7 +186,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     @Override
     public void onSessionClosed() {
-        liveSessionActiveProperty().set(false);
+        liveViewActiveProperty().set(false);
         listener.removeViewModel(this);
     }
 

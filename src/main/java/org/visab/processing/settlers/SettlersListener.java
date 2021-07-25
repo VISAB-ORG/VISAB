@@ -58,20 +58,31 @@ public class SettlersListener
     @Override
     public void notifySessionClosed() {
         for (var viewModel : viewModels)
-            viewModel.onSessionClosed();
-
-        viewModels.clear();
+            UiHelper.inovkeOnUiThread(() -> viewModel.onSessionClosed());
     }
 
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
             UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+        
+        viewModels.clear();
     }
 
     @Override
     public void onSessionClosed() {
+        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+
+        var playerName = "";
+        for (var player : lastStatistics.getPlayers()) {
+            if (player.getVictoryPoints() == 10)
+                playerName = player.getName();
+        }
+        file.setWinner(playerName);
+
         manager.saveFile(file, sessionId.toString(), sessionId);
+
+        notifySessionClosed();
     }
 
     @Override
@@ -80,6 +91,7 @@ public class SettlersListener
         file.setMapRectangle(metaInformation.getMapRectangle());
         file.setPlayerCount(metaInformation.getPlayerCount());
         file.setPlayerInformation(metaInformation.getPlayerInformation());
+        file.setPlayerColors(metaInformation.getPlayerColors());
     }
 
     @Override
