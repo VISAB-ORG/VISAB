@@ -153,9 +153,10 @@ public final class SettlersImplicator {
                 throw new RuntimeException("Building type not implemented!");
             }
             
-            turn = file.getStatistics().get(i).getTurn();            
-            
+            turn = file.getStatistics().get(i).getTurn();             
         }
+        
+        resourcesSpentPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countBuildingsbuilt));
 
         return resourcesSpentPerTurnPerPlaye;
     }
@@ -228,7 +229,7 @@ public final class SettlersImplicator {
         var resourcesGained = SettlersImplicator.concludeResourcesGainedByDice(file);
         var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
         
-        var test = accumulatedBuildingBuiltPerTurn("Player1", file, BuildingType.Village);
+        var test = accumulatedBuildingBuiltPerTurn("Player2", file, BuildingType.Town);
         for (int i = 0; i < test.size(); i++) {
             System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
         }
