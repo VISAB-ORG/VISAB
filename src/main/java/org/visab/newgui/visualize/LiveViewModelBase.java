@@ -7,6 +7,7 @@ import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
@@ -21,7 +22,7 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
      * Whether the current listeners corresponding transmission session is still
      * active.
      */
-    protected BooleanProperty liveSessionActiveProperty = new SimpleBooleanProperty(false);
+    protected BooleanProperty liveViewActiveProperty = new SimpleBooleanProperty(false);
 
     /**
      * Whether the current listeners corresponding transmission session is still
@@ -29,13 +30,13 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
      * 
      * @return The boolean property
      */
-    public BooleanProperty liveSessionActiveProperty() {
-        return liveSessionActiveProperty;
+    public BooleanProperty liveViewActiveProperty() {
+        return liveViewActiveProperty;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void initializeLive(ILiveViewable<? extends IStatistics> listener) {
+    public void initialize(ILiveViewable<? extends IStatistics> listener) {
         if (listener == null)
             throw new RuntimeException("Listener was null!");
 
@@ -44,7 +45,7 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
         // dock onto listener
         this.listener.addViewModel(this);
 
-        liveSessionActiveProperty.set(true);
+        liveViewActiveProperty.set(true);
 
         // Set the file
         this.file = (TFile) listener.getCurrentFile();
@@ -55,7 +56,7 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
 
     @Override
     public void onSessionClosed() {
-        liveSessionActiveProperty.set(false);
+        liveViewActiveProperty.set(false);
         if (listener != null)
             listener.removeViewModel(this);
     }

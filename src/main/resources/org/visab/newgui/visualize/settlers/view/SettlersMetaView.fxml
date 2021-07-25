@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
@@ -40,42 +40,9 @@
                                 <PropertyValueFactory property="controlledBy" />
                             </cellValueFactory>
                         </TableColumn>
-                    </columns>
-                </TableView>
-            </children>
-        </VBox>
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <children>
-                <Label text="Weapon Information">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TableView fx:id="weaponInformationTable">
-                    <columns>
-                        <TableColumn text="Weapon name">
+                        <TableColumn text="Color">
                             <cellValueFactory>
-                                <PropertyValueFactory property="name" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Damage per shot">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="damage" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Fire rate">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="fireRate" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Magazine size">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="magazineSize" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Maximum Ammunition">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="maximumAmmunition" />
+                                <PropertyValueFactory property="color" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
@@ -97,21 +64,12 @@
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
                     </rowConstraints>
                     <children>
                         <Label text="Winner" />
                         <Label fx:id="winner" GridPane.columnIndex="1" />
-                        <Label text="Rounds" GridPane.rowIndex="1"/>
+                        <Label text="Turns" GridPane.rowIndex="1" />
                         <Label fx:id="rounds" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                        <Label text="Cumulated ingame time" GridPane.rowIndex="2" />
-                        <Label fx:id="ingameTime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Game speed" GridPane.rowIndex="3" />
-                        <Label fx:id="gameSpeed" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Statistics per ingame second" GridPane.rowIndex="4" />
-                        <Label fx:id="statisticsPerSecond" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </children>
                 </GridPane>
             </children>

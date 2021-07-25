@@ -1,5 +1,6 @@
 package org.visab.globalmodel.settlers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +20,30 @@ public class SettlersFile extends BasicVISABFile {
 
     private List<SettlersStatistics> statistics = new ArrayList<>();
     private Map<String, String> playerInformation;
+    private Map<String, String> playerColors;
     private int playerCount;
     private Rectangle mapRectangle;
+    private String winner;
+
 
     public SettlersFile() {
         super(ConfigManager.SETTLERS_OF_CATAN_STRING, "2.0");
+    }
+
+    public Map<String, String> getPlayerColors() {
+        return playerColors;
+    }
+
+    public void setPlayerColors(Map<String, String> playerColors) {
+        this.playerColors = playerColors;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 
     public Map<String, String> getPlayerInformation() {
@@ -55,7 +75,7 @@ public class SettlersFile extends BasicVISABFile {
     }
 
     public List<String> getPlayerNames() {
-        return new ArrayList<>(playerInformation.values());
+        return new ArrayList<>(playerInformation.keySet());
     }
 
 }
