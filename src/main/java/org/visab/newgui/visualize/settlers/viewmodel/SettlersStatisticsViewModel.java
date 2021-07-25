@@ -45,44 +45,44 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private Map<String, ObservableList<Data>> planUsages;
 
     private Map<String, Series<Integer, Number>> comparisonStatisticsSeries;
-    
+
     private Command playerStatsChartCommand;
-    
+
     private ObjectProperty<ComparisonRowBase<?>> selectedStatistics = new SimpleObjectProperty<>();
-    
+
     private ObservableList<Series<Integer, Number>> playerStatsSeries = FXCollections.observableArrayList();
-    
+
     // Set in command on show stats button click
     private ComparisonRowBase<?> graphComparisonRow;
+
     private StringProperty yLabel = new SimpleStringProperty();
-    
+
     public StringProperty yLabelProperty() {
         return yLabel;
     }
-    
+
     public ObservableList<Series<Integer, Number>> getPlayerStatsSeries() {
         return playerStatsSeries;
     }
-    
+
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
     }
-    
+
     public Map<String, String> getPlayerInformation() {
         return file.getPlayerInformation();
     }
-    
+
     public Command playerStatsChartCommand() {
-        
         if (playerStatsChartCommand == null) {
             playerStatsChartCommand = runnableCommand(() -> {
                 var selectedRow = selectedRowProperty.get();
-                if (selectedRow != null) {
+                if (selectedRow != null && selectedRow != graphComparisonRow) {
 
                     selectedRow.updateSeries(file);
                     playerStatsSeries.clear();
                     playerStatsSeries.addAll(selectedRow.getPlayerSeries().values());
-                    
+
                     yLabel.set(selectedRow.getRowDescription());
 
                     graphComparisonRow = selectedRow;
@@ -152,10 +152,9 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private void updateComparisonStatistics(SettlersFile file) {
         for (var row : comparisonStatistics)
             row.updateValues(file);
-    }
 
-    private void updateComparisonStatisticsSeries(SettlersFile file) {
-
+        if (graphComparisonRow != null)
+            graphComparisonRow.updateSeries(file);
     }
 
     private void updatePlanUsage(SettlersStatistics newStatistics) {
@@ -200,6 +199,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     public Map<String, ObservableList<Data>> getPlanUsages() {
         return planUsages;
+    }
+
+    public Map<String, String> getPlayerColors() {
+        return file.getPlayerColors();
     }
 
 }
