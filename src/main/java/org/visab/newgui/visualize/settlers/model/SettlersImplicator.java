@@ -103,6 +103,62 @@ public final class SettlersImplicator {
 
         return resourcesSpentPerTurnPerPlaye;
     }
+    
+    public static ArrayList<StatisticsDataStructure> accumulatedBuildingBuiltPerTurn(String player, SettlersFile file,
+            BuildingType buildingType) {
+        var resourcesSpentPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
+        var countBuildingsbuilt = 0;
+        var actualBuilding = 0;
+        var lastBuilding = 0;
+        var turn = 0;
+        var playerNumber = 0;
+        
+        if (player.contains("Player2")) {
+            playerNumber = 1;
+        }
+
+        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+            
+            if (turn < file.getStatistics().get(i).getTurn()) {
+                resourcesSpentPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countBuildingsbuilt));
+            }
+            
+            switch (buildingType) {
+            case Road:
+                lastBuilding = actualBuilding;
+                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getStreetCount();
+                
+                if(lastBuilding < actualBuilding) {
+                    countBuildingsbuilt += (actualBuilding - lastBuilding);
+                }
+                break;
+            case Town:
+                lastBuilding = actualBuilding;
+                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getCityCount();
+                
+                if(lastBuilding < actualBuilding) {
+                    countBuildingsbuilt += (actualBuilding - lastBuilding);
+                }
+                break;
+            case Village:
+                lastBuilding = actualBuilding;
+                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getVillageCount();
+                
+                if(lastBuilding < actualBuilding) {
+                    countBuildingsbuilt += (actualBuilding - lastBuilding);
+                }
+                break;
+            default:
+                throw new RuntimeException("Building type not implemented!");
+            }
+            
+            turn = file.getStatistics().get(i).getTurn();            
+            
+        }
+
+        return resourcesSpentPerTurnPerPlaye;
+    }
 
     public enum BuildingType {
         Town, Village, Road
@@ -172,9 +228,9 @@ public final class SettlersImplicator {
         var resourcesGained = SettlersImplicator.concludeResourcesGainedByDice(file);
         var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
         
-        var test = accumulatedResourcesSpentPerTurn("Player1", file);
+        var test = accumulatedBuildingBuiltPerTurn("Player1", file, BuildingType.Village);
         for (int i = 0; i < test.size(); i++) {
-//            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
+            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
         }
     }
 }
