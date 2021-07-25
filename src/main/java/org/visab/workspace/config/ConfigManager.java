@@ -38,15 +38,22 @@ public class ConfigManager {
     public static final String VISAB_DOC_PATH = "/pdf/visab_documentation.pdf";
     public static final String IMAGE_PATH = "/img/";
 
+    public static final String CBR_SHOOTER_STRING = "CBRShooter";
+    public static final String SETTLERS_OF_CATAN_STRING = "Settlers";
+
     private static final HashMap<String, String> gameLogoPaths = new HashMap<String, String>() {
         {
-            put("CBRShooter", IMAGE_PATH + "CBRShooterLogo.png");
-            put("Settlers", IMAGE_PATH + "settlersLogo.png");
+            put(CBR_SHOOTER_STRING, IMAGE_PATH + "CBRShooterLogo.png");
+            put(SETTLERS_OF_CATAN_STRING, IMAGE_PATH + "settlersLogo.png");
         }
     };
 
-    public static final String CBR_SHOOTER_STRING = "CBRShooter";
-    public static final String SETTLERS_OF_CATAN_STRING = "Settlers";
+    private static final HashMap<String, String> shooterBaseIconMap = new HashMap<String, String>() {
+        {
+            put("playerPlanChange", IMAGE_PATH + "playerPlanChange.png");
+            put("playerDeath", IMAGE_PATH + "playerDeath.png");
+        }
+    };
 
     public static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_APPENDIX);
 
@@ -161,7 +168,7 @@ public class ConfigManager {
     public void saveSettings() {
         repo.saveSettings(this.settings, SETTINGS_PATH);
     }
-    
+
     /**
      * Restores the default settings to the file system using the repository.
      */
@@ -269,6 +276,17 @@ public class ConfigManager {
      */
     public String getLogoPathByGame(String game) {
         return gameLogoPaths.get(game);
+    }
+
+    /**
+     * Helper method that provides a player specific base icon. Base icon means that
+     * it is white and can be recoloured.
+     * 
+     * @param iconId the id of the base icon needed.
+     * @return the base icon for the given iconId.
+     */
+    public String getShooterBaseIconById(String iconId) {
+        return shooterBaseIconMap.get(iconId);
     }
 
     /**

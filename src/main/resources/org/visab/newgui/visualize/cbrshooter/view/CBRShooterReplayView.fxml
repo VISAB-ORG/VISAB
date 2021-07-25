@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,8 +12,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -28,90 +29,72 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Pane fx:id="drawPane">
-        <ImageView fitHeight="550.0" fitWidth="550.0" layoutX="41.0" layoutY="143.0">
-         <image>
-            <Image url="@../../../../../../img/fps_map.png" />
-         </image>
-        </ImageView>
-      </Pane>
+      <Pane fx:id="drawPane" />
       <Label fx:id="veloLabel" layoutX="745.0" layoutY="496.0" text="Velocity" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
       <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="705.0" layoutY="528.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
       <ToggleButton fx:id="playPauseButton" layoutX="768.0" layoutY="613.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
-      <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="947.0">
+      <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="699.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Visual">
-            <cellValueFactory>
-                <PropertyValueFactory property="playerVisual">
-                </PropertyValueFactory>
-            </cellValueFactory>
-          </TableColumn>
           <TableColumn prefWidth="75.0" text="Name">
             <cellValueFactory>
                 <PropertyValueFactory property="name">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Health">
+          <TableColumn prefWidth="48.0" text="Health">
             <cellValueFactory>
                 <PropertyValueFactory property="health">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Relative Health">
+          <TableColumn prefWidth="97.0" text="Relative Health">
             <cellValueFactory>
                 <PropertyValueFactory property="relativeHealth">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Plan">
+          <TableColumn prefWidth="56.0" text="Plan">
             <cellValueFactory>
                 <PropertyValueFactory property="plan">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Position">
+          <TableColumn text="Position">
             <cellValueFactory>
                 <PropertyValueFactory property="position">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Weapon">
+          <TableColumn prefWidth="65.0" text="Weapon">
             <cellValueFactory>
                 <PropertyValueFactory property="weapon">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Magazine Ammu">
+          <TableColumn prefWidth="94.0" text="Magazine Ammu">
             <cellValueFactory>
                 <PropertyValueFactory property="magazineAmmu">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Total Ammu">
+          <TableColumn prefWidth="85.0" text="Total Ammu">
             <cellValueFactory>
                 <PropertyValueFactory property="totalAmmu">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Frags">
+          <TableColumn prefWidth="42.0" text="Frags">
             <cellValueFactory>
                 <PropertyValueFactory property="frags">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="75.0" text="Deaths">
+          <TableColumn prefWidth="55.0" text="Deaths">
             <cellValueFactory>
                 <PropertyValueFactory property="deaths">
-                </PropertyValueFactory>
-            </cellValueFactory>
-          </TableColumn>
-          <TableColumn prefWidth="75.0" text="Show">
-            <cellValueFactory>
-                <PropertyValueFactory property="showCheckBox">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
@@ -164,6 +147,7 @@
             </HBox>
             <HBox GridPane.rowIndex="3">
                <children>
+                  <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" onAction="#visualizeWeapon" selected="true" />
                   <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/weapon.png" />
@@ -174,12 +158,24 @@
             </HBox>
             <HBox GridPane.rowIndex="4">
                <children>
+                  <CheckBox fx:id="checkBoxAmmuItem" mnemonicParsing="false" onAction="#visualizeAmmuItem" selected="true" />
                   <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/ammuContainer.png" />
                      </image>
                   </ImageView>
                   <Label text="Ammunition" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <CheckBox fx:id="checkBoxHealthItem" mnemonicParsing="false" onAction="#visualizeHealthItem" selected="true" />
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/healthContainer.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Health Item" />
                </children>
             </HBox>
             <HBox GridPane.columnIndex="1">
@@ -212,16 +208,7 @@
                   <Label fx:id="ammuCoordsValueLabel" />
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
-               <children>
-                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../img/healthContainer.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="Health Item" />
-               </children>
-            </HBox>
+
             <HBox GridPane.columnIndex="2">
                <children>
                   <Label text="Milliseconds" />
@@ -254,5 +241,40 @@
             </HBox>
          </children>
       </GridPane>
+      <TableView fx:id="playerVisualsTable" layoutX="740.0" layoutY="737.0" prefHeight="200.0" prefWidth="250.0">
+        <columns>
+          <TableColumn prefWidth="80.0" text="Player">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerHBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="36.0" text="Icon">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerIconHBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="34.0" text="Path">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerPathHBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="82.0" text="Plan Change">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerPlanChangeHBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="43.0" text="Death">
+            <cellValueFactory>
+                <PropertyValueFactory property="playerDeathHBox">
+                </PropertyValueFactory>
+            </cellValueFactory>
+          </TableColumn>
+        </columns>
+      </TableView>
+      <Label layoutX="822.0" layoutY="712.0" text="Show / Hide Player Visuals" />
 	</children>
 </AnchorPane>

@@ -4,19 +4,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +21,13 @@ import org.visab.workspace.DatabaseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 /**
  * Class containing various helper methods
@@ -63,6 +64,36 @@ public final class VISABUtil {
         }
 
         return data;
+    }
+
+    public static Image recolorImage(Image inputImage, Color newColor) {
+        final double r = newColor.getRed();
+        final double g = newColor.getGreen();
+        final double b = newColor.getBlue();
+        final int w = (int) inputImage.getWidth();
+        final int h = (int) inputImage.getHeight();
+        final WritableImage outputImage = new WritableImage(w, h);
+        final PixelWriter writer = outputImage.getPixelWriter();
+        final PixelReader reader = inputImage.getPixelReader();
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                // Keeping the opacity of every pixel as it is.
+                writer.setColor(x, y, new Color(r, g, b, reader.getColor(x, y).getOpacity()));
+            }
+        }
+        return outputImage;
+    }
+
+    public static ImageView greyScaleImage(Image inputImage) {
+        ColorAdjust monochrome = new ColorAdjust();
+        monochrome.setSaturation(-1);
+        ImageView grayScaledImage = new ImageView(inputImage);
+        grayScaledImage.setEffect(monochrome);
+        return grayScaledImage;
+    }
+
+    public static Color translateHexToRgbColor(String hexCode) {
+        return Color.valueOf(hexCode);
     }
 
     public enum OS {

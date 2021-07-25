@@ -1,9 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
-
-import javafx.scene.control.CheckBox;
-import javafx.scene.image.ImageView;
 
 /**
  * Simple POJO-style class that is used to fill the table on the replay view
@@ -14,7 +12,6 @@ import javafx.scene.image.ImageView;
  */
 public class PlayerDataRow {
 
-    private ImageView playerVisual;
     private String name;
     private int health;
     private float relativeHealth;
@@ -25,7 +22,6 @@ public class PlayerDataRow {
     private int totalAmmu;
     private int frags;
     private int deaths;
-    private CheckBox showCheckBox;
 
     public PlayerDataRow(PlayerInformation playerInfo) {
         this.name = playerInfo.getName();
@@ -38,17 +34,6 @@ public class PlayerDataRow {
         this.totalAmmu = playerInfo.getTotalAmmunition();
         this.frags = playerInfo.getStatistics().getFrags();
         this.deaths = playerInfo.getStatistics().getDeaths();
-        CheckBox showCheck = new CheckBox();
-        showCheck.setSelected(true);
-        this.showCheckBox = showCheck;
-    }
-
-    public ImageView getPlayerVisual() {
-        return playerVisual;
-    }
-
-    public void setPlayerVisual(ImageView playerVisual) {
-        this.playerVisual = playerVisual;
     }
 
     public String getName() {
@@ -91,6 +76,10 @@ public class PlayerDataRow {
         this.position = position;
     }
 
+    public void setPosition(Vector2 position) {
+        this.position = position.getX() + ", " + position.getY();
+    }
+
     public String getWeapon() {
         return weapon;
     }
@@ -130,13 +119,4 @@ public class PlayerDataRow {
     public void setDeaths(int deaths) {
         this.deaths = deaths;
     }
-
-    public CheckBox getShowCheckBox() {
-        return showCheckBox;
-    }
-
-    public void setShowCheckBox(CheckBox showCheckBox) {
-        this.showCheckBox = showCheckBox;
-    }
-
 }

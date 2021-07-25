@@ -12,32 +12,52 @@ import org.visab.globalmodel.Vector2;
  */
 public class CoordinateHelper {
 
+    private Rectangle mapRectangle;
+    private int drawPaneHeight;
+    private int drawPaneWidth;
+    private Vector2 drawPanePositioning;
+
     /**
+     * Constructs a CoordinateHelper with specific boundary information.
      * 
-     * 
-     * @param mapRectangle     the rectangle describing the limitations of the map.
-     * @param coordinatesUnity the coordinates provided by unity.
-     * @param panePositioning  the pane positioning in JavaFX.
-     * @param height           the height of the pane in JavaFX.
-     * @param width            the width of the pane in JavaFX.
-     * @return
+     * @param mapRectangle        the rectangle model of the unity game.
+     * @param drawPaneHeight      the height of the draw pane elements shall be
+     *                            positioned on.
+     * @param drawPaneWidth       the width of the draw pane elements shall be
+     *                            positioned on.
+     * @param drawPanePositioning the position (top-left-anchor) of the draw pane.
      */
-    public static Vector2 translateAccordingToMap(Rectangle mapRectangle, Vector2 coordinatesUnity,
-            Vector2 panePositioning, int height, int width) {
+    public CoordinateHelper(Rectangle mapRectangle, int drawPaneHeight, int drawPaneWidth,
+            Vector2 drawPanePositioning) {
+        this.mapRectangle = mapRectangle;
+        this.drawPaneHeight = drawPaneHeight;
+        this.drawPaneWidth = drawPaneWidth;
+        this.drawPanePositioning = drawPanePositioning;
+    }
 
-        // TODO: Logic in here does not function properly and just serves as a
-        // placeholder
+    /**
+     * @param coordinatesUnity the coordinates provided by unity.
+     * @return the vector that can be used for positioning in JavaFX
+     */
+    public Vector2 translateAccordingToMap(Vector2 coordinatesUnity) {
 
-        // Bullshit, just a placeholder to indicate planned logic
-        var unityXDifference = mapRectangle.getTopLeftAnchorPoint().getX() - coordinatesUnity.getX();
-        var unityYDifference = mapRectangle.getTopLeftAnchorPoint().getY() - coordinatesUnity.getY();
-        var percentageXDifference = 100 / mapRectangle.getWidth() * unityXDifference;
-        var percentageYDifference = 100 / mapRectangle.getHeight() * unityYDifference;
+        // Compute positioning relative to the top left anchor point with distances
+        double relativeXDistanceToTopLeftAnchorPoint = Math
+                .abs(this.mapRectangle.getTopLeftAnchorPoint().getX() - coordinatesUnity.getX());
+        double relativeYDistanceToTopLeftAnchorPoint = Math
+                .abs(this.mapRectangle.getTopLeftAnchorPoint().getY() - coordinatesUnity.getY());
 
-        var relativeX = panePositioning.getX() + percentageXDifference * width;
-        var relativeY = panePositioning.getY() + percentageYDifference * height;
+        // Calculate the percentage distance on the unity map
+        double percentageMovedOnX = relativeXDistanceToTopLeftAnchorPoint / this.mapRectangle.getWidth();
 
-        return new Vector2(relativeX, relativeY);
+        double percentageMovedOnY = relativeYDistanceToTopLeftAnchorPoint / this.mapRectangle.getHeight();
+
+        // Calculate the positioning on the JavaFX pane that should be drawn on
+        int relativePanePositionX = (int) (this.drawPanePositioning.getX() + (percentageMovedOnX * this.drawPaneWidth));
+        int relativePanePositionY = (int) (this.drawPanePositioning.getY()
+                + (percentageMovedOnY * this.drawPaneHeight));
+
+        return new Vector2(relativePanePositionX, relativePanePositionY);
     }
 
 }
