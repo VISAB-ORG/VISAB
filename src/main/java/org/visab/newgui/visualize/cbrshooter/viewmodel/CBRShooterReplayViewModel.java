@@ -202,6 +202,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     mapElements.put(playerInfo.getName() + "_playerPath", new Pair<Node, Boolean>(
                             mapElements.get(playerInfo.getName() + "_playerPath").getKey(), value));
 
+                    playerVisualsRow.getShowPlayerIconCheckBox().setSelected(value);
+                    playerVisualsRow.getShowPlayerPathCheckBox().setSelected(value);
+                    playerVisualsRow.getShowPlayerDeathCheckBox().setSelected(value);
+                    playerVisualsRow.getShowPlayerPlanChangeCheckBox().setSelected(value);
+
                     updateMapElements();
                 }
             });
