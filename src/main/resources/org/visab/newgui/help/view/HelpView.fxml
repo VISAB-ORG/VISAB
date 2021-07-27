@@ -44,7 +44,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.help.view.HelpView">
+<AnchorPane prefHeight="800.0" prefWidth="800.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.help.view.HelpView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -73,9 +73,9 @@
                           </Label>
                      </children>
                   </HBox>
-                  <WebView fx:id="showPDF" prefHeight="298.0" prefWidth="580.0">
+                  <WebView fx:id="showPDF" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
-                        <Insets left="20.0" right="20.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
                   </WebView>
                </children>
