@@ -17,9 +17,6 @@ import org.nanohttpd.protocols.http.NanoHTTPD.ResponseException;
  */
 public final class WebAPIHelper {
 
-    // Logger needs .class for each class to use for log traces
-    private static final Logger logger = LogManager.getLogger(WebAPIHelper.class);
-
     /**
      * Extracts the game from the headers of a HTTP request.
      * 

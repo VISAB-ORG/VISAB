@@ -84,7 +84,7 @@ public class SessionController extends HTTPControllerBase {
         // Generate new UUID to use for identifying the session
         var newSessionId = UUID.randomUUID();
 
-        var success = WebAPI.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
+        WebAPI.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
                 httpSession.getRemoteIpAddress());
 
         logger.info(StringFormat.niceString("Opened session with ID '{0}'", newSessionId));

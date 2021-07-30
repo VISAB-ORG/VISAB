@@ -29,8 +29,6 @@ import org.visab.util.StreamUtil;
  */
 public class SessionAdministration {
 
-    private Logger logger = LogManager.getLogger(SessionAdministration.class);
-
     /**
      * A list of the session statuses for all transmission sessions of the current
      * runtime.
