@@ -297,6 +297,7 @@ public class ConfigManager {
     /**
      * Updates the timeouts from the games.
      * 
+     * TODO: Needs validation so timeouts > or >= 0
      * @param timeouts The timeouts Map.
      */
     public void updateSessionTimeout(HashMap<String, Integer> timeouts) {
