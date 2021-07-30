@@ -16,22 +16,21 @@ import org.visab.workspace.Workspace;
 
 /**
  * The DynamicSerializer used for deserializing json strings into java objects
- * of a classified class name. Used for deserializing statistics, images and
- * VISAB files.
+ * with a classified class name. Used for deserializing into IStatistics,
+ * IImageContainer, IMetaInformation and IVISABFile.
  */
 public final class DynamicSerializer {
 
-    private static Logger logger = LogManager.getLogger(DynamicSerializer.class);
+    private static final Logger logger = LogManager.getLogger(DynamicSerializer.class);
 
     /**
-     * Deserializes a json string into a IMetaInformation.
+     * Deserializes a json string into a IMetaInformation instance.
      * 
      * @param json The json to deserialize
      * @return A IMetaInformation object is successful, null else
      */
-    public static IMetaInformation deserializeMetaInformation(String json) {
+    public static final IMetaInformation deserializeMetaInformation(String json) {
         var jsonObject = JsonConvert.deserializeJsonUnknown(json);
-        System.out.println(json);
 
         var gameProperty = jsonObject.get("game");
         if (gameProperty == null)
@@ -60,37 +59,13 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Deserialize a json string into a IImage.
-     * 
-     * @param json The json to deserialize
-     * @param game The game for which to deserialize a image
-     * @return An IImage object if successful, null else
-     */
-    public static IImageContainer deserializeImage(String json, String game) {
-        var className = "";
-
-        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping != null && mapping.getImage() != null)
-            className = mapping.getImage();
-
-        IImageContainer image = null;
-        if (className.isBlank()) {
-            image = new DefaultImage(json);
-        } else {
-            image = DynamicSerializer.<IImageContainer>tryDeserialize(className, json);
-        }
-
-        return image;
-    }
-
-    /**
-     * Deserialize a json string into a IStatistics.
+     * Deserialize a json string into a IStatistics instance.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
      * @return An IStatistics object if successful, null else
      */
-    public static IStatistics deserializeStatistics(String json, String game) {
+    public static final IStatistics deserializeStatistics(String json, String game) {
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
@@ -108,13 +83,37 @@ public final class DynamicSerializer {
     }
 
     /**
-     * Deserialize a json string into a VISAB file.
+     * Deserialize a json string into a IImage instance.
+     * 
+     * @param json The json to deserialize
+     * @param game The game for which to deserialize a image
+     * @return An IImage object if successful, null else
+     */
+    public static final IImageContainer deserializeImage(String json, String game) {
+        var className = "";
+
+        var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
+        if (mapping != null && mapping.getImage() != null)
+            className = mapping.getImage();
+
+        IImageContainer image = null;
+        if (className.isBlank()) {
+            image = new DefaultImage(json);
+        } else {
+            image = DynamicSerializer.<IImageContainer>tryDeserialize(className, json);
+        }
+
+        return image;
+    }
+
+    /**
+     * Deserialize a json string into a IVISABFile instance.
      * 
      * @param json The json to deserialize
      * @param game The game for which to deserialize a file
      * @return An IVISABFile object if successful, null else
      */
-    public static IVISABFile deserializeVISABFile(String json, String game) {
+    public static final IVISABFile deserializeVISABFile(String json, String game) {
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
@@ -138,7 +137,7 @@ public final class DynamicSerializer {
      * @return An object of type T if successful, null else
      */
     @SuppressWarnings("unchecked")
-    private static <T> T tryDeserialize(String className, String json) {
+    private static final <T> T tryDeserialize(String className, String json) {
         T instance = null;
         if (className != null && !className.isBlank()) {
             var _class = DynamicHelper.tryGetClass(className);
