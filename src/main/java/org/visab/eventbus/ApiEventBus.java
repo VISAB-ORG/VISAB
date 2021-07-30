@@ -7,7 +7,7 @@ package org.visab.eventbus;
  * @author moritz
  *
  */
-public class ApiEventBus extends EventBusBase<IApiEvent> {
+public class ApiEventBus extends EventBusBase<IAPIEvent> {
 
     /**
      * Singelton instance

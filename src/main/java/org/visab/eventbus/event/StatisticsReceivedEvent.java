@@ -8,11 +8,8 @@ import org.visab.globalmodel.SessionStatus;
 /**
  * The StatisticsReceivedEvent, that occurs when new statistics are received by
  * the VISAB api.
- *
- * @author moritz
- *
  */
-public class StatisticsReceivedEvent extends ApiEventBase {
+public class StatisticsReceivedEvent extends APIEventBase {
 
     private String game;
     private IStatistics statistics;

@@ -1,7 +1,7 @@
 package org.visab.eventbus.publisher;
 
 import org.visab.eventbus.ApiEventBus;
-import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.IPublisher;
 
 /**
@@ -11,7 +11,7 @@ import org.visab.eventbus.IPublisher;
  *
  * @param <TEvent> The event type that will be published
  */
-public class ApiPublisherBase<TEvent extends IApiEvent> implements IPublisher<TEvent> {
+public class ApiPublisherBase<TEvent extends IAPIEvent> implements IPublisher<TEvent> {
 
     @Override
     public void publish(TEvent event) {

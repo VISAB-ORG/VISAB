@@ -7,11 +7,8 @@ import org.visab.globalmodel.SessionStatus;
 /**
  * The SessionClosedEvent, that occurs when a VISAB transmission session is
  * closed.
- *
- * @author moritz
- *
  */
-public class SessionClosedEvent extends ApiEventBase {
+public class SessionClosedEvent extends APIEventBase {
 
     private boolean closedByTimeout;
 

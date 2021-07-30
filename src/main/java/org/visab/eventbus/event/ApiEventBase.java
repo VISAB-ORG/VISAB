@@ -2,21 +2,18 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
-import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.IAPIEvent;
 import org.visab.globalmodel.SessionStatus;
 
 /**
- * A base api event class, that all api events should inherit from.
- *
- * @author moritz
- *
+ * A base API event class, that all API events should inherit from.
  */
-public abstract class ApiEventBase implements IApiEvent {
+public abstract class APIEventBase implements IAPIEvent {
 
     private UUID sessionId;
     private SessionStatus sessionStatus;
 
-    public ApiEventBase(UUID sessionId, SessionStatus sessionStatus) {
+    public APIEventBase(UUID sessionId, SessionStatus sessionStatus) {
         this.sessionId = sessionId;
         this.sessionStatus = sessionStatus;
     }

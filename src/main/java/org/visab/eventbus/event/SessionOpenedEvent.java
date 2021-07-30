@@ -8,11 +8,8 @@ import org.visab.globalmodel.SessionStatus;
 /**
  * The SessionOpenedEvent that occurs when a new VISAB transmission session is
  * started.
- *
- * @author moritz
- *
  */
-public class SessionOpenedEvent extends ApiEventBase {
+public class SessionOpenedEvent extends APIEventBase {
 
     private IMetaInformation metaInformation;
 

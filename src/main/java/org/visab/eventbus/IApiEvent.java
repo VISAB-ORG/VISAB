@@ -10,7 +10,7 @@ import org.visab.globalmodel.SessionStatus;
  * @author moritz
  *
  */
-public interface IApiEvent extends IEvent {
+public interface IAPIEvent extends IEvent {
 
     /**
      * Gets the transmission sessions sessionId by which the event was caused.

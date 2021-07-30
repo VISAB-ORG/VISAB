@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicHelper;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IPublisher;
-import org.visab.eventbus.event.VISABFileViewedEvent;
+import org.visab.eventbus.event.VISABFileVisualizedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.processing.ILiveViewable;
@@ -22,7 +22,7 @@ import de.saxsys.mvvmfx.ViewTuple;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent> {
+public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEvent> {
 
     private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
@@ -148,11 +148,11 @@ public final class DynamicViewLoader implements IPublisher<VISABFileViewedEvent>
     }
 
     @Override
-    public void publish(VISABFileViewedEvent event) {
+    public void publish(VISABFileVisualizedEvent event) {
         GeneralEventBus.getInstance().publish(event);
     }
 
-    public static void publishEvent(VISABFileViewedEvent event) {
+    public static void publishEvent(VISABFileVisualizedEvent event) {
         new GeneralEventBus().publish(event);
     }
 }

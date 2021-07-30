@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.visab.dynamic.DynamicSerializer;
-import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
@@ -178,7 +178,7 @@ public class SessionAdministration {
      * @param <T>   The type of the event
      * @param event The event to publish
      */
-    private <T extends IApiEvent> void publish(T event) {
+    private <T extends IAPIEvent> void publish(T event) {
         if (event instanceof SessionOpenedEvent)
             sessionOpenedPublisher.publish((SessionOpenedEvent) event);
         else if (event instanceof SessionClosedEvent)
