@@ -1,4 +1,4 @@
-package org.visab.api.model;
+package org.visab.api;
 
 import java.time.Duration;
 import java.time.LocalTime;

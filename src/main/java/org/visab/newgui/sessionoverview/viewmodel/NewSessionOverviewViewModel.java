@@ -139,7 +139,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
 
                     // Customized JavaFX Gridpane which displays relevant session information
                     SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
-                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "localhost", "127.0.0.1", status);
+                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "127.0.0.1", status);
                     CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath);
 
                     sessionObject.setBackgroundColorByStatus(status);

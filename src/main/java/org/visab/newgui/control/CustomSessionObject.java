@@ -64,7 +64,7 @@ public class CustomSessionObject extends GridPane {
             }
         });
         this.sessionIdValue = new Label(sessionStatus.getSessionId().toString());
-        this.hostNameValue = new Label(sessionStatus.getHostName());
+        this.hostNameValue = new Label("TODO");
         this.ipValue = new Label(sessionStatus.getIp());
         this.sessionOpenedValue = new Label(sessionStatus.getSessionOpened().toString());
 

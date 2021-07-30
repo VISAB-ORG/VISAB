@@ -26,16 +26,13 @@ public class SessionStatus {
     private IntegerProperty receivedStatisticsProperty = new SimpleIntegerProperty();
     private IntegerProperty receivedImagesProperty = new SimpleIntegerProperty();
 
-    private String hostName;
     private String ip;
 
     public SessionStatus(UUID sessionId, String game, boolean isActive, LocalTime lastRequest, LocalTime sessionOpened,
-            LocalTime sessionClosed, int receivedStatistics, int receivedImages, int totalRequests, String hostName,
-            String ip, String statusType) {
+            LocalTime sessionClosed, int receivedStatistics, int receivedImages, int totalRequests, String ip, String statusType) {
         this.game = game;
         this.sessionId = sessionId;
         this.sessionOpened = sessionOpened;
-        this.hostName = hostName;
         this.ip = ip;
 
         this.isActiveProperty.set(isActive);
@@ -53,10 +50,6 @@ public class SessionStatus {
 
     public void setStatusType(String statusType) {
         this.statusType = statusType;
-    }
-
-    public String getHostName() {
-        return this.hostName;
     }
 
     public String getIp() {

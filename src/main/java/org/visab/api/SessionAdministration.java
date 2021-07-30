@@ -20,9 +20,9 @@ import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
 
 /**
- * Class for administering the current transmission sessions. Holds a reference
- * to the current transmission sessions and checks them for timeout. Publishes
- * all api related events.
+ * The SessionAdministration class is used for administering the current
+ * transmission sessions. It has a list of all the transmission sessions that
+ * are currently open and publishes all API related events.
  *
  * @author moritz
  *
@@ -33,25 +33,25 @@ public class SessionAdministration {
     private Logger logger = LogManager.getLogger(SessionAdministration.class);
 
     /**
-     * An overview of transmission session specific data.
+     * A list of the session statuses for all transmission sessions of the current
+     * runtime.
      */
     private List<SessionStatus> statuses = new ArrayList<>();
 
     private List<UUID> sessionIds = new ArrayList<>();
 
     /**
-     * TODO: REMOVE remoteCallerHostName!
-     * Opens a new transmission session and publishes a SessionOpenedEvent.
+     * TODO: REMOVE remoteCallerHostName! Opens a new transmission session and
+     * publishes a SessionOpenedEvent.
      * 
      * @param sessionId            The sessionId to open a session for
      * @param metaInformation      The metainformation of the session
-     * @param remoteCallerIp       The ip of the device that made the api call
-     * @param remoteCallerHostName The hostname of the device that made the api call
+     * @param remoteCallerIp       The ip of the device that made the API call
+     * @param remoteCallerHostName The hostname of the device that made the API call
      */
-    public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp,
-            String remoteCallerHostName) {
+    public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp) {
         var status = new SessionStatus(sessionId, metaInformation.getGame(), true, LocalTime.now(), LocalTime.now(),
-                null, 0, 0, 1, remoteCallerHostName, remoteCallerIp, "active");
+                null, 0, 0, 1, remoteCallerIp, "active");
         statuses.add(status);
         sessionIds.add(sessionId);
 

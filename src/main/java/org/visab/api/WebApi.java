@@ -10,7 +10,6 @@ import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.ImageController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
-import org.visab.api.model.SessionWatchdog;
 import org.visab.processing.SessionListenerFactory;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
