@@ -2,6 +2,8 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.protocols.http.response.Status;
@@ -16,6 +18,11 @@ import org.visab.util.JsonConvert;
 public abstract class HTTPControllerBase implements UriResponder {
 
     protected static final String JSON_MIME_TYPE = "application/json";
+
+    /**
+     * A log4j logger instance.
+     */
+    protected Logger logger = LogManager.getLogger(this.getClass());
 
     /**
      * Gets a generic Ok (Code 200) response.

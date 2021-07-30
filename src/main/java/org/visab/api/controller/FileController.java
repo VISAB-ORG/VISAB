@@ -3,8 +3,6 @@ package org.visab.api.controller;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
@@ -21,8 +19,6 @@ import org.visab.workspace.Workspace;
  * created during the current runtime to the client.
  */
 public class FileController extends HTTPControllerBase {
-
-    private Logger logger = LogManager.getLogger(FileController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {

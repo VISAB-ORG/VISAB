@@ -2,8 +2,6 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.api.WebApi;
 import org.visab.api.WebApiHelper;
 import org.visab.workspace.Workspace;
@@ -12,10 +10,10 @@ import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
+/**
+ * Controller for reciving images from an active transmission session.
+ */
 public class ImageController extends HTTPControllerBase {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(ImageController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
@@ -28,10 +26,11 @@ public class ImageController extends HTTPControllerBase {
     }
 
     /**
-     * Handler for reciving images.
+     * Deserializes an IImageContainer object from the json body of the given HTTP
+     * session.
      * 
-     * @param httpSession The Http session
-     * @return A Http response
+     * @param httpSession The HTTP session whose body contains the IImageContainer json.
+     * @return A HTTP response
      */
     private Response receiveImage(IHTTPSession httpSession) {
         var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
@@ -47,7 +46,7 @@ public class ImageController extends HTTPControllerBase {
             return getBadRequestResponse("Game is not supported!");
 
         if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session was closed!" + WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
+            return getBadRequestResponse(WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
 
         var json = WebApiHelper.extractJsonBody(httpSession);
         if (json == "")
@@ -55,6 +54,6 @@ public class ImageController extends HTTPControllerBase {
 
         WebApi.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
 
-        return getOkResponse("Received images.");
+        return getOkResponse("Images received.");
     }
 }
