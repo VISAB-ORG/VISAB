@@ -29,7 +29,6 @@ import org.visab.util.StreamUtil;
  */
 public class SessionAdministration {
 
-    // Logger needs .class for each class to use for log traces
     private Logger logger = LogManager.getLogger(SessionAdministration.class);
 
     /**
@@ -41,13 +40,12 @@ public class SessionAdministration {
     private List<UUID> sessionIds = new ArrayList<>();
 
     /**
-     * TODO: REMOVE remoteCallerHostName! Opens a new transmission session and
-     * publishes a SessionOpenedEvent.
+     * Opens a new transmission session and publishes a SessionOpenedEvent.
      * 
-     * @param sessionId            The sessionId to open a session for
-     * @param metaInformation      The metainformation of the session
-     * @param remoteCallerIp       The ip of the device that made the API call
-     * @param remoteCallerHostName The hostname of the device that made the API call
+     * @param sessionId       The sessionId to open a session for
+     * @param metaInformation The IMetaInformation of the session
+     * @param remoteCallerIp  The ip of the device that made the API call
+     * @return True
      */
     public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp) {
         var status = new SessionStatus(sessionId, metaInformation.getGame(), true, LocalTime.now(), LocalTime.now(),
@@ -55,20 +53,19 @@ public class SessionAdministration {
         statuses.add(status);
         sessionIds.add(sessionId);
 
-        var event = new SessionOpenedEvent(sessionId, status, metaInformation);
         // Publish the SessionOpenedEvent
-        publish(event);
+        publish(new SessionOpenedEvent(sessionId, status, metaInformation));
 
         return true;
     }
 
     /**
-     * Closes a given session and publishes a SessionClosedEvent.
+     * Closes a transmission session and publishes a SessionClosedEvent.
      * 
-     * @param sessionId The sessionId to remove the transmission session of
+     * @param sessionId The sessionId of the transmission session to close
+     * @return True
      */
-    public void closeSession(UUID sessionId) {
-        // Also disable the session from timeout check
+    public boolean closeSession(UUID sessionId) {
         var status = getStatus(sessionId);
         status.setIsActive(false);
         status.setStatusType("canceled");
@@ -78,8 +75,18 @@ public class SessionAdministration {
 
         // Publish the SessionClosedEvent event
         publish(new SessionClosedEvent(sessionId, status, false));
+
+        return true;
     }
 
+    /**
+     * Deserializes an IImageContainer object from a json string and publishes a
+     * ImageReceivedEvent.
+     * 
+     * @param sessionId The sessionId of the tranmission session who sent the images
+     * @param game      The game of the tranmission session who sent the images
+     * @param imageJson The IImageContainer json
+     */
     public void receiveImage(UUID sessionId, String game, String imageJson) {
         // Set the status
         var status = getStatus(sessionId);
@@ -87,11 +94,20 @@ public class SessionAdministration {
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
-        var event = new ImageReceivedEvent(sessionId, status, game,
-                DynamicSerializer.deserializeImage(imageJson, game));
-        publish(event);
+        var imageContainer = DynamicSerializer.deserializeImage(imageJson, game);
+
+        // Publish the ImageReceivedEvent
+        publish(new ImageReceivedEvent(sessionId, status, game, imageContainer));
     }
 
+    /**
+     * Deserializes an IStatistics object from a json string and publishes a
+     * ImageReceivedEvent.
+     * 
+     * @param sessionId The sessionId of the tranmission session who sent the images
+     * @param game      The game of the tranmission session who sent the images
+     * @param imageJson The IStatistics json
+     */
     public void receiveStatistics(UUID sessionId, String game, String statisticsJson) {
         // Set the status
         var status = getStatus(sessionId);
@@ -99,49 +115,51 @@ public class SessionAdministration {
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
-        var event = new StatisticsReceivedEvent(sessionId, status, game,
-                DynamicSerializer.deserializeStatistics(statisticsJson, game));
-        publish(event);
-    }
+        var statistics = DynamicSerializer.deserializeStatistics(statisticsJson, game);
 
-    public List<UUID> getSessionIds() {
-        return this.sessionIds;
+        // Publish the StatisticsReceivedEvent
+        publish(new StatisticsReceivedEvent(sessionId, status, game, statistics));
     }
 
     /**
-     * Gets the corresponding game for a given sessionId.
+     * A list of the session statuses for all transmission sessions of the current
+     * runtime.
      * 
-     * @param sessionId The sessionId
-     * @return The game if session is active, "" else
+     * @return A copy of the list
      */
-    public String getGame(UUID sessionId) {
-        var status = getStatus(sessionId);
-
-        return status == null ? "" : status.getGame();
+    public List<SessionStatus> getSessionStatuses() {
+        return new ArrayList<SessionStatus>(statuses);
     }
 
     /**
-     * Gets whether a transmission session is active.
+     * A list of the session statuses for all currently active tranmission session.
      * 
-     * @param sessionId The sessionId to check
+     * @return The filtered list
+     */
+    public List<SessionStatus> getActiveSessionStatuses() {
+        return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the SessionStatus of a tranmission session.
+     * 
+     * @param sessionId The sessionId whose session status to get
+     * @return
+     */
+    public SessionStatus getStatus(UUID sessionId) {
+        return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));
+    }
+
+    /**
+     * Checks if the transmission session is active.
+     * 
+     * @param sessionId The sessionId whose session status to check
      * @return True if session is active
      */
     public boolean isSessionActive(UUID sessionId) {
         var status = getStatus(sessionId);
 
         return status == null ? false : status.isActive();
-    }
-
-    public SessionStatus getStatus(UUID sessionId) {
-        return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));
-    }
-
-    public List<SessionStatus> getSessionStatuses() {
-        return statuses;
-    }
-
-    public List<SessionStatus> getActiveSessionStatuses() {
-        return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
     }
 
     private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
@@ -177,7 +195,7 @@ public class SessionAdministration {
         else if (event instanceof ImageReceivedEvent)
             imageReceivedPublisher.publish((ImageReceivedEvent) event);
         else
-            throw new RuntimeException("Received unknown event type: " + event.getClass().getName() + "");
+            throw new RuntimeException("Received unhandeled event type: " + event.getClass().getName());
     }
 
 }
