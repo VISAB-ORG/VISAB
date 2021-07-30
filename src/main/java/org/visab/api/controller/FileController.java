@@ -16,9 +16,13 @@ import org.visab.util.JsonConvert;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
+/**
+ * Controller for reciving any VISAB file and sending VISAB files that were
+ * created during the current runtime to the client.
+ */
 public class FileController extends HTTPControllerBase {
 
-    private static Logger logger = LogManager.getLogger(FileController.class);
+    private Logger logger = LogManager.getLogger(FileController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
@@ -30,6 +34,23 @@ public class FileController extends HTTPControllerBase {
             return getNotFoundResponse(uriResource);
     }
 
+    @Override
+    public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
+        var endpointAdress = uriResource.getUri().replace("file/", "");
+
+        if (endpointAdress.equals("send"))
+            return receiveFile(session);
+        else
+            return getNotFoundResponse(uriResource);
+    }
+
+    /**
+     * Parses a VISAB file from the body of the request and saves it to the
+     * workspace.
+     * 
+     * @param session The session to parse the body of
+     * @return A HTTP response
+     */
     private Response receiveFile(IHTTPSession session) {
         var json = WebApiHelper.extractJsonBody(session);
         if (json == "")
@@ -50,6 +71,12 @@ public class FileController extends HTTPControllerBase {
         return getOkResponse(saved ? "Sent file was saved!" : "File received, but failed to save!");
     }
 
+    /**
+     * Sends a VISAB file that was created during the current runtime to the client.
+     * 
+     * @param session The HTTP session of the requester
+     * @return A HTTP response
+     */
     private Response sendFile(IHTTPSession session) {
         logger.info("Started to send file...");
         var parameters = session.getParameters();
@@ -73,16 +100,6 @@ public class FileController extends HTTPControllerBase {
             return getBadRequestResponse("During this VISAB runtime, no file was saved for the given sessionId.");
 
         return getJsonResponse(file);
-    }
-
-    @Override
-    public Response handlePost(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        var endpointAdress = uriResource.getUri().replace("file/", "");
-
-        if (endpointAdress.equals("send"))
-            return receiveFile(session);
-        else
-            return getNotFoundResponse(uriResource);
     }
 
 }
