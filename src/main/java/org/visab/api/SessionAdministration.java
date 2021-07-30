@@ -7,12 +7,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.visab.dynamic.DynamicSerializer;
+import org.visab.eventbus.APIPublisherBase;
 import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.publisher.ApiPublisherBase;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
@@ -27,16 +27,16 @@ import org.visab.util.StreamUtil;
  */
 public class SessionAdministration {
 
-    private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
+    private class SessionOpenedPublisher extends APIPublisherBase<SessionOpenedEvent> {
     }
 
-    private class SessionClosedPublisher extends ApiPublisherBase<SessionClosedEvent> {
+    private class SessionClosedPublisher extends APIPublisherBase<SessionClosedEvent> {
     }
 
-    private class StatisticsReceivedPublisher extends ApiPublisherBase<StatisticsReceivedEvent> {
+    private class StatisticsReceivedPublisher extends APIPublisherBase<StatisticsReceivedEvent> {
     }
 
-    private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
+    private class ImageReceivedPublisher extends APIPublisherBase<ImageReceivedEvent> {
     }
 
     private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();

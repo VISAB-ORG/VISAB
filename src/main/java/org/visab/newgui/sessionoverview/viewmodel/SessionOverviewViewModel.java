@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionAdministration;
 import org.visab.api.WebAPI;
-import org.visab.eventbus.ApiEventBus;
+import org.visab.eventbus.APIEventBus;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.ISubscriber;
@@ -105,7 +105,7 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
     }
 
     public SessionOverviewViewModel() {
-        ApiEventBus.getInstance().subscribe(this);
+        APIEventBus.getInstance().subscribe(this);
 
         // Load in all existing session status from watchdog.
         for (var status : WebAPI.getInstance().getSessionAdministration().getSessionStatuses())

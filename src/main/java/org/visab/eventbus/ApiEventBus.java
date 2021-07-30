@@ -1,27 +1,21 @@
 package org.visab.eventbus;
 
 /**
- * The ApiEventBus, used for notifying subscribers of new messages to the api.
- * Subscribers will be notified, when their subscribed event occurs.
- *
- * @author moritz
- *
+ * The APIEventBus, used for notifying subscribers of new messages to the api.
+ * Subscribers will be notified when their subscribed event occurs.
  */
-public class ApiEventBus extends EventBusBase<IAPIEvent> {
+public class APIEventBus extends EventBusBase<IAPIEvent> {
 
+    private static APIEventBus instance;
+    
     /**
-     * Singelton instance
-     */
-    private static ApiEventBus instance;
-
-    /**
-     * Gets the singelton instance
+     * Gets the singelton instance.
      * 
      * @return The instance
      */
-    public static ApiEventBus getInstance() {
+    public static APIEventBus getInstance() {
         if (instance == null)
-            instance = new ApiEventBus();
+            instance = new APIEventBus();
 
         return instance;
     }

@@ -1,8 +1,7 @@
-package org.visab.eventbus.event;
+package org.visab.eventbus;
 
 import java.util.UUID;
 
-import org.visab.eventbus.IAPIEvent;
 import org.visab.globalmodel.SessionStatus;
 
 /**

@@ -2,6 +2,7 @@ package org.visab.eventbus.event;
 
 import java.util.UUID;
 
+import org.visab.eventbus.APIEventBase;
 import org.visab.globalmodel.SessionStatus;
 
 /**

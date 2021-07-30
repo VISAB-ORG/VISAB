@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicInstatiator;
-import org.visab.eventbus.ApiEventBus;
+import org.visab.eventbus.APISubscriberBase;
+import org.visab.eventbus.APIEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.util.StringFormat;
 
@@ -18,7 +18,7 @@ import org.visab.util.StringFormat;
  * @author moritz
  *
  */
-public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent> {
+public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent> {
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);
@@ -60,7 +60,7 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
     public void startFactory() {
         if (!isStarted) {
             logger.info("Starting SessionListenerFactory.");
-            ApiEventBus.getInstance().subscribe(this);
+            APIEventBus.getInstance().subscribe(this);
             isStarted = true;
         }
     }
@@ -71,7 +71,7 @@ public class SessionListenerFactory extends ApiSubscriberBase<SessionOpenedEvent
     public void stopFactory() {
         if (isStarted) {
             logger.info("Stopping SessionListenerFactory.");
-            ApiEventBus.getInstance().unsubscribe(this);
+            APIEventBus.getInstance().unsubscribe(this);
             isStarted = false;
         }
     }
