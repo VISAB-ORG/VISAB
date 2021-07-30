@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.IApiEvent;
 import org.visab.eventbus.event.ImageReceivedEvent;
@@ -28,6 +26,23 @@ import org.visab.util.StreamUtil;
  *
  */
 public class SessionAdministration {
+
+    private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
+    }
+
+    private class SessionClosedPublisher extends ApiPublisherBase<SessionClosedEvent> {
+    }
+
+    private class StatisticsReceivedPublisher extends ApiPublisherBase<StatisticsReceivedEvent> {
+    }
+
+    private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
+    }
+
+    private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
+    private SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
+    private StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
+    private ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
 
     /**
      * A list of the session statuses for all transmission sessions of the current
@@ -156,23 +171,6 @@ public class SessionAdministration {
 
         return status == null ? false : status.isActive();
     }
-
-    private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
-    }
-
-    private class SessionClosedPublisher extends ApiPublisherBase<SessionClosedEvent> {
-    }
-
-    private class StatisticsReceivedPublisher extends ApiPublisherBase<StatisticsReceivedEvent> {
-    }
-
-    private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
-    }
-
-    private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
-    private SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
-    private StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
-    private ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
 
     /**
      * Publishes the given event to the ApiEventBus instance.
