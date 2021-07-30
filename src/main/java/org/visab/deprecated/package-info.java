@@ -8,7 +8,6 @@
  * modifications to VISAB legacy classes may become useful again or at least
  * serve the purpose of a cheat sheet of how VISAB worked back then.
  * </p>
- * 
  */
 
 package org.visab.deprecated;
