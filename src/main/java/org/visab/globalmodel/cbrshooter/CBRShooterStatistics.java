@@ -6,13 +6,6 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Vector2;
 
-/**
- * The CBRShooterStatistics class, representing the information given by the
- * CBRShooter.
- *
- * @author moritz
- *
- */
 public class CBRShooterStatistics implements IStatistics {
 
     private Vector2 ammunitionPosition;

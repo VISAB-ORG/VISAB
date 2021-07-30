@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.BasicVISABFile;
-import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.Rectangle;
 import org.visab.workspace.config.ConfigManager;
 
