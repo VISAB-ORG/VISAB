@@ -131,9 +131,9 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         var success = repo.saveFileDB(file, fileName);
 
         if (!success) {
-            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database", fileName, file.getGame()));
+            logger.error(StringFormat.niceString("Failed to save {0} of {1} in database.", fileName, file.getGame()));
         } else {
-            logger.info(StringFormat.niceString("Saved {0} of {1} in database", fileName, file.getGame()));
+            logger.info(StringFormat.niceString("Saved {0} of {1} in database.", fileName, file.getGame()));
             savedFiles.add(new SavedFileInformation(fileName, file.getGame()));
             var event = new VISABFileSavedEvent(fileName, file.getGame());
             publish(event);

@@ -24,6 +24,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * TODO: HAVE TO RETURN BOOLEAN VALUES, INDICATING IF THE CHANGE OF SETTINGS WAS
  * SUCCESSFUL (ALLOWED TYPICALLY)
+ * 
+ * TODO: Do we make the resource stuff their own manager / util?
  */
 public class ConfigManager {
 
@@ -91,7 +93,7 @@ public class ConfigManager {
      * @return The list of mappings if successfully loaded, throws RuntimeException
      *         else
      */
-    private List<Mapping> loadMappings() {
+    private void loadMappings() {
         var json = VISABUtil.readResourceContents("/configs/classMapping.json");
         var mappings = JsonConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
         }, JsonConvert.ForgivingMapper);
@@ -140,8 +142,6 @@ public class ConfigManager {
         }
 
         this.mappings = mappings;
-
-        return mappings;
     }
 
     /**
@@ -240,7 +240,8 @@ public class ConfigManager {
      * 
      * @param games The new allowed games.
      */
-    public void updateAllowedGames(ArrayList<String> games) {
+    public boolean updateAllowedGames(ArrayList<String> games) {
+        boolean settingsHaveChanged = false;
 
         // Check if current version of allowed games contains a new game
         for (String game : games) {
@@ -250,6 +251,7 @@ public class ConfigManager {
                 map.put(game, 10);
                 updateSessionTimeout(map);
                 logger.info("Added session timeout: 10, for new game: " + game);
+                settingsHaveChanged = true;
             }
         }
         // Check if current version of allowed games is missing a game which was
@@ -261,11 +263,14 @@ public class ConfigManager {
                 map.remove(game);
                 updateSessionTimeout(map);
                 logger.info("Removed session timeout for game: " + game);
+                settingsHaveChanged = true;
             }
         }
-        // Renaming a game will result in both logs to be printed
 
+        // Renaming a game will result in both logs to be printed
         this.settings.setAllowedGames(games);
+
+        return settingsHaveChanged;
     }
 
     /**
