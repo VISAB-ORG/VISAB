@@ -19,11 +19,8 @@ import org.visab.workspace.config.ConfigManager;
 
 /**
  * The CBRShooterListener class, that is responsible for listening to
- * information sent by the CBRShooter game and creating files of that
+ * information sent by the CBRShooter game and creating files with that
  * information.
- *
- * @author moritz
- *
  */
 public class CBRShooterListener
         extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterImages>
