@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPIHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.processing.SessionListenerAdministration;
@@ -48,7 +48,7 @@ public class FileController extends HTTPControllerBase {
      * @return A HTTP response
      */
     private Response receiveFile(IHTTPSession session) {
-        var json = WebApiHelper.extractJsonBody(session);
+        var json = WebAPIHelper.extractJsonBody(session);
         if (json == "")
             return getBadRequestResponse("Failed receiving file from body. Did you not put it in the body?");
 
@@ -79,7 +79,7 @@ public class FileController extends HTTPControllerBase {
 
         UUID sessionId = null;
         if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
-            sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
+            sessionId = WebAPIHelper.tryParseUUID(parameters.get("sessionid").get(0));
 
         if (!parameters.containsKey("sessionid"))
             return getBadRequestResponse("No sessionid given in url parameters!");

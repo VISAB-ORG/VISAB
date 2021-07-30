@@ -5,8 +5,8 @@ import java.util.Map;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.WebApi;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPI;
+import org.visab.api.WebAPIHelper;
 import org.visab.workspace.Workspace;
 
 /**
@@ -32,14 +32,14 @@ public class StatisticsController extends HTTPControllerBase {
      * @return A HTTP response
      */
     private Response receiveStatistics(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+        var sessionId = WebAPIHelper.extractSessionId(httpSession.getHeaders());
+        var game = WebAPIHelper.extractGame(httpSession.getHeaders());
 
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse(WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
+        if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId))
+            return getBadRequestResponse(WebAPI.SESSION_ALREADY_CLOSED_RESPONSE);
 
         if (game == "")
             return getBadRequestResponse("No game given in headers!");
@@ -47,11 +47,11 @@ public class StatisticsController extends HTTPControllerBase {
         if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
+        var json = WebAPIHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionAdministration().receiveStatistics(sessionId, game, json);
+        WebAPI.getInstance().getSessionAdministration().receiveStatistics(sessionId, game, json);
 
         return getOkResponse("Statistics received.");
     }

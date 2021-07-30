@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.WebApi;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPI;
+import org.visab.api.WebAPIHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
@@ -34,7 +34,7 @@ public class SessionController extends HTTPControllerBase {
             return getSessionStatus(httpSession);
 
         case "list":
-            return getJsonResponse(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses());
+            return getJsonResponse(WebAPI.getInstance().getSessionAdministration().getActiveSessionStatuses());
 
         default:
             return getNotFoundResponse(uriResource);
@@ -62,7 +62,7 @@ public class SessionController extends HTTPControllerBase {
     private Response openSession(IHTTPSession httpSession) {
         logger.info("Trying to open a session for the VISAB WebApi.");
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
+        var json = WebAPIHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
@@ -84,7 +84,7 @@ public class SessionController extends HTTPControllerBase {
         // Generate new UUID to use for identifying the session
         var newSessionId = UUID.randomUUID();
 
-        var success = WebApi.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
+        var success = WebAPI.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
                 httpSession.getRemoteIpAddress());
 
         logger.info(StringFormat.niceString("Opened session with ID '{0}'", newSessionId));
@@ -99,7 +99,7 @@ public class SessionController extends HTTPControllerBase {
      * @return A HTTP response
      */
     private Response closeSession(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
+        var sessionId = WebAPIHelper.extractSessionId(httpSession.getHeaders());
 
         var responseMessage = "Closed session successfully: ";
         if (sessionId == null) {
@@ -108,13 +108,13 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
         }
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId)) {
+        if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId)) {
             responseMessage = "Session: " + sessionId + " is already closed!";
             logger.error(responseMessage);
             return getOkResponse(responseMessage);
         }
 
-        WebApi.getInstance().getSessionAdministration().closeSession(sessionId);
+        WebAPI.getInstance().getSessionAdministration().closeSession(sessionId);
 
         logger.info(responseMessage + sessionId);
         return getOkResponse(responseMessage + sessionId);
@@ -132,7 +132,7 @@ public class SessionController extends HTTPControllerBase {
 
         UUID sessionId = null;
         if (parameters.containsKey("sessionid") && parameters.get("sessionid").size() > 0)
-            sessionId = WebApiHelper.tryParseUUID(parameters.get("sessionid").get(0));
+            sessionId = WebAPIHelper.tryParseUUID(parameters.get("sessionid").get(0));
 
         if (!parameters.containsKey("sessionid"))
             return getBadRequestResponse("No sessionid given in url parameters!");
@@ -140,7 +140,7 @@ public class SessionController extends HTTPControllerBase {
         if (sessionId == null)
             return getBadRequestResponse("Could not parse uuid!");
 
-        var sessionStatus = WebApi.getInstance().getSessionAdministration().getStatus(sessionId);
+        var sessionStatus = WebAPI.getInstance().getSessionAdministration().getStatus(sessionId);
         if (sessionStatus == null)
             return getJsonResponse("");
         else

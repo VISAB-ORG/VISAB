@@ -2,8 +2,8 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.visab.api.WebApi;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPI;
+import org.visab.api.WebAPIHelper;
 import org.visab.workspace.Workspace;
 
 import org.nanohttpd.protocols.http.IHTTPSession;
@@ -33,8 +33,8 @@ public class ImageController extends HTTPControllerBase {
      * @return A HTTP response
      */
     private Response receiveImage(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+        var sessionId = WebAPIHelper.extractSessionId(httpSession.getHeaders());
+        var game = WebAPIHelper.extractGame(httpSession.getHeaders());
 
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
@@ -45,14 +45,14 @@ public class ImageController extends HTTPControllerBase {
         if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse(WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
+        if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId))
+            return getBadRequestResponse(WebAPI.SESSION_ALREADY_CLOSED_RESPONSE);
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
+        var json = WebAPIHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
+        WebAPI.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
 
         return getOkResponse("Images received.");
     }

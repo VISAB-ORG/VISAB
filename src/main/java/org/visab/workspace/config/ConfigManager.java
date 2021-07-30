@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.util.JsonConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.UserSettings;
@@ -226,7 +226,7 @@ public class ConfigManager {
         if (port != previousPort) {
             logger.info("Changed webApiPort from " + previousPort + " to " + port + ".");
             // WebApi needs to be restarted because the port changed
-            WebApi.getInstance().restart();
+            WebAPI.getInstance().restart();
         }
 
         this.settings.setWebApiPort(port);

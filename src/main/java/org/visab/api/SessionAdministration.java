@@ -122,19 +122,16 @@ public class SessionAdministration {
     }
 
     /**
-     * A list of the session statuses for all transmission sessions of the current
-     * runtime.
-     * 
-     * @return A copy of the list
+     * A list containing the session statuses for all transmission sessions of the
+     * current runtime.
      */
     public List<SessionStatus> getSessionStatuses() {
         return new ArrayList<SessionStatus>(statuses);
     }
 
     /**
-     * A list of the session statuses for all currently active tranmission session.
-     * 
-     * @return The filtered list
+     * A list containing the session statuses for all currently active tranmission
+     * session.
      */
     public List<SessionStatus> getActiveSessionStatuses() {
         return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
@@ -144,7 +141,7 @@ public class SessionAdministration {
      * Gets the SessionStatus of a tranmission session.
      * 
      * @param sessionId The sessionId whose session status to get
-     * @return
+     * @return The SessionStatus of the tranmission session if found, null else
      */
     public SessionStatus getStatus(UUID sessionId) {
         return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));

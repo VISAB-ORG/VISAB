@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.config.ConfigManager;
 
@@ -210,6 +210,6 @@ public class GUIMain extends Application {
      */
     @Override
     public void stop() {
-        WebApi.getInstance().shutdown();
+        WebAPI.getInstance().shutdown();
     }
 }

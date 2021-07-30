@@ -1,6 +1,6 @@
 package org.visab.newgui;
 
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.newgui.main.view.HomeView;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
@@ -37,7 +37,7 @@ public class AppMain extends Application {
      */
     @Override
     public void stop() {
-        WebApi.getInstance().shutdown();
+        WebAPI.getInstance().shutdown();
     }
 
 }

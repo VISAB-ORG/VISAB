@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.newgui.AppMain;
 
 import javafx.application.Application;
@@ -56,7 +56,7 @@ public class Main {
         }
 
         logger.info("Starting VISAB API HTTP server ...");
-        WebApi.getInstance().start();
+        WebAPI.getInstance().start();
 
         // Start the GUI additionally if desired
         if (mode.equals("gui")) {

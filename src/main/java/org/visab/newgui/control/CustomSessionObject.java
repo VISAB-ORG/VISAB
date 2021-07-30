@@ -1,6 +1,6 @@
 package org.visab.newgui.control;
 
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 
@@ -92,7 +92,7 @@ public class CustomSessionObject extends GridPane {
             @Override
             public void handle(ActionEvent e) {
                 if (sessionStatus.isActive())
-                    WebApi.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
+                    WebAPI.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
             }
         });
         this.closeSessionButton.setAlignment(Pos.TOP_RIGHT);
