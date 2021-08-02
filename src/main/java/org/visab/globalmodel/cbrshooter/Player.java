@@ -2,7 +2,7 @@ package org.visab.globalmodel.cbrshooter;
 
 import org.visab.globalmodel.Vector2;
 
-public class PlayerInformation {
+public class Player {
 
     private int health;
     private int magazineAmmunition;

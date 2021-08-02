@@ -11,7 +11,7 @@ import org.visab.globalmodel.Vector2;
  * @author leonr
  *
  */
-public class PlayerInformation {
+public class Player {
 
     private int villageCount;
     private List<Vector2> villagePositions;

@@ -1,7 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
 import org.visab.globalmodel.Vector2;
-import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.globalmodel.cbrshooter.Player;
 
 /**
  * Simple POJO-style class that is used to fill the table on the replay view
@@ -23,7 +23,7 @@ public class PlayerDataRow {
     private int frags;
     private int deaths;
 
-    public PlayerDataRow(PlayerInformation playerInfo) {
+    public PlayerDataRow(Player playerInfo) {
         this.name = playerInfo.getName();
         this.health = playerInfo.getHealth();
         this.relativeHealth = playerInfo.getRelativeHealth();

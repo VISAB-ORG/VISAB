@@ -1,6 +1,5 @@
 package org.visab.globalmodel.settlers;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,9 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.workspace.config.ConfigManager;
 
 /**
- * This class represents the structure of a VISAB data file generated from
- * Settlers of Catan data.
+ * Represents the Settlers VISAB file containing that contains all information
+ * necesarry for visualizing. This class is serialized to json and written to
+ * .visab files.
  * 
  * @author leonr
  *
@@ -24,7 +24,6 @@ public class SettlersFile extends BasicVISABFile {
     private int playerCount;
     private Rectangle mapRectangle;
     private String winner;
-
 
     public SettlersFile() {
         super(ConfigManager.SETTLERS_OF_CATAN_STRING, "2.0");

@@ -6,10 +6,14 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Vector2;
 
+/**
+ * The CBRShooter statistics, that are periodically sent by the Unity game. The
+ * visualization is based on all the statistics received.
+ */
 public class CBRShooterStatistics implements IStatistics {
 
     private Vector2 ammunitionPosition;
-    private List<PlayerInformation> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
@@ -31,7 +35,7 @@ public class CBRShooterStatistics implements IStatistics {
         this.totalTime = totalTime;
     }
 
-    public List<PlayerInformation> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 

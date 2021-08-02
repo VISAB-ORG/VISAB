@@ -9,6 +9,11 @@ import org.visab.globalmodel.BasicVISABFile;
 import org.visab.globalmodel.Rectangle;
 import org.visab.workspace.config.ConfigManager;
 
+/**
+ * Represents the CBRShooter VISAB file containing that contains all information necesarry
+ * for visualizing. This class is serialized to json and written to .visab
+ * files.
+ */
 public class CBRShooterFile extends BasicVISABFile {
 
     private List<CBRShooterStatistics> statistics = new ArrayList<>();

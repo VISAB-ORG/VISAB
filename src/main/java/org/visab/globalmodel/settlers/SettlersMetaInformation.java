@@ -1,6 +1,5 @@
 package org.visab.globalmodel.settlers;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.globalmodel.IMetaInformation;

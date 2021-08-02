@@ -12,7 +12,7 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -170,7 +170,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializeVisualsTable() {
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
 
             // Create new visuals from to make them decoupled from the map view
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
@@ -299,9 +299,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializePlayerVisuals() {
-        List<PlayerInformation> playerInfos = frameBasedStats.getPlayers();
+        List<Player> playerInfos = frameBasedStats.getPlayers();
 
-        for (PlayerInformation playerInfo : playerInfos) {
+        for (Player playerInfo : playerInfos) {
             // Unity Game provides Hex code which has to be translated to a JavaFx color
             Color playerColor = VISABUtil.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
 
@@ -420,7 +420,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             mapElements.get("weapon").getKey().setVisible(false);
         }
 
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
@@ -487,7 +487,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     private void clearPathsBySelectedFrame() {
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             int pathLength = ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements()
                     .size();
             if (selectedFrame < pathLength) {
@@ -544,7 +544,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         mapElements.put("weapon", new Pair<Node, Boolean>(weapon, true));
         mapElements.put("ammuItem", new Pair<Node, Boolean>(ammuItem, true));
 
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
