@@ -2,16 +2,14 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
-import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
 
 /**
- * This is a session listener default class, used for when games are allowed
- * (added in settings) but there is no SessionListener implementation for them
- * yet.
+ * Serves as a session listener default class, that can be used for when games
+ * are allowed in VISAB settings but there is no implemenatation for them yet.
  */
 public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInformation, DefaultStatistics> {
 

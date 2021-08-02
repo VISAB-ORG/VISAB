@@ -7,7 +7,7 @@ import org.visab.newgui.visualize.ILiveReplayViewModel;
 /**
  * The IReplayLiveViewable interface, that all replay live viewable
  * SessionListeners have to implement. Extends the ILiveViewable interface by
- * the capability of getting the images received.
+ * the capability of informing the ViewModels when images are received.
  * 
  * @param <TStatistics> The statistics type received and added by the listener
  * @param <TImage>      The image type received by the listener

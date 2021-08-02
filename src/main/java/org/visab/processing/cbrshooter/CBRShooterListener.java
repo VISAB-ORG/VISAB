@@ -38,7 +38,7 @@ public class CBRShooterListener
     public void addViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
         viewModels.add(viewModel);
 
-        // If the session isnt active anymore, instantly notify, that it was closed.
+        // If the session isnt active anymore, instantly notify that it was closed.
         if (!isActive)
             notifySessionClosed();
     }
