@@ -37,7 +37,7 @@ public final class ResourceHelper {
      * @param game the name of the game the logo is needed for.
      * @return the logo path for the respective game.
      */
-    public String getLogoPathByGame(String game) {
+    public static final String getLogoPathByGame(String game) {
         return gameLogoPaths.get(game);
     }
 
@@ -48,7 +48,7 @@ public final class ResourceHelper {
      * @param iconId the id of the base icon needed.
      * @return the base icon for the given iconId.
      */
-    public String getShooterBaseIconById(String iconId) {
+    public static final String getShooterBaseIconById(String iconId) {
         return shooterBaseIconMap.get(iconId);
     }
 

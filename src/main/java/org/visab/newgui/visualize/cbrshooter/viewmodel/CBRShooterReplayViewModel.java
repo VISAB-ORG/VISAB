@@ -13,6 +13,7 @@ import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.Player;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -23,7 +24,6 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -310,15 +310,13 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             // Currently only "hacked" workaround because images sent by the game dont work
             Image playerIcon;
             if (playerInfo.getName().equals("John Doe")) {
-                playerIcon = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+                playerIcon = new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
             } else {
-                playerIcon = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
+                playerIcon = new Image(ResourceHelper.IMAGE_PATH + "scriptBot.png");
             }
 
-            Image playerPlanChange = new Image(
-                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerPlanChange"));
-            Image playerDeath = new Image(
-                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerDeath"));
+            Image playerPlanChange = new Image(ResourceHelper.getShooterBaseIconById("playerPlanChange"));
+            Image playerDeath = new Image(ResourceHelper.getShooterBaseIconById("playerDeath"));
 
             // Recolor images
             playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
@@ -517,21 +515,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         map.setViewOrder(1);
 
         // First add the fixed items to the replay view
-        ImageView healthItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "healthContainer.png"));
+        ImageView healthItem = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "healthContainer.png"));
         healthItem.setX(panePositioning.getX());
         healthItem.setY(panePositioning.getY());
         healthItem.setFitHeight(16);
         healthItem.setFitWidth(16);
         healthItem.setVisible(false);
 
-        ImageView ammuItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "ammuContainer.png"));
+        ImageView ammuItem = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "ammuContainer.png"));
         ammuItem.setX(panePositioning.getX());
         ammuItem.setY(panePositioning.getY());
         ammuItem.setFitHeight(16);
         ammuItem.setFitWidth(16);
         ammuItem.setVisible(false);
 
-        ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "weapon.png"));
+        ImageView weapon = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "weapon.png"));
         weapon.setX(panePositioning.getX());
         weapon.setY(panePositioning.getY());
         weapon.setFitHeight(16);
@@ -766,6 +764,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         this.ammuCoordsProperty = ammuCoordsProperty;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(ILiveViewable<? extends IStatistics> listener) {
         var concreteListener = (ILiveViewable<CBRShooterStatistics>) listener;

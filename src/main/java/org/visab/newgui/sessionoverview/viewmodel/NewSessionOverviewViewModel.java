@@ -15,6 +15,7 @@ import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
 import org.visab.workspace.Workspace;
@@ -135,7 +136,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
                         canceledSessionsCount++;
                     }
 
-                    var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
+                    var logoPath = ResourceHelper.getLogoPathByGame("Settlers");
 
                     // Customized JavaFX Gridpane which displays relevant session information
                     SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
@@ -207,7 +208,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
                 canceledSessionsCount++;
             }
 
-            var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame(sessionStatus.getGame());
+            var logoPath = ResourceHelper.getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
             CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath);

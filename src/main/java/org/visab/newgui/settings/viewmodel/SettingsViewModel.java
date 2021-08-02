@@ -8,8 +8,8 @@ import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.settings.view.AllowedGamesEditView;
 import org.visab.newgui.settings.view.SessionTimeoutEditView;
 import org.visab.util.StreamUtil;
+import org.visab.workspace.ConfigManager;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.IntegerProperty;
