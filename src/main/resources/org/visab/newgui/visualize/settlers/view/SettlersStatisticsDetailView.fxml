@@ -9,6 +9,8 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.chart.NumberAxis?>
 
 <GridPane prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView">
   <columnConstraints>
@@ -24,18 +26,20 @@
    <children>
       <TableView fx:id="detailStatistics" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-            <TableColumn prefWidth="75.0" text="C3" />
+          <TableColumn text="Measure">
+            <cellValueFactory>
+                <PropertyValueFactory property="rowDescription" />
+            </cellValueFactory>
+          </TableColumn>
         </columns>
       </TableView>
       <Button fx:id="chartButton" mnemonicParsing="false" text="show in chart" GridPane.columnIndex="1" />
-      <LineChart fx:id="detailedPlayerStats" GridPane.columnIndex="2">
+      <LineChart fx:id="detailedPlayerStatistics" title="Comparison Graph" GridPane.columnIndex="2">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <NumberAxis label="Round" side="bottom" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis label="" side="LEFT" />
         </yAxis>
       </LineChart>
    </children>

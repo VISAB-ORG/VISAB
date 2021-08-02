@@ -60,7 +60,7 @@
             </bottom>
         </BorderPane>
         
-        <Button fx:id="viewDetailsButton" onAction="#handleViewDetailsButtonAction" text="View Detail" />
+        <Button fx:id="viewDetailsButton" text="View Detail" />
         <LineChart fx:id="playerStats" title="Comparison Graph" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <xAxis>
                 <NumberAxis label="Round" side="bottom" />
