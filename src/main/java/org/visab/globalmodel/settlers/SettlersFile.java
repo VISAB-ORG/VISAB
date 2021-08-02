@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.BasicVISABFile;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.Rectangle;
-import org.visab.workspace.config.ConfigManager;
 
 /**
  * Represents the Settlers VISAB file containing that contains all information
@@ -26,7 +26,7 @@ public class SettlersFile extends BasicVISABFile {
     private String winner;
 
     public SettlersFile() {
-        super(ConfigManager.SETTLERS_OF_CATAN_STRING, "2.0");
+        super(GameName.SETTLERS_OF_CATAN, "2.0");
     }
 
     public Map<String, String> getPlayerColors() {

@@ -1,7 +1,7 @@
 package org.visab.workspace;
 
 /**
- * A basic repository class.
+ * An instantiable repository base implementation.
  */
 public class BasicRepository extends RepositoryBase {
 

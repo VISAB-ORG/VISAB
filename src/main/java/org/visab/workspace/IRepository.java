@@ -4,8 +4,8 @@ import java.io.File;
 
 /**
  * The IRepository interface that all Repositories have to implement.
- * Repositories are used for IO operations, so that we dont have to spread those
- * accross the project.
+ * Repositories are used for I/O operations, so that we dont have to spread
+ * those accross the project.
  */
 public interface IRepository {
 

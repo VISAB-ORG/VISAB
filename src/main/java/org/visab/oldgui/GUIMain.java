@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
 import org.visab.workspace.DatabaseManager;
-import org.visab.workspace.config.ConfigManager;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;

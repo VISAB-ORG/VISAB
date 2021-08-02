@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.BasicVISABFile;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.Rectangle;
-import org.visab.workspace.config.ConfigManager;
 
 /**
  * Represents the CBRShooter VISAB file containing that contains all information necesarry
@@ -27,7 +27,7 @@ public class CBRShooterFile extends BasicVISABFile {
     private String winner;
 
     public CBRShooterFile() {
-        super(ConfigManager.CBR_SHOOTER_STRING, "2.0");
+        super(GameName.CBR_SHOOTER, "2.0");
     }
 
     public String getWinner() {

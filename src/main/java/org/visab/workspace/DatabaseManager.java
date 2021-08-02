@@ -12,26 +12,37 @@ import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.util.NiceString;
 import org.visab.util.VISABUtil;
-import org.visab.workspace.config.ConfigManager;
 
 /**
- * The DatabaseManager that is used for deleting/adding/removing VISAB files.
- * TODO: Check if file name already exists in list of saved files.
+ * The DatabaseManager that is used for deleting, adding, and removing VISAB
+ * files.
  */
 public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
 
-    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH,
-            ConfigManager.DATA_PATH_APPENDIX);
+    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
+
+    public static final String DATA_PATH_SUFFIX = "database";
+
+    public static final String DATABASE_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, DATA_PATH_SUFFIX);
 
     private static DatabaseRepository repo = new DatabaseRepository(DATABASE_PATH);
 
-    /**
-     * A list of file information for files that were recently saved via
-     * SessionListeners or Database View.
-     */
     private List<SavedFileInformation> savedFiles = new ArrayList<>();
 
-    private static Logger logger = LogManager.getLogger(DatabaseManager.class);
+    /**
+     * The repository that is internally used for the I/O operations.
+     */
+    public DatabaseRepository getRepository() {
+        return repo;
+    }
+
+    /**
+     * A list of file information for files that were recently saved via
+     * SessionListeners or FileExplorer view.
+     */
+    public List<SavedFileInformation> getSavedFiles() {
+        return savedFiles;
+    }
 
     /**
      * Loads a file that was saved by a session listener during the current runtime.
@@ -47,14 +58,22 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
                 return file;
             }
         }
+        
         return null;
     }
 
+    /**
+     * Gets the name of a file that was saved under the given sessionId.
+     * 
+     * @param sessionId The sessionId to get the file for
+     * @return The saved files name if one was saved, "" else
+     */
     public String getSessionFileName(UUID sessionId) {
         for (var saveInfo : savedFiles) {
             if (saveInfo.isSavedByListener() && saveInfo.getSessionId().equals(sessionId))
                 return saveInfo.getFileName();
         }
+
         return "";
     }
 
@@ -76,12 +95,8 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         return success;
     }
 
-    public DatabaseRepository getRepository() {
-        return repo;
-    }
-
     /**
-     * Loads a VISABFile from the database.
+     * Loads a VISAB file from the database.
      * 
      * @param fileName The name of the file
      * @param game     The game of the file
@@ -98,6 +113,12 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
         return file;
     }
 
+    /**
+     * Loads a VISAB file from the given path.
+     * 
+     * @param absolutePath The path to the file
+     * @return The file if successfully loaded, null else
+     */
     public IVISABFile loadFile(String absolutePath) {
         var file = repo.loadBasicVISABFile(absolutePath);
 
@@ -112,7 +133,7 @@ public class DatabaseManager implements IPublisher<VISABFileSavedEvent> {
 
     /**
      * Saves a VISAB file. When calling from SessionListeners, use the overload
-     * containing the sessionId as 3rd parameter.
+     * containing the sessionId as 3rd parameter instead.
      * 
      * @param file     The file to save
      * @param fileName The name of the file

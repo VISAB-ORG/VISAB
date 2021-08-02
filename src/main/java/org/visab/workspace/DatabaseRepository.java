@@ -7,7 +7,6 @@ import org.visab.util.JSONConvert;
 
 /**
  * A repository for saving and loading VISAB files from VISABs database.
- *
  */
 public class DatabaseRepository extends RepositoryBase {
 

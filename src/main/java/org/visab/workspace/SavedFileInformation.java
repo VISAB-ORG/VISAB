@@ -2,6 +2,9 @@ package org.visab.workspace;
 
 import java.util.UUID;
 
+/**
+ * Represents the information when a file was saved.
+ */
 public class SavedFileInformation {
 
     private String fileName;
