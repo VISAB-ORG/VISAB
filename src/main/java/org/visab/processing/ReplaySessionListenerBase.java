@@ -44,6 +44,11 @@ public abstract class ReplaySessionListenerBase<TMeta extends IMetaInformation, 
         subscribers.add(mapImageSubscriber);
     }
 
-    public abstract void processImage(TImage image);
+    /**
+     * This is called when images are received.
+     * 
+     * @param image The images that were received
+     */
+    public abstract void processImage(TImage images);
 
 }

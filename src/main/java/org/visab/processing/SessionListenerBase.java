@@ -23,10 +23,8 @@ import org.visab.workspace.Workspace;
  * The base SessionListener class, that should be implemented by all session
  * listeners.
  * 
- * @param <TStatistics> The statistics type, that will be processed by the
+ * @param <TStatistics> The statistics type that will be processed by the
  *                      listener
- * @author moritz
- *
  */
 public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStatistics extends IStatistics>
         implements ISessionListener {
@@ -80,6 +78,11 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     }
 
     /**
+     * The logger.
+     */
+    protected Logger logger = LogManager.getLogger(this.getClass());
+
+    /**
      * The game of the listener.
      */
     protected String game;
@@ -95,15 +98,13 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     protected LocalTime lastReceived = LocalTime.now();
 
     /**
-     * The logger.
-     */
-    protected Logger logger = LogManager.getLogger(this.getClass());
-
-    /**
      * The DatabaseManager used for saving files.
      */
     protected DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
 
+    /**
+     * The sessionId of the corresponding transmission session.
+     */
     protected UUID sessionId;
 
     /**
