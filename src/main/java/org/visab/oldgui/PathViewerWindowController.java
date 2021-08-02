@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.newgui.ResourceHelper;
 import org.visab.oldgui.model.TableEntryCBRBot;
 import org.visab.oldgui.model.TableEntryScriptBot;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.DatabaseManager;
-import org.visab.workspace.config.ConfigManager;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -163,17 +163,17 @@ public class PathViewerWindowController {
     private Button refresh;
 
     // Initializing additional varibales
-    private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
+    private Image imageScriptBot = new Image(ResourceHelper.IMAGE_PATH + "scriptBot.png");
 
-    private Image deathImage = new Image(ConfigManager.IMAGE_PATH + "deathScript.png");
+    private Image deathImage = new Image(ResourceHelper.IMAGE_PATH + "deathScript.png");
 
-    private Image deathImageCBR = new Image(ConfigManager.IMAGE_PATH + "deadCBR.png");
+    private Image deathImageCBR = new Image(ResourceHelper.IMAGE_PATH + "deadCBR.png");
 
-    private Image imageCbrBot = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+    private Image imageCbrBot = new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
 
-    private Image changePlanCBRImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
+    private Image changePlanCBRImage = new Image(ResourceHelper.IMAGE_PATH + "changePlan.png");
 
-    private Image changePlanScriptImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
+    private Image changePlanScriptImage = new Image(ResourceHelper.IMAGE_PATH + "changePlan.png");
 
     private ImageView cbrbotImageView = new ImageView(imageCbrBot);
 
@@ -366,9 +366,9 @@ public class PathViewerWindowController {
         frameLabel.setText("Selected Frame: " + 0);
         sleepTimer = 1000;
         frameSlider.setValue(0);
-        playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
+        playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
         playImageView = new ImageView(playImage);
-        pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
+        pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
         pauseImageView = new ImageView(pauseImage);
         playPauseButton.setVisible(true);
         playPauseButton.setGraphic(playImageView);
