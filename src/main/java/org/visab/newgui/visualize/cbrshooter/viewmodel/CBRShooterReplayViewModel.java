@@ -119,7 +119,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // Update loop eventually needs to be stopped on stage close
         scope.registerOnStageClosing(stage -> {
-            updateLoop.interrupt();
+            if (updateLoop != null) {
+                updateLoop.interrupt();
+            }
         });
 
         // Default update interval of 0.1 seconds
