@@ -24,6 +24,12 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
      */
     void addViewModel(ILiveViewModel<TStatistics> viewModel);
 
+    /**
+     * Removes a ViewModel from the list of ViewModels that will be informed of
+     * added statistics.
+     * 
+     * @param viewModel The ViewModel to remove
+     */
     void removeViewModel(ILiveViewModel<TStatistics> viewModel);
 
     /**
@@ -41,12 +47,18 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
     /**
      * Notifies the observing ViewModels that statistics were added.
      * 
+     * Serves as a reminder that this functionality should be implemented, but
+     * should never be called outside the classes themselves.
+     * 
      * @param addedStatistics The added statistics
      */
     void notifyStatisticsAdded(TStatistics addedStatistics);
 
     /**
      * Notifies the observing ViewModels that the session was closed.
+     * 
+     * Serves as a reminder that this functionality should be implemented, but
+     * should never be called outside the classes themselves.
      */
     void notifySessionClosed();
 

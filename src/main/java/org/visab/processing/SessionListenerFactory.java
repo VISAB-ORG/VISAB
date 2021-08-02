@@ -14,18 +14,11 @@ import org.visab.util.StringFormat;
 /**
  * The SessionListenerFactory that will instantiate new SessionListeners
  * whenever a new transmission session is opened at the WebApi.
- *
- * @author moritz
- *
  */
 public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent> {
 
-    // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SessionListenerFactory.class);
 
-    /**
-     * Whether the factory is started
-     */
     private boolean isStarted;
 
     public SessionListenerFactory() {
@@ -33,8 +26,13 @@ public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent
     }
 
     /**
-     * Instantiates a new listener based on the given game and adds it to the
-     * SessionListenerAdministration.
+     * Instantiates a new listener based on the given game, adds it to the
+     * SessionListenerAdministration and finally initializes it with the given meta
+     * information.
+     * 
+     * @param sessionId       The sessionId that the listener will listen to
+     * @param metaInformation The meta information using which the session was
+     *                        opened
      */
     public void addListener(UUID sessionId, IMetaInformation metaInformation) {
         if (metaInformation == null || metaInformation.getGame() == null || metaInformation.getGame().isBlank()) {
@@ -45,6 +43,7 @@ public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent
 
         var newListener = DynamicInstatiator.instantiateSessionListener(metaInformation.getGame(), sessionId);
         SessionListenerAdministration.addListener(newListener);
+        
         // Notify the listener that the session started
         newListener.initialize(metaInformation);
     }
@@ -55,7 +54,7 @@ public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent
     }
 
     /**
-     * Starts the Factory by subscribing it to the EventBus
+     * Starts the Factory by subscribing it to the EventBus.
      */
     public void startFactory() {
         if (!isStarted) {
@@ -66,7 +65,7 @@ public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent
     }
 
     /**
-     * Stops the factory by unsubscribing it from the eventbus
+     * Stops the factory by unsubscribing it from the eventbus.
      */
     public void stopFactory() {
         if (isStarted) {
