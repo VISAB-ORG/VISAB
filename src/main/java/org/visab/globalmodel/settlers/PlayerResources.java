@@ -2,6 +2,9 @@ package org.visab.globalmodel.settlers;
 
 import org.visab.util.StringFormat;
 
+/**
+ * Represents a snapshot of the resources availible.
+ */
 public class PlayerResources {
 
     private int sheep;

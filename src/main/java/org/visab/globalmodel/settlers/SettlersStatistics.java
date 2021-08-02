@@ -5,8 +5,8 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 
 /**
- * The SettlersStatistics class, representing the information given by the Unity
- * Settlers of Catan Game.
+ * The SettlersStatistics class, representing the information given per turn by
+ * the Unity Settlers of Catan Game. The visualization is based mostly on this.
  *
  * @author leonr
  *

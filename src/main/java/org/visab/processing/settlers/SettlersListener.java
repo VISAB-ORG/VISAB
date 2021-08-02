@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.settlers.SettlersFile;
-import org.visab.globalmodel.settlers.SettlersMapImage;
+import org.visab.globalmodel.settlers.SettlersImages;
 import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
@@ -26,7 +26,7 @@ import org.visab.workspace.config.ConfigManager;
  *
  */
 public class SettlersListener
-        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
+        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersImages>
         implements ILiveViewable<SettlersStatistics> {
 
     private SettlersFile file;
@@ -92,7 +92,7 @@ public class SettlersListener
     }
 
     @Override
-    public void processImage(SettlersMapImage mapImage) {
+    public void processImage(SettlersImages mapImage) {
         // TODO Auto-generated method stub
     }
 
