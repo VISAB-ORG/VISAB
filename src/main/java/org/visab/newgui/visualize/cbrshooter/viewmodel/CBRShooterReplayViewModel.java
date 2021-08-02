@@ -499,7 +499,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             int pathLength = ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements()
                     .size();
             if (selectedFrame < pathLength) {
-                for (int i = pathLength - 1; i > selectedFrame; i--) {
+                for (int i = pathLength - 1; i >= selectedFrame; i--) {
                     ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements().remove(i);
                 }
             }
@@ -611,7 +611,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                     updateCurrentGameStatsByFrame();
                                     updatePlayerTableByFrame();
                                     updateMapElements();
-                                    selectedFrame++;
+                                    setSelectedFrame(selectedFrame + 1).execute();
                                     frameSliderValueProperty.set(selectedFrame);
                                 }
                             });
@@ -635,7 +635,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command pauseData() {
         pauseData = runnableCommand(() -> {
-            updateLoop.interrupt();
+            if (updateLoop != null) {
+                updateLoop.interrupt();
+            }
         });
         return pauseData;
     }
@@ -649,17 +651,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
-            // Prevent selected frame to be out of bound when play is running and the
-            // frameslider gets shifted unfortunately
-            if (frame > data.size()) {
-                selectedFrame = frame - 1;
-            } else {
-                selectedFrame = frame;
+            // While loop forces to update in iterations of one even for big files
+            while (frame > selectedFrame) {
+                if (frame == data.size() - 1) {
+                    break;
+                }
+                selectedFrame = Math.min(selectedFrame + 1, data.size() - 1);
+                clearPathsBySelectedFrame();
+                updateCurrentGameStatsByFrame();
+                updatePlayerTableByFrame();
+                updateMapElements();
             }
-            clearPathsBySelectedFrame();
-            updateCurrentGameStatsByFrame();
-            updatePlayerTableByFrame();
-            updateMapElements();
+
         });
         return setSelectedFrame;
     }
@@ -791,7 +794,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         data.add(newStatistics);
 
         if (statisticsReceived % 20 == 0)
-            frameSliderMaxProperty.set(data.size());
+            frameSliderMaxProperty.set(data.size() - 1);
         // TODO: If current frame is last, advance.
     }
 
