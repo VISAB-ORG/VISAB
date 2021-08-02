@@ -1,5 +1,8 @@
 package org.visab.util;
 
+/**
+ * Helper class for getting the OS VISAB is running on.
+ */
 public final class OSUtil {
 
     public enum OS {
@@ -26,7 +29,7 @@ public final class OSUtil {
                 os = OS.SOLARIS;
             }
         }
-        
+
         return os;
     }
 

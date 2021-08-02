@@ -115,12 +115,12 @@ public class ConfigManager {
      * Loads the settings from the file system using the repository.;
      */
     private void loadSettings() {
-        UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        UserSettings loadedSettings = repo.loadSettings(SETTINGS_PATH);
         if (loadedSettings == null) {
             logger.info("User settings do not exist yet, loading defaults.");
             String defaultSettings = ResourceHelper.readResourceContents(DEFAULT_SETTINGS_PATH);
             repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
-            loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+            loadedSettings = repo.loadSettings(SETTINGS_PATH);
         }
 
         settings = loadedSettings;
@@ -139,7 +139,7 @@ public class ConfigManager {
     public void restoreDefaultSettings() {
         String defaultSettings = ResourceHelper.readResourceContents(DEFAULT_SETTINGS_PATH);
         repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
-        UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
+        UserSettings loadedSettings = repo.loadSettings(SETTINGS_PATH);
         this.settings = loadedSettings;
     }
 
