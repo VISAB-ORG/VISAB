@@ -7,15 +7,12 @@ import org.visab.newgui.sessionoverview.viewmodel.NewSessionOverviewViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
-
-    private Thread updateLoop;
 
     @FXML
     private Label webApiAdressLabel;
@@ -59,35 +56,11 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
         sessionsTimeoutedLabel.textProperty().bindBidirectional(viewModel.getTimeoutedSessionsProperty());
         sessionsCanceledLabel.textProperty().bindBidirectional(viewModel.getCanceledSessionsProperty());
 
-        startUpdateLoop();
-    }
-
-    public void startUpdateLoop() {
-        updateLoop = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (!this.isInterrupted()) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                viewModel.getSortedSessionGrid(scrollPane);
-                            }
-                        });
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                }
-            }
-        };
-        updateLoop.start();
+        viewModel.startUpdateLoop(scrollPane);
     }
 
     public void stopUpdateLoop() {
-        updateLoop.interrupt();
+        viewModel.stopUpdateLoop();
     }
 
 }
