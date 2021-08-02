@@ -74,7 +74,7 @@ public class SessionController extends HTTPControllerBase {
             return getBadRequestResponse(responseMessage);
         }
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(metaInformation.getGame())) {
+        if (!Workspace.getInstance().getConfigManager().isGameAllowed(metaInformation.getGame())) {
             var responseMessage = "Given game name '" + metaInformation.getGame()
                     + "' is not supported, cannot open session.";
             logger.error(responseMessage);

@@ -42,7 +42,7 @@ public class ImageController extends HTTPControllerBase {
         if (game == "")
             return getBadRequestResponse("No game given!");
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
+        if (!Workspace.getInstance().getConfigManager().isGameAllowed(game))
             return getBadRequestResponse("Game is not supported!");
 
         if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId))

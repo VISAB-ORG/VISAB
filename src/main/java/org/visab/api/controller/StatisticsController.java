@@ -44,7 +44,7 @@ public class StatisticsController extends HTTPControllerBase {
         if (game == "")
             return getBadRequestResponse("No game given in headers!");
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
+        if (!Workspace.getInstance().getConfigManager().isGameAllowed(game))
             return getBadRequestResponse("Game is not supported!");
 
         var json = WebAPIHelper.extractJsonBody(httpSession);
