@@ -19,6 +19,7 @@ public class PlayerInformation {
     private List<Vector2> streetPositions;
     private int cityCount;
     private List<Vector2> cityPositions;
+    
     private PlayerResources resources;
     private boolean hasLongestRoad;
     private boolean isAi;

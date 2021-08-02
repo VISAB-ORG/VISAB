@@ -1,5 +1,9 @@
 package org.visab.globalmodel;
 
+/**
+ * A rectangle is defined by its width, height and its top left corner anchor
+ * point.
+ */
 public class Rectangle {
 
     private Vector2 topLeftAnchorPoint;
