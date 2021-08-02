@@ -28,6 +28,12 @@ public final class JSONConvert {
             .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true)
             .registerModule(new JavaTimeModule());
 
+    /**
+     * As opposed to UnforgivingMapper, does NOT fail on
+     * 
+     * 1. JSON contains more properties than there are setters in the POJO. 2. POJO
+     * contains more setters, than there are properties in the JSON.
+     */
     public static final ObjectMapper ForgivingMapper = new ObjectMapper()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
             .enable(SerializationFeature.INDENT_OUTPUT)
@@ -36,7 +42,7 @@ public final class JSONConvert {
             .registerModule(new JavaTimeModule());
 
     /**
-     * Deserializes a Json string into an object of given class type.
+     * Deserializes a json string into an object of given class type.
      *
      * @param <T>      The type of the class to deserialize into
      * @param json     The json to deserialize
@@ -70,6 +76,12 @@ public final class JSONConvert {
         }
     }
 
+    /**
+     * Deserializes a json string of unknown format.
+     * 
+     * @param json The json string
+     * @return The JsonNode created from the json
+     */
     public static final JsonNode deserializeJsonUnknown(String json) {
         try {
             return ForgivingMapper.readTree(json);
