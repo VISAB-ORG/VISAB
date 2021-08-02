@@ -10,9 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
 import org.visab.util.JSONConvert;
 import org.visab.util.StreamUtil;
-import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.ConfigRepository;
+import org.visab.workspace.UserSettings;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.model.Mapping;
 

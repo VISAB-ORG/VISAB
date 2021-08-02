@@ -4,7 +4,6 @@ import java.io.File;
 
 
 import org.visab.util.JSONConvert;
-import org.visab.util.UserSettings;
 
 public class ConfigRepository extends RepositoryBase {
 
