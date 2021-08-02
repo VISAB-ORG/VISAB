@@ -1,9 +1,11 @@
 package org.visab.newgui;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.globalmodel.GameName;
+import org.visab.main.Main;
 
 /**
  * Class containing constants and helper methods for obtaining resources used
@@ -50,6 +52,27 @@ public final class ResourceHelper {
      */
     public static final String getShooterBaseIconById(String iconId) {
         return shooterBaseIconMap.get(iconId);
+    }
+
+    /**
+     * Reads the bytes for a resource at a given path and returns a the byte array
+     * as a UTF-8 encoded string.
+     * 
+     * @param path The path to the resource
+     * @return The UTF-8 encoded string
+     */
+    public static final String readResourceContents(String path) {
+        if (!path.startsWith("/"))
+            path = "/" + path;
+
+        byte[] data = null;
+        try (var stream = Main.class.getResourceAsStream(path)) {
+            data = stream.readAllBytes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new String(data, StandardCharsets.UTF_8);
     }
 
 }

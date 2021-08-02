@@ -122,7 +122,7 @@ public class StatisticsWindowController {
 
         boolean externalFileAccepted = false;
 
-        String content = VISABUtil.readFile(DatabaseManager.DATABASE_PATH + fileNameFromComboBox);
+        String content = MainWindowController.readFile(DatabaseManager.DATABASE_PATH + fileNameFromComboBox);
 
         if (fileNameFromComboBox == null) {
             // Set InfoLabel
@@ -137,8 +137,8 @@ public class StatisticsWindowController {
             }
 
         } else {
-            for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-                if (fileNameFromComboBox.endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
+            for (int i = 0; i < MainWindowController.getAcceptedExternalDataEndings().length; i++) {
+                if (fileNameFromComboBox.endsWith(MainWindowController.getAcceptedExternalDataEndings()[i])) {
                     externalFileAccepted = true;
                 }
             }
@@ -153,7 +153,7 @@ public class StatisticsWindowController {
 
     public void updatePage() {
         System.out.println("Updating page.");
-        comboBox.getItems().addAll(VISABUtil.loadFilesFromDatabase());
+        comboBox.getItems().addAll(PathViewerWindowController.loadFilesFromDatabase());
         comboBox.getSelectionModel().selectFirst();
     }
 
@@ -220,9 +220,9 @@ public class StatisticsWindowController {
     @SuppressWarnings("unchecked")
     private void createTableFromContentExternal(String content) {
 
-        VISABUtil.clearTable(statisticsTable);
+        PathViewerWindowController.clearTable(statisticsTable);
         // Convert
-        List<List<String>> rawData = VISABUtil.convertStringToList(content);
+        List<List<String>> rawData = PathViewerWindowController.convertStringToList(content);
 
         // Create Table
         @SuppressWarnings("rawtypes")
@@ -251,7 +251,7 @@ public class StatisticsWindowController {
     @SuppressWarnings("unchecked")
     private void createTableVisabStatistics() {
 
-        VISABUtil.clearTable(statisticsTable);
+        PathViewerWindowController.clearTable(statisticsTable);
 
         // Create Table
         @SuppressWarnings("rawtypes")
@@ -374,7 +374,7 @@ public class StatisticsWindowController {
         // Analoge Listen erstellen (s.o.)
 
         // Convert
-        List<List<String>> rawData = VISABUtil.convertStringToList(content);
+        List<List<String>> rawData = PathViewerWindowController.convertStringToList(content);
 
         int frameCount = 0;
 
@@ -610,7 +610,7 @@ public class StatisticsWindowController {
 
         planChartCBRBot.setTitle("Plan Chart CBR-Bot");
 
-        int sum = VISABUtil.sumIntegers(calculatedCounters.get(0), calculatedCounters.get(1), calculatedCounters.get(2),
+        int sum = sumIntegers(calculatedCounters.get(0), calculatedCounters.get(1), calculatedCounters.get(2),
                 calculatedCounters.get(3), calculatedCounters.get(4), calculatedCounters.get(5),
                 calculatedCounters.get(6), calculatedCounters.get(7));
 
@@ -642,9 +642,9 @@ public class StatisticsWindowController {
 
         planChartScriptBot.setTitle("Plan Chart Script Bot");
 
-        int sum = VISABUtil.sumIntegers(calculatedCounters.get(8), calculatedCounters.get(9),
-                calculatedCounters.get(10), calculatedCounters.get(11), calculatedCounters.get(12),
-                calculatedCounters.get(13), calculatedCounters.get(14));
+        int sum = sumIntegers(calculatedCounters.get(8), calculatedCounters.get(9), calculatedCounters.get(10),
+                calculatedCounters.get(11), calculatedCounters.get(12), calculatedCounters.get(13),
+                calculatedCounters.get(14));
 
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Total Number of Executions " + sum);
@@ -658,6 +658,14 @@ public class StatisticsWindowController {
 
         planChartScriptBot.getData().addAll(data);
 
+    }
+
+    public static int sumIntegers(int... numbers) {
+
+        var result = 0;
+        for (int number : numbers)
+            result += number;
+        return result;
     }
 
 }

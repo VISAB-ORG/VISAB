@@ -19,8 +19,8 @@ import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
+import org.visab.util.OSUtil;
 import org.visab.util.StreamUtil;
-import org.visab.util.VISABUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
@@ -364,7 +364,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
             showInExplorerCommand = runnableCommand(() -> {
                 var selectedFile = getSelectedFile();
                 try {
-                    switch (VISABUtil.getOS()) {
+                    switch (OSUtil.getOS()) {
                     case WINDOWS:
                         var osCommand = "explorer.exe " + baseDirPath;
                         if (selectedFile != null)

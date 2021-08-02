@@ -14,6 +14,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.newgui.ResourceHelper;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -303,7 +304,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         for (Player playerInfo : playerInfos) {
             // Unity Game provides Hex code which has to be translated to a JavaFx color
-            Color playerColor = VISABUtil.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
+            Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
 
             // Get base icons from the game manager which need to be recolored
             // @TODO: Use sent player images by unity
@@ -319,8 +320,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Image playerDeath = new Image(ResourceHelper.getShooterBaseIconById("playerDeath"));
 
             // Recolor images
-            playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
-            playerDeath = VISABUtil.recolorImage(playerDeath, playerColor);
+            playerPlanChange = UiHelper.recolorImage(playerPlanChange, playerColor);
+            playerDeath = UiHelper.recolorImage(playerDeath, playerColor);
 
             PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, playerColor);
             playerVisualsMap.put(playerInfo.getName(), playerVisuals);
@@ -504,7 +505,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Map should always be contained in the elements exactly as it is
         // ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH +
         // "fps_map.png"));
-        ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
+        ImageView map = UiHelper.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
 
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());

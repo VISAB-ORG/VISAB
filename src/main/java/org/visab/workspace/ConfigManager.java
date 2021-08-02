@@ -8,6 +8,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
+import org.visab.newgui.ResourceHelper;
 import org.visab.util.JSONConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;
@@ -60,7 +61,7 @@ public class ConfigManager {
      * valid.
      */
     private void loadMappings() {
-        var json = VISABUtil.readResourceContents(MAPPING_PATH);
+        var json = ResourceHelper.readResourceContents(MAPPING_PATH);
         var mappings = JSONConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
         }, JSONConvert.ForgivingMapper);
 
@@ -117,7 +118,7 @@ public class ConfigManager {
         UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         if (loadedSettings == null) {
             logger.info("User settings do not exist yet, loading defaults.");
-            String defaultSettings = VISABUtil.readResourceContents(DEFAULT_SETTINGS_PATH);
+            String defaultSettings = ResourceHelper.readResourceContents(DEFAULT_SETTINGS_PATH);
             repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
             loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         }
@@ -136,7 +137,7 @@ public class ConfigManager {
      * Restores the default settings to the file system using the repository.
      */
     public void restoreDefaultSettings() {
-        String defaultSettings = VISABUtil.readResourceContents(DEFAULT_SETTINGS_PATH);
+        String defaultSettings = ResourceHelper.readResourceContents(DEFAULT_SETTINGS_PATH);
         repo.writeToFileRelative(SETTINGS_PATH, defaultSettings);
         UserSettings loadedSettings = repo.loadSettingsObject(SETTINGS_PATH);
         this.settings = loadedSettings;
