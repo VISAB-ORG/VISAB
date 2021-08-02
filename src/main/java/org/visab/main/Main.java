@@ -11,8 +11,8 @@ import org.visab.newgui.AppMain;
 import javafx.application.Application;
 
 /**
- * Main class of the VISAB application that is responsible for parsing the
- * command line arguments and activate the respective mode that shall be
+ * Entry point of the VISAB application that is responsible for parsing the
+ * command line arguments and activating the respective mode that shall be
  * started.
  * 
  * @author leonr
