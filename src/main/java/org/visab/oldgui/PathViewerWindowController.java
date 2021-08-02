@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.gui.model.TableEntryCBRBot;
-import org.visab.gui.model.TableEntryScriptBot;
+import org.visab.oldgui.model.TableEntryCBRBot;
+import org.visab.oldgui.model.TableEntryScriptBot;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.config.ConfigManager;

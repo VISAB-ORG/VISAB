@@ -5,4 +5,4 @@
  * modification in the future.
  * </p>
  */
-package org.visab.gui.model;
+package org.visab.oldgui.model;

@@ -1,4 +1,4 @@
-package org.visab.gui.model;
+package org.visab.oldgui.model;
 
 /**
  * POJO for a single Table entry of script bot statistics in the PathViewerView.

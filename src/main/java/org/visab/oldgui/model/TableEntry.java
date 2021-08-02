@@ -1,4 +1,4 @@
-package org.visab.gui.model;
+package org.visab.oldgui.model;
 
 /**
  * Base TableEntry used for generically displaying visab files in the
