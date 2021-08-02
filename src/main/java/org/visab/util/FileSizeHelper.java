@@ -23,7 +23,7 @@ public final class FileSizeHelper {
      * @param path The path for which to get the size
      * @return The size on the drive in bytes
      */
-    public static long size(Path path) {
+    public static final long size(Path path) {
 
         final AtomicLong size = new AtomicLong(0);
 
