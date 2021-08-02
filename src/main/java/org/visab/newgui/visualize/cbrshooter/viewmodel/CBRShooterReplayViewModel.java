@@ -116,6 +116,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
+
+        // Update loop eventually needs to be stopped on stage close
+        scope.registerOnStageClosing(stage -> {
+            if (updateLoop != null) {
+                updateLoop.interrupt();
+            }
+        });
+
         // Default update interval of 0.1 seconds
         updateInterval = 100;
         selectedFrame = 0;
@@ -591,9 +599,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             updateLoop = new Thread() {
                 @Override
                 public void run() {
+
                     // Iterate over frames and constantly update data
                     for (int i = selectedFrame; i < data.size(); i++) {
                         if (!this.isInterrupted()) {
+                            System.out.println(
+                                    "Updating data in replay view, frame: " + i + ", data size: " + (data.size() - 1));
                             // Always hold the update UI information
                             // This way is necessary, because UI changes are not allowed from another thread
                             Platform.runLater(new Runnable() {
@@ -613,11 +624,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                                 // Exception is thrown when the stop button interrupts this thread
                                 Thread.currentThread().interrupt();
                             }
+                        } else {
+                            break;
                         }
                     }
                 }
             };
 
+            System.out.println("Starting update loop!");
             updateLoop.start();
         });
         return playData;
@@ -625,7 +639,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command pauseData() {
         pauseData = runnableCommand(() -> {
-            logger.debug("Interrupting match data update loop.");
+            System.out.println("Interrupting match data update loop.");
             updateLoop.interrupt();
         });
         return pauseData;
