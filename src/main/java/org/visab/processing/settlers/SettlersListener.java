@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersImages;
@@ -15,7 +16,6 @@ import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.NiceString;
-import org.visab.workspace.config.ConfigManager;
 
 /**
  * The SettlersListener class, that is responsible for listening to information
@@ -34,7 +34,7 @@ public class SettlersListener
     private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
     public SettlersListener(UUID sessionId) {
-        super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
+        super(GameName.SETTLERS_OF_CATAN, sessionId);
     }
 
     @Override

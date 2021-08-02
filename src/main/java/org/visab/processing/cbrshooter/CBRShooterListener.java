@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterImages;
@@ -15,7 +16,6 @@ import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.NiceString;
-import org.visab.workspace.config.ConfigManager;
 
 /**
  * The CBRShooterListener class, that is responsible for listening to
@@ -31,7 +31,7 @@ public class CBRShooterListener
     private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
-        super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
+        super(GameName.CBR_SHOOTER, sessionId);
     }
 
     @Override
