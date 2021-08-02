@@ -42,11 +42,6 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
     }
-    
-    @FXML
-    private void handleViewDetailsButtonAction() {
-        viewModel.openDetailedStatisticsViewCommand().execute();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

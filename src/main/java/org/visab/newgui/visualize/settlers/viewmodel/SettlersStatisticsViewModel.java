@@ -16,7 +16,6 @@ import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltCompar
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
-import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -57,18 +56,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private ComparisonRowBase<?> graphComparisonRow;
 
     private StringProperty yLabel = new SimpleStringProperty();
-    
-    private Command openDetailedStatisticsViewCommand;
-    
-    public Command openDetailedStatisticsViewCommand() {
-        if (openDetailedStatisticsViewCommand == null) {
-            openDetailedStatisticsViewCommand = runnableCommand(() -> {
-               dialogHelper.showView(SettlersStatisticsDetailView.class, "Detail Player Stats", true, this);
-            });
-        }
-        
-        return openDetailedStatisticsViewCommand;
-    }
+
+    private ObservableList<ComparisonRowBase<?>> detailedStatistics;
 
     public StringProperty yLabelProperty() {
         return yLabel;
@@ -146,6 +135,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         comparisonStatistics.add(new ResourcesSpentComparisonRow());
         comparisonStatistics.add(new VictoryPointsComparisonRow());
 
+        // Initialize detailed statistics
+        detailedStatistics = FXCollections.observableArrayList();
+        detailedStatistics.add(new VictoryPointsComparisonRow());
+
         // Initialize plan usages
         planUsages = new HashMap<>();
         planOccuranceHelperMap = new HashMap<>();
@@ -204,6 +197,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
         return comparisonStatistics;
+    }
+
+    public ObservableList<ComparisonRowBase<?>> getDetailedStatistics() {
+        return detailedStatistics;
     }
 
     public ObjectProperty<ComparisonRowBase<?>> selectedRowProperty() {
