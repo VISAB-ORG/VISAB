@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.ViewTuple;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -157,6 +158,27 @@ public class DialogHelper {
         return stage;
     }
 
+    /**
+     * TODO: Add parameters for blocking or not blocking etc. Note: same method
+     * existent in DynamicViewLoader.
+     * 
+     * @param viewTuple
+     * @param title
+     */
+    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title,
+            GenericScope scope, double minHeight, double minWidth) {
+        // TODO: Get the style here
+        var parent = viewTuple.getView();
+        var stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(new Scene(parent));
+        stage.setMinHeight(minHeight);
+        stage.setMinWidth(minWidth);
+        scope.setStage(stage);
+        stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
+        stage.show();
+    }
+
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
         getStage(viewType, title, blockWindows, null).show();
     }
@@ -171,6 +193,9 @@ public class DialogHelper {
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
             ViewModel viewModel) {
         var stage = getStage(viewType, title, blockWindows, viewModel);
+        var scope = new GenericScope();
+        stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
+        scope.setStage(stage);
         stage.show();
     }
 
@@ -183,12 +208,11 @@ public class DialogHelper {
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
             double minHeight, double minWidth) {
-        var stage = getStage(viewType, title, blockWindows, null);
+        var scope = new GenericScope();
 
-        stage.setMinWidth(minWidth);
-        stage.setMinHeight(minHeight);
-
-        stage.show();
+        // Resolve the session overview view
+        var viewTuple = FluentViewLoader.fxmlView(viewType).providedScopes(scope).load();
+        showView(viewTuple, title, scope, minHeight, minWidth);
     }
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
