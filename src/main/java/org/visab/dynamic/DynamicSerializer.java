@@ -10,7 +10,7 @@ import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultImage;
 import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
@@ -30,7 +30,7 @@ public final class DynamicSerializer {
      * @return A IMetaInformation object is successful, null else
      */
     public static final IMetaInformation deserializeMetaInformation(String json) {
-        var jsonObject = JsonConvert.deserializeJsonUnknown(json);
+        var jsonObject = JSONConvert.deserializeJsonUnknown(json);
 
         var gameProperty = jsonObject.get("game");
         if (gameProperty == null)
@@ -124,7 +124,7 @@ public final class DynamicSerializer {
             return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
         } catch (Exception e) {
             e.printStackTrace();
-            return JsonConvert.deserializeJson(json, DefaultFile.class, JsonConvert.UnforgivingMapper);
+            return JSONConvert.deserializeJson(json, DefaultFile.class, JSONConvert.UnforgivingMapper);
         }
     }
 
@@ -146,7 +146,7 @@ public final class DynamicSerializer {
             } else {
                 try {
                     var concreteClass = (Class<T>) _class;
-                    instance = JsonConvert.deserializeJson(json, concreteClass, JsonConvert.UnforgivingMapper);
+                    instance = JSONConvert.deserializeJson(json, concreteClass, JSONConvert.UnforgivingMapper);
                 } catch (Exception e) {
                     logger.error(StringFormat.niceString("Failed to cast {0} to Class<T>.", className));
                 }

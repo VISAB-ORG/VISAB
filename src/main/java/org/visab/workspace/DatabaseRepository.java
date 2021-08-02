@@ -3,7 +3,7 @@ package org.visab.workspace;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.globalmodel.IVISABFile;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 
 /**
  * A repository for saving and loading VISAB files from VISABs database.
@@ -37,7 +37,7 @@ public class DatabaseRepository extends RepositoryBase {
     public BasicVISABFile loadBasicVISABFile(String filePath) {
         var json = readFileContents(filePath);
 
-        return JsonConvert.deserializeJson(json, BasicVISABFile.class, JsonConvert.ForgivingMapper);
+        return JSONConvert.deserializeJson(json, BasicVISABFile.class, JSONConvert.ForgivingMapper);
     }
 
     /**
@@ -76,7 +76,7 @@ public class DatabaseRepository extends RepositoryBase {
      * @return True if successfully saved
      */
     public boolean saveFileDB(IVISABFile visabFile, String fileName) {
-        var json = JsonConvert.serializeObject(visabFile);
+        var json = JSONConvert.serializeObject(visabFile);
 
         var fileDir = combinePath(baseDirectory, visabFile.getGame());
         createMissingDirectories(fileDir);

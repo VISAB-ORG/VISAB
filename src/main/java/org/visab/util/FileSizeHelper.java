@@ -8,12 +8,20 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class FileSizeHelper {
+/**
+ * Helper class for efficiently getting the complete size of a file or
+ * directory.
+ */
+public final class FileSizeHelper {
+
     /**
      * Attempts to calculate the size of a file or directory.
      *
      * Since the operation is non-atomic, the returned value may be inaccurate.
      * However, this method is quick and does its best.
+     * 
+     * @param path The path for which to get the size
+     * @return The size on the drive in bytes
      */
     public static long size(Path path) {
 

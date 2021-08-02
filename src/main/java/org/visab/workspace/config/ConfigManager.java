@@ -8,7 +8,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.UserSettings;
 import org.visab.util.VISABUtil;
@@ -95,8 +95,8 @@ public class ConfigManager {
      */
     private void loadMappings() {
         var json = VISABUtil.readResourceContents("/configs/classMapping.json");
-        var mappings = JsonConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
-        }, JsonConvert.ForgivingMapper);
+        var mappings = JSONConvert.deserializeJson(json, new TypeReference<List<Mapping>>() {
+        }, JSONConvert.ForgivingMapper);
 
         if (mappings == null) {
             logger.error("Failed to load mappings!");

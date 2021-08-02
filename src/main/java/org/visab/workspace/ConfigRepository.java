@@ -3,7 +3,7 @@ package org.visab.workspace;
 import java.io.File;
 
 
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 import org.visab.util.UserSettings;
 
 public class ConfigRepository extends RepositoryBase {
@@ -24,7 +24,7 @@ public class ConfigRepository extends RepositoryBase {
 
         if (settingsFile.exists()) {
             var content = readFileContents(path);
-            return JsonConvert.deserializeJson(content, UserSettings.class, JsonConvert.UnforgivingMapper);
+            return JSONConvert.deserializeJson(content, UserSettings.class, JSONConvert.UnforgivingMapper);
         } else {
             return null;
         }
@@ -32,7 +32,7 @@ public class ConfigRepository extends RepositoryBase {
     }
 
     public void saveSettings(UserSettings settingsObject, String relativeSavePath) {
-        String json = JsonConvert.serializeObject(settingsObject);
+        String json = JSONConvert.serializeObject(settingsObject);
 
         if (json != "") {
             writeToFileRelative(relativeSavePath, json);

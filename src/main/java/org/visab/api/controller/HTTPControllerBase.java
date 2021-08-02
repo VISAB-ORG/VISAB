@@ -9,7 +9,7 @@ import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.protocols.http.response.Status;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResponder;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 
 /**
  * The HTTPControllerBass class that all concrete controllers should inherit
@@ -87,7 +87,7 @@ public abstract class HTTPControllerBase implements UriResponder {
      * @return A HTTP response
      */
     protected static final Response getJsonResponse(Object o) {
-        return Response.newFixedLengthResponse(Status.OK, JSON_MIME_TYPE, JsonConvert.serializeObject(o));
+        return Response.newFixedLengthResponse(Status.OK, JSON_MIME_TYPE, JSONConvert.serializeObject(o));
     }
 
     /**

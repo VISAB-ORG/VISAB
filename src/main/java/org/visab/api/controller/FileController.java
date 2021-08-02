@@ -10,7 +10,7 @@ import org.visab.api.WebAPIHelper;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.processing.SessionListenerAdministration;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 import org.visab.util.StringFormat;
 import org.visab.workspace.Workspace;
 
@@ -52,7 +52,7 @@ public class FileController extends HTTPControllerBase {
         if (json == "")
             return getBadRequestResponse("Failed receiving file from body. Did you not put it in the body?");
 
-        var file = JsonConvert.deserializeJson(json, BasicVISABFile.class, JsonConvert.ForgivingMapper);
+        var file = JSONConvert.deserializeJson(json, BasicVISABFile.class, JSONConvert.ForgivingMapper);
         if (file == null)
             return getBadRequestResponse("The file sent did not match the VISAB format.");
 
