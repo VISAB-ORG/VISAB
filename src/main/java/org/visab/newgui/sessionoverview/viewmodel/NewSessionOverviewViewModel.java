@@ -16,11 +16,14 @@ import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.ResourceHelper;
+import org.visab.newgui.GenericScope;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
 import org.visab.workspace.Workspace;
 
+import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -37,6 +40,11 @@ import javafx.scene.layout.GridPane;
 public class NewSessionOverviewViewModel extends ViewModelBase {
 
     private int gridColSize;
+
+    private Thread updateLoop;
+
+    @InjectScope
+    GenericScope scope;
 
     private class FileSavedSubscriber implements ISubscriber<VISABFileSavedEvent> {
 
@@ -92,6 +100,11 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
+
+        scope.registerOnStageClosing(stage -> {
+            stopUpdateLoop();
+        });
+
         try {
             this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
                     + Workspace.getInstance().getConfigManager().getWebApiPort());
@@ -100,6 +113,36 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
             e.printStackTrace();
         }
 
+    }
+
+    public void startUpdateLoop(ScrollPane scrollPane) {
+        updateLoop = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (!this.isInterrupted()) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                getSortedSessionGrid(scrollPane);
+                            }
+                        });
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        };
+        updateLoop.start();
+    }
+
+    public void stopUpdateLoop() {
+        updateLoop.interrupt();
     }
 
     public Command createDummySessionsCommand(ScrollPane scrollPane) {
