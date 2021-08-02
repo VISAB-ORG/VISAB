@@ -11,7 +11,7 @@ import org.visab.globalmodel.starter.DefaultImage;
 import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.util.JSONConvert;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 /**
@@ -148,7 +148,7 @@ public final class DynamicSerializer {
                     var concreteClass = (Class<T>) _class;
                     instance = JSONConvert.deserializeJson(json, concreteClass, JSONConvert.UnforgivingMapper);
                 } catch (Exception e) {
-                    logger.error(StringFormat.niceString("Failed to cast {0} to Class<T>.", className));
+                    logger.error(NiceString.make("Failed to cast {0} to Class<T>.", className));
                 }
             }
         }

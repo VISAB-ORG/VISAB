@@ -9,7 +9,7 @@ import org.visab.eventbus.APISubscriberBase;
 import org.visab.eventbus.APIEventBus;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.globalmodel.IMetaInformation;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 
 /**
  * The SessionListenerFactory that will instantiate new SessionListeners
@@ -36,7 +36,7 @@ public class SessionListenerFactory extends APISubscriberBase<SessionOpenedEvent
      */
     public void addListener(UUID sessionId, IMetaInformation metaInformation) {
         if (metaInformation == null || metaInformation.getGame() == null || metaInformation.getGame().isBlank()) {
-            logger.error(StringFormat.niceString(
+            logger.error(NiceString.make(
                     "Received invalid meta information {0}. Wont create listener instance.", metaInformation));
             return;
         }

@@ -1,13 +1,11 @@
 package org.visab.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Nicer String formats without unnecesarry dependencies
+ * Helper class for better string formatting without unnecesarry dependencies.
  */
-public final class StringFormat {
+public final class NiceString {
 
     /**
      * Formats strings like in python. Placeholders look like this "Animal: {i}"
@@ -20,7 +18,7 @@ public final class StringFormat {
      * @param params The params to replace the placeholders
      * @return The formatted string
      */
-    public static String niceString(String str, Object... params) {
+    public static String make(String str, Object... params) {
         var niceString = "";
 
         var stringLength = str.toCharArray().length;
@@ -82,20 +80,6 @@ public final class StringFormat {
             str = str.substring(0, str.length() - 2);
 
         return str + "]";
-    }
-
-    public static void main(String[] args) {
-        var x = "Animal: {0}";
-        System.out.println(niceString(x, 123));
-        var l = new ArrayList<Integer>();
-        System.out.println(niceString(x, l));
-
-        var map = new HashMap<String, Integer>();
-        map.put("XD", 234);
-        map.put(null, 123);
-        map.put("1", null);
-
-        System.out.println(niceString(x, map));
     }
 
 }

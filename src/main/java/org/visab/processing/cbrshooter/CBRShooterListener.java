@@ -14,7 +14,7 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.config.ConfigManager;
 
 /**
@@ -103,7 +103,7 @@ public class CBRShooterListener
     public void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
-        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
+        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }

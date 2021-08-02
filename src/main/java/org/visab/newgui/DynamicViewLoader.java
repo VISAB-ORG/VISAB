@@ -12,7 +12,7 @@ import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
@@ -42,7 +42,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             var viewClass = getViewClass(viewClassName);
             if (viewClass == null) {
                 logger.error(
-                        StringFormat.niceString("Failed to load Visualizer View for for game {0}. Skipping it.", game));
+                        NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
             }
 
             // Create new scope instance that will be injected in all the view types for
@@ -76,7 +76,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             var viewClass = getViewClass(viewClassName);
             if (viewClass == null) {
                 logger.error(
-                        StringFormat.niceString("Failed to load Visualizer View for for game {0}. Skipping it.", game));
+                        NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
             }
 
             // Create new scope instance that will be injected in all the view types for
@@ -87,7 +87,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
                 scope.setSessionListener(asLiveViewable);
                 scope.setLive(true);
             } else {
-                logger.info(StringFormat.niceString("Listener for game {0} did not implement ILiveViewable.", game));
+                logger.info(NiceString.make("Listener for game {0} did not implement ILiveViewable.", game));
             }
 
             // Resolve the main view
@@ -131,7 +131,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
 
         var class_ = DynamicHelper.tryGetClass(viewClassName);
         if (class_ == null) {
-            logger.error(StringFormat.niceString("Failed to resolve class {0}.", viewClassName));
+            logger.error(NiceString.make("Failed to resolve class {0}.", viewClassName));
             return null;
         }
 
@@ -140,7 +140,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         try {
             asView = (Class<? extends FxmlView<? extends ViewModel>>) class_;
         } catch (Exception e) {
-            logger.error(StringFormat.niceString(
+            logger.error(NiceString.make(
                     "Failed to cast {0} to Class<? extends FxmlView<? extends ViewModel>>.", viewClassName));
         }
 

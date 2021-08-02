@@ -11,7 +11,7 @@ import org.visab.dynamic.DynamicSerializer;
 import org.visab.globalmodel.BasicVISABFile;
 import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.JSONConvert;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 /**
@@ -58,7 +58,7 @@ public class FileController extends HTTPControllerBase {
 
         var concreteFile = DynamicSerializer.deserializeVISABFile(json, file.getGame());
         if (concreteFile == null)
-            return getBadRequestResponse(StringFormat.niceString(
+            return getBadRequestResponse(NiceString.make(
                     "The sent file of game {0} could not be deserialized into the corresponding IVISABFile type.",
                     file.getGame()));
 

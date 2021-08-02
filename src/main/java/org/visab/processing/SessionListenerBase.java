@@ -15,7 +15,7 @@ import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.Workspace;
 
@@ -157,7 +157,7 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
      * @param message  The message to log
      */
     protected void writeLog(Level logLevel, String message) {
-        var prefix = StringFormat.niceString("[{0}: {1}]> ", game, sessionId);
+        var prefix = NiceString.make("[{0}: {1}]> ", game, sessionId);
 
         logger.log(logLevel, prefix + message);
     }

@@ -1,6 +1,6 @@
 package org.visab.globalmodel.settlers;
 
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 
 /**
  * Represents a snapshot of the resources availible.
@@ -91,7 +91,7 @@ public class PlayerResources {
 
     @Override
     public String toString() {
-        return StringFormat.niceString("{ Brick:{0}, Sheep:{1}, Stone:{2}, Wheat:{3}, Wood:{4}", brick, sheep, stone,
+        return NiceString.make("{ Brick:{0}, Sheep:{1}, Stone:{2}, Wheat:{3}, Wood:{4}", brick, sheep, stone,
                 wheat, wood);
     }
 }

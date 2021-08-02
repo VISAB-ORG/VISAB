@@ -11,7 +11,7 @@ import org.visab.api.controller.ImageController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
 import org.visab.processing.SessionListenerFactory;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 import org.nanohttpd.protocols.http.NanoHTTPD;
@@ -116,7 +116,7 @@ public class WebAPI extends RouterNanoHTTPD {
      */
     @Override
     public void start() throws IOException {
-        logger.info(StringFormat.niceString("Starting WebApi on {0}:{1}.", Inet4Address.getLocalHost().getHostAddress(),
+        logger.info(NiceString.make("Starting WebApi on {0}:{1}.", Inet4Address.getLocalHost().getHostAddress(),
                 Workspace.getInstance().getConfigManager().getWebApiPort()));
         watchdog = new SessionWatchdog(sessionAdministration.getSessionStatuses());
 

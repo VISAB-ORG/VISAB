@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.starter.DefaultSessionListener;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 /**
@@ -49,7 +49,7 @@ public final class DynamicInstatiator {
                     sessionListener = (ISessionListener) instance;
                 } catch (Exception e) {
                     logger.error(
-                            StringFormat.niceString("Failed to cast instance of {0} to ISessionListener.", className));
+                            NiceString.make("Failed to cast instance of {0} to ISessionListener.", className));
                 }
             }
         }
@@ -120,7 +120,7 @@ public final class DynamicInstatiator {
 
         // If there was not correct constructor found, throw exception
         if (correctConstructor == null) {
-            var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", class_.getName());
+            var message = NiceString.make("Couldent find a fitting constructor for {0}.", class_.getName());
             logger.error(message);
             return null;
         }
@@ -132,7 +132,7 @@ public final class DynamicInstatiator {
                 | InvocationTargetException e) {
             // If instatiation via reflection fails eventhought constructor was found, throw
             // exception
-            var message = StringFormat.niceString("Failed to create an instance of {0} using constructor {1}.",
+            var message = NiceString.make("Failed to create an instance of {0} using constructor {1}.",
                     class_.getName(), correctConstructor);
 
             logger.error(message);
@@ -155,7 +155,7 @@ public final class DynamicInstatiator {
             for (var ctor : class_.getConstructors())
                 constructors.add(ctor);
         } catch (SecurityException e) {
-            logger.warn(StringFormat.niceString("Failed to get constructors for {0}.", class_.getName()));
+            logger.warn(NiceString.make("Failed to get constructors for {0}.", class_.getName()));
             e.printStackTrace();
         }
 

@@ -9,7 +9,7 @@ import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.api.WebAPI;
 import org.visab.api.WebAPIHelper;
 import org.visab.dynamic.DynamicSerializer;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 /**
@@ -68,7 +68,7 @@ public class SessionController extends HTTPControllerBase {
 
         var metaInformation = DynamicSerializer.deserializeMetaInformation(json);
         if (metaInformation == null || metaInformation.getGame() == null || metaInformation.getGame().isBlank()) {
-            var responseMessage = StringFormat.niceString("Meta information {0} was invalid. Wont start session.",
+            var responseMessage = NiceString.make("Meta information {0} was invalid. Wont start session.",
                     metaInformation);
             logger.info(responseMessage);
             return getBadRequestResponse(responseMessage);
@@ -87,7 +87,7 @@ public class SessionController extends HTTPControllerBase {
         WebAPI.getInstance().getSessionAdministration().openSession(newSessionId, metaInformation,
                 httpSession.getRemoteIpAddress());
 
-        logger.info(StringFormat.niceString("Opened session with ID '{0}'", newSessionId));
+        logger.info(NiceString.make("Opened session with ID '{0}'", newSessionId));
         return getJsonResponse(newSessionId);
     }
 

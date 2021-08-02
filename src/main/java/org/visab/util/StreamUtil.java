@@ -2,6 +2,10 @@ package org.visab.util;
 
 import java.util.function.Predicate;
 
+/**
+ * Helper class for wrapping around the java stream library. Miserably attempts
+ * to mimic C# Linq.
+ */
 public final class StreamUtil {
 
     /**
