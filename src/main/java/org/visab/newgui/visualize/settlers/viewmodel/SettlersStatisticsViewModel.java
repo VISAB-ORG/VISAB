@@ -16,6 +16,7 @@ import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltCompar
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
+import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -56,6 +57,18 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private ComparisonRowBase<?> graphComparisonRow;
 
     private StringProperty yLabel = new SimpleStringProperty();
+    
+    private Command openDetailedStatisticsViewCommand;
+    
+    public Command openDetailedStatisticsViewCommand() {
+        if (openDetailedStatisticsViewCommand == null) {
+            openDetailedStatisticsViewCommand = runnableCommand(() -> {
+               dialogHelper.showView(SettlersStatisticsDetailView.class, "Detail Player Stats", true, this);
+            });
+        }
+        
+        return openDetailedStatisticsViewCommand;
+    }
 
     public StringProperty yLabelProperty() {
         return yLabel;

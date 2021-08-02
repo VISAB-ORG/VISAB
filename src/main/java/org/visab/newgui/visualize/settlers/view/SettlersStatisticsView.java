@@ -45,7 +45,7 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     
     @FXML
     private void handleViewDetailsButtonAction() {
-        // not implemented yet
+        viewModel.openDetailedStatisticsViewCommand().execute();
     }
 
     @Override
