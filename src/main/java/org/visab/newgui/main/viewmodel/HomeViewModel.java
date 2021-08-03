@@ -14,6 +14,7 @@ import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.newgui.DynamicViewLoader;
+import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
@@ -160,7 +161,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
+                var viewConfig = new ShowViewConfiguration(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
+                dialogHelper.showView(viewConfig, this);
             });
         }
 
@@ -170,7 +172,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openSettings() {
         if (openSettings == null) {
             openSettings = runnableCommand(() -> {
-                dialogHelper.showView(SettingsView.class, "Settings", true);
+                var viewConfig = new ShowViewConfiguration(SettingsView.class, "Settings", true);
+                dialogHelper.showView(viewConfig, this);
             });
         }
 

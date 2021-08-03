@@ -3,6 +3,7 @@ package org.visab.newgui.settings.viewmodel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.settings.view.AllowedGamesEditView;
@@ -213,7 +214,9 @@ public class SettingsViewModel extends ViewModelBase {
                     editTimeoutsSelectedGame.set(gameSessionTimeouts.get(0).getGame());
                     editTimeoutsTimeout.set(gameSessionTimeouts.get(0).getTimeout());
                 }
-                dialogHelper.showView(SessionTimeoutEditView.class, "Session Timeout", true, this);
+                
+                var viewConfig = new ShowViewConfiguration(SessionTimeoutEditView.class, "Session Timeout", true);
+                dialogHelper.showView(viewConfig, this);
             });
         }
         return openSessionTimeoutEditViewCommand;
@@ -233,7 +236,8 @@ public class SettingsViewModel extends ViewModelBase {
                     editAllowedSelectedGame.set(allowedGames.get(0));
                 }
 
-                dialogHelper.showView(AllowedGamesEditView.class, "Allowed Games", true, this);
+                var viewConfig = new ShowViewConfiguration(AllowedGamesEditView.class, "Allowed Games", true);
+                dialogHelper.showView(viewConfig, this);
             });
         }
         return openAllowedGameEditViewCommand;
