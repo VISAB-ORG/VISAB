@@ -219,7 +219,8 @@ public class DialogHelper {
             double minHeight, double minWidth, Consumer<Stage> stageClosedHandler) {
         var stage = getStage(viewType, title, blockWindows, null);
         stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
-
+        
+        // TODO: Calculate relative to screen resolution
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
 
