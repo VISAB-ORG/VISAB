@@ -16,7 +16,7 @@
                <children>
                   <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../img/visab_innerLogo1.png" />
+                        <Image url="@../../../../../img/visab_innerLogo1.png" />
                      </image>
                   </ImageView>
                </children>
