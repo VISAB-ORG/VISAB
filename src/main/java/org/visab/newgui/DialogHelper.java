@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.Scope;
@@ -158,8 +156,8 @@ public class DialogHelper {
         // TODO: Do like in #96
         stage.setOnCloseRequest(e -> additionalScope.invokeOnStageClosed(stage));
 
-        var scopesArr = Arrays.asList(scopes);
-        scopesArr.add(additionalScope);
+        var scopesArr = Arrays.copyOf(scopes, scopes.length + 1);
+        scopesArr[scopes.length] = additionalScope;
         viewStep.providedScopes(scopesArr);
 
         var viewTuple = viewStep.load();
@@ -174,7 +172,7 @@ public class DialogHelper {
     }
 
     public void showView(ShowViewConfiguration configuration, Scope... scopes) {
-        showView(configuration, scopes);
+        showView(configuration, null, scopes);
     }
 
 }

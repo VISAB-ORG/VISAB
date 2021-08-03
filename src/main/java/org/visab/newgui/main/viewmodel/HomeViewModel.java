@@ -162,7 +162,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
-                dialogHelper.showView(viewConfig, this);
+                dialogHelper.showView(viewConfig);
             });
         }
 
@@ -173,7 +173,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
         if (openSettings == null) {
             openSettings = runnableCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(SettingsView.class, "Settings", true);
-                dialogHelper.showView(viewConfig, this);
+                dialogHelper.showView(viewConfig);
             });
         }
 

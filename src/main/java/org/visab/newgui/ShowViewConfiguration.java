@@ -19,7 +19,7 @@ public class ShowViewConfiguration {
     }
 
     public ShowViewConfiguration(Class<? extends FxmlView<? extends ViewModel>> viewType, String windowTitle,
-            boolean shouldBlock, int width, int height) {
+            boolean shouldBlock, int height, int width) {
         this(viewType, windowTitle, shouldBlock);
         this.height = height;
         this.width = width;
@@ -31,10 +31,6 @@ public class ShowViewConfiguration {
 
     public int getWidth() {
         return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public Class<? extends FxmlView<? extends ViewModel>> getViewType() {
