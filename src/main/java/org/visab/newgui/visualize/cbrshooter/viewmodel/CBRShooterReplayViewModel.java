@@ -341,6 +341,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     /**
+     * Simple method that encapsulates various updates into one call.
+     */
+    private void updateEverythingByFrame() {
+        updateCurrentGameStatsByFrame();
+        updatePlayerTableByFrame();
+        updateMapElements();
+    }
+
+    /**
      * This method is responsible to update the given statistics according to the
      * global variable of the currently selected frame based on various types of
      * inputs or events.
@@ -586,9 +595,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                updateCurrentGameStatsByFrame();
-                                updatePlayerTableByFrame();
-                                updateMapElements();
+                                updateEverythingByFrame();
                                 setSelectedFrame(selectedFrame + 1).execute();
                                 frameSliderValueProperty.set(selectedFrame);
                             }
@@ -636,16 +643,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     // While loop necessary to ensure increments of one
                     while (frame > selectedFrame) {
                         selectedFrame = Math.min(selectedFrame + 1, data.size() - 1);
-                        updateCurrentGameStatsByFrame();
-                        updatePlayerTableByFrame();
-                        updateMapElements();
+                        updateEverythingByFrame();
                     }
                 } else {
                     while (frame < selectedFrame) {
                         selectedFrame = Math.max(selectedFrame - 1, 0);
-                        updateCurrentGameStatsByFrame();
-                        updatePlayerTableByFrame();
-                        updateMapElements();
+                        updateEverythingByFrame();
                     }
                 }
             }
