@@ -60,6 +60,7 @@ public class CustomSessionObject extends GridPane {
         this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                // TODO: Popup if live viewing not supported
                 DynamicViewLoader.loadVisualizer(sessionStatus.getGame(), sessionStatus.getSessionId());
             }
         });
