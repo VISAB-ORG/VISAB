@@ -636,15 +636,48 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         updateEverythingByFrame();
                     }
                 } else {
+                	// Moved backwards
+                	// Clear list of path elements and redraw every item only for the current round
                     while (frame < selectedFrame) {
                         selectedFrame = Math.max(selectedFrame - 1, 0);
+                        redrawPathsForRound();
                         updateEverythingByFrame();
                     }
                 }
             }
-
         });
         return setSelectedFrame;
+    }
+    /**
+     * Method is used to redraw the paths accordingly if the frame slider is moved backwards.
+     * 
+     */
+    private void redrawPathsForRound() {
+    	var startIndexForRound = 0;
+    	
+    	// Find out where the current round started
+    	for (int i = selectedFrame; i >= 0; i--) {
+    		if (data.get(i).getRound() < roundCounter) {
+    			startIndexForRound = i + 1;
+    			break;
+    		}
+    	}
+    	
+    	// Clear paths and redraw for every player in the game
+    	for (int i = 0; i < file.getPlayerNames().size(); i++) {
+    		var playerName = file.getPlayerNames().get(i);
+    		var playerPath = (Path) mapElements.get(playerName + "_playerPath").getKey();
+    		var moveToPosition = coordinateHelper.translateAccordingToMap(data.get(startIndexForRound).getPlayers().get(i).getPosition());
+    		playerPath.getElements().clear();
+    		playerPath.getElements().add(new MoveTo(moveToPosition.getX() + (STANDARD_ICON_VECTOR.getX() / 2),
+    				moveToPosition.getY() + (STANDARD_ICON_VECTOR.getY() / 2)));
+    		for (int j = startIndexForRound; j <= selectedFrame; j++) {
+    			var lineToPosition = coordinateHelper.translateAccordingToMap(data.get(j).getPlayers().get(i).getPosition());
+    			playerPath.getElements().add(new LineTo(lineToPosition.getX() + (STANDARD_ICON_VECTOR.getX() / 2),
+    					lineToPosition.getY() + (STANDARD_ICON_VECTOR.getY() / 2)));
+    		}
+    		mapElements.put(playerName + "_playerPath", new Pair<Node, Boolean>(playerPath, true));
+    	}	
     }
 
     public Command visualizeMapElement(String key, boolean value) {
