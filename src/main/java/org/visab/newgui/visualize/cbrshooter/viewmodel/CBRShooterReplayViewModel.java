@@ -13,6 +13,7 @@ import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -97,8 +98,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Necessary to decide which elements shall be "resetted" for each round
     private int roundCounter;
 
-    private int pathElementsDrawnPerRound;
-
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
@@ -129,7 +128,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Default update interval of 0.1 seconds
         updateInterval = 100;
         selectedFrame = 0;
-        pathElementsDrawnPerRound = 0;
 
         // TODO: Might not be to hard to have this work live aswell
         // Load data from the scopes file which is initialized after VISUALIZE
@@ -332,6 +330,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerDeath"));
 
             // Recolor images
+            playerIcon = VISABUtil.recolorImage(playerIcon, playerColor);
             playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
             playerDeath = VISABUtil.recolorImage(playerDeath, playerColor);
 
@@ -389,30 +388,28 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      */
     private void updateMapElements() {
 
-        Vector2 healthItemPosition = frameBasedStats.getHealthPosition();
-        Vector2 ammuItemPosition = frameBasedStats.getAmmunitionPosition();
-        Vector2 weaponPosition = frameBasedStats.getWeaponPosition();
+        var healthItemPosition = frameBasedStats.getHealthPosition();
+        var ammuItemPosition = frameBasedStats.getAmmunitionPosition();
+        var weaponPosition = frameBasedStats.getWeaponPosition();
 
         // If the respective vector is (0,0) the item did not spawn yet
         if (healthItemPosition.getX() != 0 && healthItemPosition.getY() != 0) {
-            ImageView healthItem = (ImageView) mapElements.get("healthItem").getKey();
-            Vector2 translatedHealthItemPosition = coordinateHelper.translateAccordingToMap(healthItemPosition);
-            healthItem.setX(translatedHealthItemPosition.getX());
-            healthItem.setY(translatedHealthItemPosition.getY());
-            boolean shallBeVisible = mapElements.get("healthItem").getValue();
-            healthItem.setVisible(shallBeVisible);
+            var healthItem = (ImageView) mapElements.get("healthItem").getKey();
+            var translatedHealthItemPosition = coordinateHelper.translateAccordingToMap(healthItemPosition);
+            var shallBeVisible = mapElements.get("healthItem").getValue();
+            UiHelper.adjustVisual(healthItem, shallBeVisible, translatedHealthItemPosition.getX(),
+                    translatedHealthItemPosition.getY());
             mapElements.put("healthItem", new Pair<Node, Boolean>(healthItem, shallBeVisible));
         } else {
             mapElements.get("healthItem").getKey().setVisible(false);
         }
 
         if (ammuItemPosition.getX() != 0 && ammuItemPosition.getY() != 0) {
-            ImageView ammuItem = (ImageView) mapElements.get("ammuItem").getKey();
-            Vector2 translatedAmmuItemPosition = coordinateHelper.translateAccordingToMap(ammuItemPosition);
-            ammuItem.setX(translatedAmmuItemPosition.getX());
-            ammuItem.setY(translatedAmmuItemPosition.getY());
-            boolean shallBeVisible = mapElements.get("ammuItem").getValue();
-            ammuItem.setVisible(shallBeVisible);
+            var ammuItem = (ImageView) mapElements.get("ammuItem").getKey();
+            var translatedAmmuItemPosition = coordinateHelper.translateAccordingToMap(ammuItemPosition);
+            var shallBeVisible = mapElements.get("ammuItem").getValue();
+            UiHelper.adjustVisual(ammuItem, shallBeVisible, translatedAmmuItemPosition.getX(),
+                    translatedAmmuItemPosition.getY());
             mapElements.put("ammuItem", new Pair<Node, Boolean>(ammuItem, shallBeVisible));
 
         } else {
@@ -420,73 +417,55 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         if (weaponPosition.getX() != 0 && weaponPosition.getY() != 0) {
-            ImageView weapon = (ImageView) mapElements.get("weapon").getKey();
-            Vector2 translatedWeaponPosition = coordinateHelper.translateAccordingToMap(weaponPosition);
-            weapon.setX(translatedWeaponPosition.getX());
-            weapon.setY(translatedWeaponPosition.getY());
-            boolean shallBeVisible = mapElements.get("weapon").getValue();
-            weapon.setVisible(shallBeVisible);
+            var weapon = (ImageView) mapElements.get("weapon").getKey();
+            var translatedWeaponPosition = coordinateHelper.translateAccordingToMap(weaponPosition);
+            var shallBeVisible = mapElements.get("weapon").getValue();
+            UiHelper.adjustVisual(weapon, shallBeVisible, translatedWeaponPosition.getX(),
+                    translatedWeaponPosition.getY());
             mapElements.put("weapon", new Pair<Node, Boolean>(weapon, shallBeVisible));
         } else {
             mapElements.get("weapon").getKey().setVisible(false);
         }
 
+        // Iterate to draw player specific visuals
         for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
-            PlayerInformation playerInfo = frameBasedStats.getPlayers().get(i);
-            ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
-            Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
-            playerIcon.setX(playerPosition.getX());
-            playerIcon.setY(playerPosition.getY());
-            boolean iconShallBeVisible = mapElements.get(playerInfo.getName() + "_playerIcon").getValue();
-            playerIcon.setVisible(iconShallBeVisible);
+            var playerInfo = frameBasedStats.getPlayers().get(i);
 
-            Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
+            // Player icon
+            var playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
+            var playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
+            var iconShallBeVisible = mapElements.get(playerInfo.getName() + "_playerIcon").getValue();
+            UiHelper.adjustVisual(playerIcon, iconShallBeVisible, playerPosition.getX(), playerPosition.getY());
 
-            // Simply add a new point for the path
+            // Player path
+            var playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
             if (roundCounter == frameBasedStats.getRound()) {
-                // System.out.println("Same round as before");
                 playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                         playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
-                pathElementsDrawnPerRound++;
-                // Remove path elements because the slider got moved backwards
-            }
-            // Remove path elements because the slider got moved backwards
-            else if (playerPath.getElements().size() > pathElementsDrawnPerRound) {
-                System.out.println("Path elements need to be reduced");
-                for (int j = playerPath.getElements().size() - 1; j >= 0; j--) {
-                    playerPath.getElements().remove(i);
-                }
-            }
-            // Clear the whole path based on round change
-            else {
-                // System.out.println("Path elements need to be fully cleared");
+            } else {
                 playerPath.getElements().clear();
                 playerPath.getElements().add(new MoveTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                         playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
-                if (i == frameBasedStats.getPlayers().size() - 1) {
-                    pathElementsDrawnPerRound = 0;
-                }
-
             }
-            boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
+            var pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
 
+            // Player deaths
             if (latestDeathsOfPlayers.get(playerInfo.getName()) != null) {
-                ImageView playerDeath = (ImageView) mapElements.get(playerInfo.getName() + "_playerDeath").getKey();
+                var playerDeath = (ImageView) mapElements.get(playerInfo.getName() + "_playerDeath").getKey();
                 if (latestDeathsOfPlayers.get(playerInfo.getName()) < playerInfo.getStatistics().getDeaths()) {
-                    playerDeath.setX(playerPosition.getX());
-                    playerDeath.setY(playerPosition.getY());
-                    boolean playerDeathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerDeath")
-                            .getValue();
-                    playerDeath.setVisible(playerDeathShallBeVisible);
+                    var playerDeathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerDeath").getValue();
+                    UiHelper.adjustVisual(playerDeath, playerDeathShallBeVisible, playerPosition.getX(),
+                            playerPosition.getY());
+                    mapElements.put(playerInfo.getName() + "_playerDeath",
+                            new Pair<Node, Boolean>(playerDeath, playerDeathShallBeVisible));
                 }
             }
             latestDeathsOfPlayers.put(playerInfo.getName(), playerInfo.getStatistics().getDeaths());
 
-            // Decide if a plan change must be visualized on the map
+            // Player plan changes
             if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
-                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                        .getKey();
+                var playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange").getKey();
                 if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
 
                     if (playerPlanChange.getX() != playerPosition.getX()
@@ -495,8 +474,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         playerPlanChange.setY(playerPosition.getY());
                     }
                 }
-                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
-                        .getValue();
+                var planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange").getValue();
                 playerPlanChange.setVisible(planChangeShallBeVisible);
                 mapElements.put(playerInfo.getName() + "_playerPlanChange",
                         new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
@@ -507,6 +485,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
             mapElements.put(playerInfo.getName() + "_playerPath",
                     new Pair<Node, Boolean>(playerPath, pathShallBeVisible));
+
         }
         roundCounter = frameBasedStats.getRound();
     }
@@ -590,7 +569,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     new Pair<Node, Boolean>(playerPlanChange, true));
             mapElements.put(playerInfo.getName() + "_playerPath", new Pair<Node, Boolean>(playerPath, true));
         }
-
     }
 
     // --- Command methods ---
