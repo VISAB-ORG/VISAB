@@ -1,22 +1,26 @@
 package org.visab.oldgui;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.gui.model.TableEntryCBRBot;
-import org.visab.gui.model.TableEntryScriptBot;
+import org.visab.newgui.ResourceHelper;
+import org.visab.oldgui.model.TableEntryCBRBot;
+import org.visab.oldgui.model.TableEntryScriptBot;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.DatabaseManager;
-import org.visab.workspace.config.ConfigManager;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -163,17 +167,17 @@ public class PathViewerWindowController {
     private Button refresh;
 
     // Initializing additional varibales
-    private Image imageScriptBot = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
+    private Image imageScriptBot = new Image(ResourceHelper.IMAGE_PATH + "scriptBot.png");
 
-    private Image deathImage = new Image(ConfigManager.IMAGE_PATH + "deathScript.png");
+    private Image deathImage = new Image(ResourceHelper.IMAGE_PATH + "deathScript.png");
 
-    private Image deathImageCBR = new Image(ConfigManager.IMAGE_PATH + "deadCBR.png");
+    private Image deathImageCBR = new Image(ResourceHelper.IMAGE_PATH + "deadCBR.png");
 
-    private Image imageCbrBot = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+    private Image imageCbrBot = new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
 
-    private Image changePlanCBRImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
+    private Image changePlanCBRImage = new Image(ResourceHelper.IMAGE_PATH + "changePlan.png");
 
-    private Image changePlanScriptImage = new Image(ConfigManager.IMAGE_PATH + "changePlan.png");
+    private Image changePlanScriptImage = new Image(ResourceHelper.IMAGE_PATH + "changePlan.png");
 
     private ImageView cbrbotImageView = new ImageView(imageCbrBot);
 
@@ -283,7 +287,7 @@ public class PathViewerWindowController {
         drawPane.getChildren().clear();
         String fileNameFromComboBox = comboBox.getValue();
 
-        String content = VISABUtil.readFile(DatabaseManager.DATABASE_PATH + fileNameFromComboBox.toString());
+        String content = MainWindowController.readFile(DatabaseManager.DATABASE_PATH + fileNameFromComboBox.toString());
 
         boolean externalFileAccepted = false;
 
@@ -303,8 +307,8 @@ public class PathViewerWindowController {
             botTypeLabel2.setText("Type: Script-Bot");
 
         } else {
-            for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-                if (fileNameFromComboBox.endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
+            for (int i = 0; i < MainWindowController.getAcceptedExternalDataEndings().length; i++) {
+                if (fileNameFromComboBox.endsWith(MainWindowController.getAcceptedExternalDataEndings()[i])) {
                     externalFileAccepted = true;
                 }
             }
@@ -317,15 +321,38 @@ public class PathViewerWindowController {
     }
 
     public void updatePage() {
-        comboBox.getItems().addAll(VISABUtil.loadFilesFromDatabase());
+        comboBox.getItems().addAll(loadFilesFromDatabase());
         comboBox.getSelectionModel().selectFirst();
+    }
+
+    public static List<List<String>> convertStringToList(String content) {
+
+        // Create List to store the data
+        List<List<String>> data = new ArrayList<List<String>>();
+
+        // Filter content of file & store in HashMap
+        var m = Pattern.compile("\\[(.*?)=(.*?)\\]").matcher(content);
+        while (m.find()) {
+            List<String> temp = new ArrayList<String>();
+            temp.add(m.group(1));
+            temp.add(m.group(2));
+            data.add(temp);
+        }
+
+        return data;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static void clearTable(TableView statisticsTable) {
+        statisticsTable.getColumns().clear();
+        statisticsTable.getItems().clear();
     }
 
     @SuppressWarnings({ "unchecked", "resource" })
     private void loadVisabStatistics(String content) {
 
         // Convert
-        List<List<String>> rawData = VISABUtil.convertStringToList(content);
+        List<List<String>> rawData = convertStringToList(content);
 
         // Lists for Path Viewer
         List<List<Double>> coordinatesCBRBotList = new ArrayList<List<Double>>();
@@ -366,9 +393,9 @@ public class PathViewerWindowController {
         frameLabel.setText("Selected Frame: " + 0);
         sleepTimer = 1000;
         frameSlider.setValue(0);
-        playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
+        playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
         playImageView = new ImageView(playImage);
-        pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
+        pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
         pauseImageView = new ImageView(pauseImage);
         playPauseButton.setVisible(true);
         playPauseButton.setGraphic(playImageView);
@@ -1248,7 +1275,7 @@ public class PathViewerWindowController {
     @SuppressWarnings("unchecked")
     private void createTableCBRBot() {
         // Clear to show entries only once
-        VISABUtil.clearTable(statisticsTableCBRBot);
+        clearTable(statisticsTableCBRBot);
 
         // Create Table Columns
         @SuppressWarnings("rawtypes")
@@ -1318,7 +1345,7 @@ public class PathViewerWindowController {
     @SuppressWarnings("unchecked")
     private void createTableScriptBot() {
         // Clear to show entries only once
-        VISABUtil.clearTable(statisticsTableScriptBot);
+        clearTable(statisticsTableScriptBot);
 
         // Create Table
         @SuppressWarnings("rawtypes")
@@ -1383,5 +1410,31 @@ public class PathViewerWindowController {
         // Cleaned Up Table
         statisticsTableScriptBot.getColumns().addAll(frame, coordinatesScriptBot, healthScriptBot, weaponScriptBot,
                 statisticScriptBot, planScriptBot);
+    }
+
+    /**
+     * !! COPIED FROM OLD VISAB GUI TO HAVE EVERYTHING TOGETHER !!
+     * 
+     * @TODO: Delete this
+     * 
+     *        This method is responsible for retreiving the files located in the
+     *        location-specific database.
+     * 
+     * @return an observable list of file names that are displayed in the GUI.
+     */
+    public static ObservableList<String> loadFilesFromDatabase() {
+        File database = new File(DatabaseManager.DATABASE_PATH);
+        File[] visabFiles = database.listFiles();
+        ObservableList<String> filesComboBox = FXCollections.observableArrayList();
+
+        // Check if there are files in the database or the database does even exist
+        if (visabFiles != null) {
+            for (int i = 0; i < visabFiles.length; i++) {
+                if (visabFiles[i].isFile()) {
+                    filesComboBox.add(visabFiles[i].getName());
+                }
+            }
+        }
+        return filesComboBox;
     }
 }

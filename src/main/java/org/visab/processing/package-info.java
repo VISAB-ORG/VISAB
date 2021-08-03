@@ -5,7 +5,7 @@
  * <p>
  * Within this package there are only abstract classes and interfaces which can
  * and shall not be directly instantiated. Each game that is added as an
- * additional use case to VISAB needs ints own sub-package witch classes
+ * additional use case to VISAB needs its own sub-package witch classes
  * implementing game-specific logic according to these top-level "templates".
  * </p>
  */

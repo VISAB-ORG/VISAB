@@ -1,8 +1,5 @@
 package org.visab.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,16 +10,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
- * Class for serializing objects and deserializing json files.
- *
- * @author moritz
- *
+ * Helper class for serializing objects and deserializing json files.
+ * Essentially wraps around the ObjectMapper of the jackson library.
  */
-public final class JsonConvert {
+public final class JSONConvert {
 
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(JsonConvert.class);
-
+    /**
+     * Fails deserialization on
+     * 
+     * 1. JSON contains more properties than there are setters in the POJO. 2. POJO
+     * contains more setters, than there are properties in the JSON.
+     */
     public static final ObjectMapper UnforgivingMapper = new ObjectMapper()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
             .enable(SerializationFeature.INDENT_OUTPUT)
@@ -30,6 +28,12 @@ public final class JsonConvert {
             .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true)
             .registerModule(new JavaTimeModule());
 
+    /**
+     * As opposed to UnforgivingMapper, does NOT fail on
+     * 
+     * 1. JSON contains more properties than there are setters in the POJO. 2. POJO
+     * contains more setters, than there are properties in the JSON.
+     */
     public static final ObjectMapper ForgivingMapper = new ObjectMapper()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
             .enable(SerializationFeature.INDENT_OUTPUT)
@@ -38,7 +42,7 @@ public final class JsonConvert {
             .registerModule(new JavaTimeModule());
 
     /**
-     * Deserializes a Json string into an object of given class.
+     * Deserializes a json string into an object of given class type.
      *
      * @param <T>      The type of the class to deserialize into
      * @param json     The json to deserialize
@@ -72,6 +76,12 @@ public final class JsonConvert {
         }
     }
 
+    /**
+     * Deserializes a json string of unknown format.
+     * 
+     * @param json The json string
+     * @return The JsonNode created from the json
+     */
     public static final JsonNode deserializeJsonUnknown(String json) {
         try {
             return ForgivingMapper.readTree(json);
@@ -82,7 +92,7 @@ public final class JsonConvert {
     }
 
     /**
-     * Serializes a given object into a Json string.
+     * Serializes a given object into a JSON string.
      *
      * @param o the object to serialize
      * @return A json string representation of the object, empty string if

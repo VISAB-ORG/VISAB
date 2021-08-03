@@ -5,14 +5,14 @@ import org.apache.logging.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.newgui.AppMain;
 
 import javafx.application.Application;
 
 /**
- * Main class of the VISAB application that is responsible for parsing the
- * command line arguments and activate the respective mode that shall be
+ * Entry point of the VISAB application that is responsible for parsing the
+ * command line arguments and activating the respective mode that shall be
  * started.
  * 
  * @author leonr
@@ -56,7 +56,7 @@ public class Main {
         }
 
         logger.info("Starting VISAB API HTTP server ...");
-        WebApi.getInstance().start();
+        WebAPI.getInstance().start();
 
         // Start the GUI additionally if desired
         if (mode.equals("gui")) {

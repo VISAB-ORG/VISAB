@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.oldgui.StatisticsWindowController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.oldgui.StatisticsWindowController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <menus>

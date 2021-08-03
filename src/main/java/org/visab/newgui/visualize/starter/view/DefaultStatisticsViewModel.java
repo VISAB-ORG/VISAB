@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.util.JsonConvert;
+import org.visab.util.JSONConvert;
 import org.visab.workspace.DatabaseRepository;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -35,7 +35,7 @@ public class DefaultStatisticsViewModel extends VisualizeViewModelBase<DefaultFi
         var allStatistics = file.getStatistics();
         for (int i = 0; i < allStatistics.size(); i++) {
             var statistics = allStatistics.get(i);
-            var node = JsonConvert.deserializeJsonUnknown(statistics);
+            var node = JSONConvert.deserializeJsonUnknown(statistics);
             var treeItem = createTreeItem(i + " statistics", node);
             statisticsList.add(treeItem);
         }

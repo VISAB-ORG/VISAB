@@ -8,8 +8,8 @@ import org.visab.newgui.settings.SessionTimeoutItem;
 import org.visab.newgui.settings.view.AllowedGamesEditView;
 import org.visab.newgui.settings.view.SessionTimeoutEditView;
 import org.visab.util.StreamUtil;
+import org.visab.workspace.ConfigManager;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.IntegerProperty;
@@ -166,8 +166,6 @@ public class SettingsViewModel extends ViewModelBase {
                 if (games.get(i).contains(editAllowedSelectedGame.get())) {
                     games.remove(i);
 
-                    // Remove from timeouts and allowed games TODO: Check if successfully updated by
-                    // configmanager first!
                     gameSessionTimeouts.removeIf(x -> x.getGame().equals(editAllowedSelectedGame.get()));
                     allowedGames.remove(editAllowedSelectedGame.get());
                 }
@@ -188,14 +186,15 @@ public class SettingsViewModel extends ViewModelBase {
             HashMap<String, Integer> sessionTimeout = configManager.getSessionTimeout();
             sessionTimeout.replace(editTimeoutsSelectedGame.get(), editTimeoutsTimeout.get());
 
-            // Update timeouts TODO: Check if successfully updated by configmanager first!
-            var item = StreamUtil.firstOrNull(gameSessionTimeouts,
-                    x -> x.getGame().equals(editTimeoutsSelectedGame.get()));
-            item.setTimeout(editTimeoutsTimeout.get());
-            editAllowedNewGame.set(null);
-
-            configManager.updateSessionTimeout(sessionTimeout);
-            configManager.saveSettings();
+            if (configManager.updateSessionTimeout(sessionTimeout)) {
+                var item = StreamUtil.firstOrNull(gameSessionTimeouts,
+                        x -> x.getGame().equals(editTimeoutsSelectedGame.get()));
+                item.setTimeout(editTimeoutsTimeout.get());
+                editAllowedNewGame.set(null);
+                configManager.saveSettings();
+            } else {
+                // TODO:
+            }
         });
     }
 
@@ -253,7 +252,7 @@ public class SettingsViewModel extends ViewModelBase {
             Workspace.getInstance().getConfigManager().saveSettings();
         });
     }
-    
+
     /**
      * Restores the default settings.
      * 
@@ -261,7 +260,7 @@ public class SettingsViewModel extends ViewModelBase {
      */
     public Command restoreDefaultSettingsCommand() {
         return runnableCommand(() -> {
-           Workspace.getInstance().getConfigManager().restoreDefaultSettings();
+            Workspace.getInstance().getConfigManager().restoreDefaultSettings();
         });
     }
 }

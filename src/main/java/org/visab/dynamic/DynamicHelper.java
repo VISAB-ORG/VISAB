@@ -2,11 +2,14 @@ package org.visab.dynamic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 
+/**
+ * Class containing helper methods used by the dynamic classes.
+ */
 public final class DynamicHelper {
 
-    private static Logger logger = LogManager.getLogger(DynamicHelper.class);
+    private static final Logger logger = LogManager.getLogger(DynamicHelper.class);
 
     /**
      * Tries to get a Class<?> object for a given class name.
@@ -14,7 +17,7 @@ public final class DynamicHelper {
      * @param className The fully classified class name
      * @return The Class<?> object if successful, null else
      */
-    public static Class<?> tryGetClass(String className) {
+    public static final Class<?> tryGetClass(String className) {
         Class<?> _class = null;
 
         if (className != null && !className.isBlank()) {
@@ -22,7 +25,7 @@ public final class DynamicHelper {
                 _class = Class.forName(className);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                logger.error(StringFormat.niceString("Failed to find class for name {0}.", className));
+                logger.error(NiceString.make("Failed to find class for name {0}.", className));
             }
         }
 

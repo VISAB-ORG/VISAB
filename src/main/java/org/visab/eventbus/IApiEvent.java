@@ -5,15 +5,12 @@ import java.util.UUID;
 import org.visab.globalmodel.SessionStatus;
 
 /**
- * The IApiEvent interface that all api events have to implement.
- *
- * @author moritz
- *
+ * The IAPIEvent interface that all API related events have to implement.
  */
-public interface IApiEvent extends IEvent {
+public interface IAPIEvent extends IEvent {
 
     /**
-     * Gets the transmission sessions sessionId by which the event was caused.
+     * Gets the transmission sessions id who the event was caused by.
      * 
      * @return The transmission sessions sessionId
      */

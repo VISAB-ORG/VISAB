@@ -5,33 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD.ResponseException;
 
 /**
- * A helper class containing various methods that are used by controllers.
- *
- * @author moritz
- *
+ * A helper class containing various methods that are used by the HTTP
+ * controllers.
  */
-public final class WebApiHelper {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(WebApiHelper.class);
+public final class WebAPIHelper {
 
     /**
-     * Is returned if session specific data like statistics or images were sent, but
-     * the session was already closed.
-     */
-    public static final String SESSION_ALREADY_CLOSED_RESPONSE = "SESSION_ALREADY_CLOSED";
-
-    /**
-     * Extracts the game from the headers of a Http request.
+     * Extracts the game from the headers of a HTTP request.
      * 
-     * @param headers The headers
+     * @param headers The headers of the HTTP request
      * @return The game if key was found in headers, "" else
      */
     public static final String extractGame(Map<String, String> headers) {
@@ -39,7 +25,17 @@ public final class WebApiHelper {
     }
 
     /**
-     * Extracts a json string from the body of a Http session.
+     * Extracts the sessionId from the headers of a HTTP request.
+     * 
+     * @param headers The headers of the HTTP request
+     * @return The sessionId if key was found in headers, null else
+     */
+    public static final UUID extractSessionId(Map<String, String> headers) {
+        return headers.containsKey("sessionid") ? tryParseUUID(headers.get("sessionid")) : null;
+    }
+
+    /**
+     * Extracts a json string from the body of a HTTP session.
      * 
      * @param session The session to get the body of
      * @return The json string if successful, "" else
@@ -56,16 +52,6 @@ public final class WebApiHelper {
         }
 
         return json;
-    }
-
-    /**
-     * Extracts the sessionId from the headers of a Http request.
-     * 
-     * @param headers The headers
-     * @return The sessionId if key was found in headers, null else
-     */
-    public static final UUID extractSessionId(Map<String, String> headers) {
-        return headers.containsKey("sessionid") ? tryParseUUID(headers.get("sessionid")) : null;
     }
 
     /**

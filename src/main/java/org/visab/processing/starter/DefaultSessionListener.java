@@ -2,16 +2,15 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
-import org.visab.globalmodel.IMetaInformation;
+import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
 import org.visab.processing.SessionListenerBase;
 
 /**
- * This is a session listener default class, used for when games are allowed
- * (added in settings) but there is no SessionListener implementation for them
- * yet.
+ * Serves as a session listener default class, that can be used for when games
+ * are allowed in VISAB settings but there is no implemenatation for them yet.
  */
 public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInformation, DefaultStatistics> {
 
@@ -23,7 +22,7 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInfor
 
     @Override
     public void onSessionClosed() {
-        manager.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString(), sessionId);
     }
 
     @Override
@@ -35,6 +34,11 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInfor
     @Override
     public void processStatistics(DefaultStatistics statistics) {
         file.getStatistics().add(statistics.getJson());
+    }
+
+    @Override
+    public IVISABFile getCurrentFile() {
+        return file;
     }
 
 }

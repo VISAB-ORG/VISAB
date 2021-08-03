@@ -10,56 +10,53 @@ import org.visab.api.controller.GameSupportController;
 import org.visab.api.controller.ImageController;
 import org.visab.api.controller.SessionController;
 import org.visab.api.controller.StatisticsController;
-import org.visab.api.model.SessionWatchdog;
 import org.visab.processing.SessionListenerFactory;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.router.RouterNanoHTTPD;
 
 /**
- * The main WebApi that hosts a small HTTP server. This is the entry point for
- * all HTTP communication.
- *
- * @author moritz
- *
+ * The HTTP-Protocol based WebAPI that can be used by game clients. Most
+ * importantly used for reciving images and statistics of games.
  */
-public class WebApi extends RouterNanoHTTPD {
+public class WebAPI extends RouterNanoHTTPD {
 
     /**
-     * Singelton instance
+     * Should be returned if session specific data like statistics or images were sent, but
+     * the session was already closed.
      */
-    private static WebApi instance;
+    public static final String SESSION_ALREADY_CLOSED_RESPONSE = "SESSION_ALREADY_CLOSED";
 
     // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(WebApi.class);
+    private static Logger logger = LogManager.getLogger(WebAPI.class);
+
+    private SessionListenerFactory listenerFactory = new SessionListenerFactory();
+    private SessionAdministration sessionAdministration = new SessionAdministration();
+    private SessionWatchdog watchdog;
+
+    private static WebAPI instance;
 
     /**
      * Gets the singelton instance
      * 
      * @return The instance
      */
-    public static WebApi getInstance() {
+    public static WebAPI getInstance() {
         if (instance == null)
-            instance = new WebApi();
+            instance = new WebAPI();
 
         return instance;
     }
 
-    private SessionListenerFactory listenerFactory = new SessionListenerFactory();
-
-    private SessionAdministration sessionAdministration = new SessionAdministration();
-
-    private SessionWatchdog watchdog;
-
-    private WebApi() {
+    private WebAPI() {
         super(Workspace.getInstance().getConfigManager().getWebApiPort());
         addMappings();
     }
 
     /**
-     * Add the controllers to the endpoints
+     * Adds the controllers for the endpoints.
      */
     @Override
     public void addMappings() {
@@ -76,19 +73,22 @@ public class WebApi extends RouterNanoHTTPD {
         addRoute("file/send", FileController.class);
     }
 
+    /**
+     * The SessionAdministration of the WebApi instance.
+     */
     public SessionAdministration getSessionAdministration() {
         return this.sessionAdministration;
     }
 
     /**
-     * Shutsdown the WebApi, SessionListenerFactory and SessionWatchdog
+     * Shutsdown the WebApi, SessionListenerFactory and SessionWatchdog.
      */
     public void shutdown() {
         logger.info("Stopping WebApi.");
         listenerFactory.stopFactory();
         watchdog.stopTimeoutLoop();
 
-        // Close all active sessions.
+        // Close all active sessions
         for (var status : sessionAdministration.getActiveSessionStatuses()) {
             sessionAdministration.closeSession(status.getSessionId());
         }
@@ -97,7 +97,7 @@ public class WebApi extends RouterNanoHTTPD {
     }
 
     /**
-     * Restarts the WebApi, SessionListenerFactory and SessionWatchdog
+     * Restarts the WebApi, SessionListenerFactory and SessionWatchdog.
      */
     public void restart() {
         shutdown();
@@ -106,18 +106,17 @@ public class WebApi extends RouterNanoHTTPD {
         try {
             start();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             logger.error("Exception occured at WebApi startup: " + e);
             e.printStackTrace();
         }
     }
 
     /**
-     * Starts the WebApi, SessionListenerFactory, SessionWatchdog
+     * Starts the WebApi, SessionListenerFactory, SessionWatchdog.
      */
     @Override
     public void start() throws IOException {
-        logger.info(StringFormat.niceString("Starting WebApi on {0}:{1}.", Inet4Address.getLocalHost().getHostAddress(),
+        logger.info(NiceString.make("Starting WebApi on {0}:{1}.", Inet4Address.getLocalHost().getHostAddress(),
                 Workspace.getInstance().getConfigManager().getWebApiPort()));
         watchdog = new SessionWatchdog(sessionAdministration.getSessionStatuses());
 

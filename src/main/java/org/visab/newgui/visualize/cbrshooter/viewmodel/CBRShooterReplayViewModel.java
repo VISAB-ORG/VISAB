@@ -12,7 +12,9 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.globalmodel.cbrshooter.Player;
+import org.visab.newgui.ResourceHelper;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -23,7 +25,6 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.VISABUtil;
 import org.visab.workspace.Workspace;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -178,7 +179,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializeVisualsTable() {
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
 
             // Create new visuals from to make them decoupled from the map view
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
@@ -307,30 +308,28 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     private void initializePlayerVisuals() {
-        List<PlayerInformation> playerInfos = frameBasedStats.getPlayers();
+        List<Player> playerInfos = frameBasedStats.getPlayers();
 
-        for (PlayerInformation playerInfo : playerInfos) {
+        for (Player playerInfo : playerInfos) {
             // Unity Game provides Hex code which has to be translated to a JavaFx color
-            Color playerColor = VISABUtil.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
+            Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
 
             // Get base icons from the game manager which need to be recolored
             // @TODO: Use sent player images by unity
             // Currently only "hacked" workaround because images sent by the game dont work
             Image playerIcon;
             if (playerInfo.getName().equals("John Doe")) {
-                playerIcon = new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+                playerIcon = new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
             } else {
-                playerIcon = new Image(ConfigManager.IMAGE_PATH + "scriptBot.png");
+                playerIcon = new Image(ResourceHelper.IMAGE_PATH + "scriptBot.png");
             }
 
-            Image playerPlanChange = new Image(
-                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerPlanChange"));
-            Image playerDeath = new Image(
-                    Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerDeath"));
+            Image playerPlanChange = new Image(ResourceHelper.getShooterBaseIconById("playerPlanChange"));
+            Image playerDeath = new Image(ResourceHelper.getShooterBaseIconById("playerDeath"));
 
             // Recolor images
-            playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
-            playerDeath = VISABUtil.recolorImage(playerDeath, playerColor);
+            playerPlanChange = UiHelper.recolorImage(playerPlanChange, playerColor);
+            playerDeath = UiHelper.recolorImage(playerDeath, playerColor);
 
             PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, playerColor);
             playerVisualsMap.put(playerInfo.getName(), playerVisuals);
@@ -428,7 +427,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             mapElements.get("weapon").getKey().setVisible(false);
         }
 
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
@@ -495,7 +494,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     private void clearPathsBySelectedFrame() {
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             int pathLength = ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements()
                     .size();
             if (selectedFrame < pathLength) {
@@ -514,7 +513,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Map should always be contained in the elements exactly as it is
         // ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH +
         // "fps_map.png"));
-        ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
+        ImageView map = UiHelper.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
 
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());
@@ -525,21 +524,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         map.setViewOrder(1);
 
         // First add the fixed items to the replay view
-        ImageView healthItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "healthContainer.png"));
+        ImageView healthItem = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "healthContainer.png"));
         healthItem.setX(panePositioning.getX());
         healthItem.setY(panePositioning.getY());
         healthItem.setFitHeight(16);
         healthItem.setFitWidth(16);
         healthItem.setVisible(false);
 
-        ImageView ammuItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "ammuContainer.png"));
+        ImageView ammuItem = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "ammuContainer.png"));
         ammuItem.setX(panePositioning.getX());
         ammuItem.setY(panePositioning.getY());
         ammuItem.setFitHeight(16);
         ammuItem.setFitWidth(16);
         ammuItem.setVisible(false);
 
-        ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "weapon.png"));
+        ImageView weapon = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "weapon.png"));
         weapon.setX(panePositioning.getX());
         weapon.setY(panePositioning.getY());
         weapon.setFitHeight(16);
@@ -552,7 +551,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         mapElements.put("weapon", new Pair<Node, Boolean>(weapon, true));
         mapElements.put("ammuItem", new Pair<Node, Boolean>(ammuItem, true));
 
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (Player playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
@@ -780,6 +779,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         this.ammuCoordsProperty = ammuCoordsProperty;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(ILiveViewable<? extends IStatistics> listener) {
         var concreteListener = (ILiveViewable<CBRShooterStatistics>) listener;

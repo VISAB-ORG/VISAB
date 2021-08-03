@@ -3,7 +3,7 @@ package org.visab.eventbus;
 /**
  * The IPublisher interface, that all publishers have to implement.
  *
- * @param <TEvent> The event that will be published.
+ * @param <TEvent> The event type that will be published.
  */
 public interface IPublisher<TEvent extends IEvent> {
 

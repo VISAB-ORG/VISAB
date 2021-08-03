@@ -5,10 +5,10 @@ import java.time.LocalTime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionAdministration;
-import org.visab.api.WebApi;
-import org.visab.eventbus.ApiEventBus;
+import org.visab.api.WebAPI;
+import org.visab.eventbus.APIEventBus;
 import org.visab.eventbus.GeneralEventBus;
-import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
@@ -30,7 +30,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class SessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+public class SessionOverviewViewModel extends ViewModelBase implements ISubscriber<IAPIEvent> {
 
     private class FileSavedSubscriber implements ISubscriber<VISABFileSavedEvent> {
 
@@ -71,7 +71,7 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
         if (closeSessionCommand == null) {
             closeSessionCommand = runnableCommand(() -> {
                 if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebApi.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
+                    WebAPI.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
             });
         }
 
@@ -105,15 +105,15 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
     }
 
     public SessionOverviewViewModel() {
-        ApiEventBus.getInstance().subscribe(this);
+        APIEventBus.getInstance().subscribe(this);
 
         // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
+        for (var status : WebAPI.getInstance().getSessionAdministration().getSessionStatuses())
             sessionList.add(status);
 
         // Set active session count
         activeTransmissionSessions
-                .set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
+                .set(WebAPI.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
     }
 
     public ObservableList<SessionStatus> getSessionList() {
@@ -122,13 +122,13 @@ public class SessionOverviewViewModel extends ViewModelBase implements ISubscrib
 
     @Override
     public String getSubscribedEventType() {
-        return IApiEvent.class.getName();
+        return IAPIEvent.class.getName();
     }
 
     private LocalTime lastRequestTime;
 
     @Override
-    public void notify(IApiEvent event) {
+    public void notify(IAPIEvent event) {
         var status = event.getStatus();
 
         if (event instanceof SessionOpenedEvent) {

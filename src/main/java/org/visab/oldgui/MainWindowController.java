@@ -1,13 +1,18 @@
 package org.visab.oldgui;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Files;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.util.VISABUtil;
+import org.visab.workspace.DatabaseManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,32 +66,32 @@ public class MainWindowController {
             Path currentFileName = Paths.get("", file.getName());
 
             String loadedFilePath = file.getAbsolutePath();
-            String content = VISABUtil.readFile(loadedFilePath.toString());
+            String content = readFile(loadedFilePath.toString());
 
             boolean externalFileAccepted = false;
             boolean visabFileAccepted = false;
 
             if (currentFileName.toString().endsWith(".visab")) {
                 // show success message & write to Database
-                VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+                writeFileToDatabase(currentFileName.toString(), content);
 
                 visabFileAccepted = true;
 
             } else {
-                for (int i = 0; i < VISABUtil.getAcceptedExternalDataEndings().length; i++) {
-                    if (currentFileName.toString().endsWith(VISABUtil.getAcceptedExternalDataEndings()[i])) {
+                for (int i = 0; i < getAcceptedExternalDataEndings().length; i++) {
+                    if (currentFileName.toString().endsWith(getAcceptedExternalDataEndings()[i])) {
                         externalFileAccepted = true;
                     }
                 }
             }
             if (externalFileAccepted) {
-                VISABUtil.writeFileToDatabase(currentFileName.toString(), content);
+                writeFileToDatabase(currentFileName.toString(), content);
                 warningMessage.setText("The file is not a visab-file!\nTherefore PathViewer won't be available, "
                         + file.getName() + " was saved anyway.");
                 warningMessage.setStyle("-fx-text-fill: orange;");
             } else {
                 warningMessage.setText("This file ending is not accepted!\nThe following ending/s is/are accepted: "
-                        + VISABUtil.getAcceptedExternalDataEndingsAsString() + ", .visab");
+                        + getAcceptedExternalDataEndingsAsString() + ", .visab");
                 warningMessage.setStyle("-fx-text-fill: red;");
             }
             if (visabFileAccepted) {
@@ -99,6 +104,46 @@ public class MainWindowController {
             warningMessage.setText("File already exists! Therefore it was not saved.\nPlease change the file name.");
         }
 
+    }
+
+    public static String[] getAcceptedExternalDataEndings() {
+        return new String[] { ".txt" };
+    }
+
+    public static String getAcceptedExternalDataEndingsAsString() {
+        var output = new StringBuilder();
+        for (String acceptedExternalDataEnding : getAcceptedExternalDataEndings())
+            output.append(acceptedExternalDataEnding);
+        return output.toString();
+    }
+
+    public static String readFile(String filePath) {
+        String content = "";
+        try {
+            content = new String(Files.readAllBytes(Paths.get(filePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return content;
+    }
+
+    public static void writeFileToDatabase(String fileName, String content) throws URISyntaxException {
+
+        File databaseDir = new File(DatabaseManager.DATABASE_PATH);
+        databaseDir.mkdirs();
+        File saveIntoDatabase = new File(DatabaseManager.DATABASE_PATH + fileName);
+
+        BufferedWriter writer;
+        try {
+
+            writer = new BufferedWriter(new FileWriter(saveIntoDatabase));
+            writer.write(content);
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

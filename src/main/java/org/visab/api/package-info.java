@@ -6,7 +6,7 @@
  * communicating with VISAB to send its game data to be visualized.
  * 
  * Despite games there may be other use cases in the future that implement some
- * communication with the VISAB API, e.g. exposing files from the database to
+ * communication with the VISAB API. E.g. exposing files from the database to
  * other services.
  * </p>
  */
