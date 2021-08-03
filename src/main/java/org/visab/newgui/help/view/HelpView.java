@@ -16,28 +16,39 @@ import org.visab.workspace.config.ConfigManager;
 import de.saxsys.mvvmfx.FxmlView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 
 public class HelpView implements FxmlView<HelpViewModel>, Initializable {
 
     @FXML
-    private WebView showPDF;
+    private Pane showPDF;
+    
+    @FXML
+    private WebView showVideo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PDFDisplayer displayer = new PDFDisplayer(PdfJSVersion._2_2_228);
-        AppMain.getPrimaryStage().setScene(new Scene(displayer.toNode()));
-        AppMain.getPrimaryStage().show();
+       // AppMain.getPrimaryStage().setScene(new Scene(displayer.toNode()));
+       // AppMain.getPrimaryStage().show();
         try {
             displayer.loadPDF(new URL(
-                    "file:///C:/Users/moritz/Desktop/Visualisierung%20Dokumentation/Literatur/visab_documentation.pdf"));
+            		getClass().getResource("/pdf/visab_documentation.pdf").toExternalForm()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        WebView displayerAsPane = (WebView) displayer.toNode();
+        displayerAsPane.setPrefWidth(960);
+        displayerAsPane.setPrefHeight(630);
+        showPDF.getChildren().add(displayerAsPane);
+        showVideo.getEngine().load("https://www.youtube.com/embed/Lq_KxImBGUY");
+ 
         
         // TODO Auto-generated method stub
-        showPDF.getEngine().load("http://www.google.com");
+        //showPDF.getEngine().load("http://www.google.com");
 
         // String url =
         // getClass().getResource("/pdf/visab_documentation.html").toExternalForm();
