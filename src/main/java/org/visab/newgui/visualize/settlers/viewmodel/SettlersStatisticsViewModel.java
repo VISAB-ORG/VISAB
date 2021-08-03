@@ -67,11 +67,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private Command detailedStatsChartCommand;
 
-<<<<<<< HEAD
     private Command showDetailsCommand;
 
-=======
->>>>>>> de3df2386004bf49e0fa1620926e96a2f1fd506e
     private ObservableList<Series<Integer, Number>> playerDetailedStatisticsSeries = FXCollections.observableArrayList();
 
     public StringProperty yLabelProperty() {
@@ -112,19 +109,16 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         return playerStatsChartCommand;
     }
 
-<<<<<<< HEAD
     public Command showDetailsCommand() {
         if (showDetailsCommand == null) {
             showDetailsCommand = runnableCommand(() -> {
-                var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics", true);
+                var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics", true, 800, 800);
                 dialogHelper.showView(viewConfig, scope);
             });
         }
         return showDetailsCommand;
     }
 
-=======
->>>>>>> de3df2386004bf49e0fa1620926e96a2f1fd506e
     public Command detailedStatisticsChartCommand() {
         if (detailedStatsChartCommand == null) {
             detailedStatsChartCommand = runnableCommand(() -> {
