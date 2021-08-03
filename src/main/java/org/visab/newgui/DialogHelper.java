@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
-import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.Scope;
 import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.ViewTuple;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -27,8 +24,6 @@ import javafx.stage.Stage;
 
 // TODO: Include the style sheets here
 public class DialogHelper {
-
-    private Logger logger = LogManager.getLogger(DialogHelper.class);
 
     /**
      * Shows a confirmation dialog with an OK and CANCEL button.
