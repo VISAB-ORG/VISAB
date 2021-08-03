@@ -40,7 +40,10 @@ public final class ResourceHelper {
      * @return the logo path for the respective game.
      */
     public static final String getLogoPathByGame(String game) {
-        return gameLogoPaths.get(game);
+        if (gameLogoPaths.containsKey(game))
+            return gameLogoPaths.get(game);
+        else
+            return gameLogoPaths.get(GameName.CBR_SHOOTER); // TODO
     }
 
     /**
