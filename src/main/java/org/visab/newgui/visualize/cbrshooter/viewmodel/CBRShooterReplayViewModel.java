@@ -150,7 +150,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Coordinate helper used to compute positioning on the replay view
         coordinateHelper = new CoordinateHelper(mapRectangle, paneSize.getY(), paneSize.getX(), panePositioning);
 
-        // Initialize all relevant data
+        // Initialize all relevant data, order is important
         updateCurrentGameStatsByFrame();
         initializePlayerVisuals();
         initializeVisualsTable();
@@ -459,16 +459,24 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             var pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
 
-            // Player deaths
             if (latestDeathsOfPlayers.get(playerInfo.getName()) != null) {
                 var playerDeath = (ImageView) mapElements.get(playerInfo.getName() + "_playerDeath").getKey();
                 if (latestDeathsOfPlayers.get(playerInfo.getName()) < playerInfo.getStatistics().getDeaths()) {
-                    var playerDeathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerDeath").getValue();
-                    UiHelper.adjustVisual(playerDeath, playerDeathShallBeVisible, playerPosition.getX(),
-                            playerPosition.getY());
-                    mapElements.put(playerInfo.getName() + "_playerDeath",
-                            new Pair<Node, Boolean>(playerDeath, playerDeathShallBeVisible));
+                    if (data.get(selectedFrame - 1) != null) {
+                        var playerDeathPosition = coordinateHelper
+                                .translateAccordingToMap(data.get(selectedFrame - 1).getPlayers().get(i).getPosition());
+                        playerDeath.setX(playerDeathPosition.getX());
+                        playerDeath.setY(playerDeathPosition.getY());
+                    }
                 }
+
+                var deathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerDeath").getValue();
+                if (!(playerDeath.getX() == panePositioning.getX() && playerDeath.getY() == panePositioning.getY())) {
+                    playerDeath.setVisible(deathShallBeVisible);
+                }
+
+                mapElements.put(playerInfo.getName() + "_playerDeath",
+                        new Pair<Node, Boolean>(playerDeath, deathShallBeVisible));
             }
             latestDeathsOfPlayers.put(playerInfo.getName(), playerInfo.getStatistics().getDeaths());
 
@@ -548,8 +556,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
             playerIcon.setY(playerPosition.getY());
-            playerIcon.setFitHeight(10);
-            playerIcon.setFitWidth(10);
+            playerIcon.setFitHeight(16);
+            playerIcon.setFitWidth(16);
 
             ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
             playerDeath.setX(panePositioning.getX());
