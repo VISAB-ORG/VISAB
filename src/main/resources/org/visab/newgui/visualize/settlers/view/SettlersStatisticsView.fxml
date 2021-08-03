@@ -15,7 +15,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.BorderPane?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsView">
+<GridPane xmlns:fx="http://javafx.com/fxml/1"  fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsView">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
         <ColumnConstraints halignment="CENTER" percentWidth="50" />

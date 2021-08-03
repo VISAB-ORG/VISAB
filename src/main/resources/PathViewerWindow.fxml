@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.oldgui.PathViewerWindowController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" stylesheets="@application.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.oldgui.PathViewerWindowController">
 
 	<children>
 		<MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"> 
