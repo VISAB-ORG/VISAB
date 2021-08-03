@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1016.0" prefWidth="1018.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
+<AnchorPane prefHeight="1016.0" prefWidth="1100.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
 		<Label layoutX="365.0" layoutY="20.0" text="CBR Shooter Replay View">
          <font>
@@ -36,7 +36,7 @@
          </font></Label>
       <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="705.0" layoutY="528.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
       <ToggleButton fx:id="playPauseButton" layoutX="768.0" layoutY="613.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
-      <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="699.0">
+      <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="728.0" AnchorPane.leftAnchor="20.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Name">
             <cellValueFactory>
@@ -74,25 +74,25 @@
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="94.0" text="Magazine Ammu">
+          <TableColumn prefWidth="111.0" text="Magazine Ammu">
             <cellValueFactory>
                 <PropertyValueFactory property="magazineAmmu">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="85.0" text="Total Ammu">
+          <TableColumn prefWidth="78.0" text="Total Ammu">
             <cellValueFactory>
                 <PropertyValueFactory property="totalAmmu">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="42.0" text="Frags">
+          <TableColumn prefWidth="54.0" text="Frags">
             <cellValueFactory>
                 <PropertyValueFactory property="frags">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="55.0" text="Deaths">
+          <TableColumn prefWidth="61.0" text="Deaths">
             <cellValueFactory>
                 <PropertyValueFactory property="deaths">
                 </PropertyValueFactory>
@@ -241,7 +241,7 @@
             </HBox>
          </children>
       </GridPane>
-      <TableView fx:id="playerVisualsTable" layoutX="740.0" layoutY="737.0" prefHeight="200.0" prefWidth="250.0">
+      <TableView fx:id="playerVisualsTable" layoutX="742.0" layoutY="737.0" prefHeight="200.0" prefWidth="333.0" AnchorPane.rightAnchor="20.0">
         <columns>
           <TableColumn prefWidth="80.0" text="Player">
             <cellValueFactory>
@@ -249,25 +249,25 @@
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="36.0" text="Icon">
+          <TableColumn prefWidth="43.0" text="Icon">
             <cellValueFactory>
                 <PropertyValueFactory property="playerIconHBox">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="34.0" text="Path">
+          <TableColumn prefWidth="43.0" text="Path">
             <cellValueFactory>
                 <PropertyValueFactory property="playerPathHBox">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="82.0" text="Plan Change">
+          <TableColumn prefWidth="89.0" text="Plan Change">
             <cellValueFactory>
                 <PropertyValueFactory property="playerPlanChangeHBox">
                 </PropertyValueFactory>
             </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="43.0" text="Death">
+          <TableColumn prefWidth="66.0" text="Death">
             <cellValueFactory>
                 <PropertyValueFactory property="playerDeathHBox">
                 </PropertyValueFactory>

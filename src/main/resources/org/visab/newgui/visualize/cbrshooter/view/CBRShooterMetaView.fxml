@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
+<GridPane prefHeight="1695.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterMetaView">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
@@ -25,17 +26,20 @@
             <children>
                 <Label text="Player Information">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
                 </Label>
                 <TableView fx:id="playerInformationTable">
                     <columns>
-                        <TableColumn text="Player name">
+                        <TableColumn prefWidth="88.0" text="Player name">
                             <cellValueFactory>
                                 <PropertyValueFactory property="name" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Controlled by">
+                        <TableColumn prefWidth="87.0" text="Controlled by">
                             <cellValueFactory>
                                 <PropertyValueFactory property="controlledBy" />
                             </cellValueFactory>
@@ -43,27 +47,33 @@
                     </columns>
                 </TableView>
             </children>
+         <GridPane.margin>
+            <Insets left="20.0" top="20.0" />
+         </GridPane.margin>
         </VBox>
         <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
                 <Label text="Weapon Information">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
                 </Label>
                 <TableView fx:id="weaponInformationTable">
                     <columns>
-                        <TableColumn text="Weapon name">
+                        <TableColumn prefWidth="99.0" text="Weapon name">
                             <cellValueFactory>
                                 <PropertyValueFactory property="name" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Damage per shot">
+                        <TableColumn prefWidth="78.0" text="Damage per shot">
                             <cellValueFactory>
                                 <PropertyValueFactory property="damage" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Fire rate">
+                        <TableColumn prefWidth="63.0" text="Fire rate">
                             <cellValueFactory>
                                 <PropertyValueFactory property="fireRate" />
                             </cellValueFactory>
@@ -81,13 +91,19 @@
                     </columns>
                 </TableView>
             </children>
+         <GridPane.margin>
+            <Insets right="20.0" top="20.0" />
+         </GridPane.margin>
         </VBox>
         <VBox GridPane.columnIndex="1">
             <children>
                 <Label text="Session Information">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
                 </Label>
                 <GridPane>
                     <columnConstraints>
@@ -104,8 +120,8 @@
                     <children>
                         <Label text="Winner" />
                         <Label fx:id="winner" GridPane.columnIndex="1" />
-                        <Label text="Rounds" GridPane.rowIndex="1"/>
-                        <Label fx:id="rounds" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                        <Label text="Rounds" GridPane.rowIndex="1" />
+                        <Label fx:id="rounds" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Cumulated ingame time" GridPane.rowIndex="2" />
                         <Label fx:id="ingameTime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Game speed" GridPane.rowIndex="3" />
@@ -115,6 +131,9 @@
                     </children>
                 </GridPane>
             </children>
+         <GridPane.margin>
+            <Insets right="20.0" top="20.0" />
+         </GridPane.margin>
         </VBox>
         <VBox>
             <children>
@@ -122,23 +141,26 @@
                     <children>
                         <Label text="File Information">
                             <font>
-                                <Font name="System Bold" size="12.0" />
+                                <Font name="System Bold" size="14.0" />
                             </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
                         </Label>
-                        <GridPane>
+                        <GridPane prefHeight="51.0" prefWidth="270.0">
                             <columnConstraints>
-                                <ColumnConstraints />
-                                <ColumnConstraints halignment="RIGHT" />
+                                <ColumnConstraints maxWidth="117.0" minWidth="104.0" prefWidth="108.0" />
+                                <ColumnConstraints halignment="RIGHT" maxWidth="80.0" minWidth="18.0" prefWidth="80.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints />
-                                <RowConstraints />
+                                <RowConstraints maxHeight="17.0" minHeight="17.0" prefHeight="17.0" />
+                                <RowConstraints maxHeight="17.0" minHeight="17.0" prefHeight="17.0" />
                                 <RowConstraints />
                             </rowConstraints>
                             <children>
                                 <Label text="Creation date" GridPane.rowIndex="1" />
                                 <Label text="File format version" GridPane.rowIndex="2" />
-                                <Label fx:id="creationDate" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label fx:id="creationDate" prefHeight="17.0" prefWidth="31.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Label fx:id="fileFormatVersion" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="GameId" />
                                 <Label fx:id="game" text="Label" GridPane.columnIndex="1" />
@@ -147,6 +169,12 @@
                     </children>
                 </VBox>
             </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
         </VBox>
     </children>
 </GridPane>
