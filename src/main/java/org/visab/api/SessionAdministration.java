@@ -73,6 +73,20 @@ public class SessionAdministration {
     }
 
     /**
+     * Removes a session status entirely from the list.
+     * 
+     * @param sessionId the ID of the session that shall be removed.
+     */
+    public void removeByUUID(UUID sessionId) {
+        for (int i = 0; i < statuses.size(); i++) {
+            if (statuses.get(i).getSessionId().equals(sessionId)) {
+                statuses.remove(i);
+                break;
+            }
+        }
+    }
+
+    /**
      * Closes a transmission session and publishes a SessionClosedEvent.
      * 
      * @param sessionId The sessionId of the transmission session to close
