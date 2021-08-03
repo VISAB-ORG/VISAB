@@ -21,7 +21,7 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInfor
 
     @Override
     public void onSessionClosed() {
-        manager.saveFile(file, sessionId.toString());
+        manager.saveFile(file, sessionId.toString(), sessionId);
     }
 
     @Override

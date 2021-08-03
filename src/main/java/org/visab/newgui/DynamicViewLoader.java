@@ -10,6 +10,7 @@ import org.visab.eventbus.IPublisher;
 import org.visab.eventbus.event.VISABFileVisualizedEvent;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.starter.view.DefaultStatisticsView;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.SessionListenerAdministration;
 import org.visab.util.NiceString;
@@ -32,30 +33,31 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             return;
         }
 
+        String viewClassName;
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
         if (mapping == null || mapping.getVisualizer() == null || mapping.getVisualizer().isBlank()) {
             // Load default statistics view
+            viewClassName = DefaultStatisticsView.class.getName();
         } else {
-            var viewClassName = mapping.getVisualizer();
-
-            // Load main view class
-            var viewClass = getViewClass(viewClassName);
-            if (viewClass == null) {
-                logger.error(
-                        NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
-            }
-
-            // Create new scope instance that will be injected in all the view types for
-            // visualization
-            var scope = new VisualizeScope();
-            scope.setFile(file);
-            scope.setLive(false);
-
-            // Resolve the main view
-            var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
-
-            showView(view, "Visualizer View", scope);
+            viewClassName = mapping.getVisualizer();
         }
+
+        // Load main view class
+        var viewClass = getViewClass(viewClassName);
+        if (viewClass == null) {
+            logger.error(NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
+        }
+
+        // Create new scope instance that will be injected in all the view types for
+        // visualization
+        var scope = new VisualizeScope();
+        scope.setFile(file);
+        scope.setLive(false);
+
+        // Resolve the main view
+        var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
+
+        showView(view, "Visualizer View", scope);
     }
 
     public static void loadVisualizer(String game, UUID sessionId) {
@@ -75,8 +77,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             // Load main view class
             var viewClass = getViewClass(viewClassName);
             if (viewClass == null) {
-                logger.error(
-                        NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
+                logger.error(NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
             }
 
             // Create new scope instance that will be injected in all the view types for
@@ -140,8 +141,8 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         try {
             asView = (Class<? extends FxmlView<? extends ViewModel>>) class_;
         } catch (Exception e) {
-            logger.error(NiceString.make(
-                    "Failed to cast {0} to Class<? extends FxmlView<? extends ViewModel>>.", viewClassName));
+            logger.error(NiceString.make("Failed to cast {0} to Class<? extends FxmlView<? extends ViewModel>>.",
+                    viewClassName));
         }
 
         return asView;

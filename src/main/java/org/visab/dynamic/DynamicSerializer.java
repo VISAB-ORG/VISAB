@@ -120,12 +120,10 @@ public final class DynamicSerializer {
         if (mapping != null && mapping.getFile() != null)
             className = mapping.getFile();
 
-        try {
-            return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (className.isBlank())
             return JSONConvert.deserializeJson(json, DefaultFile.class, JSONConvert.UnforgivingMapper);
-        }
+        else
+            return DynamicSerializer.<IVISABFile>tryDeserialize(className, json);
     }
 
     /**
