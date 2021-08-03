@@ -184,7 +184,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openNewHelp() {
         if (openNewHelp == null) {
             openNewHelp = runnableCommand(() -> {
-                dialogHelper.showView(HelpView.class, "Help", true);
+                dialogHelper.showView(HelpView.class, "Help", false);
             });
         }
 
