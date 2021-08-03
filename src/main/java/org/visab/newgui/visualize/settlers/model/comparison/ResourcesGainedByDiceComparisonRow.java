@@ -34,7 +34,7 @@ public class ResourcesGainedByDiceComparisonRow extends SettlersComparisonRowBas
 
         var playerData = new HashMap<String, List<StatisticsDataStructure>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, SettlersImplicator.accumulatedResourcesGaintPerTurn(name, file));
+            playerData.put(name, SettlersImplicator.accumulatedResourcesGainedPerTurn(name, file));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {

@@ -12,9 +12,11 @@ import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
+import org.visab.newgui.visualize.settlers.model.SettlersImplicator.ResourceType;
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
+import org.visab.newgui.visualize.settlers.model.comparison.SingleResourcesGainedComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
 
 import de.saxsys.mvvmfx.InjectScope;
@@ -59,6 +61,12 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private ObservableList<ComparisonRowBase<?>> detailedStatistics;
 
+    private Map <String, Series<Integer, Number>> detailedStatisticsSeries;
+
+    private Command detailedStatsChartCommand;
+
+    private ObservableList<Series<Integer, Number>> playerDetailedStatisticsSeries = FXCollections.observableArrayList();
+
     public StringProperty yLabelProperty() {
         return yLabel;
     }
@@ -67,6 +75,9 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         return playerStatsSeries;
     }
 
+    public ObservableList<Series<Integer, Number>> getPlayerDetailedStatisticsSeries() {
+        return playerDetailedStatisticsSeries;
+    }
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
     }
@@ -92,6 +103,24 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
             });
         }
         return playerStatsChartCommand;
+    }
+
+    public Command detailedStatisticsChartCommand() {
+        if (detailedStatsChartCommand == null) {
+            detailedStatsChartCommand = runnableCommand(() -> {
+                var selectedRow = selectedRowProperty.get();
+                if (selectedRow != null && selectedRow != graphComparisonRow) {
+                    selectedRow.updateSeries(file);
+                    playerDetailedStatisticsSeries.clear();
+                    playerDetailedStatisticsSeries.addAll(selectedRow.getPlayerSeries().values());
+
+                    yLabel.set(selectedRow.getRowDescription());
+
+                    graphComparisonRow = selectedRow;
+                }
+            });
+        }
+        return detailedStatsChartCommand;
     }
 
     /**
@@ -137,7 +166,11 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
         // Initialize detailed statistics
         detailedStatistics = FXCollections.observableArrayList();
-        detailedStatistics.add(new VictoryPointsComparisonRow());
+        detailedStatistics.add(new SingleResourcesGainedComparisonRow(ResourceType.Brick));
+        detailedStatistics.add(new SingleResourcesGainedComparisonRow(ResourceType.Sheep));
+        detailedStatistics.add(new SingleResourcesGainedComparisonRow(ResourceType.Stone));
+        detailedStatistics.add(new SingleResourcesGainedComparisonRow(ResourceType.Wheat));
+        detailedStatistics.add(new SingleResourcesGainedComparisonRow(ResourceType.Wood));
 
         // Initialize plan usages
         planUsages = new HashMap<>();
@@ -152,6 +185,12 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         for (String name : playerNames) {
             var series = new Series<Integer, Number>();
             comparisonStatisticsSeries.put(name, series);
+        }
+
+        detailedStatisticsSeries = new HashMap<>();
+        for (String name : playerNames) {
+            var series = new Series<Integer, Number>();
+            detailedStatisticsSeries.put(name, series);
         }
     }
 
