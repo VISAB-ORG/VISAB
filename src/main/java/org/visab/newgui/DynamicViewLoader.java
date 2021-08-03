@@ -45,7 +45,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         // Load main view class
         var viewClass = getViewClass(viewClassName);
         if (viewClass == null) {
-            logger.error(NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
+            logger.error(NiceString.make("Failed to load Visualizer View for for game {0}.", game));
         }
 
         // Create new scope instance that will be injected in all the view types for
@@ -66,36 +66,35 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
             loadVisualizer(game, file);
             return;
+        } else if (!(listener instanceof ILiveViewable<?>)) {
+            loadVisualizer(game, listener.getCurrentFile());
+            return;
         }
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
-        if (mapping == null || mapping.getVisualizer() == null || mapping.getVisualizer().isBlank()) {
-            // Load default statistics view
-        } else {
-            var viewClassName = mapping.getVisualizer();
+        var viewClassName = mapping.getVisualizer();
 
-            // Load main view class
-            var viewClass = getViewClass(viewClassName);
-            if (viewClass == null) {
-                logger.error(NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
-            }
-
-            // Create new scope instance that will be injected in all the view types for
-            // visualization
-            var scope = new VisualizeScope();
-            if (listener instanceof ILiveViewable<?>) {
-                var asLiveViewable = (ILiveViewable<?>) listener;
-                scope.setSessionListener(asLiveViewable);
-                scope.setLive(true);
-            } else {
-                logger.info(NiceString.make("Listener for game {0} did not implement ILiveViewable.", game));
-            }
-
-            // Resolve the main view
-            var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
-
-            showView(view, "Visualizer View", scope);
+        // Load main view class
+        var viewClass = getViewClass(viewClassName);
+        if (viewClass == null) {
+            logger.error(NiceString.make("Failed to load Visualizer View for for game {0}. Skipping it.", game));
         }
+
+        // Create new scope instance that will be injected in all the view types for
+        // visualization
+        var scope = new VisualizeScope();
+        if (listener instanceof ILiveViewable<?>) {
+            var asLiveViewable = (ILiveViewable<?>) listener;
+            scope.setSessionListener(asLiveViewable);
+            scope.setLive(true);
+        } else {
+            logger.info(NiceString.make("Listener for game {0} did not implement ILiveViewable.", game));
+        }
+
+        // Resolve the main view
+        var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
+
+        showView(view, "Visualizer View", scope);
     }
 
     /**
