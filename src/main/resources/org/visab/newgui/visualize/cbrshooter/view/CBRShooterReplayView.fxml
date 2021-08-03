@@ -148,10 +148,7 @@
             <HBox GridPane.rowIndex="3">
                <children>
                   <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" onAction="#visualizeWeapon" selected="true" />
-                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../img/weapon.png" />
-                     </image>
+                  <ImageView fx:id="weaponIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Weapon" />
                </children>
@@ -159,10 +156,7 @@
             <HBox GridPane.rowIndex="4">
                <children>
                   <CheckBox fx:id="checkBoxAmmuItem" mnemonicParsing="false" onAction="#visualizeAmmuItem" selected="true" />
-                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../img/ammuContainer.png" />
-                     </image>
+                  <ImageView fx:id="ammuIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Ammunition" />
                </children>
@@ -170,10 +164,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
                <children>
                   <CheckBox fx:id="checkBoxHealthItem" mnemonicParsing="false" onAction="#visualizeHealthItem" selected="true" />
-                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../img/healthContainer.png" />
-                     </image>
+                  <ImageView fx:id="healthIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Health Item" />
                </children>

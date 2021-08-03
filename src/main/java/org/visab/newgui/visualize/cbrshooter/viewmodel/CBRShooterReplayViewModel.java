@@ -524,21 +524,27 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         map.setViewOrder(1);
 
         // First add the fixed items to the replay view
-        ImageView healthItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "healthContainer.png"));
+        ImageView healthItem = new ImageView(
+                new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health"))));
         healthItem.setX(panePositioning.getX());
         healthItem.setY(panePositioning.getY());
         healthItem.setFitHeight(16);
         healthItem.setFitWidth(16);
         healthItem.setVisible(false);
 
-        ImageView ammuItem = new ImageView(new Image(ConfigManager.IMAGE_PATH + "ammuContainer.png"));
+        ImageView ammuItem = new ImageView(
+                new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("WeaponCrate"))));
         ammuItem.setX(panePositioning.getX());
         ammuItem.setY(panePositioning.getY());
         ammuItem.setFitHeight(16);
         ammuItem.setFitWidth(16);
         ammuItem.setVisible(false);
 
-        ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "weapon.png"));
+        ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "/weapon.png"));
+        // --- This somehow does not work yet ---
+        // ImageView weapon = new ImageView(
+        // new Image(new
+        // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1"))));
         weapon.setX(panePositioning.getX());
         weapon.setY(panePositioning.getY());
         weapon.setFitHeight(16);
@@ -774,6 +780,21 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setAmmuCoordsProperty(SimpleStringProperty ammuCoordsProperty) {
         this.ammuCoordsProperty = ammuCoordsProperty;
+    }
+
+    public Image getWeaponIcon() {
+        return new Image(ConfigManager.IMAGE_PATH + "/weapon.png");
+        // Analogous to map visuals does not work yet
+        // return new Image(new
+        // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
+    }
+
+    public Image getAmmuIcon() {
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("WeaponCrate")));
+    }
+
+    public Image getHealthIcon() {
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health")));
     }
 
     @Override

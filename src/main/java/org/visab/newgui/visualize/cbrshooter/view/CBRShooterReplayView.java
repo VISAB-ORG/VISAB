@@ -83,6 +83,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private Image pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
     private Image playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
 
+    @FXML
+    private ImageView weaponIcon;
+
+    @FXML
+    private ImageView healthIcon;
+
+    @FXML
+    private ImageView ammuIcon;
+
     private ImageView playImageView = new ImageView(playImage);
     private ImageView pauseImageView = new ImageView(pauseImage);
 
@@ -94,6 +103,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
         playerVisualsTable.setItems(viewModel.getPlayerVisualsRows());
+
+        weaponIcon.setImage(viewModel.getWeaponIcon());
+        ammuIcon.setImage(viewModel.getAmmuIcon());
+        healthIcon.setImage(viewModel.getHealthIcon());
 
         totalTimeValueLabel.textProperty().bindBidirectional(viewModel.getTotalTimeProperty());
         roundValueLabel.textProperty().bindBidirectional(viewModel.getRoundProperty());
