@@ -176,6 +176,8 @@
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
+                           <GridPane fx:id="sessionGrid">
+                           </GridPane>
                      <padding>
                         <Insets right="50.0" />
                      </padding>
