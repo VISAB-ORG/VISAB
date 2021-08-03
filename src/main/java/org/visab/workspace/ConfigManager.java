@@ -190,14 +190,11 @@ public class ConfigManager {
 
     /**
      * Syntactic sugar to wrap the access on the settings object that also provides
-     * detailed logging information according to the changes made and a validation
-     * check.
+     * detailed logging information according to the changes made.
      * 
      * @param games The new allowed games.
      */
-    public boolean updateAllowedGames(ArrayList<String> games) {
-        boolean settingsHaveChanged = false;
-
+    public void updateAllowedGames(ArrayList<String> games) {
         // Check if current version of allowed games contains a new game
         for (String game : games) {
             if (!this.settings.getAllowedGames().contains(game)) {
@@ -206,7 +203,6 @@ public class ConfigManager {
                 map.put(game, 10);
                 updateSessionTimeout(map);
                 logger.info("Added session timeout: 10, for new game: " + game);
-                settingsHaveChanged = true;
             }
         }
 
@@ -219,26 +215,30 @@ public class ConfigManager {
                 map.remove(game);
                 updateSessionTimeout(map);
                 logger.info("Removed session timeout for game: " + game);
-                settingsHaveChanged = true;
             }
         }
 
         // Renaming a game will result in both logs to be printed
         this.settings.setAllowedGames(games);
-
-        return settingsHaveChanged;
     }
 
     /**
-     * Updates the timeouts from the games.
+     * Updates the timeouts from the games. If a single timeout provided is <= 0,
+     * the timeouts aren't updated.
      * 
      * @param timeouts The timeouts Map.
+     * @return True if timeouts were updated
      */
-    public void updateSessionTimeout(HashMap<String, Integer> timeouts) {
-        // TODO: Needs validation so timeouts > or >= 0
+    public boolean updateSessionTimeout(HashMap<String, Integer> timeouts) {
+        for (var entry : timeouts.entrySet()) {
+            if (entry.getValue() <= 0)
+                return false;
+        }
 
         logger.info("Updated the session timeouts");
         this.settings.setSessionTimeout(timeouts);
+
+        return true;
     }
 
     /**
