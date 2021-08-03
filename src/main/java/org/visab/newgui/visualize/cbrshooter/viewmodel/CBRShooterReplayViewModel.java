@@ -112,6 +112,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Used for static indication of the layout of the drawpane for the replay view
     private Vector2 panePositioning = new Vector2();
     private Vector2 paneSize = new Vector2();
+    private static final Vector2 STANDARD_ICON_VECTOR = new Vector2(16, 16);
 
     private CoordinateHelper coordinateHelper;
 
@@ -519,11 +520,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // Map should always be contained in the elements exactly as it is
         ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
-
-        map.setX(panePositioning.getX());
-        map.setY(panePositioning.getY());
-        map.setFitHeight(paneSize.getY());
-        map.setFitWidth(paneSize.getX());
+        UiHelper.adjustVisual(map, panePositioning, paneSize);
 
         // Putting one level higher, so it is always in the background
         map.setViewOrder(1);
@@ -531,30 +528,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // First add the fixed items to the replay view
         ImageView healthItem = new ImageView(
                 new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health"))));
-        healthItem.setX(panePositioning.getX());
-        healthItem.setY(panePositioning.getY());
-        healthItem.setFitHeight(16);
-        healthItem.setFitWidth(16);
-        healthItem.setVisible(false);
+        UiHelper.adjustVisual(healthItem, false, panePositioning, STANDARD_ICON_VECTOR);
 
         ImageView ammuItem = new ImageView(
                 new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("WeaponCrate"))));
-        ammuItem.setX(panePositioning.getX());
-        ammuItem.setY(panePositioning.getY());
-        ammuItem.setFitHeight(16);
-        ammuItem.setFitWidth(16);
-        ammuItem.setVisible(false);
+        UiHelper.adjustVisual(ammuItem, false, panePositioning, STANDARD_ICON_VECTOR);
 
         ImageView weapon = new ImageView(new Image(ConfigManager.IMAGE_PATH + "/weapon.png"));
         // --- This somehow does not work yet ---
         // ImageView weapon = new ImageView(
         // new Image(new
         // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1"))));
-        weapon.setX(panePositioning.getX());
-        weapon.setY(panePositioning.getY());
-        weapon.setFitHeight(16);
-        weapon.setFitWidth(16);
-        weapon.setVisible(false);
+        UiHelper.adjustVisual(weapon, false, panePositioning, STANDARD_ICON_VECTOR);
 
         // True because items should be visible as soon as they appear
         mapElements.put("map", new Pair<Node, Boolean>(map, true));
@@ -565,25 +550,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
             ImageView playerIcon = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerIcon());
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
-            playerIcon.setX(playerPosition.getX());
-            playerIcon.setY(playerPosition.getY());
-            playerIcon.setFitHeight(16);
-            playerIcon.setFitWidth(16);
+            UiHelper.adjustVisual(playerIcon, playerPosition, STANDARD_ICON_VECTOR);
 
             ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
-            playerDeath.setX(panePositioning.getX());
-            playerDeath.setY(panePositioning.getY());
-            playerDeath.setFitHeight(16);
-            playerDeath.setFitWidth(16);
-            playerDeath.setVisible(false);
+            UiHelper.adjustVisual(playerDeath, false, panePositioning, STANDARD_ICON_VECTOR);
 
             ImageView playerPlanChange = new ImageView(
                     playerVisualsMap.get(playerInfo.getName()).getPlayerPlanChange());
-            playerPlanChange.setX(panePositioning.getX());
-            playerPlanChange.setY(panePositioning.getY());
-            playerPlanChange.setFitHeight(16);
-            playerPlanChange.setFitWidth(16);
-            playerPlanChange.setVisible(false);
+            UiHelper.adjustVisual(playerPlanChange, false, panePositioning, STANDARD_ICON_VECTOR);
 
             Path playerPath = new Path();
             playerPath.setStroke(playerVisualsMap.get(playerInfo.getName()).getPlayerColor());
@@ -658,8 +632,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                 selectedFrame = data.size() - 1;
                 updateLoop.interrupt();
             } else {
+                // While loops necessary to ensure increments / decrements of one
                 if (frame > selectedFrame) {
-                    // While loop necessary to ensure increments of one
                     while (frame > selectedFrame) {
                         selectedFrame = Math.min(selectedFrame + 1, data.size() - 1);
                         updateEverythingByFrame();
@@ -684,50 +658,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return visualizeMapElement;
     }
 
-    // --- Property getters and setters ---
-
-    public SimpleIntegerProperty getFrameSliderMaxProperty() {
-        return frameSliderMaxProperty;
-    }
-
     public int getSelectedFrame() {
         return selectedFrame;
-    }
-
-    public void setFrameSliderProperty(SimpleIntegerProperty frameSliderMaxProperty) {
-        this.frameSliderMaxProperty = frameSliderMaxProperty;
-    }
-
-    public SimpleIntegerProperty getFrameSliderTickUnitProperty() {
-        return frameSliderTickUnitProperty;
-    }
-
-    public void setFrameSliderTickUnitProperty(SimpleIntegerProperty frameSliderTickUnitProperty) {
-        this.frameSliderTickUnitProperty = frameSliderTickUnitProperty;
-    }
-
-    public SimpleDoubleProperty getFrameSliderValueProperty() {
-        return frameSliderValueProperty;
-    }
-
-    public void setFrameSliderValueProperty(SimpleDoubleProperty frameSliderValueProperty) {
-        this.frameSliderValueProperty = frameSliderValueProperty;
-    }
-
-    public ObservableList<PlayerDataRow> getCurrentPlayerStats() {
-        return currentPlayerStats;
-    }
-
-    public void setCurrentPlayerStats(ObservableList<PlayerDataRow> currentPlayerStats) {
-        this.currentPlayerStats = currentPlayerStats;
-    }
-
-    public ObservableList<PlayerVisualsRow> getPlayerVisualsRows() {
-        return playerVisualsRows;
-    }
-
-    public void setPlayerVisualsRows(ObservableList<PlayerVisualsRow> playerVisualsRows) {
-        this.playerVisualsRows = playerVisualsRows;
     }
 
     public ObservableList<Node> getMapElements() {
@@ -739,44 +671,44 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return mapElementsList;
     }
 
-    public SimpleStringProperty getTotalTimeProperty() {
-        return totalTimeProperty;
+    public SimpleIntegerProperty getFrameSliderMaxProperty() {
+        return frameSliderMaxProperty;
     }
 
-    public void setTotalTimeProperty(SimpleStringProperty totalTimeProperty) {
-        this.totalTimeProperty = totalTimeProperty;
+    public SimpleIntegerProperty getFrameSliderTickUnitProperty() {
+        return frameSliderTickUnitProperty;
+    }
+
+    public SimpleDoubleProperty getFrameSliderValueProperty() {
+        return frameSliderValueProperty;
+    }
+
+    public ObservableList<PlayerDataRow> getCurrentPlayerStats() {
+        return currentPlayerStats;
+    }
+
+    public ObservableList<PlayerVisualsRow> getPlayerVisualsRows() {
+        return playerVisualsRows;
+    }
+
+    public SimpleStringProperty getTotalTimeProperty() {
+        return totalTimeProperty;
     }
 
     public SimpleStringProperty getRoundTimeProperty() {
         return roundTimeProperty;
     }
 
-    public void setRoundTimeProperty(SimpleStringProperty roundTimeProperty) {
-        this.roundTimeProperty = roundTimeProperty;
-    }
-
     public SimpleStringProperty getRoundProperty() {
         return roundProperty;
-    }
-
-    public void setRoundProperty(SimpleStringProperty roundProperty) {
-        this.roundProperty = roundProperty;
     }
 
     public SimpleStringProperty getHealthCoordsProperty() {
         return healthCoordsProperty;
     }
 
-    public void setHealthCoordsProperty(SimpleStringProperty healthCoordsProperty) {
-        this.healthCoordsProperty = healthCoordsProperty;
-    }
-
     public SimpleStringProperty getWeaponCoordsProperty() {
         return weaponCoordsProperty;
-    }
-
-    public void setWeaponCoordsProperty(SimpleStringProperty weaponCoordsProperty) {
-        this.weaponCoordsProperty = weaponCoordsProperty;
     }
 
     public SimpleStringProperty getAmmuCoordsProperty() {
@@ -791,16 +723,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return drawPanePositionXProperty;
     }
 
-    public void setDrawPanePositionXProperty(SimpleDoubleProperty drawPanePositionXProperty) {
-        this.drawPanePositionXProperty = drawPanePositionXProperty;
-    }
-
     public SimpleDoubleProperty getDrawPanePositionYProperty() {
         return drawPanePositionYProperty;
-    }
-
-    public void setDrawPanePositionYProperty(SimpleDoubleProperty drawPanePositionYProperty) {
-        this.drawPanePositionYProperty = drawPanePositionYProperty;
     }
 
     public Image getWeaponIcon() {
