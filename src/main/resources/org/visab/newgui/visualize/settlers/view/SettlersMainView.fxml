@@ -12,9 +12,6 @@
         <Tab text="Statistics">
             <fx:include source="SettlersStatisticsView.fxml"></fx:include>
         </Tab>
-        <Tab text="Detail Statistics">
-            <fx:include source="SettlersStatisticsDetailView.fxml"></fx:include>
-        </Tab>
         <Tab text="Replay"></Tab>
     </tabs>
 </TabPane>

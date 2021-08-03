@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
+import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
@@ -18,6 +19,7 @@ import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDic
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.SingleResourcesGainedComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
+import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -65,6 +67,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private Command detailedStatsChartCommand;
 
+    private Command showDetailsCommand;
+
     private ObservableList<Series<Integer, Number>> playerDetailedStatisticsSeries = FXCollections.observableArrayList();
 
     public StringProperty yLabelProperty() {
@@ -103,6 +107,16 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
             });
         }
         return playerStatsChartCommand;
+    }
+
+    public Command showDetailsCommand() {
+        if (showDetailsCommand == null) {
+            showDetailsCommand = runnableCommand(() -> {
+                var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics", true);
+                dialogHelper.showView(viewConfig, scope);
+            });
+        }
+        return showDetailsCommand;
     }
 
     public Command detailedStatisticsChartCommand() {

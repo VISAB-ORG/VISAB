@@ -39,6 +39,11 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     LineChart<Integer, Number> playerStats;
 
     @FXML
+    private void handleShowDetailsButtonAction() {
+        viewModel.showDetailsCommand().execute();
+    }
+
+    @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
     }
