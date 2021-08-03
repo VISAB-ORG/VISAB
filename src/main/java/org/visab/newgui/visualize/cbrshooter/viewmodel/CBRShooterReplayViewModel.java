@@ -466,6 +466,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                 if (i == frameBasedStats.getPlayers().size() - 1) {
                     pathElementsDrawnPerRound = 0;
                 }
+
             }
             boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
@@ -480,32 +481,27 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     playerDeath.setVisible(playerDeathShallBeVisible);
                 }
             }
-            // latestDeathsOfPlayers.put(playerInfo.getName(),
-            // playerInfo.getStatistics().getDeaths());
-            //
-            // // Decide if a plan change must be visualized on the map
-            // if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
-            // ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName()
-            // + "_playerPlanChange")
-            // .getKey();
-            // if
-            // (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan()))
-            // {
-            //
-            // if (playerPlanChange.getX() != playerPosition.getX()
-            // && playerPlanChange.getY() != playerPosition.getY()) {
-            // playerPlanChange.setX(playerPosition.getX());
-            // playerPlanChange.setY(playerPosition.getY());
-            // }
-            // }
-            // boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() +
-            // "_playerPlanChange")
-            // .getValue();
-            // playerPlanChange.setVisible(planChangeShallBeVisible);
-            // mapElements.put(playerInfo.getName() + "_playerPlanChange",
-            // new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
-            // }
-            // latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
+            latestDeathsOfPlayers.put(playerInfo.getName(), playerInfo.getStatistics().getDeaths());
+
+            // Decide if a plan change must be visualized on the map
+            if (latestPlansOfPlayers.get(playerInfo.getName()) != null) {
+                ImageView playerPlanChange = (ImageView) mapElements.get(playerInfo.getName() + "_playerPlanChange")
+                        .getKey();
+                if (!latestPlansOfPlayers.get(playerInfo.getName()).equals(playerInfo.getPlan())) {
+
+                    if (playerPlanChange.getX() != playerPosition.getX()
+                            && playerPlanChange.getY() != playerPosition.getY()) {
+                        playerPlanChange.setX(playerPosition.getX());
+                        playerPlanChange.setY(playerPosition.getY());
+                    }
+                }
+                boolean planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange")
+                        .getValue();
+                playerPlanChange.setVisible(planChangeShallBeVisible);
+                mapElements.put(playerInfo.getName() + "_playerPlanChange",
+                        new Pair<Node, Boolean>(playerPlanChange, planChangeShallBeVisible));
+            }
+            latestPlansOfPlayers.put(playerInfo.getName(), playerInfo.getPlan());
 
             mapElements.put(playerInfo.getName() + "_playerIcon",
                     new Pair<Node, Boolean>(playerIcon, iconShallBeVisible));
@@ -515,26 +511,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         roundCounter = frameBasedStats.getRound();
     }
 
-    private void clearPathsBySelectedFrame() {
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
-            int pathLength = ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements()
-                    .size();
-            if (selectedFrame < pathLength) {
-                for (int i = pathLength - 1; i >= selectedFrame; i--) {
-                    ((Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey()).getElements().remove(i);
-                }
-            }
-        }
-    }
-
     /**
      * Initializes all map elements once the replay view is loaded.
      */
     private void initializeMapElements() {
 
         // Map should always be contained in the elements exactly as it is
-        // ImageView map = VISABUtil.greyScaleImage(new Image(ConfigManager.IMAGE_PATH +
-        // "fps_map.png"));
         ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
 
         map.setX(panePositioning.getX());
