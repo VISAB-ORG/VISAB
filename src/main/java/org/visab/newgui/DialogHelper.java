@@ -158,6 +158,10 @@ public class DialogHelper {
         return stage;
     }
 
+    public void showView(ShowViewConfiguration config) {
+        // TODO: Stuff
+    }
+
     /**
      * TODO: Add parameters for blocking or not blocking etc. Note: same method
      * existent in DynamicViewLoader.
@@ -177,6 +181,16 @@ public class DialogHelper {
         scope.setStage(stage);
         stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
         stage.show();
+    }
+
+    public void showView(ShowViewConfiguration configuration) {
+        var stage = new Stage();
+        stage.setTitle(configuration.getWindowTitle());
+        
+        if (configuration.getWidth() != 0)
+            stage.setMinWidth(configuration.getWidth());
+
+        
     }
 
     public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
