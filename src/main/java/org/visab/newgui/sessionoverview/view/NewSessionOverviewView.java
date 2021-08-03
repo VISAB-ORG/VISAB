@@ -31,6 +31,9 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     private Thread updateLoop;
 
     @FXML
+    private AnchorPane rootPane;
+
+    @FXML
     private TextField webApiAdressLabel;
 
     @FXML
@@ -58,7 +61,6 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
 
     @FXML
     public void createDummySessions() {
-
         stopUpdateLoop();
         sessionGrid.getChildren().clear();
         anchorPane.getChildren().clear();
@@ -124,6 +126,12 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // TODO: Check if there is another way that does not violate MVVM rules
+        viewModel.getScope().registerOnStageClosing(Consumer -> {
+            if (updateLoop != null) {
+                stopUpdateLoop();
+            }
+        });
         anchorPane = new AnchorPane();
 
         sessionGrid.setPadding(new Insets(10));

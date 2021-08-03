@@ -151,4 +151,8 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
     public SimpleStringProperty getWebApiAdressProperty() {
         return webApiAdressProperty;
     }
+
+    public GenericScope getScope() {
+        return scope;
+    }
 }
