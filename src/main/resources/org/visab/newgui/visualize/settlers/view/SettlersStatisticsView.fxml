@@ -60,7 +60,11 @@
             </bottom>
         </BorderPane>
         
+<<<<<<< HEAD
         <Button fx:id="showDetailsButton" onAction="#handleShowDetailsButtonAction" text="Show Detail" />
+=======
+        <Button fx:id="viewDetailsButton" text="View Detail" />
+>>>>>>> de3df2386004bf49e0fa1620926e96a2f1fd506e
         <LineChart fx:id="playerStats" title="Comparison Graph" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <xAxis>
                 <NumberAxis label="Round" side="bottom" />
