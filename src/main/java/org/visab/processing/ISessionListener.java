@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 import org.visab.globalmodel.IMetaInformation;
+import org.visab.globalmodel.IVISABFile;
 
 /**
  * The ISessionListener interface, that all SessionListeners have to implement.
@@ -46,6 +47,11 @@ public interface ISessionListener {
      * @return True if still listening
      */
     boolean isActive();
+
+    /**
+     * Returns the current (likely unfinished) IVISABFile.
+     */
+    IVISABFile getCurrentFile();
 
     /**
      * Initializes the SessionListener with the meta information for the session.

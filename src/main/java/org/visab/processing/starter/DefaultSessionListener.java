@@ -2,6 +2,7 @@ package org.visab.processing.starter;
 
 import java.util.UUID;
 
+import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.globalmodel.starter.DefaultMetaInformation;
 import org.visab.globalmodel.starter.DefaultStatistics;
@@ -33,6 +34,11 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInfor
     @Override
     public void processStatistics(DefaultStatistics statistics) {
         file.getStatistics().add(statistics.getJson());
+    }
+
+    @Override
+    public IVISABFile getCurrentFile() {
+        return file;
     }
 
 }
