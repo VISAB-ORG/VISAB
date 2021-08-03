@@ -33,7 +33,7 @@
           </TableColumn>
         </columns>
       </TableView>
-      <Button fx:id="chartButton" mnemonicParsing="false" text="show in chart" GridPane.columnIndex="1" />
+      <Button fx:id="chartButton" onAction="#handleChartButtonAction" mnemonicParsing="false" text="show in chart" GridPane.columnIndex="1" />
       <LineChart fx:id="detailedPlayerStatistics" title="Comparison Graph" GridPane.columnIndex="2">
         <xAxis>
           <NumberAxis label="Round" side="bottom" />

@@ -39,7 +39,7 @@ public final class SettlersImplicator {
         return victoryPointsPerTurnPerPlayer;
     }
     
-    public static ArrayList<StatisticsDataStructure> accumulatedResourcesGaintPerTurn(String player, SettlersFile file) {
+    public static ArrayList<StatisticsDataStructure> accumulatedResourcesGainedPerTurn(String player, SettlersFile file) {
         var resourcesGaintPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
         var countResourcesSpent = 0;
         var turn = 0;
@@ -69,6 +69,51 @@ public final class SettlersImplicator {
         return resourcesGaintPerTurnPerPlaye;
     }
     
+    public static ArrayList<StatisticsDataStructure> accumulatedSingleResourceGainedPerTurn(String player, SettlersFile file,
+            ResourceType resourceType) {
+        var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var countResourcesSpent = 0;
+        var turn = 0;
+        var playerNumber = 0;
+        
+        if (player.contains("Player2")) {
+            playerNumber = 1;
+        }
+
+        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
+        for (int i = 0; i < file.getStatistics().size(); i++) {
+            
+            if (turn < file.getStatistics().get(i).getTurn()) {
+                resourcesGaintPerTurnPerPlayer.add(new StatisticsDataStructure(turn, (double) countResourcesSpent));
+            }
+
+            switch (resourceType) {
+            case Brick:
+                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getBrick();
+                break;
+            case Sheep:
+                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getSheep();
+                break;
+            case Stone:
+                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getStone();
+                break;
+            case Wheat:
+                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWheat();
+                break;
+            case Wood:
+                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWood();
+                break;
+            default:
+                break;
+            }
+            
+            turn = file.getStatistics().get(i).getTurn();            
+            
+        }
+
+        return resourcesGaintPerTurnPerPlayer;
+    }
+
     public static ArrayList<StatisticsDataStructure> accumulatedResourcesSpentPerTurn(String player, SettlersFile file) {
         var resourcesSpentPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
         var countResourcesSpent = 0;
@@ -165,6 +210,10 @@ public final class SettlersImplicator {
 
     public enum BuildingType {
         Town, Village, Road
+    }
+
+    public enum ResourceType {
+        Brick, Sheep, Stone, Wheat, Wood
     }
 
     public static final Map<String, PlayerResources> concludeResourcesGainedByDice(SettlersFile file) {
