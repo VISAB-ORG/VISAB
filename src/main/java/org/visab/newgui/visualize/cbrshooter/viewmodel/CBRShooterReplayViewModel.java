@@ -520,7 +520,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Map should always be contained in the elements exactly as it is
         ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
 
-        System.out.println("Map image positon x: " + panePositioning.getX() + ", y: " + panePositioning.getY());
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());
         map.setFitHeight(paneSize.getY());
