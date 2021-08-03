@@ -97,6 +97,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Necessary to decide which elements shall be "resetted" for each round
     private int roundCounter;
 
+    private int pathElementsDrawnPerRound;
+
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
@@ -127,6 +129,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Default update interval of 0.1 seconds
         updateInterval = 100;
         selectedFrame = 0;
+        pathElementsDrawnPerRound = 0;
 
         // TODO: Might not be to hard to have this work live aswell
         // Load data from the scopes file which is initialized after VISUALIZE
@@ -428,7 +431,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             mapElements.get("weapon").getKey().setVisible(false);
         }
 
-        for (PlayerInformation playerInfo : frameBasedStats.getPlayers()) {
+        for (int i = 0; i < frameBasedStats.getPlayers().size(); i++) {
+            PlayerInformation playerInfo = frameBasedStats.getPlayers().get(i);
             ImageView playerIcon = (ImageView) mapElements.get(playerInfo.getName() + "_playerIcon").getKey();
             Vector2 playerPosition = coordinateHelper.translateAccordingToMap(playerInfo.getPosition());
             playerIcon.setX(playerPosition.getX());
@@ -438,13 +442,30 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
             Path playerPath = (Path) mapElements.get(playerInfo.getName() + "_playerPath").getKey();
 
+            // Simply add a new point for the path
             if (roundCounter == frameBasedStats.getRound()) {
+                // System.out.println("Same round as before");
                 playerPath.getElements().add(new LineTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                         playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
-            } else {
+                pathElementsDrawnPerRound++;
+                // Remove path elements because the slider got moved backwards
+            }
+            // Remove path elements because the slider got moved backwards
+            else if (playerPath.getElements().size() > pathElementsDrawnPerRound) {
+                System.out.println("Path elements need to be reduced");
+                for (int j = playerPath.getElements().size() - 1; j >= 0; j--) {
+                    playerPath.getElements().remove(i);
+                }
+            }
+            // Clear the whole path based on round change
+            else {
+                // System.out.println("Path elements need to be fully cleared");
                 playerPath.getElements().clear();
                 playerPath.getElements().add(new MoveTo(playerPosition.getX() + (playerIcon.getFitWidth() / 2),
                         playerPosition.getY() + (playerIcon.getFitHeight() / 2)));
+                if (i == frameBasedStats.getPlayers().size() - 1) {
+                    pathElementsDrawnPerRound = 0;
+                }
             }
             boolean pathShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPath").getValue();
             playerPath.setVisible(pathShallBeVisible);
@@ -599,32 +620,27 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             updateLoop = new Thread() {
                 @Override
                 public void run() {
-
-                    // Iterate over frames and constantly update data
-                    for (int i = selectedFrame; i < data.size(); i++) {
-                        if (!this.isInterrupted()) {
-                            // Always hold the update UI information
-                            // This way is necessary, because UI changes are not allowed from another thread
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateCurrentGameStatsByFrame();
-                                    updatePlayerTableByFrame();
-                                    updateMapElements();
-                                    setSelectedFrame(selectedFrame + 1).execute();
-                                    frameSliderValueProperty.set(selectedFrame);
-                                }
-                            });
-                            // Sleeping time depends on the velocity sliders value
-                            try {
-                                sleep((long) updateInterval);
-                            } catch (InterruptedException e) {
-                                // Exception is thrown when the stop button interrupts this thread
-                                Thread.currentThread().interrupt();
+                    while (!this.isInterrupted()) {
+                        // Always hold the update UI information
+                        // This way is necessary, because UI changes are not allowed from another thread
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateCurrentGameStatsByFrame();
+                                updatePlayerTableByFrame();
+                                updateMapElements();
+                                setSelectedFrame(selectedFrame + 1).execute();
+                                frameSliderValueProperty.set(selectedFrame);
                             }
-                        } else {
-                            break;
+                        });
+                        // Sleeping time depends on the velocity sliders value
+                        try {
+                            sleep((long) updateInterval);
+                        } catch (InterruptedException e) {
+                            // Exception is thrown when the stop button interrupts this thread
+                            Thread.currentThread().interrupt();
                         }
+
                     }
                 }
             };
@@ -651,16 +667,27 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Command setSelectedFrame(int frame) {
         setSelectedFrame = runnableCommand(() -> {
-            // While loop forces to update in iterations of one even for big files
-            while (frame > selectedFrame) {
-                if (frame == data.size() - 1) {
-                    break;
+            // Make sure the selectedFrame cannot be out of bounds
+            if (frame > data.size() - 1) {
+                selectedFrame = data.size() - 1;
+                updateLoop.interrupt();
+            } else {
+                if (frame > selectedFrame) {
+                    // While loop necessary to ensure increments of one
+                    while (frame > selectedFrame) {
+                        selectedFrame = Math.min(selectedFrame + 1, data.size() - 1);
+                        updateCurrentGameStatsByFrame();
+                        updatePlayerTableByFrame();
+                        updateMapElements();
+                    }
+                } else {
+                    while (frame < selectedFrame) {
+                        selectedFrame = Math.max(selectedFrame - 1, 0);
+                        updateCurrentGameStatsByFrame();
+                        updatePlayerTableByFrame();
+                        updateMapElements();
+                    }
                 }
-                selectedFrame = Math.min(selectedFrame + 1, data.size() - 1);
-                clearPathsBySelectedFrame();
-                updateCurrentGameStatsByFrame();
-                updatePlayerTableByFrame();
-                updateMapElements();
             }
 
         });
