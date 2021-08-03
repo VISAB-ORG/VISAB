@@ -22,7 +22,6 @@ import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.processing.ILiveViewable;
-import org.visab.util.VISABUtil;
 import org.visab.workspace.Workspace;
 import org.visab.workspace.config.ConfigManager;
 
@@ -195,12 +194,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             ImageView playerDeath = new ImageView(playerVisualsMap.get(playerInfo.getName()).getPlayerDeath());
 
             // Sizing to default icon size
-            playerIcon.setFitHeight(16);
-            playerIcon.setFitWidth(16);
-            playerPlanChange.setFitHeight(16);
-            playerPlanChange.setFitWidth(16);
-            playerDeath.setFitHeight(16);
-            playerDeath.setFitWidth(16);
+            playerIcon.setFitHeight(STANDARD_ICON_VECTOR.getY());
+            playerIcon.setFitWidth(STANDARD_ICON_VECTOR.getX());
+            playerPlanChange.setFitHeight(STANDARD_ICON_VECTOR.getY());
+            playerPlanChange.setFitWidth(STANDARD_ICON_VECTOR.getX());
+            playerDeath.setFitHeight(STANDARD_ICON_VECTOR.getY());
+            playerDeath.setFitWidth(STANDARD_ICON_VECTOR.getX());
 
             PlayerVisualsRow playerVisualsRow = new PlayerVisualsRow(playerInfo.getName(), playerIcon, playerPlanChange,
                     playerDeath, playerColor);
@@ -318,7 +317,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         for (PlayerInformation playerInfo : playerInfos) {
             // Unity Game provides Hex code which has to be translated to a JavaFx color
-            Color playerColor = VISABUtil.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
+            Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerInfo.getName()));
 
             // Get base icons from the game manager which need to be recolored
             // @TODO: Use sent player images by unity
@@ -336,9 +335,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     Workspace.getInstance().getConfigManager().getShooterBaseIconById("playerDeath"));
 
             // Recolor images
-            playerIcon = VISABUtil.recolorImage(playerIcon, playerColor);
-            playerPlanChange = VISABUtil.recolorImage(playerPlanChange, playerColor);
-            playerDeath = VISABUtil.recolorImage(playerDeath, playerColor);
+            playerIcon = UiHelper.recolorImage(playerIcon, playerColor);
+            playerPlanChange = UiHelper.recolorImage(playerPlanChange, playerColor);
+            playerDeath = UiHelper.recolorImage(playerDeath, playerColor);
 
             PlayerVisuals playerVisuals = new PlayerVisuals(playerIcon, playerDeath, playerPlanChange, playerColor);
             playerVisualsMap.put(playerInfo.getName(), playerVisuals);
@@ -471,8 +470,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                     if (data.get(selectedFrame - 1) != null) {
                         var playerDeathPosition = coordinateHelper
                                 .translateAccordingToMap(data.get(selectedFrame - 1).getPlayers().get(i).getPosition());
-                        playerDeath.setX(playerDeathPosition.getX());
-                        playerDeath.setY(playerDeathPosition.getY());
+                        UiHelper.adjustVisual(playerDeath, playerDeathPosition);
                     }
                 }
 
@@ -493,8 +491,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
                     if (playerPlanChange.getX() != playerPosition.getX()
                             && playerPlanChange.getY() != playerPosition.getY()) {
-                        playerPlanChange.setX(playerPosition.getX());
-                        playerPlanChange.setY(playerPosition.getY());
+                    	UiHelper.adjustVisual(playerPlanChange, playerPosition);
                     }
                 }
                 var planChangeShallBeVisible = mapElements.get(playerInfo.getName() + "_playerPlanChange").getValue();
@@ -519,7 +516,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private void initializeMapElements() {
 
         // Map should always be contained in the elements exactly as it is
-        ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
+        ImageView map = UiHelper.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
         UiHelper.adjustVisual(map, panePositioning, paneSize);
 
         // Putting one level higher, so it is always in the background

@@ -66,36 +66,6 @@ public final class VISABUtil {
         return data;
     }
 
-    public static Image recolorImage(Image inputImage, Color newColor) {
-        final double r = newColor.getRed();
-        final double g = newColor.getGreen();
-        final double b = newColor.getBlue();
-        final int w = (int) inputImage.getWidth();
-        final int h = (int) inputImage.getHeight();
-        final WritableImage outputImage = new WritableImage(w, h);
-        final PixelWriter writer = outputImage.getPixelWriter();
-        final PixelReader reader = inputImage.getPixelReader();
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                // Keeping the opacity of every pixel as it is.
-                writer.setColor(x, y, new Color(r, g, b, reader.getColor(x, y).getOpacity()));
-            }
-        }
-        return outputImage;
-    }
-
-    public static ImageView greyScaleImage(Image inputImage) {
-        ColorAdjust monochrome = new ColorAdjust();
-        monochrome.setSaturation(-1);
-        ImageView grayScaledImage = new ImageView(inputImage);
-        grayScaledImage.setEffect(monochrome);
-        return grayScaledImage;
-    }
-
-    public static Color translateHexToRgbColor(String hexCode) {
-        return Color.valueOf(hexCode);
-    }
-
     public enum OS {
         WINDOWS, LINUX, MAC, SOLARIS
     }
