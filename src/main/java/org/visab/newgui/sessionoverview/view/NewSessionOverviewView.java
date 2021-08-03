@@ -11,11 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 
 public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
 
     @FXML
-    private Label webApiAdressLabel;
+    private TextField webApiAdressLabel;
 
     @FXML
     private Label sessionsTotalLabel;
@@ -48,6 +49,8 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        webApiAdressLabel.setEditable(false);
 
         // Bind properties
         webApiAdressLabel.textProperty().bindBidirectional(viewModel.getWebApiAdressProperty());

@@ -47,6 +47,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextField?>
 
 <AnchorPane stylesheets="@../../../../../template_style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.sessionoverview.view.NewSessionOverviewView">
    <children>
@@ -79,11 +80,11 @@
                                 </Label>
                               <HBox prefHeight="0.0" prefWidth="218.0">
                                  <children>
-                                    <Label prefHeight="10.0" prefWidth="93.0" text="Web APi Adress:" />
-                                    <Label fx:id="webApiAdressLabel">
+                                    <Label prefHeight="10.0" prefWidth="93.0" text="Web API Adress:" />
+                                    <TextField fx:id="webApiAdressLabel">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
-                                       </font></Label>
+                                       </font></TextField>
                                  </children>
                               </HBox>
                            </children>
