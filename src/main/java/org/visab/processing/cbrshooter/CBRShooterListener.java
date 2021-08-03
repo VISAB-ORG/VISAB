@@ -65,17 +65,19 @@ public class CBRShooterListener
 
     @Override
     public void onSessionClosed() {
-        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+        if (file.getStatistics().size() > 0) {
+            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-        int mostKills = 0;
-        var playerName = "";
-        for (var player : lastStatistics.getPlayers()) {
-            if (player.getStatistics().getFrags() > mostKills) {
-                playerName = player.getName();
-                mostKills = player.getStatistics().getFrags();
+            int mostKills = 0;
+            var playerName = "";
+            for (var player : lastStatistics.getPlayers()) {
+                if (player.getStatistics().getFrags() > mostKills) {
+                    playerName = player.getName();
+                    mostKills = player.getStatistics().getFrags();
+                }
             }
+            file.setWinner(playerName);
         }
-        file.setWinner(playerName);
 
         manager.saveFile(file, sessionId.toString(), sessionId);
 
