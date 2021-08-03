@@ -80,6 +80,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private SimpleStringProperty healthCoordsProperty = new SimpleStringProperty();
     private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
     private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
+    private SimpleDoubleProperty drawPanePositionXProperty = new SimpleDoubleProperty();
+    private SimpleDoubleProperty drawPanePositionYProperty = new SimpleDoubleProperty();
 
     // Contains color-coded visuals for each player in the game
     private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
@@ -108,7 +110,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private Rectangle mapRectangle;
 
     // Used for static indication of the layout of the drawpane for the replay view
-    private Vector2 panePositioning = new Vector2(41, 143);
+    private Vector2 panePositioning = new Vector2();
     private Vector2 paneSize = new Vector2();
 
     private CoordinateHelper coordinateHelper;
@@ -138,6 +140,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         data = file.getStatistics();
+
+        panePositioning.setX(drawPanePositionXProperty.intValue());
+        panePositioning.setY(drawPanePositionYProperty.intValue());
 
         mapRectangle = file.getMapRectangle();
 
@@ -515,6 +520,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Map should always be contained in the elements exactly as it is
         ImageView map = VISABUtil.greyScaleImage(new Image(new ByteArrayInputStream(file.getImages().getMap())));
 
+        System.out.println("Map image positon x: " + panePositioning.getX() + ", y: " + panePositioning.getY());
         map.setX(panePositioning.getX());
         map.setY(panePositioning.getY());
         map.setFitHeight(paneSize.getY());
@@ -780,6 +786,22 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public void setAmmuCoordsProperty(SimpleStringProperty ammuCoordsProperty) {
         this.ammuCoordsProperty = ammuCoordsProperty;
+    }
+
+    public SimpleDoubleProperty getDrawPanePositionXProperty() {
+        return drawPanePositionXProperty;
+    }
+
+    public void setDrawPanePositionXProperty(SimpleDoubleProperty drawPanePositionXProperty) {
+        this.drawPanePositionXProperty = drawPanePositionXProperty;
+    }
+
+    public SimpleDoubleProperty getDrawPanePositionYProperty() {
+        return drawPanePositionYProperty;
+    }
+
+    public void setDrawPanePositionYProperty(SimpleDoubleProperty drawPanePositionYProperty) {
+        this.drawPanePositionYProperty = drawPanePositionYProperty;
     }
 
     public Image getWeaponIcon() {

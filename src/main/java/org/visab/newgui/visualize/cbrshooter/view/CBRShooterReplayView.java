@@ -104,6 +104,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
         playerVisualsTable.setItems(viewModel.getPlayerVisualsRows());
 
+        viewModel.getDrawPanePositionXProperty().set(drawPane.layoutXProperty().doubleValue());
+        viewModel.getDrawPanePositionYProperty().set(drawPane.layoutYProperty().doubleValue());
+
         weaponIcon.setImage(viewModel.getWeaponIcon());
         ammuIcon.setImage(viewModel.getAmmuIcon());
         healthIcon.setImage(viewModel.getHealthIcon());
