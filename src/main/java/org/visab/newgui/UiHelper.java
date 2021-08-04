@@ -1,5 +1,6 @@
 package org.visab.newgui;
 
+import org.visab.globalmodel.DoubleVector2;
 import org.visab.globalmodel.IntVector2;
 
 import javafx.application.Platform;
@@ -25,14 +26,14 @@ public final class UiHelper {
     public static void inovkeOnUiThread(Runnable runnable) {
         Platform.runLater(runnable);
     }
-    
+
     /**
-     * This method recolors any input image pixel by pixel with a given 
-     * JavaFX color.
+     * This method recolors any input image pixel by pixel with a given JavaFX
+     * color.
      * 
-     * @param inputImage	the image that needs to be recolored.
-     * @param newColor		the new color for the given image.
-     * @return 				the recolored image.
+     * @param inputImage the image that needs to be recolored.
+     * @param newColor   the new color for the given image.
+     * @return the recolored image.
      */
     public static Image recolorImage(Image inputImage, Color newColor) {
         final double r = newColor.getRed();
@@ -53,10 +54,11 @@ public final class UiHelper {
     }
 
     /**
-     * This method grey scales an image so that other colored elements can be better seen on it.
+     * This method grey scales an image so that other colored elements can be better
+     * seen on it.
      * 
-     * @param inputImage	the image that needs to be grey-scaled.
-     * @return				the grey-scaled image.
+     * @param inputImage the image that needs to be grey-scaled.
+     * @return the grey-scaled image.
      */
     public static ImageView greyScaleImage(Image inputImage) {
         ColorAdjust monochrome = new ColorAdjust();
@@ -69,8 +71,8 @@ public final class UiHelper {
     /**
      * This method translates a hex color code to a JavaFX color.
      * 
-     * @param hexCode	the hex color code.
-     * @return			the equivalent JavaFX color.
+     * @param hexCode the hex color code.
+     * @return the equivalent JavaFX color.
      */
     public static Color translateHexToRgbColor(String hexCode) {
         return Color.valueOf(hexCode);
@@ -160,6 +162,12 @@ public final class UiHelper {
         imageView.setY(position.getY());
         imageView.setFitWidth(fitSizes.getX());
         imageView.setFitHeight(fitSizes.getY());
+    }
+
+    public static ImageView resizeImage(ImageView resizeImage, DoubleVector2 sizeVector) {
+        resizeImage.setFitWidth(sizeVector.getX());
+        resizeImage.setFitHeight(sizeVector.getY());
+        return resizeImage;
     }
 
 }
