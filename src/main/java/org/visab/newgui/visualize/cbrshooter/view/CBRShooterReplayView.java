@@ -127,9 +127,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        initializePlayers();
-
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
+
+        initializePlayers();
 
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getHeight(), drawPane.getWidth(),
                 new DoubleVector2(drawPane.getLayoutX(), drawPane.getLayoutY()));
@@ -179,35 +179,34 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         }
     }
 
-//    private void initializeReplayView() {
-//        ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
-//        ImageView weapon = new ImageView(viewModel.getWeaponIcon());
-//        ImageView healthItem = new ImageView(viewModel.getHealthIcon());
-//        UiHelper.adjustVisual(ammuItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
-//        UiHelper.adjustVisual(weapon, false, drawPane.getLayoutX(), drawPane.getLayoutY());
-//        UiHelper.adjustVisual(healthItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
-//        mapElements.put("ammuItem", ammuItem);
-//        mapElements.put("weapon", weapon);
-//        mapElements.put("healthItem", healthItem);
-//
-//        for (String playerName : viewModel.getPlayerNames()) {
-//            ImageView playerIcon = new ImageView(UiHelper.recolorImage(viewModel.getPlayerIconByName(playerName),
-//                    players.get(playerName).playerColorProperty().get()));
-//            ImageView playerPlanChange = new ImageView(viewModel.getWeaponIcon());
-//            ImageView playerDeath = new ImageView(viewModel.getHealthIcon());
-//        }
-//    }
+    private void initializeMapElements() {
+        ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
+        ImageView weapon = new ImageView(viewModel.getWeaponIcon());
+        ImageView healthItem = new ImageView(viewModel.getHealthIcon());
+        UiHelper.adjustVisual(ammuItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+        UiHelper.adjustVisual(weapon, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+        UiHelper.adjustVisual(healthItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+        mapElements.put("ammuItem", ammuItem);
+        mapElements.put("weapon", weapon);
+        mapElements.put("healthItem", healthItem);
+    }
 
     private void initializePlayers() {
         for (String playerName : viewModel.getPlayerNames()) {
-            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName));
             HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
+            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName),
+                    iconMap.get("playerIcon"), iconMap.get("playerPlanChange"), iconMap.get("playerDeath"));
             playerVisualsRows.add(new PlayerVisualsRow(playerName,
-                    UiHelper.resizeImage(new ImageView(iconMap.get("playerIcon")), STANDARD_ICON_VECTOR),
-                    new ImageView(iconMap.get("playerPlanChange")), new ImageView(iconMap.get("playerDeath")),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
+                    new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
                     player.playerColorProperty().get()));
             players.put(playerName, player);
+            updatePlayerDataRows();
         }
+    }
+
+    private void updateMapElements() {
+
     }
 
     /**
@@ -217,13 +216,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * 
      */
     private void initializePlayerVisuals() {
-        // TODO: do stuff
-    }
-
-    /**
-     * Initializes all map elements once the replay view is loaded.
-     */
-    private void initializeMapElements() {
         // TODO: do stuff
     }
 

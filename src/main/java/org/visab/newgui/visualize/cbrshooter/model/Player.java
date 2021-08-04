@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Player {
@@ -40,8 +41,15 @@ public class Player {
     private BooleanProperty showDeathProperty = new SimpleBooleanProperty(true);
     private BooleanProperty showPlanChangeProperty = new SimpleBooleanProperty(true);
 
-    public Player(String name, Color playerColor) {
+    private Image playerIcon;
+    private Image playerPlanChange;
+    private Image playerDeath;
+
+    public Player(String name, Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath) {
         this.name = name;
+        this.playerIcon = playerIcon;
+        this.playerPlanChange = playerPlanChange;
+        this.playerDeath = playerDeath;
         this.playerColorProperty.set(playerColor);
     }
 
@@ -129,4 +137,15 @@ public class Player {
         return playerColorProperty;
     }
 
+    public Image getPlayerIcon() {
+        return playerIcon;
+    }
+
+    public Image getPlayerPlanChange() {
+        return playerPlanChange;
+    }
+
+    public Image getPlayerDeath() {
+        return playerDeath;
+    }
 }

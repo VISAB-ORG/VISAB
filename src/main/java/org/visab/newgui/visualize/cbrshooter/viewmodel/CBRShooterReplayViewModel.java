@@ -177,7 +177,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         frameSliderTickUnitProperty.set(tickUnit);
-        frameBasedStatsProperty = new SimpleObjectProperty<CBRShooterStatistics>(data.get(playFrameProperty.get()));
+        updateCurrentGameStatsByFrame();
     }
 
     public HashMap<String, Color> getPlayerColors() {
