@@ -64,7 +64,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private StringProperty yLabel = new SimpleStringProperty();
 
-    private Map <String, Series<Integer, Number>> detailedStatisticsSeries;
+    private Map<String, Series<Integer, Number>> detailedStatisticsSeries;
 
     private Command showDetailsCommand;
 
@@ -87,6 +87,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     public ObservableList<Series<String, Number>> getPlayerDetailedStatisticsSeries() {
         return playerDetailedStatisticsSeries;
     }
+
     public ObjectProperty<ComparisonRowBase<?>> selectedStatisticsProperty() {
         return selectedStatistics;
     }
@@ -117,7 +118,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     public Command showDetailsCommand() {
         if (showDetailsCommand == null) {
             showDetailsCommand = runnableCommand(() -> {
-                var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics", true, 800, 800);
+                var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics",
+                        true, 800, 800);
                 dialogHelper.showView(viewConfig, this, scope);
                 initializeBarChart();
             });
@@ -129,15 +131,19 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         yLabelDetail.set("Values");
 
         // für jeden Rohstoff eine Series mit den werten
-        //playerDetailedStatisticsSeries.addAll(Brickseries, Woodseries, ....);
-        playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player", file, ResourceType.Brick));
-        playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player", file, ResourceType.Brick));
-        playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player", file, ResourceType.Brick));
-        detailedStatisticsSeries = new HashMap<>();
-        for (String resource : SettlersImplicator.getResourceNames()) {
-            var series = new Series<Integer, Number>();
-            detailedStatisticsSeries.put(resource, series);
+        // playerDetailedStatisticsSeries.addAll(Brickseries, Woodseries, ....);
+        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
+        // file, ResourceType.Brick));
+        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
+        // file, ResourceType.Brick));
+        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
+        // file, ResourceType.Brick));
+
+        var serieses = SettlersImplicator.resourceGainedSeries("Player2", file, null);
+        for (var series : serieses) {
+            series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 100);
         }
+        playerDetailedStatisticsSeries.addAll(serieses);
     }
 
     /**
