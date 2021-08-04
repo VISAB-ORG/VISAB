@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<!-- <?import org.visab.newgui.control.CustomLabelPieChart?>  -->
+<?import org.visab.newgui.control.CustomLabelPieChart?>
 
 <AnchorPane prefHeight="1600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.cbrshooter.view.CBRShooterStatisticsView">
    <children>
