@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
@@ -160,7 +160,7 @@ public final class CBRShooterImplicator {
 
         var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var unitsWalked = 0;
-        var currentPos = new IntVector2();
+        var currentPos = new Vector2();
         var moved = 0.0;
         var round = 0;
         var playerNumber = 0;
@@ -422,7 +422,7 @@ public final class CBRShooterImplicator {
         for (var name : file.getPlayerNames())
             walked.put(name, 0.0);
 
-        var lastPositions = new HashMap<String, IntVector2>();
+        var lastPositions = new HashMap<String, Vector2>();
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
                 var name = player.getName();

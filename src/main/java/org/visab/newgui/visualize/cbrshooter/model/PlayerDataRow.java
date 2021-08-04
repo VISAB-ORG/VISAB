@@ -1,6 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 /**
@@ -76,7 +76,7 @@ public class PlayerDataRow {
         this.position = position;
     }
 
-    public void setPosition(IntVector2 position) {
+    public void setPosition(Vector2 position) {
         this.position = position.getX() + ", " + position.getY();
     }
 

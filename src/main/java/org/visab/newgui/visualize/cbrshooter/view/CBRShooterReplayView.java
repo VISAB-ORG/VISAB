@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.DoubleVector2;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 import org.visab.newgui.UiHelper;
@@ -51,7 +51,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
 
-    private static final DoubleVector2 STANDARD_ICON_VECTOR = new DoubleVector2(16, 16);
+    private static final Vector2 STANDARD_ICON_VECTOR = new Vector2(16, 16);
 
     private CoordinateHelper coordinateHelper;
 
@@ -128,11 +128,17 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     public void initialize(URL location, ResourceBundle resources) {
 
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
-
         initializePlayers();
-
-        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getHeight(), drawPane.getWidth(),
-                new DoubleVector2(drawPane.getLayoutX(), drawPane.getLayoutY()));
+        drawPane.setPrefWidth(550);
+        drawPane.setPrefHeight(drawPane.getPrefWidth()
+                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
+                drawPane.getPrefWidth(), new Vector2((int) drawPane.getLayoutX(), (int) drawPane.getLayoutY()));
+        initializeMapElements();
+        // mapElements.put("Any", new ImageView(new Image(ConfigManager.IMAGE_PATH +
+        // "/cbrBot.png")));
+        System.out.println(mapElements.values().size());
+        drawPane.getChildren().setAll(mapElements.values());
 
         playerDataTable.setItems(playerDataRows);
         playerVisualsTable.setItems(playerVisualsRows);
@@ -140,9 +146,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         weaponIcon.setImage(viewModel.getWeaponIcon());
         ammuIcon.setImage(viewModel.getAmmuIcon());
         healthIcon.setImage(viewModel.getHealthIcon());
-
-        drawPane.getChildren().add(UiHelper.greyScaleImage(viewModel.getMapImage()));
-        drawPane.getChildren().addAll(mapElements.values());
 
         totalTimeValueLabel.textProperty().bind(viewModel.totalTimeProperty());
         roundValueLabel.textProperty().bind(viewModel.roundProperty().asString());
@@ -163,8 +166,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 // Make sure the selectedFrame cannot be out of bounds
                 // While loops necessary to ensure increments / decrements of one
                 updatePlayerDataRows();
+                updateMapElements();
+                viewModel.updateCurrentGameStatsByFrame();
             }
         });
+
+        System.out.println(mapElements.values().size());
     }
 
     /**
@@ -180,6 +187,11 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     }
 
     private void initializeMapElements() {
+        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
+        mapImage.setViewOrder(1);
+
+        mapElements.put("map", mapImage);
+
         ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
         ImageView weapon = new ImageView(viewModel.getWeaponIcon());
         ImageView healthItem = new ImageView(viewModel.getHealthIcon());
@@ -189,6 +201,23 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         mapElements.put("ammuItem", ammuItem);
         mapElements.put("weapon", weapon);
         mapElements.put("healthItem", healthItem);
+
+        for (Player player : players.values()) {
+            ImageView playerIcon = new ImageView(player.getPlayerIcon());
+            ImageView playerPlanChange = new ImageView(player.getPlayerPlanChange());
+            ImageView playerDeath = new ImageView(player.getPlayerDeath());
+            System.out.println("Player position unity: " + player.positionProperty().get());
+            System.out.println("Player position javafx: "
+                    + coordinateHelper.translateAccordingToMap(player.positionProperty().get()));
+            UiHelper.adjustVisual(playerIcon, true,
+                    coordinateHelper.translateAccordingToMap(player.positionProperty().get()), STANDARD_ICON_VECTOR);
+            UiHelper.adjustVisual(playerPlanChange, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+            UiHelper.adjustVisual(playerDeath, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+            mapElements.put(player.getName() + "_playerIcon", playerIcon);
+            mapElements.put(player.getName() + "_playerPlanChange", playerPlanChange);
+            mapElements.put(player.getName() + "_playerDeath", playerDeath);
+        }
+        drawPane.getChildren().setAll(mapElements.values());
     }
 
     private void initializePlayers() {
@@ -200,13 +229,21 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
                     new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
                     player.playerColorProperty().get()));
+            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName));
             players.put(playerName, player);
+
             updatePlayerDataRows();
         }
     }
 
     private void updateMapElements() {
-
+        System.out.println("Updating map elements for frame: " + frameSlider.getValue());
+        ImageView johnDoe = (ImageView) mapElements.get("Jane Doe_playerIcon");
+        System.out.println("old pos:  " + johnDoe.getX() + ", " + johnDoe.getY());
+        Vector2 newPos = coordinateHelper
+                .translateAccordingToMap(frameBasedStats.get().getInfoByPlayerName("Jane Doe").getPosition());
+        System.out.println("new pos: " + newPos.toString());
+        UiHelper.adjustVisual(johnDoe, newPos);
     }
 
     /**
@@ -217,6 +254,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      */
     private void initializePlayerVisuals() {
         // TODO: do stuff
+
     }
 
     /**

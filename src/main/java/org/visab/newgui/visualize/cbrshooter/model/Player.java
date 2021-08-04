@@ -1,6 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 import javafx.beans.property.BooleanProperty;
@@ -25,7 +25,7 @@ public class Player {
     private IntegerProperty healthProperty = new SimpleIntegerProperty();
     private FloatProperty relativeHealthProperty = new SimpleFloatProperty();
     private StringProperty planProperty = new SimpleStringProperty();
-    private ObjectProperty<IntVector2> positionProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Vector2> positionProperty = new SimpleObjectProperty<>();
     private StringProperty weaponProperty = new SimpleStringProperty();
     private IntegerProperty magaizeAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty totalAmmuProperty = new SimpleIntegerProperty();
@@ -109,7 +109,7 @@ public class Player {
         return planProperty;
     }
 
-    public ObjectProperty<IntVector2> positionProperty() {
+    public ObjectProperty<Vector2> positionProperty() {
         return positionProperty;
     }
 

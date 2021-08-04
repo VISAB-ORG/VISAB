@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IStatistics;
-import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
@@ -58,9 +58,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private StringProperty totalTimeProperty = new SimpleStringProperty();
     private StringProperty roundTimeProperty = new SimpleStringProperty();
     private IntegerProperty roundProperty = new SimpleIntegerProperty();
-    private ObjectProperty<IntVector2> healthCoordsProperty = new SimpleObjectProperty<IntVector2>();
-    private ObjectProperty<IntVector2> weaponCoordsProperty = new SimpleObjectProperty<IntVector2>();
-    private ObjectProperty<IntVector2> ammuCoordsProperty = new SimpleObjectProperty<IntVector2>();
+    private ObjectProperty<Vector2> healthCoordsProperty = new SimpleObjectProperty<Vector2>();
+    private ObjectProperty<Vector2> weaponCoordsProperty = new SimpleObjectProperty<Vector2>();
+    private ObjectProperty<Vector2> ammuCoordsProperty = new SimpleObjectProperty<Vector2>();
 
     private ObservableMap<String, Player> playerObjects = FXCollections.observableHashMap();
 
@@ -124,15 +124,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return roundTimeProperty;
     }
 
-    public ObjectProperty<IntVector2> healthCoordsProperty() {
+    public ObjectProperty<Vector2> healthCoordsProperty() {
         return healthCoordsProperty;
     }
 
-    public ObjectProperty<IntVector2> weaponCoordsProperty() {
+    public ObjectProperty<Vector2> weaponCoordsProperty() {
         return weaponCoordsProperty;
     }
 
-    public ObjectProperty<IntVector2> ammuCoordsProperty() {
+    public ObjectProperty<Vector2> ammuCoordsProperty() {
         return ammuCoordsProperty;
     }
 
