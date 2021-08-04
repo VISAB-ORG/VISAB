@@ -5,8 +5,6 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionAdministration;
 import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
@@ -16,27 +14,23 @@ import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class SessionOverviewViewModel extends ViewModelBase {
 
     @InjectScope
     GenericScope scope;
 
-    private Logger logger = LogManager.getLogger(SessionOverviewViewModel.class);
-
-    private SimpleStringProperty totalSessionsProperty = new SimpleStringProperty("0");
-    private SimpleStringProperty activeSessionsProperty = new SimpleStringProperty("0");
-    private SimpleStringProperty timeoutedSessionsProperty = new SimpleStringProperty("0");
-    private SimpleStringProperty canceledSessionsProperty = new SimpleStringProperty("0");
-    private SimpleStringProperty webApiAdressProperty = new SimpleStringProperty();
-
-    // TODO: Dont know how to track this.
-    private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
+    private IntegerProperty totalSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty activeSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty timeoutedSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty canceledSessionsProperty = new SimpleIntegerProperty(0);
+    private StringProperty webApiAdressProperty = new SimpleStringProperty();
 
     private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
 
@@ -76,7 +70,6 @@ public class SessionOverviewViewModel extends ViewModelBase {
             this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
                     + Workspace.getInstance().getConfigManager().getWebApiPort());
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -102,34 +95,34 @@ public class SessionOverviewViewModel extends ViewModelBase {
      */
     public List<SessionStatus> querySessionStatusesSorted() {
         SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
-        activeSessionsProperty.set(String.valueOf(sessionAdministration.getActiveSessionStatuses().size()));
-        timeoutedSessionsProperty.set(String.valueOf(sessionAdministration.getTimeoutedSessionStatuses().size()));
-        canceledSessionsProperty.set(String.valueOf(sessionAdministration.getCanceledSessionStatuses().size()));
-        totalSessionsProperty.set(String.valueOf(sessionAdministration.getSessionStatuses().size()));
+        activeSessionsProperty.set(sessionAdministration.getActiveSessionStatuses().size());
+        timeoutedSessionsProperty.set(sessionAdministration.getTimeoutedSessionStatuses().size());
+        canceledSessionsProperty.set(sessionAdministration.getCanceledSessionStatuses().size());
+        totalSessionsProperty.set(sessionAdministration.getSessionStatuses().size());
         return sortSessionStatuses(sessionAdministration.getSessionStatuses());
-    }
-
-    public SimpleStringProperty getTotalSessionsProperty() {
-        return totalSessionsProperty;
-    }
-
-    public SimpleStringProperty getActiveSessionsProperty() {
-        return activeSessionsProperty;
-    }
-
-    public SimpleStringProperty getTimeoutedSessionsProperty() {
-        return timeoutedSessionsProperty;
-    }
-
-    public SimpleStringProperty getCanceledSessionsProperty() {
-        return canceledSessionsProperty;
-    }
-
-    public SimpleStringProperty getWebApiAdressProperty() {
-        return webApiAdressProperty;
     }
 
     public GenericScope getScope() {
         return scope;
+    }
+
+    public IntegerProperty totalSessionsProperty() {
+        return this.totalSessionsProperty;
+    }
+
+    public IntegerProperty activeSessionsProperty() {
+        return this.activeSessionsProperty;
+    }
+
+    public IntegerProperty timeoutedSessionsProperty() {
+        return this.timeoutedSessionsProperty;
+    }
+
+    public IntegerProperty canceledSessionsProperty() {
+        return this.canceledSessionsProperty;
+    }
+
+    public StringProperty webApiAdressProperty() {
+        return this.webApiAdressProperty;
     }
 }

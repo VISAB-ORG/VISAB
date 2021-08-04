@@ -126,8 +126,6 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        // TODO: Check if there is another way that does not violate MVVM rules
         viewModel.getScope().registerOnStageClosing(Consumer -> {
             if (updateLoop != null) {
                 stopUpdateLoop();
@@ -142,11 +140,11 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
         webApiAdressLabel.setEditable(false);
 
         // Bind properties
-        webApiAdressLabel.textProperty().bindBidirectional(viewModel.getWebApiAdressProperty());
-        sessionsTotalLabel.textProperty().bindBidirectional(viewModel.getTotalSessionsProperty());
-        sessionsActiveLabel.textProperty().bindBidirectional(viewModel.getActiveSessionsProperty());
-        sessionsTimeoutedLabel.textProperty().bindBidirectional(viewModel.getTimeoutedSessionsProperty());
-        sessionsCanceledLabel.textProperty().bindBidirectional(viewModel.getCanceledSessionsProperty());
+        webApiAdressLabel.textProperty().bind(viewModel.webApiAdressProperty());
+        sessionsTotalLabel.textProperty().bind(viewModel.totalSessionsProperty().asString());
+        sessionsActiveLabel.textProperty().bind(viewModel.activeSessionsProperty().asString());
+        sessionsTimeoutedLabel.textProperty().bind(viewModel.timeoutedSessionsProperty().asString());
+        sessionsCanceledLabel.textProperty().bind(viewModel.canceledSessionsProperty().asString());
 
         startUpdateLoop();
     }
