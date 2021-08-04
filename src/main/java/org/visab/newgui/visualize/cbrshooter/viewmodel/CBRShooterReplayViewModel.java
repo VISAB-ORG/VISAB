@@ -217,7 +217,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public void updateCurrentGameStatsByFrame() {
         System.out.println("Updating game stats in viewmodel.");
         // This object holds all information that is available
-        frameBasedStats = data.get(selectedFrame);
+        frameBasedStats = data.get(playFrameProperty.get());
 
         // First, update data that is applicable for every player in the game
         totalTimeProperty.set(String.valueOf(frameBasedStats.getTotalTime()));
@@ -244,7 +244,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             @Override
                             public void run() {
                                 updateCurrentGameStatsByFrame();
-                                playFrameProperty.set(playFrameProperty.get() + 1);
+                                playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
