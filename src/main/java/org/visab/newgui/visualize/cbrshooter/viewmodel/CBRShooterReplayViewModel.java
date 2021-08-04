@@ -111,6 +111,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return file.getMapRectangle();
     }
 
+    public Image getMapImage() {
+        return new Image(new ByteArrayInputStream(file.getImages().getMap()));
+    }
+
     public List<String> getPlayerNames() {
         return file.getPlayerNames();
     }
@@ -205,7 +209,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             @Override
                             public void run() {
                                 updateCurrentGameStatsByFrame();
-                                frameSliderValueProperty.set(frameSliderValueProperty.get() + 1);
+                                playFrameProperty.set(playFrameProperty.get() + 1);
                             }
                         });
                         // Sleeping time depends on the velocity sliders value

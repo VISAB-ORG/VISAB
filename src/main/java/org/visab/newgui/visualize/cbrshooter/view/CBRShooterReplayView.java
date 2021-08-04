@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.DoubleVector2;
 import org.visab.globalmodel.IntVector2;
+import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
@@ -120,6 +121,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         ammuIcon.setImage(viewModel.getAmmuIcon());
         healthIcon.setImage(viewModel.getHealthIcon());
 
+        drawPane.getChildren().add(UiHelper.greyScaleImage(viewModel.getMapImage()));
+
         totalTimeValueLabel.textProperty().bind(viewModel.getTotalTimeProperty());
         roundValueLabel.textProperty().bind(viewModel.getRoundProperty());
         roundTimeValueLabel.textProperty().bind(viewModel.getRoundTimeProperty());
@@ -129,7 +132,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         playPauseButton.setGraphic(playImageView);
         frameSlider.maxProperty().bind(viewModel.getFrameSliderMaxProperty());
-        frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
+        frameSlider.valueProperty().bindBidirectional(viewModel.playFrameProperty());
         frameSlider.majorTickUnitProperty().bind(viewModel.getFrameSliderTickUnitProperty());
 
         viewModel.playFrameProperty().addListener(new ChangeListener<Number>() {
@@ -142,6 +145,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 int oldValueAsInt = (int) oldValue;
                 int newValueAsInt = (int) newValue;
                 if (newValueAsInt > oldValueAsInt) {
+                    System.out.println("Slider moved forward");
                     while (oldValueAsInt > newValueAsInt) {
                         // Do something
                         newValueAsInt++;
@@ -149,6 +153,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 } else {
                     // Moved backwards
                     // Clear list of path elements and redraw every item only for the current round
+                    System.out.println("Slider moved backward");
                     while (oldValueAsInt < newValueAsInt) {
                         // Do something
                         newValueAsInt++;

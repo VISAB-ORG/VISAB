@@ -1,7 +1,5 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import java.util.Vector;
-
 import org.visab.globalmodel.DoubleVector2;
 import org.visab.globalmodel.IntVector2;
 import org.visab.globalmodel.Rectangle;
@@ -36,8 +34,6 @@ public class CoordinateHelper {
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
         this.drawPanePositioning = drawPanePositioning;
-
-        Vector<Double> vector = new Vector<>();
     }
 
     /**
