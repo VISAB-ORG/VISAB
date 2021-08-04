@@ -59,7 +59,66 @@ public class Player {
         this.totalAmmuProperty.set(playerInfo.getTotalAmmunition());
         this.fragsProperty.set(playerInfo.getStatistics().getFrags());
         this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
+    }
 
+    public BooleanProperty getShowPlayerProperty() {
+        return showPlayerProperty;
+    }
+
+    public BooleanProperty getShowIconProperty() {
+        return showIconProperty;
+    }
+
+    public BooleanProperty getShowPathProperty() {
+        return showPathProperty;
+    }
+
+    public BooleanProperty getShowPlanChangeProperty() {
+        return showPlanChangeProperty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public IntegerProperty healthProperty() {
+        return healthProperty;
+    }
+
+    public FloatProperty relativeHealthProperty() {
+        return relativeHealthProperty;
+    }
+
+    public StringProperty planProperty() {
+        return planProperty;
+    }
+
+    public ObjectProperty<Vector2> positionProperty() {
+        return positionProperty;
+    }
+
+    public StringProperty weaponProperty() {
+        return weaponProperty;
+    }
+
+    public IntegerProperty magaizeAmmuProperty() {
+        return magaizeAmmuProperty;
+    }
+
+    public IntegerProperty totalAmmuProperty() {
+        return totalAmmuProperty;
+    }
+
+    public IntegerProperty fragsProperty() {
+        return fragsProperty;
+    }
+
+    public IntegerProperty deathsProperty() {
+        return deathsProperty;
+    }
+
+    public BooleanProperty showDeathProperty() {
+        return showDeathProperty;
     }
 
 }
