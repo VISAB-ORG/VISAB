@@ -18,7 +18,6 @@ import org.visab.newgui.visualize.settlers.model.SettlersImplicator.ResourceType
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
-import org.visab.newgui.visualize.settlers.model.comparison.SingleResourcesGainedComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
 import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 

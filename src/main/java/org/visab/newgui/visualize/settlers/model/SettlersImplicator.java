@@ -44,9 +44,9 @@ public final class SettlersImplicator {
         return victoryPointsPerTurnPerPlayer;
     }
     
-    public static ArrayList<StatisticsDataStructure<Double>> accumulatedResourcesGainedPerTurn(String player, SettlersFile file) {
-        var resourcesGaintPerTurnPerPlaye = new ArrayList<StatisticsDataStructure<Double>>();
-        var countResourcesSpent = 0;
+    public static ArrayList<StatisticsDataStructure<PlayerResources>> accumulatedResourcesGainedPerTurn(String player, SettlersFile file) {
+        var resourcesGaintPerTurnPerPlaye = new ArrayList<StatisticsDataStructure<PlayerResources>>();
+        var countResourcesSpent = new PlayerResources();
         var turn = 0;
         var playerNumber = 0;
         
@@ -55,68 +55,18 @@ public final class SettlersImplicator {
         }
 
         file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
+        for (var statistics : file.getStatistics()) {
             
-            if (turn < file.getStatistics().get(i).getTurn()) {
-                resourcesGaintPerTurnPerPlaye.add(new StatisticsDataStructure<Double>(turn, (double) countResourcesSpent));
+            if (turn < statistics.getTurn()) {
+                resourcesGaintPerTurnPerPlaye.add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesSpent));
             }
+            var playerData = statistics.getPlayers().get(playerNumber);
+            countResourcesSpent = PlayerResources.add(countResourcesSpent, playerData.getResourcesGained());
             
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getBrick();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getSheep();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getStone();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWheat();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWood();
-            
-            turn = file.getStatistics().get(i).getTurn();            
-            
+            turn = statistics.getTurn();
         }
 
         return resourcesGaintPerTurnPerPlaye;
-    }
-    
-    public static ArrayList<StatisticsDataStructure<Double>> accumulatedSingleResourceGainedPerTurn(String player, SettlersFile file,
-            ResourceType resourceType) {
-        var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
-        var countResourcesSpent = 0;
-        var turn = 0;
-        var playerNumber = 0;
-        
-        if (player.contains("Player2")) {
-            playerNumber = 1;
-        }
-
-        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
-            
-            if (turn < file.getStatistics().get(i).getTurn()) {
-                resourcesGaintPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countResourcesSpent));
-            }
-
-            switch (resourceType) {
-            case Brick:
-                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getBrick();
-                break;
-            case Sheep:
-                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getSheep();
-                break;
-            case Stone:
-                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getStone();
-                break;
-            case Wheat:
-                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWheat();
-                break;
-            case Wood:
-                countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained().getWood();
-                break;
-            default:
-                break;
-            }
-            
-            turn = file.getStatistics().get(i).getTurn();            
-            
-        }
-
-        return resourcesGaintPerTurnPerPlayer;
     }
 
     public static ArrayList<StatisticsDataStructure<Double>> accumulatedResourcesSpentPerTurn(String player, SettlersFile file) {
