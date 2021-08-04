@@ -50,6 +50,7 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println(viewModel);
         comparisonStatistics.setItems(viewModel.getComparisonStatistics());
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());

@@ -45,7 +45,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
     public void updateSeries(CBRShooterFile file) {
         var statistics = makeStatisticsCopy(file);
 
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.hitsOnEnemyPerRound(name, file));
 

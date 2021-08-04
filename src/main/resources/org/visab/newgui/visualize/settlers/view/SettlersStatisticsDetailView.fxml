@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 
-<GridPane prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView">
+<GridPane prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -24,23 +21,14 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="detailStatistics" prefHeight="200.0" prefWidth="200.0">
-        <columns>
-          <TableColumn text="Measure">
-            <cellValueFactory>
-                <PropertyValueFactory property="rowDescription" />
-            </cellValueFactory>
-          </TableColumn>
-        </columns>
-      </TableView>
-      <Button fx:id="chartButton" onAction="#handleChartButtonAction" mnemonicParsing="false" text="show in chart" GridPane.columnIndex="1" />
-      <LineChart fx:id="detailedPlayerStatistics" title="Comparison Graph" GridPane.columnIndex="2">
+      <StackedBarChart fx:id="resourceChart" title="Resources: Details" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <xAxis>
-          <NumberAxis label="Round" side="bottom" />
+          <CategoryAxis label="Round" side="BOTTOM" />
         </xAxis>
         <yAxis>
           <NumberAxis label="" side="LEFT" />
         </yAxis>
-      </LineChart>
+      </StackedBarChart>
+      <Slider fx:id="roundSlider" GridPane.rowIndex="1" />
    </children>
 </GridPane>
