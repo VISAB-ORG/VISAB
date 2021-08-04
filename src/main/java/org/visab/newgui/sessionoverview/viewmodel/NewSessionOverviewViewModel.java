@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.api.SessionAdministration;
 import org.visab.api.WebAPI;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
@@ -120,12 +121,18 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
     };
 
     /**
-     * Intermediate method to retrieve session statuses from the Web Api.
+     * Intermediate method to retrieve session statuses from the Web Api. Also
+     * directly adjusts the session count properties.
      * 
      * @return the (sorted) session statuses.
      */
     public List<SessionStatus> querySessionStatusesSorted() {
-        return sortSessionStatuses(WebAPI.getInstance().getSessionAdministration().getSessionStatuses());
+        SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
+        activeSessionsProperty.set(String.valueOf(sessionAdministration.getActiveSessionStatuses().size()));
+        timeoutedSessionsProperty.set(String.valueOf(sessionAdministration.getTimeoutedSessionStatuses().size()));
+        canceledSessionsProperty.set(String.valueOf(sessionAdministration.getCanceledSessionStatuses().size()));
+        totalSessionsProperty.set(String.valueOf(sessionAdministration.getSessionStatuses().size()));
+        return sortSessionStatuses(sessionAdministration.getSessionStatuses());
     }
 
     public SimpleStringProperty getTotalSessionsProperty() {
