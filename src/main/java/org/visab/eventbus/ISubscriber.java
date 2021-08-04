@@ -2,9 +2,8 @@ package org.visab.eventbus;
 
 /**
  * The ISubscriber interface that all subscribers have to implement. This
- * interface is needed, so that the EventBus can publish the exact event.
- *
- * @author moritz
+ * interface is needed, so that the EventBus can publish events of the exact
+ * type without having to cast at compile time.
  *
  * @param <TEvent> The event that will be subscribed to.
  */

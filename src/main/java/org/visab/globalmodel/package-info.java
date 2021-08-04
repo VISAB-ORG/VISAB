@@ -4,8 +4,7 @@
  * All model-style JAVA classes that are necessarily used across a variety of
  * locations within VISAB shall be placed here or in a fitting sub-package.
  * 
- * Furthermore generic interfaces for specific implementations are also
- * maintained in here.
+ * Furthermore, the interfaces for these models can also be found in here.
  * </p>
  */
 package org.visab.globalmodel;

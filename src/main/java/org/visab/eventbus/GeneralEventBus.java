@@ -1,10 +1,10 @@
 package org.visab.eventbus;
 
+/**
+ * The GeneralEventBus used for publish API unrelated events.
+ */
 public class GeneralEventBus extends EventBusBase<IEvent> {
 
-    /**
-     * Singelton instance
-     */
     private static GeneralEventBus instance;
 
     /**

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="200.0" prefWidth="500.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SessionTimeoutEditView">
+<AnchorPane prefHeight="200.0" prefWidth="500.0" stylesheets="@../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.SessionTimeoutEditView">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>

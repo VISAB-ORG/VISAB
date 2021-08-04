@@ -5,10 +5,10 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -80,8 +80,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private TableView<PlayerVisualsRow> playerVisualsTable;
 
     // Images / Icons
-    private Image pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
-    private Image playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
+    private Image pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
+    private Image playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
 
     private ImageView playImageView = new ImageView(playImage);
     private ImageView pauseImageView = new ImageView(pauseImage);

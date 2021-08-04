@@ -1,7 +1,10 @@
 package org.visab.globalmodel.settlers;
 
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 
+/**
+ * Represents a snapshot of the resources availible.
+ */
 public class PlayerResources {
 
     private int sheep;
@@ -50,6 +53,13 @@ public class PlayerResources {
         this.wood = wood;
     }
 
+    /**
+     * Adds two PlayerResources by adding their detailed resources.
+     * 
+     * @param one The first PlayerResources instance
+     * @param two The second PlayerResources instance
+     * @return A new PlayerResource instance with the cumulated resources
+     */
     public static PlayerResources add(PlayerResources one, PlayerResources two) {
         var newResources = new PlayerResources();
         newResources.brick = one.brick + two.brick;
@@ -61,6 +71,13 @@ public class PlayerResources {
         return newResources;
     }
 
+    /**
+     * Adds two PlayerResources by subtracting their detailed resources.
+     * 
+     * @param substractFrom The resources to substract from
+     * @param substract     The resources to substract
+     * @return A new PlayerResource instance with substracted resources
+     */
     public static PlayerResources sub(PlayerResources substractFrom, PlayerResources substract) {
         var newResources = new PlayerResources();
         newResources.brick = substractFrom.brick - substract.brick;
@@ -74,7 +91,7 @@ public class PlayerResources {
 
     @Override
     public String toString() {
-        return StringFormat.niceString("{ Brick:{0}, Sheep:{1}, Stone:{2}, Wheat:{3}, Wood:{4}", brick, sheep, stone,
+        return NiceString.make("{ Brick:{0}, Sheep:{1}, Stone:{2}, Wheat:{3}, Wood:{4}", brick, sheep, stone,
                 wheat, wood);
     }
 }

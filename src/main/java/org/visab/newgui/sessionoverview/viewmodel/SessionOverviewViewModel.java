@@ -1,156 +1,104 @@
 package org.visab.newgui.sessionoverview.viewmodel;
 
-import java.time.LocalTime;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionAdministration;
-import org.visab.api.WebApi;
-import org.visab.eventbus.ApiEventBus;
-import org.visab.eventbus.GeneralEventBus;
-import org.visab.eventbus.IApiEvent;
-import org.visab.eventbus.ISubscriber;
-import org.visab.eventbus.event.SessionClosedEvent;
-import org.visab.eventbus.event.SessionOpenedEvent;
-import org.visab.eventbus.event.VISABFileSavedEvent;
+import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
-import org.visab.newgui.DynamicViewLoader;
+import org.visab.newgui.GenericScope;
 import org.visab.newgui.ViewModelBase;
-import org.visab.processing.ILiveViewable;
-import org.visab.processing.SessionListenerAdministration;
-import org.visab.util.StreamUtil;
+import org.visab.workspace.Workspace;
 
+import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-public class SessionOverviewViewModel extends ViewModelBase implements ISubscriber<IApiEvent> {
+public class SessionOverviewViewModel extends ViewModelBase {
 
-    private class FileSavedSubscriber implements ISubscriber<VISABFileSavedEvent> {
+    @InjectScope
+    GenericScope scope;
 
-        public FileSavedSubscriber() {
-            GeneralEventBus.getInstance().subscribe(this);
-        }
+    private IntegerProperty totalSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty activeSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty timeoutedSessionsProperty = new SimpleIntegerProperty(0);
+    private IntegerProperty canceledSessionsProperty = new SimpleIntegerProperty(0);
+    private StringProperty webApiAdressProperty = new SimpleStringProperty();
 
-        @Override
-        public String getSubscribedEventType() {
-            return VISABFileSavedEvent.class.getName();
-        }
+    private Command clearInactiveSessionsCommand;
 
-        @Override
-        public void notify(VISABFileSavedEvent event) {
-            if (event.isSavedByListener())
-                // TODO: add it to the listener directly or sth.
-                // This has to be decided based on the view
-                savedFiles.add(event.getFileName());
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        try {
+            this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
+                    + Workspace.getInstance().getConfigManager().getWebApiPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
     }
 
-    private ObservableList<String> savedFiles = FXCollections.observableArrayList();
-
-    private Logger logger = LogManager.getLogger(SessionOverviewViewModel.class);
-
-    private IntegerProperty activeTransmissionSessions = new SimpleIntegerProperty(0);
-
-    // TODO: Dont know how to track this.
-    private DoubleProperty requestPerSecond = new SimpleDoubleProperty(0.0);
-
-    private ObservableList<SessionStatus> sessionList = FXCollections.observableArrayList();
-
-    private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
-
-    private Command closeSessionCommand;
-
-    public Command closeSessionCommand() {
-        if (closeSessionCommand == null) {
-            closeSessionCommand = runnableCommand(() -> {
-                if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebApi.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
-            });
-        }
-
-        return closeSessionCommand;
-    }
-
-    private Command openLiveViewCommand;
-
-    public Command openLiveViewCommand() {
-        if (openLiveViewCommand == null) {
-            openLiveViewCommand = runnableCommand(() -> {
-                if (selectedSession != null) {
-                    var sessionInfo = selectedSession.get();
-
-                    var listener = SessionListenerAdministration.getSessionListener(sessionInfo.getSessionId());
-                    if (listener != null && !(listener instanceof ILiveViewable<?>)) {
-                        dialogHelper.showError(
-                                "Underlying session listener does not support live viewing!\n It does not implement ILiveViewable<?>.");
-                    } else {
-                        DynamicViewLoader.loadVisualizer(sessionInfo.getGame(), sessionInfo.getSessionId());
+    public Command clearInactiveSessionsCommand() {
+        if (clearInactiveSessionsCommand == null) {
+            clearInactiveSessionsCommand = runnableCommand(() -> {
+                for (SessionStatus status : WebAPI.getInstance().getSessionAdministration().getSessionStatuses()) {
+                    if (!status.getStatusType().equals("active")) {
+                        WebAPI.getInstance().getSessionAdministration().removeByUUID(status.getSessionId());
                     }
                 }
             });
         }
 
-        return openLiveViewCommand;
+        return clearInactiveSessionsCommand;
     }
 
-    public ObjectProperty<SessionStatus> selectedSessionProperty() {
-        return selectedSession;
+    /**
+     * Intermediate method to retrieve session statuses from the Web Api. Also
+     * directly adjusts the session count properties.
+     * 
+     * @return The sorted session statuses descending by time of last request.
+     */
+    public List<SessionStatus> querySessionStatusesSorted() {
+        SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
+        var statuses = sessionAdministration.getCanceledSessionStatuses();
+
+        activeSessionsProperty.set(sessionAdministration.getActiveSessionStatuses().size());
+        timeoutedSessionsProperty.set(sessionAdministration.getTimeoutedSessionStatuses().size());
+        canceledSessionsProperty.set(sessionAdministration.getCanceledSessionStatuses().size());
+        totalSessionsProperty.set(statuses.size());
+
+        Collections.sort(statuses, (o1, o2) -> (-1) * o1.getLastRequest().compareTo(o2.getLastRequest()));
+
+        return statuses;
     }
 
-    public SessionOverviewViewModel() {
-        ApiEventBus.getInstance().subscribe(this);
-
-        // Load in all existing session status from watchdog.
-        for (var status : WebApi.getInstance().getSessionAdministration().getSessionStatuses())
-            sessionList.add(status);
-
-        // Set active session count
-        activeTransmissionSessions
-                .set(WebApi.getInstance().getSessionAdministration().getActiveSessionStatuses().size());
+    public GenericScope getScope() {
+        return scope;
     }
 
-    public ObservableList<SessionStatus> getSessionList() {
-        return sessionList;
+    public IntegerProperty totalSessionsProperty() {
+        return this.totalSessionsProperty;
     }
 
-    @Override
-    public String getSubscribedEventType() {
-        return IApiEvent.class.getName();
+    public IntegerProperty activeSessionsProperty() {
+        return this.activeSessionsProperty;
     }
 
-    private LocalTime lastRequestTime;
-
-    @Override
-    public void notify(IApiEvent event) {
-        var status = event.getStatus();
-
-        if (event instanceof SessionOpenedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() + 1);
-            sessionList.add(status);
-        } else if (event instanceof SessionClosedEvent) {
-            activeTransmissionSessions.set(activeTransmissionSessions.get() - 1);
-        }
-
-        // TODO: Is not needed if we use the same status object.
-        var existing = StreamUtil.firstOrNull(sessionList, x -> x.getSessionId().equals(status.getSessionId()));
-        if (existing != null) {
-            existing.setIsActive(status.isActive());
-            existing.setLastRequest(status.getLastRequest());
-            existing.setReceivedImages(status.getReceivedImages());
-            existing.setReceivedStatistics(status.getReceivedStatistics());
-            existing.setSessionClosed(status.getSessionClosed());
-            existing.setTotalRequests(status.getTotalRequests());
-        } else {
-            logger.error("Received request with non existant session status outside of session opened event.");
-        }
-
+    public IntegerProperty timeoutedSessionsProperty() {
+        return this.timeoutedSessionsProperty;
     }
 
+    public IntegerProperty canceledSessionsProperty() {
+        return this.canceledSessionsProperty;
+    }
+
+    public StringProperty webApiAdressProperty() {
+        return this.webApiAdressProperty;
+    }
 }

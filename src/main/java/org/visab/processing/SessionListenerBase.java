@@ -8,14 +8,14 @@ import java.util.UUID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.eventbus.ApiEventBus;
+import org.visab.eventbus.APISubscriberBase;
+import org.visab.eventbus.APIEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.Workspace;
 
@@ -23,10 +23,8 @@ import org.visab.workspace.Workspace;
  * The base SessionListener class, that should be implemented by all session
  * listeners.
  * 
- * @param <TStatistics> The statistics type, that will be processed by the
+ * @param <TStatistics> The statistics type that will be processed by the
  *                      listener
- * @author moritz
- *
  */
 public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStatistics extends IStatistics>
         implements ISessionListener {
@@ -34,7 +32,7 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     /**
      * The SessionClosedSubscriber, that subscribes to the SessionClosedEvent event.
      */
-    private class SessionClosedSubscriber extends ApiSubscriberBase<SessionClosedEvent> {
+    private class SessionClosedSubscriber extends APISubscriberBase<SessionClosedEvent> {
 
         public SessionClosedSubscriber() {
             super(SessionClosedEvent.class);
@@ -47,7 +45,7 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
 
                 // Unsubscribe all subscribers
                 for (var sub : subscribers)
-                    ApiEventBus.getInstance().unsubscribe(sub);
+                    APIEventBus.getInstance().unsubscribe(sub);
 
                 isActive = false;
                 onSessionClosed();
@@ -58,7 +56,7 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     /**
      * The StatisticsSubscriber, that subscribes to the StatisticsReceivedEvent.
      */
-    private class StatisticsSubscriber extends ApiSubscriberBase<StatisticsReceivedEvent> {
+    private class StatisticsSubscriber extends APISubscriberBase<StatisticsReceivedEvent> {
 
         public StatisticsSubscriber() {
             super(StatisticsReceivedEvent.class);
@@ -80,6 +78,11 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     }
 
     /**
+     * The logger.
+     */
+    protected Logger logger = LogManager.getLogger(this.getClass());
+
+    /**
      * The game of the listener.
      */
     protected String game;
@@ -95,15 +98,13 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
     protected LocalTime lastReceived = LocalTime.now();
 
     /**
-     * The logger.
-     */
-    protected Logger logger = LogManager.getLogger(this.getClass());
-
-    /**
      * The DatabaseManager used for saving files.
      */
     protected DatabaseManager manager = Workspace.getInstance().getDatabaseManager();
 
+    /**
+     * The sessionId of the corresponding transmission session.
+     */
     protected UUID sessionId;
 
     /**
@@ -156,7 +157,7 @@ public abstract class SessionListenerBase<TMeta extends IMetaInformation, TStati
      * @param message  The message to log
      */
     protected void writeLog(Level logLevel, String message) {
-        var prefix = StringFormat.niceString("[{0}: {1}]> ", game, sessionId);
+        var prefix = NiceString.make("[{0}: {1}]> ", game, sessionId);
 
         logger.log(logLevel, prefix + message);
     }

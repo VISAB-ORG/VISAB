@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
+<GridPane  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" percentWidth="50" />
         <ColumnConstraints halignment="CENTER" percentWidth="50" />

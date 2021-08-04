@@ -5,8 +5,8 @@ import java.util.List;
 import org.visab.globalmodel.IStatistics;
 
 /**
- * The SettlersStatistics class, representing the information given by the Unity
- * Settlers of Catan Game.
+ * The SettlersStatistics class, representing the information given per turn by
+ * the Unity Settlers of Catan Game. The visualization is based mostly on this.
  *
  * @author leonr
  *
@@ -15,7 +15,7 @@ public class SettlersStatistics implements IStatistics {
 
     private int turn;
     private String turnTimeStamp;
-    private List<PlayerInformation> players;
+    private List<Player> players;
     private int diceNumberRolled;
 
     public int getTurn() {
@@ -42,11 +42,11 @@ public class SettlersStatistics implements IStatistics {
         this.turnTimeStamp = turnTimeStamp;
     }
 
-    public List<PlayerInformation> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<PlayerInformation> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

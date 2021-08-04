@@ -2,20 +2,18 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPI;
+import org.visab.api.WebAPIHelper;
 import org.visab.workspace.Workspace;
 
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 
+/**
+ * Controller for reciving images from an active transmission session.
+ */
 public class ImageController extends HTTPControllerBase {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(ImageController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
@@ -28,14 +26,15 @@ public class ImageController extends HTTPControllerBase {
     }
 
     /**
-     * Handler for reciving images.
+     * Deserializes an IImageContainer object from the json body of the given HTTP
+     * session.
      * 
-     * @param httpSession The Http session
-     * @return A Http response
+     * @param httpSession The HTTP session whose body contains the IImageContainer json.
+     * @return A HTTP response
      */
     private Response receiveImage(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+        var sessionId = WebAPIHelper.extractSessionId(httpSession.getHeaders());
+        var game = WebAPIHelper.extractGame(httpSession.getHeaders());
 
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
@@ -43,18 +42,18 @@ public class ImageController extends HTTPControllerBase {
         if (game == "")
             return getBadRequestResponse("No game given!");
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
+        if (!Workspace.getInstance().getConfigManager().isGameAllowed(game))
             return getBadRequestResponse("Game is not supported!");
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session was closed!" + WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
+        if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId))
+            return getBadRequestResponse(WebAPI.SESSION_ALREADY_CLOSED_RESPONSE);
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
+        var json = WebAPIHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
+        WebAPI.getInstance().getSessionAdministration().receiveImage(sessionId, game, json);
 
-        return getOkResponse("Received images.");
+        return getOkResponse("Images received.");
     }
 }

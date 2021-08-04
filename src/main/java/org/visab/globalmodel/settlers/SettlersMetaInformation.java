@@ -1,11 +1,14 @@
 package org.visab.globalmodel.settlers;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.Rectangle;
 
+/**
+ * The Settlers meta information that is sent at the start of a session by the
+ * Unity game. This information is also saved in the file.
+ */
 public class SettlersMetaInformation implements IMetaInformation {
 
     private String game;

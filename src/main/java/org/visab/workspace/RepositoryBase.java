@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 
 /**
  * The base repository that all repositories should inherit from. Used for any
- * IO operations inside of VISAB. If you need to import any java IO libs in non
+ * I/O operations inside of VISAB. If you need to import any java IO libs in non
  * repository classes, you are likely doing it wrong. Create a specific
  * repository instead or check if there isnt a repositry implementation that
- * supports your wanted action.
+ * supports your wanted functionality already.
  */
 public abstract class RepositoryBase implements IRepository {
 
@@ -24,6 +24,15 @@ public abstract class RepositoryBase implements IRepository {
 
         // Create the base directory if it doesn't exist.
         createMissingDirectories(baseDirectory);
+    }
+
+    /**
+     * Returns the path to the base directory.
+     * 
+     * @return The base directory
+     */
+    public String getBaseDirectory() {
+        return this.baseDirectory;
     }
 
     @Override
@@ -61,15 +70,6 @@ public abstract class RepositoryBase implements IRepository {
         }
 
         return folder.delete();
-    }
-
-    /**
-     * Returns the path to the base directory.
-     * 
-     * @return The base directory
-     */
-    public String getBaseDirectory() {
-        return this.baseDirectory;
     }
 
     @Override

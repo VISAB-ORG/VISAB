@@ -2,8 +2,8 @@ package org.visab.processing;
 
 import java.util.UUID;
 
+import org.visab.eventbus.APISubscriberBase;
 import org.visab.eventbus.event.ImageReceivedEvent;
-import org.visab.eventbus.subscriber.ApiSubscriberBase;
 import org.visab.globalmodel.IImageContainer;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.IStatistics;
@@ -22,7 +22,7 @@ public abstract class ReplaySessionListenerBase<TMeta extends IMetaInformation, 
     /**
      * The ImageSubscriber that subscribes to the ImageReceivedEvent
      */
-    private class ImageSubscriber extends ApiSubscriberBase<ImageReceivedEvent> {
+    private class ImageSubscriber extends APISubscriberBase<ImageReceivedEvent> {
 
         public ImageSubscriber() {
             super(ImageReceivedEvent.class);
@@ -44,6 +44,11 @@ public abstract class ReplaySessionListenerBase<TMeta extends IMetaInformation, 
         subscribers.add(mapImageSubscriber);
     }
 
-    public abstract void processImage(TImage image);
+    /**
+     * This is called when images are received.
+     * 
+     * @param image The images that were received
+     */
+    public abstract void processImage(TImage images);
 
 }

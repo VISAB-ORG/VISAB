@@ -3,7 +3,8 @@ package org.visab.globalmodel;
 import java.time.LocalDateTime;
 
 /**
- * The basic VISABFile that holds all meta information required by IVISABFile.
+ * The BasicVISABFile which serves as an instantiable base implementation for
+ * the IVISABFile interface.
  */
 public class BasicVISABFile implements IVISABFile {
 
@@ -12,7 +13,7 @@ public class BasicVISABFile implements IVISABFile {
     protected String game;
 
     /**
-     * Used for deserialization
+     * Needed for deserialization.
      */
     public BasicVISABFile() {
     }
@@ -37,9 +38,6 @@ public class BasicVISABFile implements IVISABFile {
         return game;
     }
 
-    /**
-     * This has to exist for deserializing existing files
-     */
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }

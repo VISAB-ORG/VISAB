@@ -2,25 +2,17 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
-import org.visab.api.WebApi;
-import org.visab.api.WebApiHelper;
+import org.visab.api.WebAPI;
+import org.visab.api.WebAPIHelper;
 import org.visab.workspace.Workspace;
 
 /**
- * The statistics controller, used for transmitting statistics data.
- *
- * @author moritz
- *
+ * Controller for reciving statistics from an active transmission session.
  */
 public class StatisticsController extends HTTPControllerBase {
-
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(StatisticsController.class);
 
     @Override
     public final Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession httpSession) {
@@ -33,32 +25,33 @@ public class StatisticsController extends HTTPControllerBase {
     }
 
     /**
-     * Handler for reciving statistics.
+     * Deserializes an IStatistics object from the json body of the given HTTP
+     * session.
      * 
-     * @param httpSession The Http session
-     * @return A Http response
+     * @param httpSession The HTTP session whose body contains the IStatistics json.
+     * @return A HTTP response
      */
     private Response receiveStatistics(IHTTPSession httpSession) {
-        var sessionId = WebApiHelper.extractSessionId(httpSession.getHeaders());
-        var game = WebApiHelper.extractGame(httpSession.getHeaders());
+        var sessionId = WebAPIHelper.extractSessionId(httpSession.getHeaders());
+        var game = WebAPIHelper.extractGame(httpSession.getHeaders());
 
         if (sessionId == null)
             return getBadRequestResponse("Either no sessionid given or could not parse uuid!");
 
-        if (!WebApi.getInstance().getSessionAdministration().isSessionActive(sessionId))
-            return getBadRequestResponse("Session was already closed!" + WebApiHelper.SESSION_ALREADY_CLOSED_RESPONSE);
+        if (!WebAPI.getInstance().getSessionAdministration().isSessionActive(sessionId))
+            return getBadRequestResponse(WebAPI.SESSION_ALREADY_CLOSED_RESPONSE);
 
         if (game == "")
             return getBadRequestResponse("No game given in headers!");
 
-        if (!Workspace.getInstance().getConfigManager().isGameSupported(game))
+        if (!Workspace.getInstance().getConfigManager().isGameAllowed(game))
             return getBadRequestResponse("Game is not supported!");
 
-        var json = WebApiHelper.extractJsonBody(httpSession);
+        var json = WebAPIHelper.extractJsonBody(httpSession);
         if (json == "")
             return getBadRequestResponse("Failed receiving json from body. Did you not put it in the body?");
 
-        WebApi.getInstance().getSessionAdministration().receiveStatistics(sessionId, game, json);
+        WebAPI.getInstance().getSessionAdministration().receiveStatistics(sessionId, game, json);
 
         return getOkResponse("Statistics received.");
     }

@@ -1,9 +1,10 @@
 /**
- * This package contains all globally used models that are shooter-specific.
+ * This package contains all globally used model classes that are
+ * CBRShooter-specific.
  * <p>
- * Every model class that is only used for shooter-specific purposes shall be
- * placed in this package. Generic models for VISAB or specific models for other
- * games should not be placed in here.
+ * Every model class that is only used for CBRShooter-specific purposes shall be
+ * placed in this package. Generic model classes for VISAB or specific models
+ * for other games should be placed in in org.visab.globalmodel instead.
  * </p>
  */
 package org.visab.globalmodel.cbrshooter;

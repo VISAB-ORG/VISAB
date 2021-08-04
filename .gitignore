@@ -1,6 +1,6 @@
 doc/yml-files
 
-workspace
+/workspace/
 logs/
 # Mac specific
 **/.DS_Store

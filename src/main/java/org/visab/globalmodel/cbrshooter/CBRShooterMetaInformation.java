@@ -8,6 +8,10 @@ import java.util.Map;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.Rectangle;
 
+/**
+ * The CBRShooter meta information that is sent at the start of a session by the
+ * Unity game. This information is also saved in the file.
+ */
 public class CBRShooterMetaInformation implements IMetaInformation {
 
     private String game;

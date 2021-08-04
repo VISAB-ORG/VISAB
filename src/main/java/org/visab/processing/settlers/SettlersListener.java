@@ -5,20 +5,17 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.visab.globalmodel.IMetaInformation;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.settlers.SettlersFile;
-import org.visab.globalmodel.settlers.SettlersMapImage;
+import org.visab.globalmodel.settlers.SettlersImages;
 import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.util.StringFormat;
-import org.visab.workspace.config.ConfigManager;
+import org.visab.util.NiceString;
 
 /**
  * The SettlersListener class, that is responsible for listening to information
@@ -29,7 +26,7 @@ import org.visab.workspace.config.ConfigManager;
  *
  */
 public class SettlersListener
-        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersMapImage>
+        extends ReplaySessionListenerBase<SettlersMetaInformation, SettlersStatistics, SettlersImages>
         implements ILiveViewable<SettlersStatistics> {
 
     private SettlersFile file;
@@ -37,7 +34,7 @@ public class SettlersListener
     private List<ILiveViewModel<SettlersStatistics>> viewModels = new ArrayList<>();
 
     public SettlersListener(UUID sessionId) {
-        super(ConfigManager.SETTLERS_OF_CATAN_STRING, sessionId);
+        super(GameName.SETTLERS_OF_CATAN, sessionId);
     }
 
     @Override
@@ -71,14 +68,16 @@ public class SettlersListener
 
     @Override
     public void onSessionClosed() {
-        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+        if (file.getStatistics().size() > 0) {
+            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-        var playerName = "";
-        for (var player : lastStatistics.getPlayers()) {
-            if (player.getVictoryPoints() == 10)
-                playerName = player.getName();
+            var playerName = "";
+            for (var player : lastStatistics.getPlayers()) {
+                if (player.getVictoryPoints() == 10)
+                    playerName = player.getName();
+            }
+            file.setWinner(playerName);
         }
-        file.setWinner(playerName);
 
         manager.saveFile(file, sessionId.toString(), sessionId);
 
@@ -95,7 +94,7 @@ public class SettlersListener
     }
 
     @Override
-    public void processImage(SettlersMapImage mapImage) {
+    public void processImage(SettlersImages mapImage) {
         // TODO Auto-generated method stub
     }
 
@@ -103,7 +102,7 @@ public class SettlersListener
     public void processStatistics(SettlersStatistics statistics) {
         file.getStatistics().add(statistics);
 
-        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
+        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }

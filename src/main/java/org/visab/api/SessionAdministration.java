@@ -6,69 +6,93 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicSerializer;
-import org.visab.eventbus.IApiEvent;
+import org.visab.eventbus.APIPublisherBase;
+import org.visab.eventbus.IAPIEvent;
 import org.visab.eventbus.event.ImageReceivedEvent;
 import org.visab.eventbus.event.SessionClosedEvent;
 import org.visab.eventbus.event.SessionOpenedEvent;
 import org.visab.eventbus.event.StatisticsReceivedEvent;
-import org.visab.eventbus.publisher.ApiPublisherBase;
 import org.visab.globalmodel.IMetaInformation;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.util.StreamUtil;
 
 /**
- * Class for administering the current transmission sessions. Holds a reference
- * to the current transmission sessions and checks them for timeout. Publishes
- * all api related events.
+ * The SessionAdministration class is used for administering the current
+ * transmission sessions. It has a list of all the transmission sessions that
+ * are currently open and publishes all API related events.
  *
  * @author moritz
  *
  */
 public class SessionAdministration {
 
-    // Logger needs .class for each class to use for log traces
-    private Logger logger = LogManager.getLogger(SessionAdministration.class);
+    private class SessionOpenedPublisher extends APIPublisherBase<SessionOpenedEvent> {
+    }
+
+    private class SessionClosedPublisher extends APIPublisherBase<SessionClosedEvent> {
+    }
+
+    private class StatisticsReceivedPublisher extends APIPublisherBase<StatisticsReceivedEvent> {
+    }
+
+    private class ImageReceivedPublisher extends APIPublisherBase<ImageReceivedEvent> {
+    }
+
+    private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
+    private SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
+    private StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
+    private ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
 
     /**
-     * An overview of transmission session specific data.
+     * A list of the session statuses for all transmission sessions of the current
+     * runtime.
      */
     private List<SessionStatus> statuses = new ArrayList<>();
 
     private List<UUID> sessionIds = new ArrayList<>();
 
     /**
-     * TODO: REMOVE remoteCallerHostName!
      * Opens a new transmission session and publishes a SessionOpenedEvent.
      * 
-     * @param sessionId            The sessionId to open a session for
-     * @param metaInformation      The metainformation of the session
-     * @param remoteCallerIp       The ip of the device that made the api call
-     * @param remoteCallerHostName The hostname of the device that made the api call
+     * @param sessionId       The sessionId to open a session for
+     * @param metaInformation The IMetaInformation of the session
+     * @param remoteCallerIp  The ip of the device that made the API call
+     * @return True
      */
-    public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp,
-            String remoteCallerHostName) {
+    public boolean openSession(UUID sessionId, IMetaInformation metaInformation, String remoteCallerIp) {
         var status = new SessionStatus(sessionId, metaInformation.getGame(), true, LocalTime.now(), LocalTime.now(),
-                null, 0, 0, 1, remoteCallerHostName, remoteCallerIp, "active");
+                null, 0, 0, 1, remoteCallerIp, "active");
         statuses.add(status);
         sessionIds.add(sessionId);
 
-        var event = new SessionOpenedEvent(sessionId, status, metaInformation);
         // Publish the SessionOpenedEvent
-        publish(event);
+        publish(new SessionOpenedEvent(sessionId, status, metaInformation));
 
         return true;
     }
 
     /**
-     * Closes a given session and publishes a SessionClosedEvent.
+     * Removes a session status entirely from the list.
      * 
-     * @param sessionId The sessionId to remove the transmission session of
+     * @param sessionId the ID of the session that shall be removed.
      */
-    public void closeSession(UUID sessionId) {
-        // Also disable the session from timeout check
+    public void removeByUUID(UUID sessionId) {
+        for (int i = 0; i < statuses.size(); i++) {
+            if (statuses.get(i).getSessionId().equals(sessionId)) {
+                statuses.remove(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Closes a transmission session and publishes a SessionClosedEvent.
+     * 
+     * @param sessionId The sessionId of the transmission session to close
+     * @return True
+     */
+    public boolean closeSession(UUID sessionId) {
         var status = getStatus(sessionId);
         status.setIsActive(false);
         status.setStatusType("canceled");
@@ -78,8 +102,18 @@ public class SessionAdministration {
 
         // Publish the SessionClosedEvent event
         publish(new SessionClosedEvent(sessionId, status, false));
+
+        return true;
     }
 
+    /**
+     * Deserializes an IImageContainer object from a json string and publishes a
+     * ImageReceivedEvent.
+     * 
+     * @param sessionId The sessionId of the tranmission session who sent the images
+     * @param game      The game of the tranmission session who sent the images
+     * @param imageJson The IImageContainer json
+     */
     public void receiveImage(UUID sessionId, String game, String imageJson) {
         // Set the status
         var status = getStatus(sessionId);
@@ -87,11 +121,20 @@ public class SessionAdministration {
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
-        var event = new ImageReceivedEvent(sessionId, status, game,
-                DynamicSerializer.deserializeImage(imageJson, game));
-        publish(event);
+        var imageContainer = DynamicSerializer.deserializeImage(imageJson, game);
+
+        // Publish the ImageReceivedEvent
+        publish(new ImageReceivedEvent(sessionId, status, game, imageContainer));
     }
 
+    /**
+     * Deserializes an IStatistics object from a json string and publishes a
+     * ImageReceivedEvent.
+     * 
+     * @param sessionId The sessionId of the tranmission session who sent the images
+     * @param game      The game of the tranmission session who sent the images
+     * @param imageJson The IStatistics json
+     */
     public void receiveStatistics(UUID sessionId, String game, String statisticsJson) {
         // Set the status
         var status = getStatus(sessionId);
@@ -99,31 +142,58 @@ public class SessionAdministration {
         status.setLastRequest(LocalTime.now());
         status.setTotalRequests(status.getTotalRequests() + 1);
 
-        var event = new StatisticsReceivedEvent(sessionId, status, game,
-                DynamicSerializer.deserializeStatistics(statisticsJson, game));
-        publish(event);
-    }
+        var statistics = DynamicSerializer.deserializeStatistics(statisticsJson, game);
 
-    public List<UUID> getSessionIds() {
-        return this.sessionIds;
+        // Publish the StatisticsReceivedEvent
+        publish(new StatisticsReceivedEvent(sessionId, status, game, statistics));
     }
 
     /**
-     * Gets the corresponding game for a given sessionId.
-     * 
-     * @param sessionId The sessionId
-     * @return The game if session is active, "" else
+     * A list containing the session statuses for all transmission sessions of the
+     * current runtime.
      */
-    public String getGame(UUID sessionId) {
-        var status = getStatus(sessionId);
-
-        return status == null ? "" : status.getGame();
+    public List<SessionStatus> getSessionStatuses() {
+        return new ArrayList<SessionStatus>(statuses);
     }
 
     /**
-     * Gets whether a transmission session is active.
+     * A list containing the session statuses for all currently active tranmission
+     * sessions.
+     */
+    public List<SessionStatus> getActiveSessionStatuses() {
+        return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
+    }
+
+    /**
+     * A list containing the session statuses for all currently timeouted
+     * tranmission sessions.
+     */
+    public List<SessionStatus> getTimeoutedSessionStatuses() {
+        return statuses.stream().filter(x -> x.getStatusType().equals("timeouted")).collect(Collectors.toList());
+    }
+
+    /**
+     * A list containing the session statuses for all currently canceled tranmission
+     * sessions.
+     */
+    public List<SessionStatus> getCanceledSessionStatuses() {
+        return statuses.stream().filter(x -> x.getStatusType().equals("canceled")).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the SessionStatus of a tranmission session.
      * 
-     * @param sessionId The sessionId to check
+     * @param sessionId The sessionId whose session status to get
+     * @return The SessionStatus of the tranmission session if found, null else
+     */
+    public SessionStatus getStatus(UUID sessionId) {
+        return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));
+    }
+
+    /**
+     * Checks if the transmission session is active.
+     * 
+     * @param sessionId The sessionId whose session status to check
      * @return True if session is active
      */
     public boolean isSessionActive(UUID sessionId) {
@@ -132,42 +202,13 @@ public class SessionAdministration {
         return status == null ? false : status.isActive();
     }
 
-    public SessionStatus getStatus(UUID sessionId) {
-        return StreamUtil.firstOrNull(statuses, x -> x.getSessionId().equals(sessionId));
-    }
-
-    public List<SessionStatus> getSessionStatuses() {
-        return statuses;
-    }
-
-    public List<SessionStatus> getActiveSessionStatuses() {
-        return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
-    }
-
-    private class SessionOpenedPublisher extends ApiPublisherBase<SessionOpenedEvent> {
-    }
-
-    private class SessionClosedPublisher extends ApiPublisherBase<SessionClosedEvent> {
-    }
-
-    private class StatisticsReceivedPublisher extends ApiPublisherBase<StatisticsReceivedEvent> {
-    }
-
-    private class ImageReceivedPublisher extends ApiPublisherBase<ImageReceivedEvent> {
-    }
-
-    private SessionOpenedPublisher sessionOpenedPublisher = new SessionOpenedPublisher();
-    private SessionClosedPublisher sessionClosedPublisher = new SessionClosedPublisher();
-    private StatisticsReceivedPublisher statisticsReceivedPublisher = new StatisticsReceivedPublisher();
-    private ImageReceivedPublisher imageReceivedPublisher = new ImageReceivedPublisher();
-
     /**
      * Publishes the given event to the ApiEventBus instance.
      * 
      * @param <T>   The type of the event
      * @param event The event to publish
      */
-    private <T extends IApiEvent> void publish(T event) {
+    private <T extends IAPIEvent> void publish(T event) {
         if (event instanceof SessionOpenedEvent)
             sessionOpenedPublisher.publish((SessionOpenedEvent) event);
         else if (event instanceof SessionClosedEvent)
@@ -177,7 +218,7 @@ public class SessionAdministration {
         else if (event instanceof ImageReceivedEvent)
             imageReceivedPublisher.publish((ImageReceivedEvent) event);
         else
-            throw new RuntimeException("Received unknown event type: " + event.getClass().getName() + "");
+            throw new RuntimeException("Received unhandeled event type: " + event.getClass().getName());
     }
 
 }

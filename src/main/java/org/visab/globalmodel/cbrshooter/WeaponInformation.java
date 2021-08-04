@@ -1,5 +1,9 @@
 package org.visab.globalmodel.cbrshooter;
 
+/**
+ * Contains the information on all weapons eligable for the players within the
+ * session.
+ */
 public class WeaponInformation {
 
     private String name;
