@@ -22,12 +22,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class NewSessionOverviewViewModel extends ViewModelBase {
+public class SessionOverviewViewModel extends ViewModelBase {
 
     @InjectScope
     GenericScope scope;
 
-    private Logger logger = LogManager.getLogger(NewSessionOverviewViewModel.class);
+    private Logger logger = LogManager.getLogger(SessionOverviewViewModel.class);
 
     private SimpleStringProperty totalSessionsProperty = new SimpleStringProperty("0");
     private SimpleStringProperty activeSessionsProperty = new SimpleStringProperty("0");

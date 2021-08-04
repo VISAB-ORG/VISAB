@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.control.CustomSessionObject;
-import org.visab.newgui.sessionoverview.viewmodel.NewSessionOverviewViewModel;
+import org.visab.newgui.sessionoverview.viewmodel.SessionOverviewViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewModel>, Initializable {
+public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, Initializable {
 
     private static final int GRID_COL_SIZE = 3;
 
@@ -57,7 +57,7 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
     private AnchorPane anchorPane;
 
     @InjectViewModel
-    private NewSessionOverviewViewModel viewModel;
+    private SessionOverviewViewModel viewModel;
 
     @FXML
     public void createDummySessions() {

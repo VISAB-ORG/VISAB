@@ -17,7 +17,7 @@ import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
-import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
+import org.visab.newgui.sessionoverview.view.SessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
 import org.visab.util.OSUtil;
@@ -161,7 +161,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                var viewConfig = new ShowViewConfiguration(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
+                var viewConfig = new ShowViewConfiguration(SessionOverviewView.class, "API Dashboard", false, 600, 930);
                 dialogHelper.showView(viewConfig);
             });
         }
