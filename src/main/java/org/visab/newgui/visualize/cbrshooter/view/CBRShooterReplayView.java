@@ -133,7 +133,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         drawPane.setPrefHeight(drawPane.getPrefWidth()
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
-                drawPane.getPrefWidth(), new Vector2((int) drawPane.getLayoutX(), (int) drawPane.getLayoutY()));
+                drawPane.getPrefWidth());
         initializeMapElements();
         // mapElements.put("Any", new ImageView(new Image(ConfigManager.IMAGE_PATH +
         // "/cbrBot.png")));

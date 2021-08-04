@@ -1,6 +1,5 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 
@@ -16,29 +15,20 @@ public class CoordinateHelper {
     private Rectangle mapRectangle;
     private double drawPaneHeight;
     private double drawPaneWidth;
-    private Vector2 drawPanePositioning;
 
     /**
      * Constructs a CoordinateHelper with specific boundary information.
      * 
-     * @param mapRectangle        the rectangle model of the unity game.
-     * @param drawPaneHeight      the height of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPaneWidth       the width of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPanePositioning the position (top-left-anchor) of the draw pane.
+     * @param mapRectangle   the rectangle model of the unity game.
+     * @param drawPaneHeight the height of the draw pane elements shall be
+     *                       positioned on.
+     * @param drawPaneWidth  the width of the draw pane elements shall be positioned
+     *                       on.
      */
-    public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth,
-            Vector2 drawPanePositioning) {
-        System.out.println("Initializing coordinate helper with values: ");
-        System.out.println("Map rectangle: " + mapRectangle.getWidth() + " * " + mapRectangle.getHeight());
-        System.out.println("Draw pane height " + drawPaneHeight);
-        System.out.println("Draw pane width " + drawPaneWidth);
-
+    public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth) {
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
-        this.drawPanePositioning = drawPanePositioning;
     }
 
     /**
@@ -55,14 +45,11 @@ public class CoordinateHelper {
 
         // Calculate the percentage distance on the unity map
         double percentageMovedOnX = relativeXDistanceToTopLeftAnchorPoint / this.mapRectangle.getWidth();
-
         double percentageMovedOnY = relativeYDistanceToTopLeftAnchorPoint / this.mapRectangle.getHeight();
 
         // Calculate the positioning on the JavaFX pane that should be drawn on
-        double relativePanePositionX = (int) (this.drawPanePositioning.getX()
-                + (percentageMovedOnX * this.drawPaneWidth));
-        double relativePanePositionY = (int) (this.drawPanePositioning.getY()
-                + (percentageMovedOnY * this.drawPaneHeight));
+        double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth;
+        double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight;
 
         return new Vector2((int) relativePanePositionX, (int) relativePanePositionY);
     }
