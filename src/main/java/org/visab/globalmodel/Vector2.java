@@ -1,15 +1,15 @@
 package org.visab.globalmodel;
 
-public class IntVector2 {
+public class Vector2 {
 
     private int x;
     private int y;
 
-    public IntVector2() {
+    public Vector2() {
         super();
     }
 
-    public IntVector2(int x, int y) {
+    public Vector2(int x, int y) {
         this.x = x;
         this.y = y;
     }

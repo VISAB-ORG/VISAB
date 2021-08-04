@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
-import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.Vector2;
 
 /**
  * The CBRShooterStatistics class, representing the information given by the
@@ -15,18 +15,18 @@ import org.visab.globalmodel.IntVector2;
  */
 public class CBRShooterStatistics implements IStatistics {
 
-    private IntVector2 ammunitionPosition;
+    private Vector2 ammunitionPosition;
     private List<PlayerInformation> players = new ArrayList<>();
-    private IntVector2 healthPosition;
+    private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
     private boolean isWeaponCollected;
     private int round;
     private float roundTime;
-    private IntVector2 weaponPosition;
+    private Vector2 weaponPosition;
     private float totalTime;
 
-    public IntVector2 getAmmunitionPosition() {
+    public Vector2 getAmmunitionPosition() {
         return ammunitionPosition;
     }
 
@@ -42,7 +42,7 @@ public class CBRShooterStatistics implements IStatistics {
         return players;
     }
 
-    public IntVector2 getHealthPosition() {
+    public Vector2 getHealthPosition() {
         return healthPosition;
     }
 
@@ -66,15 +66,15 @@ public class CBRShooterStatistics implements IStatistics {
         return roundTime;
     }
 
-    public IntVector2 getWeaponPosition() {
+    public Vector2 getWeaponPosition() {
         return weaponPosition;
     }
 
-    public void setAmmunitionPosition(IntVector2 ammunitionPosition) {
+    public void setAmmunitionPosition(Vector2 ammunitionPosition) {
         this.ammunitionPosition = ammunitionPosition;
     }
 
-    public void setHealthPosition(IntVector2 healthPosition) {
+    public void setHealthPosition(Vector2 healthPosition) {
         this.healthPosition = healthPosition;
     }
 
@@ -98,7 +98,7 @@ public class CBRShooterStatistics implements IStatistics {
         this.roundTime = roundTime;
     }
 
-    public void setWeaponPosition(IntVector2 weaponPosition) {
+    public void setWeaponPosition(Vector2 weaponPosition) {
         this.weaponPosition = weaponPosition;
     }
 
