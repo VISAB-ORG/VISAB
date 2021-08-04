@@ -26,7 +26,7 @@ import javafx.scene.layout.GridPane;
 
 public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, Initializable {
 
-    private static final int GRID_COL_SIZE = 3;
+    private static final double SESSION_OBJECT_FIT_WIDTH = 300.0;
 
     private Thread updateLoop;
 
@@ -92,7 +92,8 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
             // Customized JavaFX Gridpane which displays relevant session information
             SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
                     LocalTime.now(), LocalTime.now(), 3, 1, 10, "127.0.0.1", status);
-            CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath);
+            CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath,
+                    SESSION_OBJECT_FIT_WIDTH);
 
             sessionObject.setBackgroundColorByStatus(status);
 
@@ -101,7 +102,7 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
             colIterator++;
 
             // Once there the col size is reached, move on to the next row
-            if (colIterator == GRID_COL_SIZE) {
+            if (colIterator == 3) {
                 rowIterator++;
                 colIterator = 0;
             }
@@ -183,11 +184,13 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
         var rowIterator = 0;
         var colIterator = 0;
 
+        var scrollPaneWidth = scrollPane.getWidth();
+
         for (SessionStatus sessionStatus : statuses) {
             var logoPath = ResourceHelper.getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
-            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath);
+            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath, 300.0);
 
             sessionObject.setBackgroundColorByStatus(sessionStatus.getStatusType());
 
@@ -195,8 +198,9 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
 
             colIterator++;
 
+            var colDelimiter = (int) (scrollPaneWidth / SESSION_OBJECT_FIT_WIDTH);
             // Once there the col size is reached, move on to the next row
-            if (colIterator == GRID_COL_SIZE) {
+            if (colIterator == colDelimiter) {
                 rowIterator++;
                 colIterator = 0;
             }
