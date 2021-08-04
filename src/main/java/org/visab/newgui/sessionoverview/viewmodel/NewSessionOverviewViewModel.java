@@ -10,11 +10,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.GenericScope;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.CustomSessionObject;
@@ -88,7 +89,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
         if (closeSessionCommand == null) {
             closeSessionCommand = runnableCommand(() -> {
                 if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebApi.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
+                    WebAPI.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
             });
         }
 
@@ -178,11 +179,11 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
                         canceledSessionsCount++;
                     }
 
-                    var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame("Settlers");
+                    var logoPath = ResourceHelper.getLogoPathByGame("Settlers");
 
                     // Customized JavaFX Gridpane which displays relevant session information
                     SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
-                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "localhost", "127.0.0.1", status);
+                            LocalTime.now(), LocalTime.now(), 3, 1, 10, "127.0.0.1", status);
                     CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath);
 
                     sessionObject.setBackgroundColorByStatus(status);
@@ -234,7 +235,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
         var colIterator = 0;
 
         List<SessionStatus> sortedSessionstatuses = sortSessionStatuses(
-                WebApi.getInstance().getSessionAdministration().getSessionStatuses());
+                WebAPI.getInstance().getSessionAdministration().getSessionStatuses());
 
         var activeSessionsCount = 0;
         var timeoutedSessionsCount = 0;
@@ -250,7 +251,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
                 canceledSessionsCount++;
             }
 
-            var logoPath = Workspace.getInstance().getConfigManager().getLogoPathByGame(sessionStatus.getGame());
+            var logoPath = ResourceHelper.getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
             CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath);

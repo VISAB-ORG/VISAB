@@ -8,17 +8,17 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IStatistics;
-import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.Rectangle;
+import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.Player;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -93,7 +93,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public Image getPlayerIconByName(String playerName) {
         // return new Image(new
         // ByteArrayInputStream(file.getImages().getMoveableObjects().get(playerName)));
-        return new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+        return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
     }
 
     public List<String> getPlayerNames() {
@@ -202,7 +202,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // This object holds all information that is available
         frameBasedStatsProperty.set(data.get(playFrameProperty.get()));
 
-        // First, update data that is applicable for every player in the game
         totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
         roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
         roundProperty.set(frameBasedStatsProperty.get().getRound());
@@ -259,16 +258,16 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Image> iconMap = new HashMap<String, Image>();
         iconMap.put("playerIcon",
-                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/cbrBot.png"), playerColor));
+                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/cbrBot.png"), playerColor));
         iconMap.put("playerPlanChange",
-                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
+                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
         iconMap.put("playerDeath",
-                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/playerDeath.png"), playerColor));
+                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerDeath.png"), playerColor));
         return iconMap;
     }
 
     public Image getWeaponIcon() {
-        return new Image(ConfigManager.IMAGE_PATH + "/weapon.png");
+        return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
         // Analogous to map visuals does not work yet
         // return new Image(new
         // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
@@ -282,6 +281,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health")));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(ILiveViewable<? extends IStatistics> listener) {
         var concreteListener = (ILiveViewable<CBRShooterStatistics>) listener;

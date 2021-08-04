@@ -2,7 +2,6 @@ package org.visab.newgui.visualize.cbrshooter.viewmodel;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
@@ -19,7 +18,6 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

@@ -4,6 +4,10 @@ import java.util.UUID;
 
 import org.visab.eventbus.IEvent;
 
+/**
+ * The VISABFileSavedEvent that occurs when a VISAB file is saved by the
+ * DatabaseManager.
+ */
 public class VISABFileSavedEvent implements IEvent {
 
     private boolean isSavedByListener;

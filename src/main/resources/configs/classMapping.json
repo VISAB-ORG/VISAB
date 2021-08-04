@@ -14,7 +14,7 @@
         "listener": "org.visab.processing.settlers.SettlersListener",
         "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
         "file": "org.visab.globalmodel.settlers.SettlersFile",
-        "image": "org.visab.globalmodel.settlers.SettlersMapImage",
+        "image": "org.visab.globalmodel.settlers.SettlersImages",
         "visualizer": "org.visab.newgui.visualize.settlers.view.SettlersMainView"
     }
 ]

@@ -1,5 +1,8 @@
 package org.visab.globalmodel;
 
+/**
+ * A two dimensional vector representation.
+ */
 public class Vector2 {
 
     private int x;

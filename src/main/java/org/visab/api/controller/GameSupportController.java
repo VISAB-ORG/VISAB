@@ -2,22 +2,15 @@ package org.visab.api.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.router.RouterNanoHTTPD.UriResource;
 import org.visab.workspace.Workspace;
 
 /**
- * Api Controller for getting the games supported by VISAB.
- *
- * @author moritz
- *
+ * Controller for getting a list of the games supported by VISAB.
  */
 public class GameSupportController extends HTTPControllerBase {
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(GameSupportController.class);
 
     @Override
     public Response handleGet(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {

@@ -10,25 +10,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.processing.ISessionListener;
 import org.visab.processing.starter.DefaultSessionListener;
-import org.visab.util.StringFormat;
+import org.visab.util.NiceString;
 import org.visab.workspace.Workspace;
 
 /**
- * The DyanmicInstatiator using which objects can be instantiates from a fully
+ * The DyanmicInstatiator using which instances can be created from a fully
  * classified class name. Is used for creating SessionListener instances.
  */
 public final class DynamicInstatiator {
 
-    private static Logger logger = LogManager.getLogger(DynamicInstatiator.class);
+    private static final Logger logger = LogManager.getLogger(DynamicInstatiator.class);
 
     /**
      * Instantiates a SessionListener based on the dynamic mappings configuration.
      * 
      * @param game      The game to instantiate a listener of
-     * @param sessionId The sessionId
+     * @param sessionId The sessionId to pass as a constructor argument to the
+     *                  listener
      * @return A SessionListener instance if successful, null else
      */
-    public static ISessionListener instantiateSessionListener(String game, UUID sessionId) {
+    public static final ISessionListener instantiateSessionListener(String game, UUID sessionId) {
         var className = "";
 
         var mapping = Workspace.getInstance().getConfigManager().getMapping(game);
@@ -47,8 +48,8 @@ public final class DynamicInstatiator {
                 try {
                     sessionListener = (ISessionListener) instance;
                 } catch (Exception e) {
-                    logger.error(StringFormat.niceString("Failed to cast instance of {0} to ISessionListener.",
-                            className));
+                    logger.error(
+                            NiceString.make("Failed to cast instance of {0} to ISessionListener.", className));
                 }
             }
         }
@@ -64,14 +65,14 @@ public final class DynamicInstatiator {
      * @param arguments The constructor arguments
      * @return An instance of the class if successful, null else
      */
-    public static Object instatiateClass(String className, Object... arguments) {
+    public static final Object instatiateClass(String className, Object... arguments) {
         var class_ = DynamicHelper.tryGetClass(className);
         if (class_ == null) {
             logger.error("Couldent resove class for " + className);
             return null;
-        } else {
-            return instantiateClass(class_, arguments);
         }
+
+        return instantiateClass(class_, arguments);
     }
 
     /**
@@ -82,7 +83,7 @@ public final class DynamicInstatiator {
      * @param arguments The constructor arguments
      * @return An instance of the class if successful, null else
      */
-    public static Object instantiateClass(Class class_, Object... arguments) {
+    public static final Object instantiateClass(Class<?> class_, Object... arguments) {
         if (class_ == null) {
             logger.info("Cant create an instance of null.");
             return null;
@@ -119,7 +120,7 @@ public final class DynamicInstatiator {
 
         // If there was not correct constructor found, throw exception
         if (correctConstructor == null) {
-            var message = StringFormat.niceString("Couldent find a fitting constructor for {0}.", class_.getName());
+            var message = NiceString.make("Couldent find a fitting constructor for {0}.", class_.getName());
             logger.error(message);
             return null;
         }
@@ -131,7 +132,7 @@ public final class DynamicInstatiator {
                 | InvocationTargetException e) {
             // If instatiation via reflection fails eventhought constructor was found, throw
             // exception
-            var message = StringFormat.niceString("Failed to create an instance of {0} using constructor {1}.",
+            var message = NiceString.make("Failed to create an instance of {0} using constructor {1}.",
                     class_.getName(), correctConstructor);
 
             logger.error(message);
@@ -147,14 +148,14 @@ public final class DynamicInstatiator {
      *                  constructors of
      * @return A list of the constructors
      */
-    private static List<Constructor<?>> getConstructors(Class class_) {
+    private static final List<Constructor<?>> getConstructors(Class<?> class_) {
         var constructors = new ArrayList<Constructor<?>>();
 
         try {
             for (var ctor : class_.getConstructors())
                 constructors.add(ctor);
         } catch (SecurityException e) {
-            logger.warn(StringFormat.niceString("Failed to get constructors for {0}.", class_.getName()));
+            logger.warn(NiceString.make("Failed to get constructors for {0}.", class_.getName()));
             e.printStackTrace();
         }
 

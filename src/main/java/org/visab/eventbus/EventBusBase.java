@@ -10,36 +10,22 @@ import org.apache.logging.log4j.Logger;
 import org.visab.util.VISABUtil;
 
 /**
- * @param <T> The type of the interface of the events to publish by this bus
+ * An abstract base implementation of the EventPus.
+ * 
+ * @param <T> The type of the interface of the events to publish by this bus.
+ *            The bus will be able to publish any events that implement T.
  */
-public abstract class EventBusBase<T extends IEvent>  {
+public abstract class EventBusBase<T extends IEvent> {
 
-    // Logger needs .class for each class to use for log traces
+    /**
+     * The log4j logger.
+     */
     protected Logger logger = LogManager.getLogger(this.getClass());
 
     /**
      * The current subscribers.
      */
     protected Map<String, ArrayList<ISubscriber<?>>> subscribers = new HashMap<>();
-
-    /**
-     * Casts the subscribers to their concrete EventType. If this throws an error,
-     * your subscriber class was passed the wrong event class at initialization.
-     * 
-     * @param <TEvent>            The type of event to cast to
-     * @param uncastedSubscribers The uncasted subscribers
-     * @return A list of subscribers casted to TEvent
-     */
-    @SuppressWarnings("unchecked")
-    protected <TEvent extends T> List<ISubscriber<T>> castSubscribers(
-            List<ISubscriber<?>> uncastedSubscribers) {
-        var casted = new ArrayList<ISubscriber<T>>();
-
-        for (var sub : uncastedSubscribers)
-            casted.add((ISubscriber<T>) sub);
-
-        return casted;
-    }
 
     /**
      * Notifies all subscribers that are subscribed to TEvent of the given event.
@@ -52,7 +38,8 @@ public abstract class EventBusBase<T extends IEvent>  {
         var concreteEventName = event.getClass().getName();
 
         // Gets the name of the first interfaces that the event implements.
-        // We can safely assume that our event implements atleast IApiEvent due to the generic constrict.
+        // We can safely assume that our event implements atleast IApiEvent due to the
+        // generic constrict.
         var interfaceEventName = VISABUtil.getAllInterfaces(event.getClass()).get(0).getName();
 
         // Notify concrete subscribers.
@@ -100,5 +87,23 @@ public abstract class EventBusBase<T extends IEvent>  {
             subscribers.get(eventType).remove(subscriber);
         else
             logger.warn("Tried to remove subscriber that wasnt subscribed.");
+    }
+
+    /**
+     * Casts the subscribers to their concrete EventType. If this throws an error,
+     * your subscriber class was passed the wrong event class at initialization.
+     * 
+     * @param <TEvent>            The type of event to cast to
+     * @param uncastedSubscribers The uncasted subscribers
+     * @return A list of subscribers casted to TEvent
+     */
+    @SuppressWarnings("unchecked")
+    protected <TEvent extends T> List<ISubscriber<T>> castSubscribers(List<ISubscriber<?>> uncastedSubscribers) {
+        var casted = new ArrayList<ISubscriber<T>>();
+
+        for (var sub : uncastedSubscribers)
+            casted.add((ISubscriber<T>) sub);
+
+        return casted;
     }
 }

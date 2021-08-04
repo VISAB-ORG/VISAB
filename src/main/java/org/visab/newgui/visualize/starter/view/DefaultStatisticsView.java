@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.newgui.AppMain;
-import org.visab.newgui.DynamicViewLoader;
 import org.visab.newgui.UiHelper;
 
 import de.saxsys.mvvmfx.FluentViewLoader;

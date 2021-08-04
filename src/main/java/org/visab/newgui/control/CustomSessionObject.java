@@ -1,6 +1,6 @@
 package org.visab.newgui.control;
 
-import org.visab.api.WebApi;
+import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 
@@ -60,11 +60,12 @@ public class CustomSessionObject extends GridPane {
         this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                // TODO: Popup if live viewing not supported
                 DynamicViewLoader.loadVisualizer(sessionStatus.getGame(), sessionStatus.getSessionId());
             }
         });
         this.sessionIdValue = new Label(sessionStatus.getSessionId().toString());
-        this.hostNameValue = new Label(sessionStatus.getHostName());
+        this.hostNameValue = new Label("TODO");
         this.ipValue = new Label(sessionStatus.getIp());
         this.sessionOpenedValue = new Label(sessionStatus.getSessionOpened().toString());
 
@@ -92,7 +93,7 @@ public class CustomSessionObject extends GridPane {
             @Override
             public void handle(ActionEvent e) {
                 if (sessionStatus.isActive())
-                    WebApi.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
+                    WebAPI.getInstance().getSessionAdministration().closeSession(sessionStatus.getSessionId());
             }
         });
         this.closeSessionButton.setAlignment(Pos.TOP_RIGHT);

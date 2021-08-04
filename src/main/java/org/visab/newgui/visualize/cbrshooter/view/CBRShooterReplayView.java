@@ -8,14 +8,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.PlayerInformation;
+import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
-import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -99,8 +98,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private TableView<PlayerVisualsRow> playerVisualsTable;
 
     // Images / Icons
-    private Image pauseImage = new Image(ConfigManager.IMAGE_PATH + "pause.png");
-    private Image playImage = new Image(ConfigManager.IMAGE_PATH + "play.png");
+    private Image pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
+    private Image playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
 
     @FXML
     private ImageView weaponIcon;
@@ -176,7 +175,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      */
     private void updatePlayerDataRows() {
         playerDataRows.clear();
-        for (PlayerInformation playerInfo : frameBasedStats.get().getPlayers()) {
+        for (Player playerInfo : players.values()) {
             playerDataRows.add(new PlayerDataRow(playerInfo));
         }
     }

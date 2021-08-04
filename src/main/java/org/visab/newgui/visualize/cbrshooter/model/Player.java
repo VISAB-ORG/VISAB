@@ -1,7 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
 import org.visab.globalmodel.Vector2;
-import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;
@@ -60,7 +59,7 @@ public class Player {
      * 
      * @param playerInfo the PlayerInformation object from the VISAB file.
      */
-    public void updatePlayerData(PlayerInformation playerInfo) {
+    public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo) {
         // Update the values of the fields
         this.healthProperty.set(playerInfo.getHealth());
         this.relativeHealthProperty.set(playerInfo.getRelativeHealth());

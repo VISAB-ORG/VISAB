@@ -2,17 +2,14 @@ package org.visab.newgui;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
-import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.Scope;
 import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.ViewTuple;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,8 +22,6 @@ import javafx.stage.Stage;
 
 // TODO: Include the style sheets here
 public class DialogHelper {
-
-    private Logger logger = LogManager.getLogger(DialogHelper.class);
 
     /**
      * Shows a confirmation dialog with an OK and CANCEL button.
@@ -138,92 +133,46 @@ public class DialogHelper {
         return files;
     }
 
-    private Stage getStage(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            ViewModel viewModel) {
-        var viewStep = FluentViewLoader.fxmlView(viewType);
+    public void showView(ShowViewConfiguration configuration, ViewModel viewModel, Scope... scopes) {
+        var viewStep = FluentViewLoader.fxmlView(configuration.getViewType());
+
+        var stage = new Stage();
+        stage.setTitle(configuration.getWindowTitle());
+
+        // TODO: Calculate relative to screen resolution
+        // TODO: Perhaps it will be provided relative in the config and we calculate the
+        // absolute values here
+        if (configuration.getWidth() != 0)
+            stage.setMinWidth(configuration.getWidth());
+
+        if (configuration.getHeight() != 0)
+            stage.setMinHeight(configuration.getHeight());
+
         if (viewModel != null)
             viewStep.viewModel(viewModel);
+
+        var additionalScope = new GenericScope();
+        additionalScope.setStage(stage);
+        // TODO: Do like in #96
+        stage.setOnCloseRequest(e -> additionalScope.invokeOnStageClosed(stage));
+
+        var scopesArr = Arrays.copyOf(scopes, scopes.length + 1);
+        scopesArr[scopes.length] = additionalScope;
+        viewStep.providedScopes(scopesArr);
 
         var viewTuple = viewStep.load();
         var view = viewTuple.getView();
 
-        var stage = new Stage();
-        var scene = new Scene(view);
-        stage.setTitle(title);
-        stage.setScene(scene);
+        stage.setScene(new Scene(view));
 
-        if (blockWindows)
+        if (configuration.shouldBlock())
             stage.initModality(Modality.APPLICATION_MODAL);
 
-        return stage;
-    }
-
-    /**
-     * TODO: Add parameters for blocking or not blocking etc. Note: same method
-     * existent in DynamicViewLoader.
-     * 
-     * @param viewTuple
-     * @param title
-     */
-    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title,
-            GenericScope scope, double minHeight, double minWidth) {
-        // TODO: Get the style here
-        var parent = viewTuple.getView();
-        var stage = new Stage();
-        stage.setTitle(title);
-        stage.setScene(new Scene(parent));
-        stage.setMinHeight(minHeight);
-        stage.setMinWidth(minWidth);
-        scope.setStage(stage);
-        stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
         stage.show();
     }
 
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows) {
-        getStage(viewType, title, blockWindows, null).show();
-    }
-
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            Consumer<Stage> stageClosedHandler) {
-        var stage = getStage(viewType, title, blockWindows, null);
-        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
-        stage.show();
-    }
-
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            ViewModel viewModel) {
-        var stage = getStage(viewType, title, blockWindows, viewModel);
-        var scope = new GenericScope();
-        stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
-        scope.setStage(stage);
-        stage.show();
-    }
-
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            ViewModel viewModel, Consumer<Stage> stageClosedHandler) {
-        var stage = getStage(viewType, title, blockWindows, viewModel);
-        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
-        stage.show();
-    }
-
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            double minHeight, double minWidth) {
-        var scope = new GenericScope();
-
-        // Resolve the session overview view
-        var viewTuple = FluentViewLoader.fxmlView(viewType).providedScopes(scope).load();
-        showView(viewTuple, title, scope, minHeight, minWidth);
-    }
-
-    public void showView(Class<? extends FxmlView<? extends ViewModel>> viewType, String title, boolean blockWindows,
-            double minHeight, double minWidth, Consumer<Stage> stageClosedHandler) {
-        var stage = getStage(viewType, title, blockWindows, null);
-        stage.setOnCloseRequest(e -> stageClosedHandler.accept(stage));
-
-        stage.setMinWidth(minWidth);
-        stage.setMinHeight(minHeight);
-
-        stage.show();
+    public void showView(ShowViewConfiguration configuration, Scope... scopes) {
+        showView(configuration, null, scopes);
     }
 
 }

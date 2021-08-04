@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
+import org.visab.globalmodel.GameName;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterImages;
@@ -14,16 +15,12 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
-import org.visab.util.StringFormat;
-import org.visab.workspace.config.ConfigManager;
+import org.visab.util.NiceString;
 
 /**
  * The CBRShooterListener class, that is responsible for listening to
- * information sent by the CBRShooter game and creating files of that
+ * information sent by the CBRShooter game and creating files with that
  * information.
- *
- * @author moritz
- *
  */
 public class CBRShooterListener
         extends ReplaySessionListenerBase<CBRShooterMetaInformation, CBRShooterStatistics, CBRShooterImages>
@@ -34,14 +31,14 @@ public class CBRShooterListener
     private List<ILiveViewModel<CBRShooterStatistics>> viewModels = new ArrayList<>();
 
     public CBRShooterListener(UUID sessionId) {
-        super(ConfigManager.CBR_SHOOTER_STRING, sessionId);
+        super(GameName.CBR_SHOOTER, sessionId);
     }
 
     @Override
     public void addViewModel(ILiveViewModel<CBRShooterStatistics> viewModel) {
         viewModels.add(viewModel);
 
-        // If the session isnt active anymore, instantly notify, that it was closed.
+        // If the session isnt active anymore, instantly notify that it was closed.
         if (!isActive)
             notifySessionClosed();
     }
@@ -68,17 +65,19 @@ public class CBRShooterListener
 
     @Override
     public void onSessionClosed() {
-        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+        if (file.getStatistics().size() > 0) {
+            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-        int mostKills = 0;
-        var playerName = "";
-        for (var player : lastStatistics.getPlayers()) {
-            if (player.getStatistics().getFrags() > mostKills) {
-                playerName = player.getName();
-                mostKills = player.getStatistics().getFrags();
+            int mostKills = 0;
+            var playerName = "";
+            for (var player : lastStatistics.getPlayers()) {
+                if (player.getStatistics().getFrags() > mostKills) {
+                    playerName = player.getName();
+                    mostKills = player.getStatistics().getFrags();
+                }
             }
+            file.setWinner(playerName);
         }
-        file.setWinner(playerName);
 
         manager.saveFile(file, sessionId.toString(), sessionId);
 
@@ -106,7 +105,7 @@ public class CBRShooterListener
     public void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
-        writeLog(Level.DEBUG, StringFormat.niceString("has {0} entries now", file.getStatistics().size()));
+        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }

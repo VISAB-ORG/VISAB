@@ -16,7 +16,7 @@ import org.visab.globalmodel.Vector2;
 public class CBRShooterStatistics implements IStatistics {
 
     private Vector2 ammunitionPosition;
-    private List<PlayerInformation> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private Vector2 healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
@@ -38,7 +38,7 @@ public class CBRShooterStatistics implements IStatistics {
         this.totalTime = totalTime;
     }
 
-    public List<PlayerInformation> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -102,8 +102,8 @@ public class CBRShooterStatistics implements IStatistics {
         this.weaponPosition = weaponPosition;
     }
 
-    public PlayerInformation getInfoByPlayerName(String playerName) {
-        for (PlayerInformation playerInfo : this.getPlayers()) {
+    public Player getInfoByPlayerName(String playerName) {
+        for (Player playerInfo : this.getPlayers()) {
             if (playerInfo.getName().equals(playerName)) {
                 return playerInfo;
             }

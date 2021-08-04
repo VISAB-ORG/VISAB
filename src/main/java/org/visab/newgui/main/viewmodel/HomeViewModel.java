@@ -14,13 +14,14 @@ import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.newgui.DynamicViewLoader;
+import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.sessionoverview.view.NewSessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
+import org.visab.util.OSUtil;
 import org.visab.util.StreamUtil;
-import org.visab.util.VISABUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
@@ -160,7 +161,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = runnableCommand(() -> {
-                dialogHelper.showView(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
+                var viewConfig = new ShowViewConfiguration(NewSessionOverviewView.class, "API Dashboard", false, 600, 930);
+                dialogHelper.showView(viewConfig);
             });
         }
 
@@ -170,7 +172,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openSettings() {
         if (openSettings == null) {
             openSettings = runnableCommand(() -> {
-                dialogHelper.showView(SettingsView.class, "Settings", true);
+                var viewConfig = new ShowViewConfiguration(SettingsView.class, "Settings", true);
+                dialogHelper.showView(viewConfig);
             });
         }
 
@@ -364,7 +367,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
             showInExplorerCommand = runnableCommand(() -> {
                 var selectedFile = getSelectedFile();
                 try {
-                    switch (VISABUtil.getOS()) {
+                    switch (OSUtil.getOS()) {
                     case WINDOWS:
                         var osCommand = "explorer.exe " + baseDirPath;
                         if (selectedFile != null)

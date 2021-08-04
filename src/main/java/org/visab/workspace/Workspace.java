@@ -1,21 +1,30 @@
 package org.visab.workspace;
 
 import org.visab.util.VISABUtil;
-import org.visab.workspace.config.ConfigManager;
 
 /**
- * The VISAB workspace, from which config, database and log management can be
- * done. It is the central point for modifying settings, viewmanagement and
- * deleting/adding/renaming VISAB files.
+ * The VISAB workspace, from which config and database management can be done.
+ * It is the central point for modifying settings and deleting, adding, and
+ * renaming VISAB files.
+ * 
+ * For consistency reasons, the only Manager instances should be the ones in the
+ * Workspace singelton instance.
  */
 public class Workspace {
 
-    /**
-     * Singelton instance
-     */
+    protected static final String WORKSPACE_PATH = VISABUtil.combinePath(System.getProperty("user.dir"), "workspace");
+
     private static Workspace instance;
 
-    public static final String WORKSPACE_PATH = VISABUtil.combinePath(System.getProperty("user.dir"), "workspace");
+    private ConfigManager configManager = new ConfigManager();
+
+    private DatabaseManager databaseManager = new DatabaseManager();
+
+    /**
+     * For singelton
+     */
+    private Workspace() {
+    }
 
     /**
      * Gets the singelton instance
@@ -29,20 +38,16 @@ public class Workspace {
         return instance;
     }
 
-    private ConfigManager configManager = new ConfigManager();
-
-    private DatabaseManager databaseManager = new DatabaseManager();
-
     /**
-     * For singelton
+     * The ConfigManager instance.
      */
-    private Workspace() {
-    }
-
     public ConfigManager getConfigManager() {
         return this.configManager;
     }
 
+    /**
+     * The DatabaseManager instance.
+     */
     public DatabaseManager getDatabaseManager() {
         return this.databaseManager;
     }

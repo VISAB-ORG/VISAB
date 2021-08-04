@@ -18,7 +18,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoubleProperty> {
 
     public AimRatioComparisonRow() {
-        super("Aim ratio");
+        super("Aim ratio (in %)");
     }
 
     @Override
