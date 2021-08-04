@@ -3,7 +3,6 @@ package org.visab.newgui.sessionoverview.viewmodel;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -82,16 +81,18 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
         }
     }
 
+    /**
+     * This method takes in a list of session statuses and sorts them by their
+     * respective last request time to make sure the most recent sessions are always
+     * at the start.
+     * 
+     * @param sessionStatusList the list that needs to be sorted.
+     * @return the sorted list
+     */
     private List<SessionStatus> sortSessionStatuses(List<SessionStatus> sessionStatusList) {
-        Collections.sort(sessionStatusList, byLastRequest);
+        Collections.sort(sessionStatusList, (o1, o2) -> (-1) * o1.getLastRequest().compareTo(o2.getLastRequest()));
         return sessionStatusList;
     }
-
-    Comparator<SessionStatus> byLastRequest = new Comparator<SessionStatus>() {
-        public int compare(SessionStatus o1, SessionStatus o2) {
-            return (-1) * o1.getLastRequest().compareTo(o2.getLastRequest());
-        }
-    };
 
     /**
      * Intermediate method to retrieve session statuses from the Web Api. Also
