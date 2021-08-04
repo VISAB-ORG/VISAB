@@ -15,9 +15,7 @@ import org.visab.workspace.Workspace;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -32,20 +30,18 @@ public class SessionOverviewViewModel extends ViewModelBase {
     private IntegerProperty canceledSessionsProperty = new SimpleIntegerProperty(0);
     private StringProperty webApiAdressProperty = new SimpleStringProperty();
 
-    private ObjectProperty<SessionStatus> selectedSession = new SimpleObjectProperty<>();
-
-    private Command closeSessionCommand;
     private Command clearInactiveSessionsCommand;
 
-    public Command closeSessionCommand() {
-        if (closeSessionCommand == null) {
-            closeSessionCommand = runnableCommand(() -> {
-                if (selectedSession.get() != null && selectedSession.get().isActive())
-                    WebAPI.getInstance().getSessionAdministration().closeSession(selectedSession.get().getSessionId());
-            });
+    /**
+     * Called after the instance was constructed by javafx/mvvmfx.
+     */
+    public void initialize() {
+        try {
+            this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
+                    + Workspace.getInstance().getConfigManager().getWebApiPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
-
-        return closeSessionCommand;
     }
 
     public Command clearInactiveSessionsCommand() {
@@ -60,18 +56,6 @@ public class SessionOverviewViewModel extends ViewModelBase {
         }
 
         return clearInactiveSessionsCommand;
-    }
-
-    /**
-     * Called after the instance was constructed by javafx/mvvmfx.
-     */
-    public void initialize() {
-        try {
-            this.webApiAdressProperty.set(Inet4Address.getLocalHost().getHostAddress() + ":"
-                    + Workspace.getInstance().getConfigManager().getWebApiPort());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
