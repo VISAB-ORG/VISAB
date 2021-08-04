@@ -17,9 +17,6 @@ import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
-import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
-import org.visab.newgui.visualize.cbrshooter.model.PlayerVisuals;
-import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.processing.ILiveViewable;
 import org.visab.workspace.config.ConfigManager;
 
@@ -33,12 +30,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
 public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile>
         implements ILiveViewModel<CBRShooterStatistics> {
@@ -53,19 +47,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private Command playData;
     private Command pauseData;
     private Command setUpdateInterval;
-    private Command setSelectedFrame;
-    private Command visualizeMapElement;
 
     // Thread necessary to control data updating in the background
     private Thread updateLoop;
 
-    // Custom row lists for the table views
-    private ObservableList<PlayerDataRow> currentPlayerStats = FXCollections.observableArrayList();
-    private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
-
     // Generic properties of the replay view to display information
     private IntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
     private IntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
+    private IntegerProperty velocityProperty = new SimpleIntegerProperty();
 
     private StringProperty totalTimeProperty = new SimpleStringProperty();
     private StringProperty roundTimeProperty = new SimpleStringProperty();
@@ -74,24 +63,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private ObjectProperty<IntVector2> weaponCoordsProperty = new SimpleObjectProperty<IntVector2>();
     private ObjectProperty<IntVector2> ammuCoordsProperty = new SimpleObjectProperty<IntVector2>();
 
-    // Contains color-coded visuals for each player in the game
-    private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
-    private ObservableMap<String, Pair<Node, Boolean>> mapElements = FXCollections.observableHashMap();
-
     private ObservableMap<String, Player> playerObjects = FXCollections.observableHashMap();
-
-    private HashMap<String, String> latestPlansOfPlayers = new HashMap<String, String>();
-    private HashMap<String, Integer> latestDeathsOfPlayers = new HashMap<String, Integer>();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
-
-    // Global variable that indicates which index shall be referred for data
-    // extraction of the loaded statistics
-    private int selectedFrame;
-
-    // Necessary to decide which elements shall be "resetted" for each round
-    private int roundCounter;
 
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
@@ -132,6 +107,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return frameSliderTickUnitProperty;
     }
 
+    public IntegerProperty velocityProperty() {
+        return velocityProperty;
+    }
+
     public StringProperty totalTimeProperty() {
         return totalTimeProperty;
     }
@@ -170,7 +149,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         // Default update interval of 0.1 seconds
         updateInterval = 100;
-        selectedFrame = 0;
 
         // TODO: Might not be to hard to have this work live aswell
         // Load data from the scopes file which is initialized after VISUALIZE
@@ -243,13 +221,13 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                updateCurrentGameStatsByFrame();
                                 playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
+                                updateCurrentGameStatsByFrame();
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
                         try {
-                            sleep((long) updateInterval);
+                            sleep((long) updateInterval / velocityProperty.get());
                         } catch (InterruptedException e) {
                             // Exception is thrown when the stop button interrupts this thread
                             Thread.currentThread().interrupt();
@@ -277,18 +255,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             updateInterval = newInterval;
         });
         return setUpdateInterval;
-    }
-
-    public int getSelectedFrame() {
-        return selectedFrame;
-    }
-
-    public ObservableList<PlayerDataRow> getCurrentPlayerStats() {
-        return currentPlayerStats;
-    }
-
-    public ObservableList<PlayerVisualsRow> getPlayerVisualsRows() {
-        return playerVisualsRows;
     }
 
     public Image getWeaponIcon() {

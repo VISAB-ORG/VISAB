@@ -9,6 +9,7 @@ import org.visab.globalmodel.DoubleVector2;
 import org.visab.globalmodel.IntVector2;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
+import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
@@ -18,9 +19,13 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -105,17 +110,24 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private ImageView playImageView = new ImageView(playImage);
     private ImageView pauseImageView = new ImageView(pauseImage);
 
+    private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
+    private ObservableList<PlayerDataRow> playerDataRows = FXCollections.observableArrayList();
+    private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
+    private ObservableMap<String, Player> players = FXCollections.observableHashMap();
+
     @InjectViewModel
     CBRShooterReplayViewModel viewModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        initializePlayers();
+
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getHeight(), drawPane.getWidth(),
                 new DoubleVector2(drawPane.getLayoutX(), drawPane.getLayoutY()));
 
-        playerDataTable.setItems(viewModel.getCurrentPlayerStats());
-        playerVisualsTable.setItems(viewModel.getPlayerVisualsRows());
+        playerDataTable.setItems(playerDataRows);
+        playerVisualsTable.setItems(playerVisualsRows);
 
         weaponIcon.setImage(viewModel.getWeaponIcon());
         ammuIcon.setImage(viewModel.getAmmuIcon());
@@ -131,19 +143,19 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         ammuCoordsValueLabel.textProperty().bind(viewModel.ammuCoordsProperty().asString());
 
         playPauseButton.setGraphic(playImageView);
+        veloSlider.valueProperty().bindBidirectional(viewModel.velocityProperty());
         frameSlider.maxProperty().bind(viewModel.frameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.playFrameProperty());
         frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
-
-        viewModel.playFrameProperty().addListener(new ChangeListener<Number>() {
+        frameSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // TODO: Change visualization accordingly
                 // Make sure the selectedFrame cannot be out of bounds
                 // While loops necessary to ensure increments / decrements of one
-                int oldValueAsInt = (int) oldValue;
-                int newValueAsInt = (int) newValue;
+                int oldValueAsInt = oldValue.intValue();
+                int newValueAsInt = newValue.intValue();
                 if (newValueAsInt > oldValueAsInt) {
                     System.out.println("Slider moved forward");
                     while (oldValueAsInt > newValueAsInt) {
@@ -162,6 +174,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
             }
         });
+    }
+
+    private void initializePlayers() {
+        for (String playerName : viewModel.getPlayerNames()) {
+            players.put(playerName, new Player(playerName));
+        }
     }
 
     /**
@@ -188,11 +206,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      */
     private void redrawPathsForRound() {
         // TODO: do stuff
-    }
-
-    @FXML
-    public void handleVeloSlider() {
-        viewModel.setUpdateInterval(100 / veloSlider.getValue()).execute();
     }
 
     @FXML
