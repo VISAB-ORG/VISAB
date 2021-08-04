@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.DoubleVector2;
 import org.visab.globalmodel.IntVector2;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
@@ -17,6 +18,8 @@ import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -115,6 +118,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
     private ObservableMap<String, Player> players = FXCollections.observableHashMap();
 
+    private ObjectProperty<CBRShooterStatistics> frameBasedStats = new SimpleObjectProperty<>();
+
     @InjectViewModel
     CBRShooterReplayViewModel viewModel;
 
@@ -122,6 +127,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     public void initialize(URL location, ResourceBundle resources) {
 
         initializePlayers();
+
+        frameBasedStats.bind(viewModel.frameBasedStatsProperty());
 
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getHeight(), drawPane.getWidth(),
                 new DoubleVector2(drawPane.getLayoutX(), drawPane.getLayoutY()));
@@ -134,6 +141,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         healthIcon.setImage(viewModel.getHealthIcon());
 
         drawPane.getChildren().add(UiHelper.greyScaleImage(viewModel.getMapImage()));
+        drawPane.getChildren().addAll(mapElements.values());
 
         totalTimeValueLabel.textProperty().bind(viewModel.totalTimeProperty());
         roundValueLabel.textProperty().bind(viewModel.roundProperty().asString());

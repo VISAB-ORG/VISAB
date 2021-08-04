@@ -34,7 +34,7 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="705.0" layoutY="528.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" onValueChange="#handleVeloSlider" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
+      <Slider fx:id="veloSlider" blockIncrement="1.0" layoutX="705.0" layoutY="528.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" visible="true" />
       <ToggleButton fx:id="playPauseButton" layoutX="768.0" layoutY="613.0" mnemonicParsing="false" onAction="#handlePlayPause" visible="true" />
       <TableView fx:id="playerDataTable" layoutX="41.0" layoutY="737.0" prefHeight="200.0" prefWidth="699.0">
         <columns>

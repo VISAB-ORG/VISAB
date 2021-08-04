@@ -46,7 +46,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Controls that are responsible to handle the JavaFX control element actions
     private Command playData;
     private Command pauseData;
-    private Command setUpdateInterval;
 
     // Thread necessary to control data updating in the background
     private Thread updateLoop;
@@ -54,7 +53,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Generic properties of the replay view to display information
     private IntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
     private IntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
-    private IntegerProperty velocityProperty = new SimpleIntegerProperty();
+    private IntegerProperty velocityProperty = new SimpleIntegerProperty(1);
 
     private StringProperty totalTimeProperty = new SimpleStringProperty();
     private StringProperty roundTimeProperty = new SimpleStringProperty();
@@ -72,7 +71,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
     // Viewmodel always has a reference to the statistics of the current stat
-    private CBRShooterStatistics frameBasedStats;
+    private ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
 
     // A model rectangle that is used to calculate map positioning
     private Rectangle mapRectangle;
@@ -93,10 +92,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public List<String> getPlayerNames() {
         return file.getPlayerNames();
-    }
-
-    public CBRShooterStatistics getFrameBasedStats() {
-        return data.get(playFrameProperty.get());
     }
 
     public IntegerProperty frameSliderMaxProperty() {
@@ -133,6 +128,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public ObjectProperty<IntVector2> ammuCoordsProperty() {
         return ammuCoordsProperty;
+    }
+
+    public ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty() {
+        return frameBasedStatsProperty;
     }
 
     /**
@@ -195,15 +194,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public void updateCurrentGameStatsByFrame() {
         System.out.println("Updating game stats in viewmodel.");
         // This object holds all information that is available
-        frameBasedStats = data.get(playFrameProperty.get());
+        frameBasedStatsProperty = new SimpleObjectProperty<CBRShooterStatistics>(data.get(playFrameProperty.get()));
 
         // First, update data that is applicable for every player in the game
-        totalTimeProperty.set(String.valueOf(frameBasedStats.getTotalTime()));
-        roundTimeProperty.set(String.valueOf(frameBasedStats.getRoundTime()));
-        roundProperty.set(frameBasedStats.getRound());
-        healthCoordsProperty.set(frameBasedStats.getHealthPosition());
-        weaponCoordsProperty.set(frameBasedStats.getWeaponPosition());
-        ammuCoordsProperty.set(frameBasedStats.getAmmunitionPosition());
+        totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
+        roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
+        roundProperty.set(frameBasedStatsProperty.get().getRound());
+        healthCoordsProperty.set(frameBasedStatsProperty.get().getHealthPosition());
+        weaponCoordsProperty.set(frameBasedStatsProperty.get().getWeaponPosition());
+        ammuCoordsProperty.set(frameBasedStatsProperty.get().getAmmunitionPosition());
     }
 
     // --- Command methods ---
@@ -248,13 +247,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             }
         });
         return pauseData;
-    }
-
-    public Command setUpdateInterval(double newInterval) {
-        setUpdateInterval = runnableCommand(() -> {
-            updateInterval = newInterval;
-        });
-        return setUpdateInterval;
     }
 
     public Image getWeaponIcon() {
