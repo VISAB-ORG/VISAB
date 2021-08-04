@@ -59,31 +59,23 @@ public class SessionOverviewViewModel extends ViewModelBase {
     }
 
     /**
-     * This method takes in a list of session statuses and sorts them by their
-     * respective last request time to make sure the most recent sessions are always
-     * at the start.
-     * 
-     * @param sessionStatusList the list that needs to be sorted.
-     * @return the sorted list
-     */
-    private List<SessionStatus> sortSessionStatuses(List<SessionStatus> sessionStatusList) {
-        Collections.sort(sessionStatusList, (o1, o2) -> (-1) * o1.getLastRequest().compareTo(o2.getLastRequest()));
-        return sessionStatusList;
-    }
-
-    /**
      * Intermediate method to retrieve session statuses from the Web Api. Also
      * directly adjusts the session count properties.
      * 
-     * @return the (sorted) session statuses.
+     * @return The sorted session statuses descending by time of last request.
      */
     public List<SessionStatus> querySessionStatusesSorted() {
         SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
+        var statuses = sessionAdministration.getCanceledSessionStatuses();
+
         activeSessionsProperty.set(sessionAdministration.getActiveSessionStatuses().size());
         timeoutedSessionsProperty.set(sessionAdministration.getTimeoutedSessionStatuses().size());
         canceledSessionsProperty.set(sessionAdministration.getCanceledSessionStatuses().size());
-        totalSessionsProperty.set(sessionAdministration.getSessionStatuses().size());
-        return sortSessionStatuses(sessionAdministration.getSessionStatuses());
+        totalSessionsProperty.set(statuses.size());
+
+        Collections.sort(statuses, (o1, o2) -> (-1) * o1.getLastRequest().compareTo(o2.getLastRequest()));
+
+        return statuses;
     }
 
     public GenericScope getScope() {
