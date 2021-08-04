@@ -135,9 +135,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
                 drawPane.getPrefWidth());
         initializeMapElements();
-        // mapElements.put("Any", new ImageView(new Image(ConfigManager.IMAGE_PATH +
-        // "/cbrBot.png")));
-        System.out.println(mapElements.values().size());
         drawPane.getChildren().setAll(mapElements.values());
 
         playerDataTable.setItems(playerDataRows);
@@ -170,8 +167,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 viewModel.updateCurrentGameStatsByFrame();
             }
         });
-
-        System.out.println(mapElements.values().size());
     }
 
     /**
@@ -195,9 +190,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
         ImageView weapon = new ImageView(viewModel.getWeaponIcon());
         ImageView healthItem = new ImageView(viewModel.getHealthIcon());
-        UiHelper.adjustVisual(ammuItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
-        UiHelper.adjustVisual(weapon, false, drawPane.getLayoutX(), drawPane.getLayoutY());
-        UiHelper.adjustVisual(healthItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+        UiHelper.adjustVisual(ammuItem, false, frameBasedStats.get().getAmmunitionPosition(), STANDARD_ICON_VECTOR);
+        UiHelper.adjustVisual(weapon, false, frameBasedStats.get().getWeaponPosition(), STANDARD_ICON_VECTOR);
+        UiHelper.adjustVisual(healthItem, false, frameBasedStats.get().getHealthPosition(), STANDARD_ICON_VECTOR);
         mapElements.put("ammuItem", ammuItem);
         mapElements.put("weapon", weapon);
         mapElements.put("healthItem", healthItem);
@@ -206,9 +201,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             ImageView playerIcon = new ImageView(player.getPlayerIcon());
             ImageView playerPlanChange = new ImageView(player.getPlayerPlanChange());
             ImageView playerDeath = new ImageView(player.getPlayerDeath());
-            System.out.println("Player position unity: " + player.positionProperty().get());
-            System.out.println("Player position javafx: "
-                    + coordinateHelper.translateAccordingToMap(player.positionProperty().get()));
             UiHelper.adjustVisual(playerIcon, true,
                     coordinateHelper.translateAccordingToMap(player.positionProperty().get()), STANDARD_ICON_VECTOR);
             UiHelper.adjustVisual(playerPlanChange, false, drawPane.getLayoutX(), drawPane.getLayoutY());
@@ -237,33 +229,38 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     }
 
     private void updateMapElements() {
-        System.out.println("Updating map elements for frame: " + frameSlider.getValue());
-        ImageView johnDoe = (ImageView) mapElements.get("Jane Doe_playerIcon");
-        System.out.println("old pos:  " + johnDoe.getX() + ", " + johnDoe.getY());
-        Vector2 newPos = coordinateHelper
-                .translateAccordingToMap(frameBasedStats.get().getInfoByPlayerName("Jane Doe").getPosition());
-        System.out.println("new pos: " + newPos.toString());
-        UiHelper.adjustVisual(johnDoe, newPos);
-    }
+        // Non-player-related map items
+        ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
+        var newAmmuPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getAmmunitionPosition());
+        if (checkBoxAmmuItem.isSelected() && !newAmmuPos.isZero()) {
+            UiHelper.adjustVisual(ammuItem, true, newAmmuPos);
+        } else {
+            UiHelper.adjustVisual(ammuItem, false, newAmmuPos);
+        }
 
-    /**
-     * This method initializes as hash map that can be globally used across the view
-     * model which provides different categories of visuals for a dynamic amount of
-     * players in general.
-     * 
-     */
-    private void initializePlayerVisuals() {
-        // TODO: do stuff
+        ImageView weapon = (ImageView) mapElements.get("weapon");
+        var newWeaponPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getWeaponPosition());
+        if (checkBoxWeapon.isSelected() && !newWeaponPos.isZero()) {
+            UiHelper.adjustVisual(weapon, true, newWeaponPos);
+        } else {
+            UiHelper.adjustVisual(weapon, false, newWeaponPos);
+        }
 
-    }
+        ImageView healthItem = (ImageView) mapElements.get("healthItem");
+        var newHealthPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getHealthPosition());
+        if (checkBoxHealthItem.isSelected() && !newWeaponPos.isZero()) {
+            UiHelper.adjustVisual(healthItem, true, newHealthPos);
+        } else {
+            UiHelper.adjustVisual(healthItem, false, newHealthPos);
+        }
 
-    /**
-     * Method is used to redraw the paths accordingly if the frame slider is moved
-     * backwards.
-     * 
-     */
-    private void redrawPathsForRound() {
-        // TODO: do stuff
+        // Iterate over players
+        for (Player player : players.values()) {
+            ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
+            Vector2 newPos = coordinateHelper
+                    .translateAccordingToMap(frameBasedStats.get().getInfoByPlayerName(player.getName()).getPosition());
+            UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
+        }
     }
 
     @FXML
