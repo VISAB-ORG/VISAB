@@ -104,6 +104,19 @@ public final class UiHelper {
      * Simple method that sets relevant information for a given image view.
      * 
      * @param imageView the image view that shall be adjusted.
+     * @param visible   the visibility for the given image view.
+     * @param position  the positioning vector for the given image view.
+     */
+    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position) {
+        imageView.setX(position.getX());
+        imageView.setY(position.getY());
+        imageView.setVisible(visible);
+    }
+
+    /**
+     * Simple method that sets relevant information for a given image view.
+     * 
+     * @param imageView the image view that shall be adjusted.
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
