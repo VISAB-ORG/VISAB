@@ -13,26 +13,22 @@ import org.visab.globalmodel.Vector2;
 public class CoordinateHelper {
 
     private Rectangle mapRectangle;
-    private int drawPaneHeight;
-    private int drawPaneWidth;
-    private Vector2 drawPanePositioning;
+    private double drawPaneHeight;
+    private double drawPaneWidth;
 
     /**
      * Constructs a CoordinateHelper with specific boundary information.
      * 
-     * @param mapRectangle        the rectangle model of the unity game.
-     * @param drawPaneHeight      the height of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPaneWidth       the width of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPanePositioning the position (top-left-anchor) of the draw pane.
+     * @param mapRectangle   the rectangle model of the unity game.
+     * @param drawPaneHeight the height of the draw pane elements shall be
+     *                       positioned on.
+     * @param drawPaneWidth  the width of the draw pane elements shall be positioned
+     *                       on.
      */
-    public CoordinateHelper(Rectangle mapRectangle, int drawPaneHeight, int drawPaneWidth,
-            Vector2 drawPanePositioning) {
+    public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth) {
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
-        this.drawPanePositioning = drawPanePositioning;
     }
 
     /**
@@ -49,15 +45,13 @@ public class CoordinateHelper {
 
         // Calculate the percentage distance on the unity map
         double percentageMovedOnX = relativeXDistanceToTopLeftAnchorPoint / this.mapRectangle.getWidth();
-
         double percentageMovedOnY = relativeYDistanceToTopLeftAnchorPoint / this.mapRectangle.getHeight();
 
         // Calculate the positioning on the JavaFX pane that should be drawn on
-        int relativePanePositionX = (int) (this.drawPanePositioning.getX() + (percentageMovedOnX * this.drawPaneWidth));
-        int relativePanePositionY = (int) (this.drawPanePositioning.getY()
-                + (percentageMovedOnY * this.drawPaneHeight));
+        double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth;
+        double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight;
 
-        return new Vector2(relativePanePositionX, relativePanePositionY);
+        return new Vector2((int) relativePanePositionX, (int) relativePanePositionY);
     }
 
 }
