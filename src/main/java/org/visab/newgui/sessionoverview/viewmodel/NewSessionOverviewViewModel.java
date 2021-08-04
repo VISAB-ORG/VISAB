@@ -4,6 +4,7 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +53,6 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
     }
 
     private ObservableList<String> savedFiles = FXCollections.observableArrayList();
-    private ObservableList<SessionStatus> sessionStatuses = FXCollections.observableArrayList();
 
     private Logger logger = LogManager.getLogger(NewSessionOverviewViewModel.class);
 
@@ -108,7 +108,7 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
         }
     }
 
-    private ObservableList<SessionStatus> sortSessionStatuses(ObservableList<SessionStatus> sessionStatusList) {
+    private List<SessionStatus> sortSessionStatuses(List<SessionStatus> sessionStatusList) {
         Collections.sort(sessionStatusList, byLastRequest);
         return sessionStatusList;
     }
@@ -120,16 +120,12 @@ public class NewSessionOverviewViewModel extends ViewModelBase {
     };
 
     /**
-     * Extended getter that always adds the current sessions before returning them.
+     * Intermediate method to retrieve session statuses from the Web Api.
      * 
      * @return the (sorted) session statuses.
      */
-    public ObservableList<SessionStatus> getSessionStatuses() {
-        sessionStatuses.clear();
-        for (SessionStatus status : WebAPI.getInstance().getSessionAdministration().getSessionStatuses()) {
-            sessionStatuses.add(status);
-        }
-        return sortSessionStatuses(sessionStatuses);
+    public List<SessionStatus> querySessionStatusesSorted() {
+        return sortSessionStatuses(WebAPI.getInstance().getSessionAdministration().getSessionStatuses());
     }
 
     public SimpleStringProperty getTotalSessionsProperty() {

@@ -2,6 +2,7 @@ package org.visab.newgui.sessionoverview.view;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -13,7 +14,6 @@ import org.visab.newgui.sessionoverview.viewmodel.NewSessionOverviewViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -159,7 +159,6 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                System.out.println("Updating session grid");
                                 updateSessionGrid();
                             }
                         });
@@ -179,7 +178,7 @@ public class NewSessionOverviewView implements FxmlView<NewSessionOverviewViewMo
 
     private void updateSessionGrid() {
         sessionGrid.getChildren().clear();
-        ObservableList<SessionStatus> statuses = viewModel.getSessionStatuses();
+        List<SessionStatus> statuses = viewModel.querySessionStatusesSorted();
 
         var rowIterator = 0;
         var colIterator = 0;
