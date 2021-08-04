@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.IStatistics;
+import org.visab.globalmodel.IntVector2;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
@@ -26,9 +27,11 @@ import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -61,17 +64,15 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
 
     // Generic properties of the replay view to display information
-    private SimpleIntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
-    private SimpleIntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
-    private SimpleDoubleProperty frameSliderValueProperty = new SimpleDoubleProperty();
-    private SimpleStringProperty totalTimeProperty = new SimpleStringProperty();
-    private SimpleStringProperty roundTimeProperty = new SimpleStringProperty();
-    private SimpleStringProperty roundProperty = new SimpleStringProperty();
-    private SimpleStringProperty healthCoordsProperty = new SimpleStringProperty();
-    private SimpleStringProperty weaponCoordsProperty = new SimpleStringProperty();
-    private SimpleStringProperty ammuCoordsProperty = new SimpleStringProperty();
-    private SimpleDoubleProperty drawPanePositionXProperty = new SimpleDoubleProperty();
-    private SimpleDoubleProperty drawPanePositionYProperty = new SimpleDoubleProperty();
+    private IntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
+    private IntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
+
+    private StringProperty totalTimeProperty = new SimpleStringProperty();
+    private StringProperty roundTimeProperty = new SimpleStringProperty();
+    private IntegerProperty roundProperty = new SimpleIntegerProperty();
+    private ObjectProperty<IntVector2> healthCoordsProperty = new SimpleObjectProperty<IntVector2>();
+    private ObjectProperty<IntVector2> weaponCoordsProperty = new SimpleObjectProperty<IntVector2>();
+    private ObjectProperty<IntVector2> ammuCoordsProperty = new SimpleObjectProperty<IntVector2>();
 
     // Contains color-coded visuals for each player in the game
     private HashMap<String, PlayerVisuals> playerVisualsMap = new HashMap<String, PlayerVisuals>();
@@ -117,6 +118,42 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public List<String> getPlayerNames() {
         return file.getPlayerNames();
+    }
+
+    public CBRShooterStatistics getFrameBasedStats() {
+        return data.get(playFrameProperty.get());
+    }
+
+    public IntegerProperty frameSliderMaxProperty() {
+        return frameSliderMaxProperty;
+    }
+
+    public IntegerProperty frameSliderTickUnitProperty() {
+        return frameSliderTickUnitProperty;
+    }
+
+    public StringProperty totalTimeProperty() {
+        return totalTimeProperty;
+    }
+
+    public IntegerProperty roundProperty() {
+        return roundProperty;
+    }
+
+    public StringProperty roundTimeProperty() {
+        return roundTimeProperty;
+    }
+
+    public ObjectProperty<IntVector2> healthCoordsProperty() {
+        return healthCoordsProperty;
+    }
+
+    public ObjectProperty<IntVector2> weaponCoordsProperty() {
+        return weaponCoordsProperty;
+    }
+
+    public ObjectProperty<IntVector2> ammuCoordsProperty() {
+        return ammuCoordsProperty;
     }
 
     /**
@@ -178,19 +215,17 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     public void updateCurrentGameStatsByFrame() {
+        System.out.println("Updating game stats in viewmodel.");
         // This object holds all information that is available
         frameBasedStats = data.get(selectedFrame);
 
         // First, update data that is applicable for every player in the game
         totalTimeProperty.set(String.valueOf(frameBasedStats.getTotalTime()));
         roundTimeProperty.set(String.valueOf(frameBasedStats.getRoundTime()));
-        roundProperty.set(String.valueOf(frameBasedStats.getRound()));
-        healthCoordsProperty
-                .set(frameBasedStats.getHealthPosition().getX() + ", " + frameBasedStats.getHealthPosition().getY());
-        weaponCoordsProperty
-                .set(frameBasedStats.getWeaponPosition().getX() + ", " + frameBasedStats.getWeaponPosition().getY());
-        ammuCoordsProperty.set(
-                frameBasedStats.getAmmunitionPosition().getX() + ", " + frameBasedStats.getAmmunitionPosition().getY());
+        roundProperty.set(frameBasedStats.getRound());
+        healthCoordsProperty.set(frameBasedStats.getHealthPosition());
+        weaponCoordsProperty.set(frameBasedStats.getWeaponPosition());
+        ammuCoordsProperty.set(frameBasedStats.getAmmunitionPosition());
     }
 
     // --- Command methods ---
@@ -248,60 +283,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return selectedFrame;
     }
 
-    public SimpleIntegerProperty getFrameSliderMaxProperty() {
-        return frameSliderMaxProperty;
-    }
-
-    public SimpleIntegerProperty getFrameSliderTickUnitProperty() {
-        return frameSliderTickUnitProperty;
-    }
-
-    public SimpleDoubleProperty getFrameSliderValueProperty() {
-        return frameSliderValueProperty;
-    }
-
     public ObservableList<PlayerDataRow> getCurrentPlayerStats() {
         return currentPlayerStats;
     }
 
     public ObservableList<PlayerVisualsRow> getPlayerVisualsRows() {
         return playerVisualsRows;
-    }
-
-    public SimpleStringProperty getTotalTimeProperty() {
-        return totalTimeProperty;
-    }
-
-    public SimpleStringProperty getRoundTimeProperty() {
-        return roundTimeProperty;
-    }
-
-    public SimpleStringProperty getRoundProperty() {
-        return roundProperty;
-    }
-
-    public SimpleStringProperty getHealthCoordsProperty() {
-        return healthCoordsProperty;
-    }
-
-    public SimpleStringProperty getWeaponCoordsProperty() {
-        return weaponCoordsProperty;
-    }
-
-    public SimpleStringProperty getAmmuCoordsProperty() {
-        return ammuCoordsProperty;
-    }
-
-    public void setAmmuCoordsProperty(SimpleStringProperty ammuCoordsProperty) {
-        this.ammuCoordsProperty = ammuCoordsProperty;
-    }
-
-    public SimpleDoubleProperty getDrawPanePositionXProperty() {
-        return drawPanePositionXProperty;
-    }
-
-    public SimpleDoubleProperty getDrawPanePositionYProperty() {
-        return drawPanePositionYProperty;
     }
 
     public Image getWeaponIcon() {

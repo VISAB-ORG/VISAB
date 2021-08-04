@@ -123,17 +123,17 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         drawPane.getChildren().add(UiHelper.greyScaleImage(viewModel.getMapImage()));
 
-        totalTimeValueLabel.textProperty().bind(viewModel.getTotalTimeProperty());
-        roundValueLabel.textProperty().bind(viewModel.getRoundProperty());
-        roundTimeValueLabel.textProperty().bind(viewModel.getRoundTimeProperty());
-        healthItemCoordsValueLabel.textProperty().bind(viewModel.getHealthCoordsProperty());
-        weaponCoordsValueLabel.textProperty().bind(viewModel.getWeaponCoordsProperty());
-        ammuCoordsValueLabel.textProperty().bind(viewModel.getAmmuCoordsProperty());
+        totalTimeValueLabel.textProperty().bind(viewModel.totalTimeProperty());
+        roundValueLabel.textProperty().bind(viewModel.roundProperty().asString());
+        roundTimeValueLabel.textProperty().bind(viewModel.roundTimeProperty());
+        healthItemCoordsValueLabel.textProperty().bind(viewModel.healthCoordsProperty().asString());
+        weaponCoordsValueLabel.textProperty().bind(viewModel.weaponCoordsProperty().asString());
+        ammuCoordsValueLabel.textProperty().bind(viewModel.ammuCoordsProperty().asString());
 
         playPauseButton.setGraphic(playImageView);
-        frameSlider.maxProperty().bind(viewModel.getFrameSliderMaxProperty());
+        frameSlider.maxProperty().bind(viewModel.frameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.playFrameProperty());
-        frameSlider.majorTickUnitProperty().bind(viewModel.getFrameSliderTickUnitProperty());
+        frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
 
         viewModel.playFrameProperty().addListener(new ChangeListener<Number>() {
 
