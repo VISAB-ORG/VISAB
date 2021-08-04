@@ -10,9 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.SessionAdministration;
 import org.visab.api.WebAPI;
-import org.visab.eventbus.GeneralEventBus;
-import org.visab.eventbus.ISubscriber;
-import org.visab.eventbus.event.VISABFileSavedEvent;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.GenericScope;
 import org.visab.newgui.ViewModelBase;
@@ -25,35 +22,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class NewSessionOverviewViewModel extends ViewModelBase {
 
     @InjectScope
     GenericScope scope;
-
-    private class FileSavedSubscriber implements ISubscriber<VISABFileSavedEvent> {
-
-        public FileSavedSubscriber() {
-            GeneralEventBus.getInstance().subscribe(this);
-        }
-
-        @Override
-        public String getSubscribedEventType() {
-            return VISABFileSavedEvent.class.getName();
-        }
-
-        @Override
-        public void notify(VISABFileSavedEvent event) {
-            if (event.isSavedByListener())
-                // TODO: add it to the listener directly or sth.
-                // This has to be decided based on the view
-                savedFiles.add(event.getFileName());
-        }
-    }
-
-    private ObservableList<String> savedFiles = FXCollections.observableArrayList();
 
     private Logger logger = LogManager.getLogger(NewSessionOverviewViewModel.class);
 
