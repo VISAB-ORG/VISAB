@@ -175,8 +175,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      */
     private void updatePlayerDataRows() {
         playerDataRows.clear();
-        for (Player playerInfo : players.values()) {
-            playerDataRows.add(new PlayerDataRow(playerInfo));
+        for (org.visab.globalmodel.cbrshooter.Player player : frameBasedStats.get().getPlayers()) {
+            playerDataRows.add(new PlayerDataRow(player));
         }
     }
 
