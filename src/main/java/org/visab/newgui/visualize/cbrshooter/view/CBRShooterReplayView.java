@@ -5,6 +5,9 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.visab.globalmodel.DoubleVector2;
+import org.visab.globalmodel.IntVector2;
+import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
@@ -37,6 +40,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
+
+    private static final IntVector2 STANDARD_ICON_VECTOR = new IntVector2(16, 16);
+
+    private CoordinateHelper coordinateHelper;
 
     @FXML
     private ImageView healthImage;
@@ -103,62 +110,84 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getHeight(), drawPane.getWidth(),
+                new DoubleVector2(drawPane.getLayoutX(), drawPane.getLayoutY()));
+
         playerDataTable.setItems(viewModel.getCurrentPlayerStats());
         playerVisualsTable.setItems(viewModel.getPlayerVisualsRows());
-
-        viewModel.getDrawPanePositionXProperty().set(drawPane.layoutXProperty().doubleValue());
-        viewModel.getDrawPanePositionYProperty().set(drawPane.layoutYProperty().doubleValue());
 
         weaponIcon.setImage(viewModel.getWeaponIcon());
         ammuIcon.setImage(viewModel.getAmmuIcon());
         healthIcon.setImage(viewModel.getHealthIcon());
 
-        totalTimeValueLabel.textProperty().bindBidirectional(viewModel.getTotalTimeProperty());
-        roundValueLabel.textProperty().bindBidirectional(viewModel.getRoundProperty());
-        roundTimeValueLabel.textProperty().bindBidirectional(viewModel.getRoundTimeProperty());
-        healthItemCoordsValueLabel.textProperty().bindBidirectional(viewModel.getHealthCoordsProperty());
-        weaponCoordsValueLabel.textProperty().bindBidirectional(viewModel.getWeaponCoordsProperty());
-        ammuCoordsValueLabel.textProperty().bindBidirectional(viewModel.getAmmuCoordsProperty());
+        totalTimeValueLabel.textProperty().bind(viewModel.getTotalTimeProperty());
+        roundValueLabel.textProperty().bind(viewModel.getRoundProperty());
+        roundTimeValueLabel.textProperty().bind(viewModel.getRoundTimeProperty());
+        healthItemCoordsValueLabel.textProperty().bind(viewModel.getHealthCoordsProperty());
+        weaponCoordsValueLabel.textProperty().bind(viewModel.getWeaponCoordsProperty());
+        ammuCoordsValueLabel.textProperty().bind(viewModel.getAmmuCoordsProperty());
 
         playPauseButton.setGraphic(playImageView);
-        frameSlider.maxProperty().bindBidirectional(viewModel.getFrameSliderMaxProperty());
+        frameSlider.maxProperty().bind(viewModel.getFrameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.getFrameSliderValueProperty());
-        frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
+        frameSlider.majorTickUnitProperty().bind(viewModel.getFrameSliderTickUnitProperty());
 
-        drawPane.getChildren().setAll(viewModel.getMapElements());
+        viewModel.playFrameProperty().addListener(new ChangeListener<Number>() {
 
-        viewModel.playFrameProperty().addListener(new ChangeListener<Number>(){
-            
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // TODO: Change visualization accordingly
+                // Make sure the selectedFrame cannot be out of bounds
+                // While loops necessary to ensure increments / decrements of one
+                int oldValueAsInt = (int) oldValue;
+                int newValueAsInt = (int) newValue;
+                if (newValueAsInt > oldValueAsInt) {
+                    while (oldValueAsInt > newValueAsInt) {
+                        // Do something
+                        newValueAsInt++;
+                    }
+                } else {
+                    // Moved backwards
+                    // Clear list of path elements and redraw every item only for the current round
+                    while (oldValueAsInt < newValueAsInt) {
+                        // Do something
+                        newValueAsInt++;
+                    }
+                }
+
             }
         });
     }
 
-    @FXML
-    public void handleFrameSlider() {
-        viewModel.setSelectedFrame((int) frameSlider.getValue()).execute();
+    /**
+     * This method initializes as hash map that can be globally used across the view
+     * model which provides different categories of visuals for a dynamic amount of
+     * players in general.
+     * 
+     */
+    private void initializePlayerVisuals() {
+        // TODO: do stuff
+    }
+
+    /**
+     * Initializes all map elements once the replay view is loaded.
+     */
+    private void initializeMapElements() {
+        // TODO: do stuff
+    }
+
+    /**
+     * Method is used to redraw the paths accordingly if the frame slider is moved
+     * backwards.
+     * 
+     */
+    private void redrawPathsForRound() {
+        // TODO: do stuff
     }
 
     @FXML
     public void handleVeloSlider() {
         viewModel.setUpdateInterval(100 / veloSlider.getValue()).execute();
-    }
-
-    @FXML
-    public void visualizeWeapon() {
-        viewModel.visualizeMapElement("weapon", this.checkBoxWeapon.isSelected()).execute();
-    }
-
-    @FXML
-    public void visualizeAmmuItem() {
-        viewModel.visualizeMapElement("ammuItem", this.checkBoxAmmuItem.isSelected()).execute();
-    }
-
-    @FXML
-    public void visualizeHealthItem() {
-        viewModel.visualizeMapElement("healthItem", this.checkBoxHealthItem.isSelected()).execute();
     }
 
     @FXML

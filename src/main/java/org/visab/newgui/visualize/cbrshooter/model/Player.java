@@ -1,6 +1,6 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import org.visab.globalmodel.Vector2;
+import org.visab.globalmodel.IntVector2;
 import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 import javafx.beans.property.BooleanProperty;
@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
 
 public class Player {
 
@@ -23,12 +24,14 @@ public class Player {
     private IntegerProperty healthProperty = new SimpleIntegerProperty();
     private FloatProperty relativeHealthProperty = new SimpleFloatProperty();
     private StringProperty planProperty = new SimpleStringProperty();
-    private ObjectProperty<Vector2> positionProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<IntVector2> positionProperty = new SimpleObjectProperty<>();
     private StringProperty weaponProperty = new SimpleStringProperty();
     private IntegerProperty magaizeAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty totalAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty fragsProperty = new SimpleIntegerProperty();
     private IntegerProperty deathsProperty = new SimpleIntegerProperty();
+
+    private ObjectProperty<Color> playerColorProperty = new SimpleObjectProperty<>();
 
     // Visual table
     private BooleanProperty showPlayerProperty = new SimpleBooleanProperty(true);
@@ -61,19 +64,23 @@ public class Player {
         this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
     }
 
-    public BooleanProperty getShowPlayerProperty() {
+    public BooleanProperty showPlayerProperty() {
         return showPlayerProperty;
     }
 
-    public BooleanProperty getShowIconProperty() {
+    public BooleanProperty showIconProperty() {
         return showIconProperty;
     }
 
-    public BooleanProperty getShowPathProperty() {
+    public BooleanProperty showPathProperty() {
         return showPathProperty;
     }
 
-    public BooleanProperty getShowPlanChangeProperty() {
+    public BooleanProperty showDeathProperty() {
+        return showDeathProperty;
+    }
+
+    public BooleanProperty showPlanChangeProperty() {
         return showPlanChangeProperty;
     }
 
@@ -93,7 +100,7 @@ public class Player {
         return planProperty;
     }
 
-    public ObjectProperty<Vector2> positionProperty() {
+    public ObjectProperty<IntVector2> positionProperty() {
         return positionProperty;
     }
 
@@ -117,8 +124,8 @@ public class Player {
         return deathsProperty;
     }
 
-    public BooleanProperty showDeathProperty() {
-        return showDeathProperty;
+    public ObjectProperty<Color> playerColorProperty() {
+        return playerColorProperty;
     }
 
 }
