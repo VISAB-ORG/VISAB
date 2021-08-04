@@ -158,10 +158,26 @@ public class SessionAdministration {
 
     /**
      * A list containing the session statuses for all currently active tranmission
-     * session.
+     * sessions.
      */
     public List<SessionStatus> getActiveSessionStatuses() {
         return statuses.stream().filter(x -> x.isActive()).collect(Collectors.toList());
+    }
+
+    /**
+     * A list containing the session statuses for all currently timeouted
+     * tranmission sessions.
+     */
+    public List<SessionStatus> getTimeoutedSessionStatuses() {
+        return statuses.stream().filter(x -> x.getStatusType().equals("timeouted")).collect(Collectors.toList());
+    }
+
+    /**
+     * A list containing the session statuses for all currently canceled tranmission
+     * sessions.
+     */
+    public List<SessionStatus> getCanceledSessionStatuses() {
+        return statuses.stream().filter(x -> x.getStatusType().equals("canceled")).collect(Collectors.toList());
     }
 
     /**
