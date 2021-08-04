@@ -1,6 +1,6 @@
 package org.visab.globalmodel.cbrshooter;
 
-import org.visab.globalmodel.Vector2;
+import org.visab.globalmodel.IntVector2;
 
 public class PlayerInformation {
 
@@ -10,7 +10,7 @@ public class PlayerInformation {
     private String name;
     private String plan;
 
-    private Vector2 position;
+    private IntVector2 position;
 
     private float relativeHealth;
 
@@ -42,7 +42,7 @@ public class PlayerInformation {
         return plan;
     }
 
-    public Vector2 getPosition() {
+    public IntVector2 getPosition() {
         return position;
     }
 
@@ -74,7 +74,7 @@ public class PlayerInformation {
         this.plan = plan;
     }
 
-    public void setPosition(Vector2 position) {
+    public void setPosition(IntVector2 position) {
         this.position = position;
     }
 

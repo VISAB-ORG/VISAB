@@ -2,7 +2,7 @@ package org.visab.globalmodel.settlers;
 
 import java.util.List;
 
-import org.visab.globalmodel.Vector2;
+import org.visab.globalmodel.IntVector2;
 
 /**
  * Represents all available information for a player in (Unity-) Settlers of
@@ -14,11 +14,11 @@ import org.visab.globalmodel.Vector2;
 public class PlayerInformation {
 
     private int villageCount;
-    private List<Vector2> villagePositions;
+    private List<IntVector2> villagePositions;
     private int streetCount;
-    private List<Vector2> streetPositions;
+    private List<IntVector2> streetPositions;
     private int cityCount;
-    private List<Vector2> cityPositions;
+    private List<IntVector2> cityPositions;
     private PlayerResources resources;
     private boolean hasLongestRoad;
     private boolean isAi;
@@ -66,11 +66,11 @@ public class PlayerInformation {
         this.villageCount = villageCount;
     }
 
-    public List<Vector2> getVillagePositions() {
+    public List<IntVector2> getVillagePositions() {
         return villagePositions;
     }
 
-    public void setVillagePositions(List<Vector2> villagePositions) {
+    public void setVillagePositions(List<IntVector2> villagePositions) {
         this.villagePositions = villagePositions;
     }
 
@@ -82,11 +82,11 @@ public class PlayerInformation {
         this.streetCount = streetCount;
     }
 
-    public List<Vector2> getStreetPositions() {
+    public List<IntVector2> getStreetPositions() {
         return streetPositions;
     }
 
-    public void setStreetPositions(List<Vector2> streetPositions) {
+    public void setStreetPositions(List<IntVector2> streetPositions) {
         this.streetPositions = streetPositions;
     }
 
@@ -98,11 +98,11 @@ public class PlayerInformation {
         this.cityCount = cityCount;
     }
 
-    public List<Vector2> getCityPositions() {
+    public List<IntVector2> getCityPositions() {
         return cityPositions;
     }
 
-    public void setCityPositions(List<Vector2> cityPositions) {
+    public void setCityPositions(List<IntVector2> cityPositions) {
         this.cityPositions = cityPositions;
     }
 

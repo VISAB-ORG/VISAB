@@ -1,6 +1,6 @@
 package org.visab.newgui;
 
-import org.visab.globalmodel.Vector2;
+import org.visab.globalmodel.IntVector2;
 
 import javafx.application.Platform;
 import javafx.scene.effect.ColorAdjust;
@@ -94,7 +94,7 @@ public final class UiHelper {
      * @param imageView the image view that shall be adjusted.
      * @param position  the positioning vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position) {
+    public static void adjustVisual(ImageView imageView, IntVector2 position) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
     }
@@ -106,7 +106,7 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, IntVector2 position, IntVector2 fitSizes) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
         imageView.setFitWidth(fitSizes.getX());
@@ -154,7 +154,7 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, boolean visible, IntVector2 position, IntVector2 fitSizes) {
         imageView.setVisible(visible);
         imageView.setX(position.getX());
         imageView.setY(position.getY());

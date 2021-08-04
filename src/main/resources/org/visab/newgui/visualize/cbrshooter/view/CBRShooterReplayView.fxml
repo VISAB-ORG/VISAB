@@ -23,7 +23,7 @@
          <font>
             <Font size="28.0" />
          </font></Label>
-      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="0.0" onValueChange="#handleFrameSlider" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
+      <Slider fx:id="frameSlider" blockIncrement="1.0" layoutX="612.0" layoutY="434.0" majorTickUnit="10.0" min="0.0" prefHeight="38.0" prefWidth="342.0" showTickLabels="true" showTickMarks="true" visible="true" />
       <Label fx:id="frameLabel" layoutX="716.0" layoutY="391.0" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -147,7 +147,7 @@
             </HBox>
             <HBox GridPane.rowIndex="3">
                <children>
-                  <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" onAction="#visualizeWeapon" selected="true" />
+                  <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" selected="true" />
                   <ImageView fx:id="weaponIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Weapon" />
@@ -155,7 +155,7 @@
             </HBox>
             <HBox GridPane.rowIndex="4">
                <children>
-                  <CheckBox fx:id="checkBoxAmmuItem" mnemonicParsing="false" onAction="#visualizeAmmuItem" selected="true" />
+                  <CheckBox fx:id="checkBoxAmmuItem" mnemonicParsing="false" selected="true" />
                   <ImageView fx:id="ammuIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Ammunition" />
@@ -163,7 +163,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
                <children>
-                  <CheckBox fx:id="checkBoxHealthItem" mnemonicParsing="false" onAction="#visualizeHealthItem" selected="true" />
+                  <CheckBox fx:id="checkBoxHealthItem" mnemonicParsing="false" selected="true" />
                   <ImageView fx:id="healthIcon" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <Label text="Health Item" />
