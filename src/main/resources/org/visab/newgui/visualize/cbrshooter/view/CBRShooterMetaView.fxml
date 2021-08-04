@@ -97,7 +97,7 @@
                         </TableColumn>
                     </columns>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets right="5.0" top="10.0" />
                </VBox.margin>
                 </TableView>
             </children>
