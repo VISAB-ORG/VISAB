@@ -101,4 +101,13 @@ public class CBRShooterStatistics implements IStatistics {
     public void setWeaponPosition(IntVector2 weaponPosition) {
         this.weaponPosition = weaponPosition;
     }
+
+    public PlayerInformation getInfoByPlayerName(String playerName) {
+        for (PlayerInformation playerInfo : this.getPlayers()) {
+            if (playerInfo.getName().equals(playerName)) {
+                return playerInfo;
+            }
+        }
+        return null;
+    }
 }
