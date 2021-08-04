@@ -230,27 +230,27 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private void updateMapElements() {
         // Non-player-related map items
         ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
-        var newAmmuPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getAmmunitionPosition());
+        var newAmmuPos = frameBasedStats.get().getAmmunitionPosition();
         if (checkBoxAmmuItem.isSelected() && !newAmmuPos.isZero()) {
-            UiHelper.adjustVisual(ammuItem, true, newAmmuPos);
+            UiHelper.adjustVisual(ammuItem, true, coordinateHelper.translateAccordingToMap(newAmmuPos));
         } else {
-            UiHelper.adjustVisual(ammuItem, false, newAmmuPos);
+            ammuItem.setVisible(false);
         }
 
         ImageView weapon = (ImageView) mapElements.get("weapon");
-        var newWeaponPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getWeaponPosition());
+        var newWeaponPos = frameBasedStats.get().getWeaponPosition();
         if (checkBoxWeapon.isSelected() && !newWeaponPos.isZero()) {
-            UiHelper.adjustVisual(weapon, true, newWeaponPos);
+            UiHelper.adjustVisual(weapon, true, coordinateHelper.translateAccordingToMap(newWeaponPos));
         } else {
-            UiHelper.adjustVisual(weapon, false, newWeaponPos);
+            weapon.setVisible(false);
         }
 
         ImageView healthItem = (ImageView) mapElements.get("healthItem");
-        var newHealthPos = coordinateHelper.translateAccordingToMap(frameBasedStats.get().getHealthPosition());
-        if (checkBoxHealthItem.isSelected() && !newWeaponPos.isZero()) {
-            UiHelper.adjustVisual(healthItem, true, newHealthPos);
+        var newHealthPos = frameBasedStats.get().getHealthPosition();
+        if (checkBoxHealthItem.isSelected() && !newHealthPos.isZero()) {
+            UiHelper.adjustVisual(healthItem, true, coordinateHelper.translateAccordingToMap(newHealthPos));
         } else {
-            UiHelper.adjustVisual(healthItem, false, newHealthPos);
+            healthItem.setVisible(false);
         }
 
         // Iterate over players
