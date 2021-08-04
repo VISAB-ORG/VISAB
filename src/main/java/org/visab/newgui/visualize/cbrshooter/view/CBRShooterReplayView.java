@@ -12,6 +12,8 @@ import org.visab.workspace.config.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -124,6 +126,14 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         frameSlider.majorTickUnitProperty().bindBidirectional(viewModel.getFrameSliderTickUnitProperty());
 
         drawPane.getChildren().setAll(viewModel.getMapElements());
+
+        viewModel.playFrameProperty().addListener(new ChangeListener<Number>(){
+            
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // TODO: Change visualization accordingly
+            }
+        });
     }
 
     @FXML

@@ -28,6 +28,7 @@ import org.visab.workspace.config.ConfigManager;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -114,6 +115,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private static final Vector2 STANDARD_ICON_VECTOR = new Vector2(16, 16);
 
     private CoordinateHelper coordinateHelper;
+
+    private IntegerProperty playFrameProperty = new SimpleIntegerProperty();
+
+    public IntegerProperty playFrameProperty() {
+        return playFrameProperty;
+    }
 
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
