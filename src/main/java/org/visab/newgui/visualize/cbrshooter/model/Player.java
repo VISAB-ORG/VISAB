@@ -1,9 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.visab.globalmodel.Vector2;
+import org.visab.globalmodel.cbrshooter.PlayerInformation;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;
@@ -43,8 +41,25 @@ public class Player {
         this.name = name;
     }
 
-    public void updateFrameData(org.visab.globalmodel.cbrshooter.Player player) {
+    /**
+     * Based on a provided PlayerInformation object retrieved from the underlying
+     * file data, this replay-view-specific Player object can be updated
+     * accordingly.
+     * 
+     * @param playerInfo the PlayerInformation object from the VISAB file.
+     */
+    public void updatePlayerData(PlayerInformation playerInfo) {
         // Update the values of the fields
+        this.healthProperty.set(playerInfo.getHealth());
+        this.relativeHealthProperty.set(playerInfo.getRelativeHealth());
+        this.planProperty.set(playerInfo.getPlan());
+        this.positionProperty.set(playerInfo.getPosition());
+        this.weaponProperty.set(playerInfo.getWeapon());
+        this.magaizeAmmuProperty.set(playerInfo.getMagazineAmmunition());
+        this.totalAmmuProperty.set(playerInfo.getTotalAmmunition());
+        this.fragsProperty.set(playerInfo.getStatistics().getFrags());
+        this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
+
     }
 
 }
