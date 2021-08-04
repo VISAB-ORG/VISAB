@@ -90,6 +90,12 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return new Image(new ByteArrayInputStream(file.getImages().getMap()));
     }
 
+    public Image getPlayerIconByName(String playerName) {
+        // return new Image(new
+        // ByteArrayInputStream(file.getImages().getMoveableObjects().get(playerName)));
+        return new Image(ConfigManager.IMAGE_PATH + "cbrBot.png");
+    }
+
     public List<String> getPlayerNames() {
         return file.getPlayerNames();
     }
@@ -171,6 +177,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         frameSliderTickUnitProperty.set(tickUnit);
+        frameBasedStatsProperty = new SimpleObjectProperty<CBRShooterStatistics>(data.get(playFrameProperty.get()));
     }
 
     public HashMap<String, Color> getPlayerColors() {
@@ -192,9 +199,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     public void updateCurrentGameStatsByFrame() {
-        System.out.println("Updating game stats in viewmodel.");
         // This object holds all information that is available
-        frameBasedStatsProperty = new SimpleObjectProperty<CBRShooterStatistics>(data.get(playFrameProperty.get()));
+        frameBasedStatsProperty.set(data.get(playFrameProperty.get()));
 
         // First, update data that is applicable for every player in the game
         totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
@@ -247,6 +253,18 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             }
         });
         return pauseData;
+    }
+
+    public HashMap<String, Image> getIconsForPlayer(String playerName) {
+        Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
+        HashMap<String, Image> iconMap = new HashMap<String, Image>();
+        iconMap.put("playerIcon",
+                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/cbrBot.png"), playerColor));
+        iconMap.put("playerPlanChange",
+                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
+        iconMap.put("playerDeath",
+                UiHelper.recolorImage(new Image(ConfigManager.IMAGE_PATH + "/playerDeath.png"), playerColor));
+        return iconMap;
     }
 
     public Image getWeaponIcon() {

@@ -40,8 +40,9 @@ public class Player {
     private BooleanProperty showDeathProperty = new SimpleBooleanProperty(true);
     private BooleanProperty showPlanChangeProperty = new SimpleBooleanProperty(true);
 
-    public Player(String name) {
+    public Player(String name, Color playerColor) {
         this.name = name;
+        this.playerColorProperty.set(playerColor);
     }
 
     /**

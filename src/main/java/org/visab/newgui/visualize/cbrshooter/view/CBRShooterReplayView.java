@@ -1,13 +1,14 @@
 package org.visab.newgui.visualize.cbrshooter.view;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.DoubleVector2;
-import org.visab.globalmodel.IntVector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.PlayerInformation;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
@@ -50,7 +51,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
 
-    private static final IntVector2 STANDARD_ICON_VECTOR = new IntVector2(16, 16);
+    private static final DoubleVector2 STANDARD_ICON_VECTOR = new DoubleVector2(16, 16);
 
     private CoordinateHelper coordinateHelper;
 
@@ -159,34 +160,53 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // TODO: Change visualization accordingly
                 // Make sure the selectedFrame cannot be out of bounds
                 // While loops necessary to ensure increments / decrements of one
-                int oldValueAsInt = oldValue.intValue();
-                int newValueAsInt = newValue.intValue();
-                if (newValueAsInt > oldValueAsInt) {
-                    System.out.println("Slider moved forward");
-                    while (oldValueAsInt > newValueAsInt) {
-                        // Do something
-                        newValueAsInt++;
-                    }
-                } else {
-                    // Moved backwards
-                    // Clear list of path elements and redraw every item only for the current round
-                    System.out.println("Slider moved backward");
-                    while (oldValueAsInt < newValueAsInt) {
-                        // Do something
-                        newValueAsInt++;
-                    }
-                }
-
+                updatePlayerDataRows();
             }
         });
     }
 
+    /**
+     * This method simply updates the data table for each player based on the bound
+     * frame-based statistics object.
+     * 
+     */
+    private void updatePlayerDataRows() {
+        playerDataRows.clear();
+        for (PlayerInformation playerInfo : frameBasedStats.get().getPlayers()) {
+            playerDataRows.add(new PlayerDataRow(playerInfo));
+        }
+    }
+
+//    private void initializeReplayView() {
+//        ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
+//        ImageView weapon = new ImageView(viewModel.getWeaponIcon());
+//        ImageView healthItem = new ImageView(viewModel.getHealthIcon());
+//        UiHelper.adjustVisual(ammuItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+//        UiHelper.adjustVisual(weapon, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+//        UiHelper.adjustVisual(healthItem, false, drawPane.getLayoutX(), drawPane.getLayoutY());
+//        mapElements.put("ammuItem", ammuItem);
+//        mapElements.put("weapon", weapon);
+//        mapElements.put("healthItem", healthItem);
+//
+//        for (String playerName : viewModel.getPlayerNames()) {
+//            ImageView playerIcon = new ImageView(UiHelper.recolorImage(viewModel.getPlayerIconByName(playerName),
+//                    players.get(playerName).playerColorProperty().get()));
+//            ImageView playerPlanChange = new ImageView(viewModel.getWeaponIcon());
+//            ImageView playerDeath = new ImageView(viewModel.getHealthIcon());
+//        }
+//    }
+
     private void initializePlayers() {
         for (String playerName : viewModel.getPlayerNames()) {
-            players.put(playerName, new Player(playerName));
+            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName));
+            HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
+            playerVisualsRows.add(new PlayerVisualsRow(playerName,
+                    UiHelper.resizeImage(new ImageView(iconMap.get("playerIcon")), STANDARD_ICON_VECTOR),
+                    new ImageView(iconMap.get("playerPlanChange")), new ImageView(iconMap.get("playerDeath")),
+                    player.playerColorProperty().get()));
+            players.put(playerName, player);
         }
     }
 
