@@ -11,7 +11,7 @@ import com.dansoftware.pdfdisplayer.PdfJSVersion;
 
 import org.visab.newgui.AppMain;
 import org.visab.newgui.help.viewmodel.HelpViewModel;
-import org.visab.workspace.config.ConfigManager;
+import org.visab.workspace.ConfigManager;
 
 import de.saxsys.mvvmfx.FxmlView;
 import javafx.fxml.FXML;
@@ -22,6 +22,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 
 public class HelpView implements FxmlView<HelpViewModel>, Initializable {
+	
+	
 
     @FXML
     private Pane showPDF;
