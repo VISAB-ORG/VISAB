@@ -71,7 +71,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     // Viewmodel always has a reference to the statistics of the current stat
     private ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
-    private List<Player> playerFrameStats = new ArrayList<>();
+    private List<Player> playes = new ArrayList<>();
 
     public IntegerProperty playFrameProperty() {
         return playFrameProperty;
@@ -135,8 +135,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return frameBasedStatsProperty;
     }
 
-    public List<Player> getPlayerFrameStats() {
-        return playerFrameStats;
+    public List<Player> getPlayes() {
+        return playes;
     }
 
     /**
@@ -176,7 +176,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
         frameSliderTickUnitProperty.set(tickUnit);
         for (var name : file.getPlayerNames())
-            playerFrameStats.add(new Player(name));
+            playes.add(new Player(name));
 
         updateCurrentGameStatsByFrame(playFrameProperty.get());
     }
@@ -231,7 +231,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         weaponCoordsProperty.set(statistics.getWeaponPosition());
         ammuCoordsProperty.set(statistics.getAmmunitionPosition());
 
-        for (var player : playerFrameStats) {
+        for (var player : playes) {
             var globalModelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
                     x -> x.getName().equals(player.getName()));
             player.updatePlayerData(globalModelPlayer);

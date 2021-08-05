@@ -2,6 +2,7 @@ package org.visab.newgui.visualize.cbrshooter.view;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
@@ -110,9 +111,11 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
     private ObservableList<PlayerDataRow> playerDataRows = FXCollections.observableArrayList();
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
-    private ObservableMap<String, Player> players = FXCollections.observableHashMap();
 
     private ObjectProperty<CBRShooterStatistics> frameBasedStats = new SimpleObjectProperty<>();
+
+    // Players whose values will always be up to date with the current frame
+    private List<Player> players;
 
     // Helper variables to ensure correct adjustments of player paths
     private int roundCounter = 1;
@@ -130,8 +133,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        players = viewModel.getPlayes();
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
+        
         drawPane.setPrefWidth(DRAW_PANE_WIDTH);
         var drawPanePrefHeight = DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
@@ -169,7 +173,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         checkBoxAmmuItem.setOnAction(updateMapElementsHandler);
         checkBoxHealthItem.setOnAction(updateMapElementsHandler);
         checkBoxWeapon.setOnAction(updateMapElementsHandler);
-
     }
 
     private ChangeListener<Number> createDiscreteListener() {
@@ -181,7 +184,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 var oldValueAsInt = oldValue.intValue();
                 if (frameBasedStats.get().getRound() != roundCounter) {
                     // Reset paths
-                    for (Player player : players.values()) {
+                    for (Player player : players) {
                         player.resetPath();
                     }
                     roundCounter = frameBasedStats.get().getRound();
@@ -190,9 +193,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
                 if (newValue.intValue() < oldValue.intValue()) {
                     while (newValueAsInt < oldValueAsInt) {
-                        for (Player player : players.values()) {
-                            players.get(player.getName()).redrawPath(viewModel.getPlayerPositionsForInterval(
-                                    player.getName(), roundStartIndex, newValueAsInt), coordinateHelper);
+                        for (Player player : players) {
+                            player.redrawPath(viewModel.getPlayerPositionsForInterval(player.getName(), roundStartIndex,
+                                    newValueAsInt), coordinateHelper);
                         }
                         viewModel.updateCurrentGameStatsByFrame(oldValueAsInt);
                         updatePlayerDataRows();
@@ -217,7 +220,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * is used for proper handling across the replay view.
      */
     private void initializePlayersVisuals() {
-        for (Player player : viewModel.getPlayerFrameStats()) {
+        for (Player player : viewModel.getPlayes()) {
             var playerName = player.getName();
             HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
             player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerIcon"),
@@ -226,12 +229,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
                     new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
                     player.playerColorProperty().get());
-            initializeEventListenersForRow(row, playerName);
+            initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName));
             player.updatePlayerCoordinates(coordinateHelper);
-            players.put(playerName, player);
-
             updatePlayerDataRows();
         }
     }
@@ -268,7 +268,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         mapElements.put("weapon", weapon);
         mapElements.put("healthItem", healthItem);
 
-        for (Player player : players.values()) {
+        for (Player player : players) {
             ImageView playerIcon = new ImageView(player.getPlayerIcon());
             ImageView playerPlanChange = new ImageView(player.getPlayerPlanChange());
             ImageView playerDeath = new ImageView(player.getPlayerDeath());
@@ -292,18 +292,18 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * This method initializes all event listeners that are necessary to show or
      * hide any player-specifc visuals.
      * 
-     * @param row        the visuals row the event listeners shall be added to.
-     * @param playerName the playerName used to set the property correctly.
+     * @param row    the visuals row the event listeners shall be added to.
+     * @param player the playerName used to set the property correctly.
      */
-    private void initializeEventListenersForRow(PlayerVisualsRow row, String playerName) {
+    private void initializeEventListenersForRow(PlayerVisualsRow row, Player player) {
         row.getShowPlayerCheckBox().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 var value = ((CheckBox) event.getSource()).isSelected();
-                players.get(playerName).showIconProperty().set(value);
-                players.get(playerName).showDeathProperty().set(value);
-                players.get(playerName).showPlanChangeProperty().set(value);
-                players.get(playerName).showPathProperty().set(value);
+                player.showIconProperty().set(value);
+                player.showDeathProperty().set(value);
+                player.showPlanChangeProperty().set(value);
+                player.showPathProperty().set(value);
 
                 row.getShowPlayerIconCheckBox().setSelected(value);
                 row.getShowPlayerPlanChangeCheckBox().setSelected(value);
@@ -316,7 +316,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             @Override
             public void handle(ActionEvent event) {
                 var value = ((CheckBox) event.getSource()).isSelected();
-                players.get(playerName).showIconProperty().set(value);
+                player.showIconProperty().set(value);
                 updateMapElements();
             }
         });
@@ -324,7 +324,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             @Override
             public void handle(ActionEvent event) {
                 var value = ((CheckBox) event.getSource()).isSelected();
-                players.get(playerName).showDeathProperty().set(value);
+                player.showDeathProperty().set(value);
                 updateMapElements();
             }
         });
@@ -332,7 +332,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             @Override
             public void handle(ActionEvent event) {
                 var value = ((CheckBox) event.getSource()).isSelected();
-                players.get(playerName).showPlanChangeProperty().set(value);
+                player.showPlanChangeProperty().set(value);
                 updateMapElements();
             }
         });
@@ -340,7 +340,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             @Override
             public void handle(ActionEvent event) {
                 var value = ((CheckBox) event.getSource()).isSelected();
-                players.get(playerName).showPathProperty().set(value);
+                player.showPathProperty().set(value);
                 updateMapElements();
             }
         });
@@ -376,9 +376,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             healthItem.setVisible(false);
         }
 
-        for (Player player : players.values()) {
+        for (Player player : players) {
             // Update player object with information retrieved from the frame based stats
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()));
             player.updatePlayerCoordinates(coordinateHelper);
 
             ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
