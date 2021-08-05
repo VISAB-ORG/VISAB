@@ -12,7 +12,6 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
@@ -29,8 +28,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -61,8 +58,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private ObjectProperty<Vector2> healthCoordsProperty = new SimpleObjectProperty<Vector2>();
     private ObjectProperty<Vector2> weaponCoordsProperty = new SimpleObjectProperty<Vector2>();
     private ObjectProperty<Vector2> ammuCoordsProperty = new SimpleObjectProperty<Vector2>();
-
-    private ObservableMap<String, Player> playerObjects = FXCollections.observableHashMap();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -177,7 +172,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         frameSliderTickUnitProperty.set(tickUnit);
-        updateCurrentGameStatsByFrame();
+        updateCurrentGameStatsByFrame(playFrameProperty.get());
     }
 
     public HashMap<String, Color> getPlayerColors() {
@@ -186,6 +181,25 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerColorMap.put(playerName, UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName)));
         }
         return playerColorMap;
+    }
+
+    public List<Vector2> getPlayerPositionsForInterval(String playerName, int start, int end) {
+        List<Vector2> positionList = new ArrayList<Vector2>();
+
+        for (int i = start; i <= end; i++) {
+            positionList.add(data.get(i).getInfoByPlayerName(playerName).getPosition());
+        }
+
+        return positionList;
+    }
+
+    public int getRoundStartIndex(int round) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getRound() == round) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -198,9 +212,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    public void updateCurrentGameStatsByFrame() {
+    public void updateCurrentGameStatsByFrame(int frame) {
         // This object holds all information that is available
-        frameBasedStatsProperty.set(data.get(playFrameProperty.get()));
+        frameBasedStatsProperty.set(data.get(frame));
 
         totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
         roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
@@ -226,7 +240,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             @Override
                             public void run() {
                                 playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
-                                updateCurrentGameStatsByFrame();
+                                updateCurrentGameStatsByFrame(playFrameProperty.get());
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
@@ -279,6 +293,28 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
 
     public Image getHealthIcon() {
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health")));
+    }
+
+    public Vector2 getLastPlanChangePositionForPlayer(String playerName, int frameIndex) {
+        Vector2 pos = new Vector2(0, 0);
+        String planAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getPlan();
+        for (int i = frameIndex; i >= 0; i--) {
+            if (!data.get(i).getInfoByPlayerName(playerName).getPlan().equals(planAtFrameIndex)) {
+                return data.get(i + 1).getInfoByPlayerName(playerName).getPosition();
+            }
+        }
+        return pos;
+    }
+
+    public Vector2 getLastDeathPositionForPlayer(String playerName, int frameIndex) {
+        Vector2 pos = new Vector2(0, 0);
+        var deathsAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getStatistics().getDeaths();
+        for (int i = frameIndex; i >= 0; i--) {
+            if (data.get(i).getInfoByPlayerName(playerName).getStatistics().getDeaths() < deathsAtFrameIndex) {
+                return data.get(i).getInfoByPlayerName(playerName).getPosition();
+            }
+        }
+        return pos;
     }
 
     @SuppressWarnings("unchecked")

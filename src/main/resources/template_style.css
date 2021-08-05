@@ -17,6 +17,14 @@
 	-fx-background-radius: 5;
 }
 
+.italicLabel {
+	-fx-font-style: italic;
+}
+
+.boldLabel {
+	-fx-font-weight: bold;
+}
+
 .menu-item .label {
 	-fx-text-fill: #FFFFFF;
 }

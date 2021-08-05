@@ -66,7 +66,7 @@ public class SessionOverviewViewModel extends ViewModelBase {
      */
     public List<SessionStatus> querySessionStatusesSorted() {
         SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
-        var statuses = sessionAdministration.getCanceledSessionStatuses();
+        var statuses = sessionAdministration.getSessionStatuses();
 
         activeSessionsProperty.set(sessionAdministration.getActiveSessionStatuses().size());
         timeoutedSessionsProperty.set(sessionAdministration.getTimeoutedSessionStatuses().size());

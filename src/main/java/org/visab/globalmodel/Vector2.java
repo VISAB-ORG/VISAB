@@ -33,7 +33,7 @@ public class Vector2 {
         this.y = y;
     }
 
-    public boolean isZero() {
+    public boolean checkIfZero() {
         return (this.x == 0 && this.y == 0);
     }
 
