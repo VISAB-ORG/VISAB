@@ -104,8 +104,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private Image pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
     private Image playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
 
-    private ImageView playImageView = new ImageView(playImage);
-    private ImageView pauseImageView = new ImageView(pauseImage);
+    private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2(32, 32));
+    private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2(32, 32));
 
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
     private ObservableList<PlayerDataRow> playerDataRows = FXCollections.observableArrayList();
