@@ -26,6 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -123,6 +124,13 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @InjectViewModel
     CBRShooterReplayViewModel viewModel;
 
+    EventHandler<ActionEvent> updateMapElementsHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            updateMapElements();
+        }
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -160,12 +168,16 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // Make sure the selectedFrame cannot be out of bounds
-                // While loops necessary to ensure increments / decrements of one
+                // While loops necessary to ensure increments / decrements of one?
                 updatePlayerDataRows();
                 updateMapElements();
                 viewModel.updateCurrentGameStatsByFrame();
             }
         });
+        // Update visibility of player icon
+        checkBoxAmmuItem.setOnAction(updateMapElementsHandler);
+        checkBoxHealthItem.setOnAction(updateMapElementsHandler);
+        checkBoxWeapon.setOnAction(updateMapElementsHandler);
     }
 
     /**
