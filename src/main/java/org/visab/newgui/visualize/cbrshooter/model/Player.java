@@ -14,6 +14,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 public class Player {
 
@@ -43,13 +46,19 @@ public class Player {
     private Image playerIcon;
     private Image playerPlanChange;
     private Image playerDeath;
+    private Path playerPath;
 
-    public Player(String name, Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath) {
+    public Player(String name, Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath,
+            Path playerPath) {
         this.name = name;
         this.playerIcon = playerIcon;
         this.playerPlanChange = playerPlanChange;
         this.playerDeath = playerDeath;
         this.playerColorProperty.set(playerColor);
+        this.playerPath = playerPath;
+        this.playerPath.setStroke(playerColor);
+        this.playerPath.setStrokeWidth(2);
+        this.playerPath.setVisible(showPathProperty.get());
     }
 
     /**
@@ -59,7 +68,8 @@ public class Player {
      * 
      * @param playerInfo the PlayerInformation object from the VISAB file.
      */
-    public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo) {
+    public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo,
+            CoordinateHelper coordinateHelper) {
         // Update the values of the fields
         this.healthProperty.set(playerInfo.getHealth());
         this.relativeHealthProperty.set(playerInfo.getRelativeHealth());
@@ -70,6 +80,15 @@ public class Player {
         this.totalAmmuProperty.set(playerInfo.getTotalAmmunition());
         this.fragsProperty.set(playerInfo.getStatistics().getFrags());
         this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
+
+        var coordX = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getX();
+        var coordY = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getY();
+        if (this.playerPath.getElements().size() == 0) {
+            this.playerPath.getElements().add(new MoveTo(coordX, coordY));
+        } else {
+            this.playerPath.getElements().add(new LineTo(coordX, coordY));
+        }
+
     }
 
     public BooleanProperty showPlayerProperty() {
@@ -147,4 +166,9 @@ public class Player {
     public Image getPlayerDeath() {
         return playerDeath;
     }
+
+    public Path getPlayerPath() {
+        return playerPath;
+    }
+
 }
