@@ -352,7 +352,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private void updateMapElements() {
         ImageView ammuItem = (ImageView) mapElements.get("ammuItem");
         var newAmmuPos = frameBasedStats.get().getAmmunitionPosition();
-        if (checkBoxAmmuItem.isSelected() && !newAmmuPos.isZero()) {
+        if (checkBoxAmmuItem.isSelected() && !newAmmuPos.checkIfZero()) {
             UiHelper.adjustVisual(ammuItem, true, coordinateHelper.translateAccordingToMap(newAmmuPos, true));
         } else {
             ammuItem.setVisible(false);
@@ -360,7 +360,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         ImageView weapon = (ImageView) mapElements.get("weapon");
         var newWeaponPos = frameBasedStats.get().getWeaponPosition();
-        if (checkBoxWeapon.isSelected() && !newWeaponPos.isZero()) {
+        if (checkBoxWeapon.isSelected() && !newWeaponPos.checkIfZero()) {
             UiHelper.adjustVisual(weapon, true, coordinateHelper.translateAccordingToMap(newWeaponPos, true));
         } else {
             weapon.setVisible(false);
@@ -368,7 +368,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         ImageView healthItem = (ImageView) mapElements.get("healthItem");
         var newHealthPos = frameBasedStats.get().getHealthPosition();
-        if (checkBoxHealthItem.isSelected() && !newHealthPos.isZero()) {
+        if (checkBoxHealthItem.isSelected() && !newHealthPos.checkIfZero()) {
             UiHelper.adjustVisual(healthItem, true, coordinateHelper.translateAccordingToMap(newHealthPos, true));
         } else {
             healthItem.setVisible(false);
@@ -388,9 +388,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     (int) frameSlider.getValue());
 
             UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
-            UiHelper.adjustVisual(playerPlanChange, player.showPlanChangeProperty().get() && !newPosPlanChange.isZero(),
+            UiHelper.adjustVisual(playerPlanChange,
+                    player.showPlanChangeProperty().get() && !newPosPlanChange.checkIfZero(),
                     coordinateHelper.translateAccordingToMap(newPosPlanChange, true));
-            UiHelper.adjustVisual(playerDeath, player.showDeathProperty().get() && !newPosDeath.isZero(),
+            UiHelper.adjustVisual(playerDeath, player.showDeathProperty().get() && !newPosDeath.checkIfZero(),
                     coordinateHelper.translateAccordingToMap(newPosDeath, true));
 
         }
