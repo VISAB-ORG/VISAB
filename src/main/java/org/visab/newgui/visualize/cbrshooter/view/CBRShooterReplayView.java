@@ -282,8 +282,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
 
             // If there is no position, don't show the icons
-            player.showPlanChangeProperty().set(!newPosPlanChange.isZero());
-            player.showDeathProperty().set(!newPosDeath.isZero());
+            System.out.println("Plan change pos is zero: " + newPosPlanChange.isZero());
+            System.out.println("Show plan change property is: " + player.showPlanChangeProperty().get());
+            System.out.println(
+                    "Combined result is: " + (!newPosPlanChange.isZero() && player.showPlanChangeProperty().get()));
+            player.showPlanChangeProperty().set(!newPosPlanChange.isZero() && player.showPlanChangeProperty().get());
+            player.showDeathProperty().set(!newPosDeath.isZero() && player.showDeathProperty().get());
 
             UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
             UiHelper.adjustVisual(playerPlanChange, player.showPlanChangeProperty().get(),
