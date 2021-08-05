@@ -86,7 +86,6 @@ public class Player {
         var coordX = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getX();
         var coordY = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getY();
         if (this.playerPath.getElements().size() == 0) {
-            System.out.println("Path was empty, adding moveto");
             this.playerPath.getElements().add(new MoveTo(coordX, coordY));
         } else {
             this.playerPath.getElements().add(new LineTo(coordX, coordY));
