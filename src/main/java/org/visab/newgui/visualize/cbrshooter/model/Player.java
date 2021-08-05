@@ -1,5 +1,7 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
+import java.util.List;
+
 import org.visab.globalmodel.Vector2;
 
 import javafx.beans.property.BooleanProperty;
@@ -84,12 +86,33 @@ public class Player {
         var coordX = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getX();
         var coordY = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getY();
         if (this.playerPath.getElements().size() == 0) {
+            System.out.println("Path was empty, adding moveto");
             this.playerPath.getElements().add(new MoveTo(coordX, coordY));
         } else {
             this.playerPath.getElements().add(new LineTo(coordX, coordY));
         }
         this.playerPath.setVisible(this.showPathProperty.get());
 
+    }
+
+    public void resetPath() {
+        this.playerPath.getElements().clear();
+    }
+
+    public void redrawPath(List<Vector2> positionList, CoordinateHelper coordinateHelper) {
+        this.playerPath.getElements().clear();
+
+        if (positionList.size() > 0) {
+            var coordXMoveTo = coordinateHelper.translateAccordingToMap(positionList.get(0), false).getX();
+            var coordYMoveTo = coordinateHelper.translateAccordingToMap(positionList.get(0), false).getY();
+            this.playerPath.getElements().add(new MoveTo(coordXMoveTo, coordYMoveTo));
+
+            for (int i = 1; i < positionList.size(); i++) {
+                var coordXLineTo = coordinateHelper.translateAccordingToMap(positionList.get(i), false).getX();
+                var coordYLineTo = coordinateHelper.translateAccordingToMap(positionList.get(i), false).getY();
+                this.playerPath.getElements().add(new LineTo(coordXLineTo, coordYLineTo));
+            }
+        }
     }
 
     public BooleanProperty showPlayerProperty() {
