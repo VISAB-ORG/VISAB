@@ -122,6 +122,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     private ObjectProperty<CBRShooterStatistics> frameBasedStats = new SimpleObjectProperty<>();
 
+    private int roundCounter = 1;
+    private int roundStartIndex = 0;
+
     @InjectViewModel
     CBRShooterReplayViewModel viewModel;
 
@@ -164,15 +167,43 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         frameSlider.maxProperty().bind(viewModel.frameSliderMaxProperty());
         frameSlider.valueProperty().bindBidirectional(viewModel.playFrameProperty());
         frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
+        frameSlider.setBlockIncrement(1);
+        frameSlider.setSnapToTicks(false);
         frameSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // Make sure the selectedFrame cannot be out of bounds
-                // While loops necessary to ensure increments / decrements of one?
-                updatePlayerDataRows();
+                var newValueAsInt = newValue.intValue();
+                var oldValueAsInt = oldValue.intValue();
+                if (frameBasedStats.get().getRound() != roundCounter) {
+                    // Reset paths
+                    for (Player player : players.values()) {
+                        player.resetPath();
+                    }
+                    roundCounter = frameBasedStats.get().getRound();
+                    roundStartIndex = viewModel.getRoundStartIndex(frameBasedStats.get().getRound());
+                }
+
+                if (newValue.intValue() < oldValue.intValue()) {
+                    while (newValueAsInt < oldValueAsInt) {
+                        for (Player player : players.values()) {
+                            players.get(player.getName()).redrawPath(viewModel.getPlayerPositionsForInterval(
+                                    player.getName(), roundStartIndex, newValueAsInt), coordinateHelper);
+                        }
+                        viewModel.updateCurrentGameStatsByFrame(oldValueAsInt);
+                        updatePlayerDataRows();
+                        updateMapElements();
+                        oldValueAsInt--;
+                    }
+                } else {
+                    while (newValueAsInt > oldValueAsInt) {
+                        viewModel.updateCurrentGameStatsByFrame(oldValueAsInt);
+                        updateMapElements();
+                        updatePlayerDataRows();
+                        oldValueAsInt++;
+                    }
+                }
                 updateMapElements();
-                viewModel.updateCurrentGameStatsByFrame();
             }
         });
         // Update visibility of player icon
@@ -335,10 +366,10 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
 
             // If there is no position, don't show the icons
-            System.out.println("Plan change pos is zero: " + newPosPlanChange.isZero());
-            System.out.println("Show plan change property is: " + player.showPlanChangeProperty().get());
-            System.out.println(
-                    "Combined result is: " + (!newPosPlanChange.isZero() && player.showPlanChangeProperty().get()));
+//            System.out.println("Plan change pos is zero: " + newPosPlanChange.isZero());
+//            System.out.println("Show plan change property is: " + player.showPlanChangeProperty().get());
+//            System.out.println(
+//                    "Combined result is: " + (!newPosPlanChange.isZero() && player.showPlanChangeProperty().get()));
             player.showPlanChangeProperty().set(!newPosPlanChange.isZero() && player.showPlanChangeProperty().get());
             player.showDeathProperty().set(!newPosDeath.isZero() && player.showDeathProperty().get());
 
