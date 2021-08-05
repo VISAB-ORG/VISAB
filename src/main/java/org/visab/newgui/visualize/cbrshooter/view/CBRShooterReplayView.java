@@ -163,7 +163,17 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
         frameSlider.setBlockIncrement(1);
         frameSlider.setSnapToTicks(false);
-        frameSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        frameSlider.valueProperty().addListener(createDiscreteListener());
+
+        // Check boxes for static objects are always the same
+        checkBoxAmmuItem.setOnAction(updateMapElementsHandler);
+        checkBoxHealthItem.setOnAction(updateMapElementsHandler);
+        checkBoxWeapon.setOnAction(updateMapElementsHandler);
+
+    }
+
+    private ChangeListener<Number> createDiscreteListener() {
+        return new ChangeListener<Number>() {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -199,11 +209,29 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 }
                 updateMapElements();
             }
-        });
+        };
+    }
 
-        checkBoxAmmuItem.setOnAction(updateMapElementsHandler);
-        checkBoxHealthItem.setOnAction(updateMapElementsHandler);
-        checkBoxWeapon.setOnAction(updateMapElementsHandler);
+    /**
+     * This method initializes all the underlying player-specific information which
+     * is used for proper handling across the replay view.
+     */
+    private void initializePlayers() {
+        for (String playerName : viewModel.getPlayerNames()) {
+            HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
+            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName),
+                    iconMap.get("playerIcon"), iconMap.get("playerPlanChange"), iconMap.get("playerDeath"), new Path());
+            PlayerVisualsRow row = new PlayerVisualsRow(playerName,
+                    UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
+                    new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
+                    player.playerColorProperty().get());
+            initializeEventListenersForRow(row, playerName);
+            playerVisualsRows.add(row);
+            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName), coordinateHelper);
+            players.put(playerName, player);
+
+            updatePlayerDataRows();
+        }
     }
 
     /**
@@ -256,28 +284,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             mapElements.put(player.getName() + "_playerPath", playerPath);
         }
         drawPane.getChildren().setAll(mapElements.values());
-    }
-
-    /**
-     * This method initializes all the underlying player-specific information which
-     * is used for proper handling across the replay view.
-     */
-    private void initializePlayers() {
-        for (String playerName : viewModel.getPlayerNames()) {
-            HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
-            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName),
-                    iconMap.get("playerIcon"), iconMap.get("playerPlanChange"), iconMap.get("playerDeath"), new Path());
-            PlayerVisualsRow row = new PlayerVisualsRow(playerName,
-                    UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
-                    new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
-                    player.playerColorProperty().get());
-            initializeEventListenersForRow(row, playerName);
-            playerVisualsRows.add(row);
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName), coordinateHelper);
-            players.put(playerName, player);
-
-            updatePlayerDataRows();
-        }
     }
 
     /**
