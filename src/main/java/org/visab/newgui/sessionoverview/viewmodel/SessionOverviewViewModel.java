@@ -65,7 +65,6 @@ public class SessionOverviewViewModel extends ViewModelBase {
      * @return The sorted session statuses descending by time of last request.
      */
     public List<SessionStatus> querySessionStatusesSorted() {
-        System.out.println("Querying session statuses");
         SessionAdministration sessionAdministration = WebAPI.getInstance().getSessionAdministration();
         var statuses = sessionAdministration.getSessionStatuses();
 
