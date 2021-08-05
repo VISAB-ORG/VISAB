@@ -12,7 +12,6 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
@@ -29,8 +28,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -61,8 +58,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private ObjectProperty<Vector2> healthCoordsProperty = new SimpleObjectProperty<Vector2>();
     private ObjectProperty<Vector2> weaponCoordsProperty = new SimpleObjectProperty<Vector2>();
     private ObjectProperty<Vector2> ammuCoordsProperty = new SimpleObjectProperty<Vector2>();
-
-    private ObservableMap<String, Player> playerObjects = FXCollections.observableHashMap();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;

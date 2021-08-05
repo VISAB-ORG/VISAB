@@ -369,16 +369,17 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         }
 
         for (Player player : players.values()) {
+            // Update player object with information retrieved from the frame based stats
+            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
+
             ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
-            Vector2 newPos = coordinateHelper.translateAccordingToMap(
-                    frameBasedStats.get().getInfoByPlayerName(player.getName()).getPosition(), true);
+            Vector2 newPos = coordinateHelper.translateAccordingToMap(player.positionProperty().get(), true);
             ImageView playerPlanChange = (ImageView) mapElements.get(player.getName() + "_playerPlanChange");
             Vector2 newPosPlanChange = viewModel.getLastPlanChangePositionForPlayer(player.getName(),
                     (int) frameSlider.getValue());
             ImageView playerDeath = (ImageView) mapElements.get(player.getName() + "_playerDeath");
             Vector2 newPosDeath = viewModel.getLastDeathPositionForPlayer(player.getName(),
                     (int) frameSlider.getValue());
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
 
             UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
             UiHelper.adjustVisual(playerPlanChange, player.showPlanChangeProperty().get() && !newPosPlanChange.isZero(),

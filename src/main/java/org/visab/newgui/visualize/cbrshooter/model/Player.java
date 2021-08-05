@@ -20,6 +20,11 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
+/**
+ * 
+ * 
+ *
+ */
 public class Player {
 
     // Statistics table
@@ -68,7 +73,7 @@ public class Player {
      * file data, this replay-view-specific Player object can be updated
      * accordingly.
      * 
-     * @param playerInfo the PlayerInformation object from the VISAB file.
+     * @param playerInfo the Player object from the VISAB file.
      */
     public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo,
             CoordinateHelper coordinateHelper) {
