@@ -227,7 +227,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     player.playerColorProperty().get());
             initializeEventListenersForRow(row, playerName);
             playerVisualsRows.add(row);
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName), coordinateHelper);
+            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(playerName));
+            player.updatePlayerCoordinates(coordinateHelper);
             players.put(playerName, player);
 
             updatePlayerDataRows();
@@ -376,7 +377,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
         for (Player player : players.values()) {
             // Update player object with information retrieved from the frame based stats
-            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
+            player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()));
+            player.updatePlayerCoordinates(coordinateHelper);
 
             ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
             Vector2 newPos = coordinateHelper.translateAccordingToMap(player.positionProperty().get(), true);

@@ -17,7 +17,9 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
+import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -202,6 +204,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return 0;
     }
 
+    private List<Player> playerFrameStats = new ArrayList<>();
+
     /**
      * This method is responsible to update the given statistics according to the
      * global variable of the currently selected frame based on various types of
@@ -213,15 +217,24 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * 
      */
     public void updateCurrentGameStatsByFrame(int frame) {
+        var statistics = data.get(frame);
+        
         // This object holds all information that is available
-        frameBasedStatsProperty.set(data.get(frame));
+        frameBasedStatsProperty.set(statistics);
 
-        totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
-        roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
-        roundProperty.set(frameBasedStatsProperty.get().getRound());
-        healthCoordsProperty.set(frameBasedStatsProperty.get().getHealthPosition());
-        weaponCoordsProperty.set(frameBasedStatsProperty.get().getWeaponPosition());
-        ammuCoordsProperty.set(frameBasedStatsProperty.get().getAmmunitionPosition());
+
+
+        totalTimeProperty.set(String.valueOf(statistics.getTotalTime()));
+        roundTimeProperty.set(String.valueOf(statistics.getRoundTime()));
+        roundProperty.set(statistics.getRound());
+        healthCoordsProperty.set(statistics.getHealthPosition());
+        weaponCoordsProperty.set(statistics.getWeaponPosition());
+        ammuCoordsProperty.set(statistics.getAmmunitionPosition());
+
+        for (var player : playerFrameStats) {
+            var globalModelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(), x -> x.getName().equals(player.getName()));
+            player.updatePlayerData(globalModelPlayer);
+        }
     }
 
     // --- Command methods ---
