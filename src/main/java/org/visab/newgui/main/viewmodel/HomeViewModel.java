@@ -187,7 +187,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openNewHelp() {
         if (openNewHelp == null) {
             openNewHelp = runnableCommand(() -> {
-                dialogHelper.showView(HelpView.class, "Help", false);
+            	var viewConfig = new ShowViewConfiguration(HelpView.class, "Help", true);
+                dialogHelper.showView(viewConfig);
             });
         }
 
@@ -197,7 +198,8 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     public Command openNewAbout() {
         if (openNewAbout == null) {
             openNewAbout = runnableCommand(() -> {
-                dialogHelper.showView(AboutView.class, "About", true);
+            	var viewConfig = new ShowViewConfiguration(AboutView.class, "About", true);
+                dialogHelper.showView(viewConfig);
             });
         }
 
