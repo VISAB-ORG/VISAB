@@ -177,7 +177,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         frameSliderTickUnitProperty.set(tickUnit);
-        updateCurrentGameStatsByFrame();
+        updateCurrentGameStatsByFrame(playFrameProperty.get());
     }
 
     public HashMap<String, Color> getPlayerColors() {
@@ -186,6 +186,25 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
             playerColorMap.put(playerName, UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName)));
         }
         return playerColorMap;
+    }
+
+    public List<Vector2> getPlayerPositionsForInterval(String playerName, int start, int end) {
+        List<Vector2> positionList = new ArrayList<Vector2>();
+
+        for (int i = start; i <= end; i++) {
+            positionList.add(data.get(i).getInfoByPlayerName(playerName).getPosition());
+        }
+
+        return positionList;
+    }
+
+    public int getRoundStartIndex(int round) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getRound() == round) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -198,9 +217,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    public void updateCurrentGameStatsByFrame() {
+    public void updateCurrentGameStatsByFrame(int frame) {
         // This object holds all information that is available
-        frameBasedStatsProperty.set(data.get(playFrameProperty.get()));
+        frameBasedStatsProperty.set(data.get(frame));
 
         totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
         roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
@@ -226,7 +245,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                             @Override
                             public void run() {
                                 playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
-                                updateCurrentGameStatsByFrame();
+                                updateCurrentGameStatsByFrame(playFrameProperty.get());
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
