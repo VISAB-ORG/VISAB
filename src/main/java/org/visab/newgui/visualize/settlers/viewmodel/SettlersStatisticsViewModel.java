@@ -14,7 +14,6 @@ import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
-import org.visab.newgui.visualize.settlers.model.SettlersImplicator.ResourceType;
 import org.visab.newgui.visualize.settlers.model.comparison.BuildingsBuiltComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
 import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
@@ -22,7 +21,6 @@ import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsCompari
 import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
-import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,8 +28,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
@@ -63,8 +59,6 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private ComparisonRowBase<?> graphComparisonRow;
 
     private StringProperty yLabel = new SimpleStringProperty();
-
-    private Map<String, Series<Integer, Number>> detailedStatisticsSeries;
 
     private Command showDetailsCommand;
 
@@ -139,9 +133,9 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
         // file, ResourceType.Brick));
 
-        var serieses = SettlersImplicator.resourceGainedSeries("Player2", file, null);
+        var serieses = SettlersImplicator.resourceGainedSeries("Player2", file);
         for (var series : serieses) {
-            series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 100);
+            series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 20);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }

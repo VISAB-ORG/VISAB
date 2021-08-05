@@ -170,34 +170,43 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlaye;
     }
 
-    public static final List<Series<String, Number>> resourceGainedSeries(String player, SettlersFile file,
-            ResourceType resourceType) {
+    public static final List<Series<String, Number>> resourceGainedSeries(String player, SettlersFile file) {
         var resourcesPerTurn = accumulatedResourcesGainedPerTurn(player, file);
+
         Series<String, Number> woodSeries = new Series<>();
-        Series<String, Number> woolSeries = new Series<>();
-        woolSeries.setName("Sheep");
+        Series<String, Number> sheepSeries = new Series<>();
+        Series<String, Number> stoneSeries = new Series<>();
+        Series<String, Number> wheatSeries = new Series<>();
+        Series<String, Number> brickSeries = new Series<>();
+        sheepSeries.setName("Sheep");
         woodSeries.setName("Wood");
+        stoneSeries.setName("Stone");
+        wheatSeries.setName("Wheat");
+        brickSeries.setName("Brick");
 
         for (int i = 0; i < resourcesPerTurn.size(); i++) {
             var resources = resourcesPerTurn.get(i).getValue();
 
             var dataWood = new XYChart.Data<String, Number>(String.valueOf(i), resources.getWood());
-            var dataWool = new XYChart.Data<String, Number>(String.valueOf(i), resources.getSheep());
+            var dataSheep = new XYChart.Data<String, Number>(String.valueOf(i), resources.getSheep());
+            var dataStone = new XYChart.Data<String, Number>(String.valueOf(i), resources.getStone());
+            var dataWheat = new XYChart.Data<String, Number>(String.valueOf(i), resources.getWheat());
+            var dataBrick = new XYChart.Data<String, Number>(String.valueOf(i), resources.getBrick());
 
             woodSeries.getData().add(dataWood);
-            woolSeries.getData().add(dataWool);
+            sheepSeries.getData().add(dataSheep);
+            stoneSeries.getData().add(dataStone);
+            wheatSeries.getData().add(dataWheat);
+            brickSeries.getData().add(dataBrick);
         }
-
-
 
         // Series<String, Number> resource = new Series<>();
         // resource.setName("Player 1");
         // resource.getData().add(new XYChart.Data<>("1 - Player 1", 500));
         // resource.getData().add(new XYChart.Data<>("1 - Player 2", 500));
         
-        return Arrays.asList(woodSeries, woolSeries);
-
-        // return List.of(woodSeries, woolSeries);
+        return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
+        //return woodSeries;
     }
 
     public enum BuildingType {
