@@ -269,13 +269,28 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             healthItem.setVisible(false);
         }
 
-        // Iterate over players
         for (Player player : players.values()) {
             ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
             Vector2 newPos = coordinateHelper.translateAccordingToMap(
                     frameBasedStats.get().getInfoByPlayerName(player.getName()).getPosition(), true);
-            UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
+            ImageView playerPlanChange = (ImageView) mapElements.get(player.getName() + "_playerPlanChange");
+            Vector2 newPosPlanChange = viewModel.getLastPlanChangePositionForPlayer(player.getName(),
+                    (int) frameSlider.getValue());
+            ImageView playerDeath = (ImageView) mapElements.get(player.getName() + "_playerDeath");
+            Vector2 newPosDeath = viewModel.getLastDeathPositionForPlayer(player.getName(),
+                    (int) frameSlider.getValue());
             player.updatePlayerData(frameBasedStats.get().getInfoByPlayerName(player.getName()), coordinateHelper);
+
+            // If there is no position, don't show the icons
+            player.showPlanChangeProperty().set(!newPosPlanChange.isZero());
+            player.showDeathProperty().set(!newPosDeath.isZero());
+
+            UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
+            UiHelper.adjustVisual(playerPlanChange, player.showPlanChangeProperty().get(),
+                    coordinateHelper.translateAccordingToMap(newPosPlanChange, true));
+            UiHelper.adjustVisual(playerDeath, player.showDeathProperty().get(),
+                    coordinateHelper.translateAccordingToMap(newPosDeath, true));
+
         }
     }
 

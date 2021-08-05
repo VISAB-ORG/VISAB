@@ -88,6 +88,7 @@ public class Player {
         } else {
             this.playerPath.getElements().add(new LineTo(coordX, coordY));
         }
+        this.playerPath.setVisible(this.showPathProperty.get());
 
     }
 

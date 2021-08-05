@@ -281,6 +281,28 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health")));
     }
 
+    public Vector2 getLastPlanChangePositionForPlayer(String playerName, int frameIndex) {
+        Vector2 pos = new Vector2(0, 0);
+        String planAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getPlan();
+        for (int i = frameIndex; i >= 0; i--) {
+            if (!data.get(i).getInfoByPlayerName(playerName).getPlan().equals(planAtFrameIndex)) {
+                return data.get(i + 1).getInfoByPlayerName(playerName).getPosition();
+            }
+        }
+        return pos;
+    }
+
+    public Vector2 getLastDeathPositionForPlayer(String playerName, int frameIndex) {
+        Vector2 pos = new Vector2(0, 0);
+        var deathsAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getStatistics().getDeaths();
+        for (int i = frameIndex; i >= 0; i--) {
+            if (data.get(i).getInfoByPlayerName(playerName).getStatistics().getDeaths() < deathsAtFrameIndex) {
+                return data.get(i).getInfoByPlayerName(playerName).getPosition();
+            }
+        }
+        return pos;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void initialize(ILiveViewable<? extends IStatistics> listener) {
