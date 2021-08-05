@@ -1,7 +1,6 @@
 package org.visab.newgui.visualize.settlers.view;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.visab.newgui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
@@ -13,11 +12,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Slider;
 
 public class SettlersStatisticsDetailView implements FxmlView<SettlersStatisticsViewModel>, Initializable {
 
     @FXML
     StackedBarChart<String, Number> resourceChart;
+
+    @FXML
+    Slider roundSlider;
 
     @InjectViewModel
     SettlersStatisticsViewModel viewModel;
@@ -26,6 +29,11 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
     public void initialize(URL location, ResourceBundle resources) {
         resourceChart.setData(viewModel.getPlayerDetailedStatisticsSeries());
         resourceChart.getYAxis().labelProperty().bind(viewModel.yLabelDetailProperty());
+
+        roundSlider.setOnMouseReleased( event -> {
+            viewModel.sliderValueProperty().setValue((int)roundSlider.getValue());
+            viewModel.updateStackedBarChartCommand().execute();
+        });
 
 /*         Series<String, Number> resource = new Series<>();
         resource.setName("Wood");

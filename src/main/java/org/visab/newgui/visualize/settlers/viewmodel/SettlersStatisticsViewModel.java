@@ -22,7 +22,10 @@ import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -62,9 +65,17 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private Command showDetailsCommand;
 
+    private Command updateStackedBarChartCommand;
+
     private ObservableList<Series<String, Number>> playerDetailedStatisticsSeries = FXCollections.observableArrayList();
 
     private StringProperty yLabelDetail = new SimpleStringProperty();
+
+    private IntegerProperty sliderValue = new SimpleIntegerProperty();
+
+    public IntegerProperty sliderValueProperty() {
+        return sliderValue;
+    }
 
     public StringProperty yLabelDetailProperty() {
         return yLabelDetail;
@@ -115,13 +126,30 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
                 var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics",
                         true, 800, 800);
                 dialogHelper.showView(viewConfig, this, scope);
-                initializeBarChart();
+                initializeStackedBarChart();
             });
         }
         return showDetailsCommand;
     }
 
-    private void initializeBarChart() {
+    public Command updateStackedBarChartCommand() {
+        playerDetailedStatisticsSeries.clear();
+        while(!playerDetailedStatisticsSeries.isEmpty()) {
+            // Helps just a little
+        }
+        updateStackedBarChartCommand = runnableCommand(() -> {
+            var serieses = SettlersImplicator.resourceGainedSeries("Player2", file);
+            for (var series : serieses) {
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 20 + sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) < sliderValue.get());
+            }
+        playerDetailedStatisticsSeries.addAll(serieses);
+        });
+
+        return updateStackedBarChartCommand;
+    }
+
+    private void initializeStackedBarChart() {
         yLabelDetail.set("Values");
 
         // für jeden Rohstoff eine Series mit den werten
