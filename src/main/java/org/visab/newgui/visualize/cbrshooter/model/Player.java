@@ -55,9 +55,12 @@ public class Player {
     private Image playerDeath;
     private Path playerPath;
 
-    public Player(String name, Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath,
-            Path playerPath) {
+    public Player(String name) {
         this.name = name;
+    }
+
+    public void initializeVisuals(Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath,
+            Path playerPath) {
         this.playerIcon = playerIcon;
         this.playerPlanChange = playerPlanChange;
         this.playerDeath = playerDeath;

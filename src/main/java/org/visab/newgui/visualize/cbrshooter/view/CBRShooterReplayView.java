@@ -138,7 +138,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         drawPane.setPrefHeight(drawPanePrefHeight);
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
                 drawPane.getPrefWidth(), STANDARD_ICON_VECTOR);
-        initializePlayers();
+        initializePlayersVisuals();
         initializeMapElements();
         drawPane.getChildren().setAll(mapElements.values());
 
@@ -216,11 +216,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * This method initializes all the underlying player-specific information which
      * is used for proper handling across the replay view.
      */
-    private void initializePlayers() {
-        for (String playerName : viewModel.getPlayerNames()) {
+    private void initializePlayersVisuals() {
+        for (Player player : viewModel.getPlayerFrameStats()) {
+            var playerName = player.getName();
             HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
-            Player player = new Player(playerName, viewModel.getPlayerColors().get(playerName),
-                    iconMap.get("playerIcon"), iconMap.get("playerPlanChange"), iconMap.get("playerDeath"), new Path());
+            player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerIcon"),
+                    iconMap.get("playerPlanChange"), iconMap.get("playerDeath"), new Path());
             PlayerVisualsRow row = new PlayerVisualsRow(playerName,
                     UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
                     new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),

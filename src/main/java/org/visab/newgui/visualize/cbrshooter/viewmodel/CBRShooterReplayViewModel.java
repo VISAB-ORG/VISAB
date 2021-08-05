@@ -67,13 +67,11 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
+    private IntegerProperty playFrameProperty = new SimpleIntegerProperty();
+
     // Viewmodel always has a reference to the statistics of the current stat
     private ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
-
-    // A model rectangle that is used to calculate map positioning
-    private Rectangle mapRectangle;
-
-    private IntegerProperty playFrameProperty = new SimpleIntegerProperty();
+    private List<Player> playerFrameStats = new ArrayList<>();
 
     public IntegerProperty playFrameProperty() {
         return playFrameProperty;
@@ -137,6 +135,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return frameBasedStatsProperty;
     }
 
+    public List<Player> getPlayerFrameStats() {
+        return playerFrameStats;
+    }
+
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */
@@ -161,7 +163,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         data = file.getStatistics();
-        mapRectangle = file.getMapRectangle();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size() - 1);
@@ -174,6 +175,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         frameSliderTickUnitProperty.set(tickUnit);
+        for (var name : file.getPlayerNames())
+            playerFrameStats.add(new Player(name));
+
         updateCurrentGameStatsByFrame(playFrameProperty.get());
     }
 
@@ -204,8 +208,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return 0;
     }
 
-    private List<Player> playerFrameStats = new ArrayList<>();
-
     /**
      * This method is responsible to update the given statistics according to the
      * global variable of the currently selected frame based on various types of
@@ -218,11 +220,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      */
     public void updateCurrentGameStatsByFrame(int frame) {
         var statistics = data.get(frame);
-        
+
         // This object holds all information that is available
         frameBasedStatsProperty.set(statistics);
-
-
 
         totalTimeProperty.set(String.valueOf(statistics.getTotalTime()));
         roundTimeProperty.set(String.valueOf(statistics.getRoundTime()));
@@ -232,7 +232,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         ammuCoordsProperty.set(statistics.getAmmunitionPosition());
 
         for (var player : playerFrameStats) {
-            var globalModelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(), x -> x.getName().equals(player.getName()));
+            var globalModelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
+                    x -> x.getName().equals(player.getName()));
             player.updatePlayerData(globalModelPlayer);
         }
     }
