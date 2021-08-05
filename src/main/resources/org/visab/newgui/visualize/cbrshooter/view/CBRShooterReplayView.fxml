@@ -57,9 +57,9 @@
                                  <children>
                                     <GridPane prefHeight="220.0" prefWidth="491.0">
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.5009765625" minWidth="10.0" prefWidth="109.90460205078125" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.2305908203125" minWidth="10.0" prefWidth="30.186279296875" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.37286376953125" minWidth="10.0" prefWidth="216.813720703125" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="10.0" prefWidth="133.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.2305908203125" minWidth="9.0" prefWidth="42.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.37286376953125" minWidth="10.0" prefWidth="143.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.450927734375" minWidth="10.0" prefWidth="92.0389404296875" />
                                       </columnConstraints>
                                       <rowConstraints>
@@ -143,74 +143,65 @@
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
                                              <children>
                                                 <Label fx:id="totalTimeValueLabel" styleClass="boldLabel" stylesheets="@../../../../../template_style.css">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
-                                                <Label fx:id="roundValueLabel" />
+                                                <Label fx:id="roundValueLabel" styleClass="boldLabel" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <children>
-                                                <Label fx:id="roundTimeValueLabel">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
+                                                <Label fx:id="roundTimeValueLabel" styleClass="boldLabel">
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                              <children>
-                                                <Label fx:id="weaponCoordsValueLabel" />
+                                                <Label fx:id="weaponCoordsValueLabel" styleClass="boldLabel" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                              <children>
-                                                <Label fx:id="ammuCoordsValueLabel" />
+                                                <Label fx:id="ammuCoordsValueLabel" styleClass="boldLabel" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="5">
                                              <children>
-                                                <Label fx:id="healthItemCoordsValueLabel" />
+                                                <Label fx:id="healthItemCoordsValueLabel" styleClass="boldLabel" />
                                              </children>
                                           </HBox>
                               
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3">
                                              <children>
-                                                <Label text="Milliseconds">
-                                                   <font>
-                                                      <Font name="System Italic" size="13.0" />
-                                                   </font>
+                                                <Label styleClass="italicLabel" text="Milliseconds">
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <children>
-                                                <Label text="Milliseconds" />
+                                                <Label styleClass="italicLabel" text="Milliseconds" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <children>
-                                                <Label text="Coordinate" />
+                                                <Label styleClass="italicLabel" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                              <children>
-                                                <Label text="Coordinate" />
+                                                <Label styleClass="italicLabel" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="5">
                                              <children>
-                                                <Label text="Coordinate" />
+                                                <Label styleClass="italicLabel" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                              <children>
-                                                <Label text="Counter" />
+                                                <Label styleClass="italicLabel" text="Counter" />
                                              </children>
                                           </HBox>
                                           <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
