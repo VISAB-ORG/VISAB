@@ -275,53 +275,42 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * @param player the playerName used to set the property correctly.
      */
     private void initializeEventListenersForRow(PlayerVisualsRow row, Player player) {
-        row.getShowPlayerCheckBox().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var value = ((CheckBox) event.getSource()).isSelected();
-                player.showIconProperty().set(value);
-                player.showDeathProperty().set(value);
-                player.showPlanChangeProperty().set(value);
-                player.showPathProperty().set(value);
+        row.getShowPlayerCheckBox().setOnAction(event -> {
+            var value = ((CheckBox) event.getSource()).isSelected();
+            player.showIconProperty().set(value);
+            player.showDeathProperty().set(value);
+            player.showPlanChangeProperty().set(value);
+            player.showPathProperty().set(value);
 
-                row.getShowPlayerIconCheckBox().setSelected(value);
-                row.getShowPlayerPlanChangeCheckBox().setSelected(value);
-                row.getShowPlayerDeathCheckBox().setSelected(value);
-                row.getShowPlayerPathCheckBox().setSelected(value);
-                updateMapElements();
-            }
+            row.getShowPlayerIconCheckBox().setSelected(value);
+            row.getShowPlayerPlanChangeCheckBox().setSelected(value);
+            row.getShowPlayerDeathCheckBox().setSelected(value);
+            row.getShowPlayerPathCheckBox().setSelected(value);
+            updateMapElements();
         });
-        row.getShowPlayerIconCheckBox().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var value = ((CheckBox) event.getSource()).isSelected();
-                player.showIconProperty().set(value);
-                updateMapElements();
-            }
+
+        row.getShowPlayerIconCheckBox().setOnAction(event -> {
+            var value = ((CheckBox) event.getSource()).isSelected();
+            player.showIconProperty().set(value);
+            updateMapElements();
         });
-        row.getShowPlayerDeathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var value = ((CheckBox) event.getSource()).isSelected();
-                player.showDeathProperty().set(value);
-                updateMapElements();
-            }
+
+        row.getShowPlayerDeathCheckBox().setOnAction(event -> {
+            var value = ((CheckBox) event.getSource()).isSelected();
+            player.showDeathProperty().set(value);
+            updateMapElements();
         });
-        row.getShowPlayerPlanChangeCheckBox().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var value = ((CheckBox) event.getSource()).isSelected();
-                player.showPlanChangeProperty().set(value);
-                updateMapElements();
-            }
+
+        row.getShowPlayerPlanChangeCheckBox().setOnAction(event -> {
+            var value = ((CheckBox) event.getSource()).isSelected();
+            player.showPlanChangeProperty().set(value);
+            updateMapElements();
         });
-        row.getShowPlayerPathCheckBox().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var value = ((CheckBox) event.getSource()).isSelected();
-                player.showPathProperty().set(value);
-                updateMapElements();
-            }
+
+        row.getShowPlayerPathCheckBox().setOnAction(event -> {
+            var value = ((CheckBox) event.getSource()).isSelected();
+            player.showPathProperty().set(value);
+            updateMapElements();
         });
     }
 
