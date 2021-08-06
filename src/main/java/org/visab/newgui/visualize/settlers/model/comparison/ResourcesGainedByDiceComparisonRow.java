@@ -51,7 +51,8 @@ public class ResourcesGainedByDiceComparisonRow extends SettlersComparisonRowBas
                 for (var data : resourcesGaintPerTurn) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
                         var sum = 0;
-                        sum += data.getValue().getBrick() + data.getValue().getSheep() + data.getValue().getStone() + data.getValue().getWheat() + data.getValue().getWood();
+                        sum += data.getValue().getBrick() + data.getValue().getSheep() + data.getValue().getStone() 
+                            + data.getValue().getWheat() + data.getValue().getWood();
                         graphData.add(new Data<Integer, Number>(data.getRound(), sum));
                     }
                 }

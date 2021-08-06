@@ -165,10 +165,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         List<Series<String, Number>> data = new ArrayList<>();
         switch (resourceUsageType) {
             case "Gained":
-                data = SettlersImplicator.resourceGainedSeries(file);
+                data = SettlersImplicator.resourcesGainedSeries(file);
                 break;
             case "Spent":
-            	data = SettlersImplicator.resourceGainedSeries(file);
+            	data = SettlersImplicator.resourcesSpentSeries(file);
                 break;
         }
         return data;

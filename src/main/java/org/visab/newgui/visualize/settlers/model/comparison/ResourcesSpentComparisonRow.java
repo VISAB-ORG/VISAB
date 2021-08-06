@@ -3,6 +3,7 @@ package org.visab.newgui.visualize.settlers.model.comparison;
 import java.util.HashMap;
 import java.util.List;
 
+import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.globalmodel.settlers.PlayerResources;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.newgui.visualize.StatisticsDataStructure;
@@ -32,7 +33,7 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
     public void updateSeries(SettlersFile file) {
         var statistics = file.getStatistics();
 
-        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
+        var playerData = new HashMap<String, List<StatisticsDataStructure<PlayerResources>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, SettlersImplicator.accumulatedResourcesSpentPerTurn(name, file));
 
@@ -50,7 +51,10 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
                 var graphData = playerSeries.get(name).getData();
                 for (var data : resourcesSpentPerTurn) {
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
+                        var sum = 0;
+                        sum += (data.getValue().getBrick() + data.getValue().getSheep() + data.getValue().getStone() 
+                            + data.getValue().getWheat() + data.getValue().getWood()) * (-1);
+                        graphData.add(new Data<Integer, Number>(data.getRound(), sum));
                     }
                 }
             }
