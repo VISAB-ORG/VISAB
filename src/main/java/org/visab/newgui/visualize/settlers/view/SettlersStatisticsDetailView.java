@@ -10,8 +10,6 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.StackedBarChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Slider;
 
 public class SettlersStatisticsDetailView implements FxmlView<SettlersStatisticsViewModel>, Initializable {
@@ -34,26 +32,7 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
             viewModel.sliderValueProperty().setValue((int)roundSlider.getValue());
             viewModel.updateStackedBarChartCommand().execute();
         });
-
-/*         Series<String, Number> resource = new Series<>();
-        resource.setName("Wood");
-        resource.getData().add(new XYChart.Data<>("1 - Player 1", 500));
-        resource.getData().add(new XYChart.Data<>("1 - Player 2", 500));
-        resource.getData().add(new XYChart.Data<>("2 - Player 1", 500));
-        resource.getData().add(new XYChart.Data<>("2 - Player 2", 500));
-
-        Series<String, Number> resource2 = new Series<>();
-        resource2.setName("Stone");
-        resource2.getData().add(new XYChart.Data<>("1 - Player 1", 500));
-        resource2.getData().add(new XYChart.Data<>("1 - Player 2", 500));
-        resource2.getData().add(new XYChart.Data<>("2 - Player 1", 500));
-        resource2.getData().add(new XYChart.Data<>("2 - Player 2", 500));
-
-        resourceChart.getData().add(resource);
-        resourceChart.getData().add(resource2);
-        resourceChart.getData().add(resource);
-        resourceChart.getData().add(resource2); */
-        System.out.println(viewModel);
+        
     }
 
 }

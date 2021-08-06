@@ -22,7 +22,6 @@ import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -140,8 +139,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         updateStackedBarChartCommand = runnableCommand(() -> {
             var serieses = SettlersImplicator.resourceGainedSeries("Player2", file);
             for (var series : serieses) {
-                series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 20 + sliderValue.get());
-                series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) < sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > 10 + sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
         playerDetailedStatisticsSeries.addAll(serieses);
         });
@@ -152,18 +151,9 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private void initializeStackedBarChart() {
         yLabelDetail.set("Values");
 
-        // für jeden Rohstoff eine Series mit den werten
-        // playerDetailedStatisticsSeries.addAll(Brickseries, Woodseries, ....);
-        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
-        // file, ResourceType.Brick));
-        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
-        // file, ResourceType.Brick));
-        // playerDetailedStatisticsSeries.add(SettlersImplicator.resourceGainedSeries("player",
-        // file, ResourceType.Brick));
-
         var serieses = SettlersImplicator.resourceGainedSeries("Player2", file);
         for (var series : serieses) {
-            series.getData().removeIf(x -> Integer.parseInt(x.getXValue()) > 20);
+            series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > 10);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }

@@ -171,7 +171,8 @@ public final class SettlersImplicator {
     }
 
     public static final List<Series<String, Number>> resourceGainedSeries(String player, SettlersFile file) {
-        var resourcesPerTurn = accumulatedResourcesGainedPerTurn(player, file);
+        var resourcesPerTurnPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
+        var resourcesPerTurnPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
 
         Series<String, Number> woodSeries = new Series<>();
         Series<String, Number> sheepSeries = new Series<>();
@@ -184,29 +185,23 @@ public final class SettlersImplicator {
         wheatSeries.setName("Wheat");
         brickSeries.setName("Brick");
 
-        for (int i = 0; i < resourcesPerTurn.size(); i++) {
-            var resources = resourcesPerTurn.get(i).getValue();
+        for (int i = 0; i < resourcesPerTurnPlayer1.size(); i++) {
+            var resourcesPlayer1 = resourcesPerTurnPlayer1.get(i).getValue();
+            var resourcesPlayer2 = resourcesPerTurnPlayer2.get(i).getValue();
 
-            var dataWood = new XYChart.Data<String, Number>(String.valueOf(i), resources.getWood());
-            var dataSheep = new XYChart.Data<String, Number>(String.valueOf(i), resources.getSheep());
-            var dataStone = new XYChart.Data<String, Number>(String.valueOf(i), resources.getStone());
-            var dataWheat = new XYChart.Data<String, Number>(String.valueOf(i), resources.getWheat());
-            var dataBrick = new XYChart.Data<String, Number>(String.valueOf(i), resources.getBrick());
-
-            woodSeries.getData().add(dataWood);
-            sheepSeries.getData().add(dataSheep);
-            stoneSeries.getData().add(dataStone);
-            wheatSeries.getData().add(dataWheat);
-            brickSeries.getData().add(dataBrick);
+            woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWood()));
+            woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWood()));
+            sheepSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getSheep()));
+            sheepSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getSheep()));
+            stoneSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getStone()));
+            stoneSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getStone()));
+            wheatSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWheat()));
+            wheatSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWheat()));
+            brickSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getBrick()));
+            brickSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getBrick()));
         }
-
-        // Series<String, Number> resource = new Series<>();
-        // resource.setName("Player 1");
-        // resource.getData().add(new XYChart.Data<>("1 - Player 1", 500));
-        // resource.getData().add(new XYChart.Data<>("1 - Player 2", 500));
         
         return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
-        //return woodSeries;
     }
 
     public enum BuildingType {
