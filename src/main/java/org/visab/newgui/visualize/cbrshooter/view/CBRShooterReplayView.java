@@ -114,9 +114,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     // Players whose values will always be up to date with the current frame
     private List<Player> players;
 
-    // Helper variables to ensure correct adjustments of player paths
-    private int roundStartIndex = 0;
-
     @InjectViewModel
     CBRShooterReplayViewModel viewModel;
 
@@ -187,7 +184,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         var newFrame = payload.getNewFrame();
         if (newFrame < oldFrame) {
             while (newFrame < oldFrame) {
-                roundStartIndex = viewModel.getRoundStartIndex(newRound);
+                var roundStartIndex = viewModel.getRoundStartIndex(newRound);
                 for (Player player : players) {
                     var positionsForInterval = viewModel.getPlayerPositionsForInterval(player.getName(),
                             roundStartIndex, newFrame);
