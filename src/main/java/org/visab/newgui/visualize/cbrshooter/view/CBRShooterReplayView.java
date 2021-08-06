@@ -14,7 +14,6 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
-import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
 
@@ -22,8 +21,6 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -87,7 +84,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private Label ammuCoordsValueLabel;
     @FXML
-    private TableView<PlayerDataRow> playerDataTable;
+    private TableView<org.visab.newgui.visualize.cbrshooter.model.Player> playerDataTable;
     @FXML
     private TableView<PlayerVisualsRow> playerVisualsTable;
     @FXML
@@ -110,7 +107,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2(32, 32));
 
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
-    private ObservableList<PlayerDataRow> playerDataRows = FXCollections.observableArrayList();
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
 
     private ObjectProperty<CBRShooterStatistics> frameBasedStats = new SimpleObjectProperty<>();
@@ -146,7 +142,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         initializeMapElements();
         drawPane.getChildren().setAll(mapElements.values());
 
-        playerDataTable.setItems(playerDataRows);
+        playerDataTable.setItems(FXCollections.observableArrayList(players));
         playerVisualsTable.setItems(playerVisualsRows);
 
         weaponIcon.setImage(viewModel.getWeaponIcon());
@@ -197,14 +193,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                             roundStartIndex, newFrame);
                     player.redrawPath(positionsForInterval, coordinateHelper);
                 }
-                updatePlayerDataRows();
                 updateMapElements();
                 oldFrame--;
             }
         } else {
             while (newFrame > oldFrame) {
                 updateMapElements();
-                updatePlayerDataRows();
                 oldFrame++;
             }
         }
@@ -229,18 +223,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
             player.updatePlayerCoordinates(coordinateHelper);
-            updatePlayerDataRows();
-        }
-    }
-
-    /**
-     * This method simply updates the data table for each player based on the bound
-     * frame-based statistics object.
-     */
-    private void updatePlayerDataRows() {
-        playerDataRows.clear();
-        for (org.visab.globalmodel.cbrshooter.Player player : frameBasedStats.get().getPlayers()) {
-            playerDataRows.add(new PlayerDataRow(player));
         }
     }
 
