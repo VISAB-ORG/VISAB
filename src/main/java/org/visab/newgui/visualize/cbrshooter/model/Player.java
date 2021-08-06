@@ -55,9 +55,12 @@ public class Player {
     private Image playerDeath;
     private Path playerPath;
 
-    public Player(String name, Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath,
-            Path playerPath) {
+    public Player(String name) {
         this.name = name;
+    }
+
+    public void initializeVisuals(Color playerColor, Image playerIcon, Image playerPlanChange, Image playerDeath,
+            Path playerPath) {
         this.playerIcon = playerIcon;
         this.playerPlanChange = playerPlanChange;
         this.playerDeath = playerDeath;
@@ -75,8 +78,7 @@ public class Player {
      * 
      * @param playerInfo the Player object from the VISAB file.
      */
-    public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo,
-            CoordinateHelper coordinateHelper) {
+    public void updatePlayerData(org.visab.globalmodel.cbrshooter.Player playerInfo) {
         // Update the values of the fields
         this.healthProperty.set(playerInfo.getHealth());
         this.relativeHealthProperty.set(playerInfo.getRelativeHealth());
@@ -87,16 +89,19 @@ public class Player {
         this.totalAmmuProperty.set(playerInfo.getTotalAmmunition());
         this.fragsProperty.set(playerInfo.getStatistics().getFrags());
         this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
+    }
 
-        var coordX = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getX();
-        var coordY = coordinateHelper.translateAccordingToMap(playerInfo.getPosition(), false).getY();
+    public void updatePlayerCoordinates(CoordinateHelper coordinateHelper) {
+        var translated = coordinateHelper.translateAccordingToMap(positionProperty.get(), false);
+        var coordX = translated.getX();
+        var coordY = translated.getY();
+
         if (this.playerPath.getElements().size() == 0) {
             this.playerPath.getElements().add(new MoveTo(coordX, coordY));
         } else {
             this.playerPath.getElements().add(new LineTo(coordX, coordY));
         }
         this.playerPath.setVisible(this.showPathProperty.get());
-
     }
 
     public void resetPath() {

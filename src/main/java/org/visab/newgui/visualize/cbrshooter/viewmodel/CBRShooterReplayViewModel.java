@@ -17,7 +17,10 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
+import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
+import org.visab.util.StreamUtil;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -65,16 +68,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
+    private IntegerProperty currentFrameProperty = new SimpleIntegerProperty();
+
     // Viewmodel always has a reference to the statistics of the current stat
     private ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
+    private List<Player> players = new ArrayList<>();
 
-    // A model rectangle that is used to calculate map positioning
-    private Rectangle mapRectangle;
-
-    private IntegerProperty playFrameProperty = new SimpleIntegerProperty();
-
-    public IntegerProperty playFrameProperty() {
-        return playFrameProperty;
+    public IntegerProperty currentFrameProperty() {
+        return currentFrameProperty;
     }
 
     public Rectangle getMapRectangle() {
@@ -135,6 +136,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return frameBasedStatsProperty;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     /**
      * Called after the instance was constructed by javafx/mvvmfx.
      */
@@ -150,8 +155,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Default update interval of 0.1 seconds
         updateInterval = 100;
 
-        // TODO: Might not be to hard to have this work live aswell
-        // Load data from the scopes file which is initialized after VISUALIZE
         if (scope.isLive()) {
             initialize(scope.getSessionListener());
         } else {
@@ -159,20 +162,31 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         }
 
         data = file.getStatistics();
-        mapRectangle = file.getMapRectangle();
 
         // Make the frame sliders values always reasonable according to shooter file
         frameSliderMaxProperty.set(data.size() - 1);
 
         var tickUnit = data.size() / 10;
-
         // Make sure it is at least 1,
-        if (tickUnit == 0) {
-            tickUnit = 1;
-        }
-
+        tickUnit = tickUnit < 1 ? 1 : tickUnit;
         frameSliderTickUnitProperty.set(tickUnit);
-        updateCurrentGameStatsByFrame(playFrameProperty.get());
+
+        for (var name : file.getPlayerNames())
+            players.add(new Player(name));
+
+        updateCurrentGameStatsByFrame(0);
+
+        // Add listener that will update the players and the general data
+        currentFrameProperty.addListener((o, oldValue, newValue) -> {
+            var oldFrame = oldValue.intValue();
+            var newFrame = newValue.intValue();
+
+            var oldRound = data.get(oldFrame).getRound();
+            var newRound = data.get(newFrame).getRound();
+
+            updateCurrentGameStatsByFrame(newFrame);
+            publish("DATA_UPDATED", new DataUpdatedPayload(oldFrame, newFrame, oldRound, newRound));
+        });
     }
 
     public HashMap<String, Color> getPlayerColors() {
@@ -212,16 +226,24 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    public void updateCurrentGameStatsByFrame(int frame) {
-        // This object holds all information that is available
-        frameBasedStatsProperty.set(data.get(frame));
+    private void updateCurrentGameStatsByFrame(int frame) {
+        var statistics = data.get(frame);
 
-        totalTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getTotalTime()));
-        roundTimeProperty.set(String.valueOf(frameBasedStatsProperty.get().getRoundTime()));
-        roundProperty.set(frameBasedStatsProperty.get().getRound());
-        healthCoordsProperty.set(frameBasedStatsProperty.get().getHealthPosition());
-        weaponCoordsProperty.set(frameBasedStatsProperty.get().getWeaponPosition());
-        ammuCoordsProperty.set(frameBasedStatsProperty.get().getAmmunitionPosition());
+        // This object holds all information that is available
+        frameBasedStatsProperty.set(statistics);
+
+        totalTimeProperty.set(String.valueOf(statistics.getTotalTime()));
+        roundTimeProperty.set(String.valueOf(statistics.getRoundTime()));
+        roundProperty.set(statistics.getRound());
+        healthCoordsProperty.set(statistics.getHealthPosition());
+        weaponCoordsProperty.set(statistics.getWeaponPosition());
+        ammuCoordsProperty.set(statistics.getAmmunitionPosition());
+
+        for (var player : players) {
+            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
+                    x -> x.getName().equals(player.getName()));
+            player.updatePlayerData(globalmodelPlayer);
+        }
     }
 
     // --- Command methods ---
@@ -239,8 +261,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
-                                updateCurrentGameStatsByFrame(playFrameProperty.get());
+                                currentFrameProperty.set(Math.min((currentFrameProperty.get() + 1), data.size() - 1));
                             }
                         });
                         // Sleeping time depends on the velocity sliders value

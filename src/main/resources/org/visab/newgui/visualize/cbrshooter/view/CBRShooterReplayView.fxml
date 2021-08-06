@@ -304,7 +304,7 @@
                                   </TableColumn>
                                   <TableColumn prefWidth="107.419189453125" text="Magazine Ammu">
                                     <cellValueFactory>
-                                        <PropertyValueFactory property="magazineAmmu">
+                                        <PropertyValueFactory property="magazineAmmunition">
                 </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>

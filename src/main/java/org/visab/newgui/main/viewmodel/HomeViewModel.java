@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import org.visab.newgui.help.view.HelpView;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
@@ -18,7 +18,6 @@ import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.ViewModelBase;
 import org.visab.newgui.about.view.AboutView;
 import org.visab.newgui.control.ExplorerFile;
-import org.visab.newgui.help.view.HelpView;
 import org.visab.newgui.sessionoverview.view.SessionOverviewView;
 import org.visab.newgui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
@@ -183,22 +182,22 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
         return openSettings;
     }
-    
+
     public Command openNewHelp() {
         if (openNewHelp == null) {
             openNewHelp = runnableCommand(() -> {
-            	var viewConfig = new ShowViewConfiguration(HelpView.class, "Help", true);
+                var viewConfig = new ShowViewConfiguration(HelpView.class, "Help", true);
                 dialogHelper.showView(viewConfig);
             });
         }
 
         return openNewHelp;
     }
-    
+
     public Command openNewAbout() {
         if (openNewAbout == null) {
             openNewAbout = runnableCommand(() -> {
-            	var viewConfig = new ShowViewConfiguration(AboutView.class, "About", true);
+                var viewConfig = new ShowViewConfiguration(AboutView.class, "About", true);
                 dialogHelper.showView(viewConfig);
             });
         }
