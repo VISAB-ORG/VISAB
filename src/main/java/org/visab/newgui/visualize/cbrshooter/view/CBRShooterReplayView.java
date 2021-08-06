@@ -12,6 +12,7 @@ import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
+import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerDataRow;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;
@@ -118,7 +119,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private List<Player> players;
 
     // Helper variables to ensure correct adjustments of player paths
-    private int roundCounter = 1;
     private int roundStartIndex = 0;
 
     @InjectViewModel
@@ -133,9 +133,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        players = viewModel.getPlayes();
+        players = viewModel.getPlayers();
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
-        
+
         drawPane.setPrefWidth(DRAW_PANE_WIDTH);
         var drawPanePrefHeight = DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
@@ -163,56 +163,53 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         playPauseButton.setGraphic(playImageView);
         veloSlider.valueProperty().bindBidirectional(viewModel.velocityProperty());
         frameSlider.maxProperty().bind(viewModel.frameSliderMaxProperty());
-        frameSlider.valueProperty().bindBidirectional(viewModel.playFrameProperty());
+        frameSlider.valueProperty().bindBidirectional(viewModel.currentFrameProperty());
         frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
         frameSlider.setBlockIncrement(1);
         frameSlider.setSnapToTicks(false);
-        frameSlider.valueProperty().addListener(createDiscreteListener());
 
         // Check boxes for static objects are always the same
         checkBoxAmmuItem.setOnAction(updateMapElementsHandler);
         checkBoxHealthItem.setOnAction(updateMapElementsHandler);
         checkBoxWeapon.setOnAction(updateMapElementsHandler);
+
+        viewModel.subscribe("DATA_UPDATED", this::onDataUpdated);
     }
 
-    private ChangeListener<Number> createDiscreteListener() {
-        return new ChangeListener<Number>() {
+    private void onDataUpdated(String message, Object[] payloadObjects) {
+        var payload = (DataUpdatedPayload) payloadObjects[0];
 
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                var newValueAsInt = newValue.intValue();
-                var oldValueAsInt = oldValue.intValue();
-                if (frameBasedStats.get().getRound() != roundCounter) {
-                    // Reset paths
-                    for (Player player : players) {
-                        player.resetPath();
-                    }
-                    roundCounter = frameBasedStats.get().getRound();
-                    roundStartIndex = viewModel.getRoundStartIndex(frameBasedStats.get().getRound());
-                }
+        var newRound = payload.getNewRound();
+        var oldRound = payload.getOldRound();
 
-                if (newValue.intValue() < oldValue.intValue()) {
-                    while (newValueAsInt < oldValueAsInt) {
-                        for (Player player : players) {
-                            player.redrawPath(viewModel.getPlayerPositionsForInterval(player.getName(), roundStartIndex,
-                                    newValueAsInt), coordinateHelper);
-                        }
-                        viewModel.updateCurrentGameStatsByFrame(oldValueAsInt);
-                        updatePlayerDataRows();
-                        updateMapElements();
-                        oldValueAsInt--;
-                    }
-                } else {
-                    while (newValueAsInt > oldValueAsInt) {
-                        viewModel.updateCurrentGameStatsByFrame(oldValueAsInt);
-                        updateMapElements();
-                        updatePlayerDataRows();
-                        oldValueAsInt++;
-                    }
+        if (newRound != oldRound) {
+            for (Player player : players)
+                player.resetPath();
+        }
+
+        var oldFrame = payload.getOldFrame();
+        var newFrame = payload.getNewFrame();
+        if (newFrame < oldFrame) {
+            while (newFrame < oldFrame) {
+                roundStartIndex = viewModel.getRoundStartIndex(newRound);
+                for (Player player : players) {
+                    var positionsForInterval = viewModel.getPlayerPositionsForInterval(player.getName(),
+                            roundStartIndex, newFrame);
+                    player.redrawPath(positionsForInterval, coordinateHelper);
                 }
+                updatePlayerDataRows();
                 updateMapElements();
+                oldFrame--;
             }
-        };
+        } else {
+            while (newFrame > oldFrame) {
+                updateMapElements();
+                updatePlayerDataRows();
+                oldFrame++;
+            }
+        }
+
+        updateMapElements();
     }
 
     /**
@@ -220,7 +217,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * is used for proper handling across the replay view.
      */
     private void initializePlayersVisuals() {
-        for (Player player : viewModel.getPlayes()) {
+        for (Player player : viewModel.getPlayers()) {
             var playerName = player.getName();
             HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
             player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerIcon"),
@@ -395,7 +392,6 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                     coordinateHelper.translateAccordingToMap(newPosPlanChange, true));
             UiHelper.adjustVisual(playerDeath, player.showDeathProperty().get() && !newPosDeath.checkIfZero(),
                     coordinateHelper.translateAccordingToMap(newPosDeath, true));
-
         }
     }
 

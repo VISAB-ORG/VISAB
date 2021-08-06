@@ -17,6 +17,7 @@ import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
@@ -67,14 +68,14 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // Contains all information that changes based on the frame
     private List<CBRShooterStatistics> data = new ArrayList<CBRShooterStatistics>();
 
-    private IntegerProperty playFrameProperty = new SimpleIntegerProperty();
+    private IntegerProperty currentFrameProperty = new SimpleIntegerProperty();
 
     // Viewmodel always has a reference to the statistics of the current stat
     private ObjectProperty<CBRShooterStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
-    private List<Player> playes = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
-    public IntegerProperty playFrameProperty() {
-        return playFrameProperty;
+    public IntegerProperty currentFrameProperty() {
+        return currentFrameProperty;
     }
 
     public Rectangle getMapRectangle() {
@@ -135,8 +136,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return frameBasedStatsProperty;
     }
 
-    public List<Player> getPlayes() {
-        return playes;
+    public List<Player> getPlayers() {
+        return players;
     }
 
     /**
@@ -154,8 +155,6 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         // Default update interval of 0.1 seconds
         updateInterval = 100;
 
-        // TODO: Might not be to hard to have this work live aswell
-        // Load data from the scopes file which is initialized after VISUALIZE
         if (scope.isLive()) {
             initialize(scope.getSessionListener());
         } else {
@@ -168,17 +167,26 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         frameSliderMaxProperty.set(data.size() - 1);
 
         var tickUnit = data.size() / 10;
-
         // Make sure it is at least 1,
-        if (tickUnit == 0) {
-            tickUnit = 1;
-        }
-
+        tickUnit = tickUnit < 1 ? 1 : tickUnit;
         frameSliderTickUnitProperty.set(tickUnit);
-        for (var name : file.getPlayerNames())
-            playes.add(new Player(name));
 
-        updateCurrentGameStatsByFrame(playFrameProperty.get());
+        for (var name : file.getPlayerNames())
+            players.add(new Player(name));
+
+        updateCurrentGameStatsByFrame(0);
+
+        // Add listener that will update the players and the general data
+        currentFrameProperty.addListener((o, oldValue, newValue) -> {
+            var oldFrame = oldValue.intValue();
+            var newFrame = newValue.intValue();
+
+            var oldRound = data.get(oldFrame).getRound();
+            var newRound = data.get(newFrame).getRound();
+
+            updateCurrentGameStatsByFrame(newFrame);
+            publish("DATA_UPDATED", new DataUpdatedPayload(oldFrame, newFrame, oldRound, newRound));
+        });
     }
 
     public HashMap<String, Color> getPlayerColors() {
@@ -218,7 +226,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    public void updateCurrentGameStatsByFrame(int frame) {
+    private void updateCurrentGameStatsByFrame(int frame) {
         var statistics = data.get(frame);
 
         // This object holds all information that is available
@@ -231,10 +239,10 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         weaponCoordsProperty.set(statistics.getWeaponPosition());
         ammuCoordsProperty.set(statistics.getAmmunitionPosition());
 
-        for (var player : playes) {
-            var globalModelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
+        for (var player : players) {
+            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
                     x -> x.getName().equals(player.getName()));
-            player.updatePlayerData(globalModelPlayer);
+            player.updatePlayerData(globalmodelPlayer);
         }
     }
 
@@ -253,8 +261,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                playFrameProperty.set(Math.min((playFrameProperty.get() + 1), data.size() - 1));
-                                updateCurrentGameStatsByFrame(playFrameProperty.get());
+                                currentFrameProperty.set(Math.min((currentFrameProperty.get() + 1), data.size() - 1));
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
