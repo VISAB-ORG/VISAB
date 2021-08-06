@@ -170,7 +170,7 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlaye;
     }
 
-    public static final List<Series<String, Number>> resourceGainedSeries(String player, SettlersFile file) {
+    public static final List<Series<String, Number>> resourceGainedSeries(SettlersFile file) {
         var resourcesPerTurnPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
         var resourcesPerTurnPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
 
