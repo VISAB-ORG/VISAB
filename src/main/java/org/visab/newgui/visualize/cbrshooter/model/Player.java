@@ -36,7 +36,7 @@ public class Player {
     private StringProperty planProperty = new SimpleStringProperty();
     private ObjectProperty<Vector2> positionProperty = new SimpleObjectProperty<>();
     private StringProperty weaponProperty = new SimpleStringProperty();
-    private IntegerProperty magaizeAmmuProperty = new SimpleIntegerProperty();
+    private IntegerProperty magazineAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty totalAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty fragsProperty = new SimpleIntegerProperty();
     private IntegerProperty deathsProperty = new SimpleIntegerProperty();
@@ -85,7 +85,7 @@ public class Player {
         this.planProperty.set(playerInfo.getPlan());
         this.positionProperty.set(playerInfo.getPosition());
         this.weaponProperty.set(playerInfo.getWeapon());
-        this.magaizeAmmuProperty.set(playerInfo.getMagazineAmmunition());
+        this.magazineAmmuProperty.set(playerInfo.getMagazineAmmunition());
         this.totalAmmuProperty.set(playerInfo.getTotalAmmunition());
         this.fragsProperty.set(playerInfo.getStatistics().getFrags());
         this.deathsProperty.set(playerInfo.getStatistics().getDeaths());
@@ -168,8 +168,8 @@ public class Player {
         return weaponProperty;
     }
 
-    public IntegerProperty magaizeAmmuProperty() {
-        return magaizeAmmuProperty;
+    public IntegerProperty magazineAmmuProperty() {
+        return magazineAmmuProperty;
     }
 
     public IntegerProperty totalAmmuProperty() {
