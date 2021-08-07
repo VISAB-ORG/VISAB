@@ -21,7 +21,8 @@ import javafx.stage.Stage;
 
 /**
  * Helper class for showing dialogs and views from the viewmodel without
- * violating the MVVM pattern.
+ * violating the MVVM pattern. Every class inheriting ViewModelBase has an
+ * instance of the DialogHelper.
  */
 public class DialogHelper {
 
