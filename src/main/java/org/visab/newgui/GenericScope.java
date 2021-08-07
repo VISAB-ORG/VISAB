@@ -19,12 +19,6 @@ public class GenericScope implements Scope {
     private Stage stage;
     private List<Consumer<Stage>> stageClosingHandlers = new ArrayList<>();
 
-    public void invokeOnStageClosed(Stage stage) {
-        for (var consumer : stageClosingHandlers) {
-            consumer.accept(stage);
-        }
-    }
-
     public void registerOnStageClosing(Consumer<Stage> closingHandler) {
         stageClosingHandlers.add(closingHandler);
     }
@@ -35,6 +29,13 @@ public class GenericScope implements Scope {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        stage.setOnCloseRequest(e -> invokeOnStageClosed(stage));
+    }
+
+    private void invokeOnStageClosed(Stage stage) {
+        for (var consumer : stageClosingHandlers) {
+            consumer.accept(stage);
+        }
     }
 
 }

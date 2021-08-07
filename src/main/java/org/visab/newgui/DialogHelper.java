@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.Scope;
 import de.saxsys.mvvmfx.ViewModel;
@@ -20,7 +19,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-// TODO: Include the style sheets here
+/**
+ * Helper class for showing dialogs and views from the viewmodel without
+ * violating the MVVM pattern.
+ */
 public class DialogHelper {
 
     /**
@@ -28,7 +30,7 @@ public class DialogHelper {
      * 
      * @param contentText The message for the user
      * @param title       The title of the dialog
-     * @return True of Ok pressed
+     * @return True of OK was pressed
      */
     public boolean showConfirmationDialog(String contentText, String title) {
         var dialog = new Alert(AlertType.CONFIRMATION);
@@ -105,12 +107,12 @@ public class DialogHelper {
     }
 
     /**
-     * Shows a file dialog.
+     * Shows a file selection dialog.
      * 
      * @param directoryPath     The path from at which to launch the file dialog
      * @param allowedExtensions The allowed extensions
      * @param title             The title of the dialog
-     * @return A list of the selected files.
+     * @return A list of the selected files
      */
     public List<File> showFileDialog(String directoryPath, Map<String, String> allowedExtensions, String title) {
         var files = new ArrayList<File>();
@@ -133,6 +135,16 @@ public class DialogHelper {
         return files;
     }
 
+    /**
+     * Creates a new stage and shows the view given in the configuration.
+     * Additionally, a viewmodel aswell as scopes may be provided. If the view or
+     * its viewmodel use the @InjectViewModel or @InjectScope annotation of MvvmFx,
+     * the passed instances will be injected.
+     * 
+     * @param configuration The configuration based on which the view will be loaded
+     * @param viewModel     The viewmodel to provide
+     * @param scopes        The scopes to provide
+     */
     public void showView(ShowViewConfiguration configuration, ViewModel viewModel, Scope... scopes) {
         var viewStep = FluentViewLoader.fxmlView(configuration.getViewType());
 
@@ -153,8 +165,6 @@ public class DialogHelper {
 
         var additionalScope = new GenericScope();
         additionalScope.setStage(stage);
-        // TODO: Do like in #96
-        stage.setOnCloseRequest(e -> additionalScope.invokeOnStageClosed(stage));
 
         var scopesArr = Arrays.copyOf(scopes, scopes.length + 1);
         scopesArr[scopes.length] = additionalScope;
@@ -171,6 +181,14 @@ public class DialogHelper {
         stage.show();
     }
 
+    /**
+     * Creates a new stage and shows the view given in the configuration.
+     * Additionally, scopes may be provided. If the views viewmodel use
+     * the @InjectScope annotation of MvvmFx, the passed instances will be injected.
+     * 
+     * @param configuration The configuration based on which the view will be loaded
+     * @param scopes        The scopes to provide
+     */
     public void showView(ShowViewConfiguration configuration, Scope... scopes) {
         showView(configuration, null, scopes);
     }

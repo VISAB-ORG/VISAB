@@ -29,7 +29,6 @@ public class AppMain extends Application {
         stage.setMinWidth(800);
         stage.setScene(new Scene(root));
         stage.show();
-
     }
 
     /**
