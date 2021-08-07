@@ -25,9 +25,14 @@ import javafx.stage.Stage;
 
 public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEvent> {
 
-    private static Logger logger = LogManager.getLogger(DynamicViewLoader.class);
+    private static final Logger logger = LogManager.getLogger(DynamicViewLoader.class);
 
-    public static void loadVisualizer(String game, IVISABFile file) {
+    /**
+     * Only used for publishing the FileVisualizedEvent event.
+     */
+    private static DynamicViewLoader instance = new DynamicViewLoader();
+
+    public static final void loadVisualizer(String game, String fileName, IVISABFile file) {
         if (file == null) {
             logger.fatal("Given file was null!");
             return;
@@ -58,16 +63,22 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         var view = FluentViewLoader.fxmlView(viewClass).providedScopes(scope).load();
 
         showView(view, "Visualizer View", scope);
+
+        // Only publish if we have a fileName, since only then the file was already
+        // created.
+        if (fileName != null)
+            instance.publish(new VISABFileVisualizedEvent(fileName, game));
     }
 
-    public static void loadVisualizer(String game, UUID sessionId) {
+    public static final void loadVisualizer(String game, UUID sessionId) {
         var listener = SessionListenerAdministration.getSessionListener(sessionId);
         if (listener == null) {
             var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
-            loadVisualizer(game, file);
+            var fileName = Workspace.getInstance().getDatabaseManager().getSessionFileName(sessionId);
+            loadVisualizer(game, fileName, file);
             return;
         } else if (!(listener instanceof ILiveViewable<?>)) {
-            loadVisualizer(game, listener.getCurrentFile());
+            loadVisualizer(game, null, listener.getCurrentFile());
             return;
         }
 
@@ -98,13 +109,15 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
     }
 
     /**
-     * TODO: Add parameters for blocking or not blocking etc.
+     * Creates a stage and shows shows a given view.
      * 
-     * @param viewTuple
-     * @param title
+     * @param viewTuple The viewTuple whos view to show
+     * @param title     The title of the stage
+     * @param scope     The VisualizationScope that is injected into the child
+     *                  ViewModels of the view
      */
-    private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title,
-            VisualizeScope scope) {
+    private static final void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple,
+            String title, VisualizeScope scope) {
         var parent = viewTuple.getView();
         var stage = new Stage();
         stage.setTitle(title);
@@ -112,12 +125,17 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         stage.setMinHeight(1000);
         stage.setMinWidth(1150);
         scope.setStage(stage);
-        stage.setOnCloseRequest(e -> scope.invokeOnStageClosed(stage));
         stage.show();
     }
 
+    /**
+     * Gets the Class<?> for a fully qualified view class name.
+     * 
+     * @param viewClassName The view class name to get the Class<?> of
+     * @return The Class<?> corresponding to the className if successful, null else
+     */
     @SuppressWarnings("unchecked")
-    private static Class<? extends FxmlView<? extends ViewModel>> getViewClass(String viewClassName) {
+    private static final Class<? extends FxmlView<? extends ViewModel>> getViewClass(String viewClassName) {
         if (viewClassName == null) {
             logger.error("ViewClass was null.");
             return null;
@@ -149,9 +167,5 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
     @Override
     public void publish(VISABFileVisualizedEvent event) {
         GeneralEventBus.getInstance().publish(event);
-    }
-
-    public static void publishEvent(VISABFileVisualizedEvent event) {
-        new GeneralEventBus().publish(event);
     }
 }
