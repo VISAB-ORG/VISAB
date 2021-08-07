@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../template_style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+   <children>
+      <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #D3D3D3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <TabPane prefHeight="362.0" prefWidth="464.0" styleClass="shadow" stylesheets="@../../../../../resources/template_style.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Replay View" />
+                <Tab text="Statistics View" />
+                  <Tab text="Case Base View" />
+              </tabs>
+            </TabPane>
+         </center>
+         <top>
+            <Pane prefHeight="26.0" prefWidth="548.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../img/visab_innerLogo1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

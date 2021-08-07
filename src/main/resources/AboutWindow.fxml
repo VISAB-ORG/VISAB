@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.oldgui.AboutWindowController">
+   <children>
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem fx:id="browseFileMenu" mnemonicParsing="false" onAction="#handleBrowseFileMenu" text="Browse File..." />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Visualizer">
+               <items>
+                  <MenuItem fx:id="pathViewerMenu" mnemonicParsing="false" onAction="#handlePathViewerMenu" text="Path Viewer" />
+                  <MenuItem fx:id="statisticsMenu" mnemonicParsing="false" onAction="#handleStatisticsMenu" text="Statistics" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="helpMenu" mnemonicParsing="false" onAction="#handleHelpMenu" text="Help" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="About">
+               <items>
+                  <MenuItem fx:id="aboutMenu" mnemonicParsing="false" onAction="#handleAboutMenu" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <Label layoutX="511.0" layoutY="80.0" prefHeight="88.0" prefWidth="178.0" text="About">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" layoutX="487.0" layoutY="268.0" prefHeight="196.0" prefWidth="227.0" style="-fx-border-color: rgb(68,114,196); -fx-border-width: 2;" text="Entwickler:&#10;Jobst-Julius Bartels&#10;Philipp Yasrebi-Soppa&#10;Sebastian Viefhaus&#10;&#10;Kontakt:&#10;bartelsj@uni-hildesheim.de&#10;yasrebis@uni-hildesheim.de&#10;viefhaus@uni-hildesheim.de&#10;&#10;© 2020 VISAB" />
+      <TextField editable="false" layoutX="395.0" layoutY="183.0" prefHeight="48.0" prefWidth="411.0" style="-fx-border-color: rgb(68,114,196); -fx-border-width: 2;" text="IT-Projekt für die Universität Hildesheim">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

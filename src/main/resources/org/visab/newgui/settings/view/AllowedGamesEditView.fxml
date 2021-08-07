@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="500.0" stylesheets="@../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.settings.view.AllowedGamesEditView">
+   <children>
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Pane styleClass="menu-bar" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../img/visab_innerLogo1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="487.0" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.86785888671875" minWidth="10.0" prefWidth="147.39657592773438" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.30465698242188" minWidth="10.0" prefWidth="185.30465698242188" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.011474609375" minWidth="10.0" prefWidth="96.19534301757812" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="55.873600006103516" minHeight="10.0" prefHeight="54.37934494018555" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="83.12065505981445" valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="41.75862121582031" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ChoiceBox fx:id="allowedGameChoiceBox" prefHeight="26.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="allowedGameField" GridPane.columnIndex="1" />
+                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" prefHeight="26.0" prefWidth="105.0" text="Return" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Label text="Add Allowed Game" />
+                  <Label text="Remove Alllowed Game" GridPane.rowIndex="1" />
+                  <Button fx:id="addGameButton" mnemonicParsing="false" onAction="#handleAddGameButtonAction" prefHeight="26.0" prefWidth="105.0" text="Add Game" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="removeGameButton" mnemonicParsing="false" onAction="#handleRemoveGameButtonAction" prefHeight="26.0" prefWidth="105.0" text="Remove Game" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets right="15.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="15.0" top="10.0" />
+               </padding>
+            </GridPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

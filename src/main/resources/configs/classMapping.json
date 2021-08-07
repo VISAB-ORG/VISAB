@@ -1,0 +1,20 @@
+[
+    {
+        "game": "CBRShooter",
+        "metaInformation": "org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation",
+        "listener": "org.visab.processing.cbrshooter.CBRShooterListener",
+        "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
+        "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
+        "image": "org.visab.globalmodel.cbrshooter.CBRShooterImages",
+        "visualizer": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView"
+    },
+    {
+        "game": "Settlers",
+        "metaInformation": "org.visab.globalmodel.settlers.SettlersMetaInformation",
+        "listener": "org.visab.processing.settlers.SettlersListener",
+        "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
+        "file": "org.visab.globalmodel.settlers.SettlersFile",
+        "image": "org.visab.globalmodel.settlers.SettlersImages",
+        "visualizer": "org.visab.newgui.visualize.settlers.view.SettlersMainView"
+    }
+]

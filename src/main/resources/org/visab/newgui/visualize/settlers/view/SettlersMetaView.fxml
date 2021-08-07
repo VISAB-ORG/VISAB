@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="1600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.newgui.visualize.settlers.view.SettlersMetaView">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" percentWidth="45.0" />
+        <ColumnConstraints halignment="CENTER" percentWidth="55.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints percentHeight="5.0" />
+        <RowConstraints percentHeight="15.0" prefHeight="350.0" />
+        <RowConstraints percentHeight="20.0" prefHeight="400.0" />
+        <RowConstraints />
+    </rowConstraints>
+    <children>
+        <VBox GridPane.rowIndex="2">
+            <children>
+                <Label text="Player Information">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+                </Label>
+                <TableView fx:id="playerInformationTable" prefHeight="281.0" prefWidth="371.0">
+                    <columns>
+                        <TableColumn prefWidth="100.0" text="Player name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="116.0" text="Controlled by">
+                            <cellValueFactory>
+                                <PropertyValueFactory
+                                    property="controlledBy" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="66.0" text="Color">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="color" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+               <VBox.margin>
+                  <Insets right="20.0" top="10.0" />
+               </VBox.margin>
+                </TableView>
+            </children>
+         <GridPane.margin>
+            <Insets left="20.0" top="30.0" />
+         </GridPane.margin>
+        </VBox>
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <children>
+                <Label text="Session Information" textFill="#12213a">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+                </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="134.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/session_icon.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                      <GridPane prefHeight="132.0" prefWidth="454.0">
+                          <columnConstraints>
+                              <ColumnConstraints maxWidth="221.0" minWidth="201.0" prefWidth="202.0" />
+                              <ColumnConstraints halignment="LEFT" maxWidth="262.0" minWidth="261.0" prefWidth="261.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints prefHeight="25.0" />
+                              <RowConstraints prefHeight="25.0" />
+                              <RowConstraints prefHeight="25.0" />
+                              <RowConstraints prefHeight="25.0" />
+                              <RowConstraints prefHeight="25.0" />
+                          </rowConstraints>
+                          <children>
+                           <Label text="Winner">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="winner" GridPane.columnIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label text="Turns" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="rounds" GridPane.columnIndex="1"
+                            GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                          </children>
+                      </GridPane>
+               </children>
+            </HBox>
+            </children>
+         <GridPane.margin>
+            <Insets right="20.0" top="20.0" />
+         </GridPane.margin>
+        </VBox>
+        <VBox prefHeight="254.0" prefWidth="380.0" GridPane.rowIndex="1">
+            <children>
+                  <Label prefHeight="23.0" prefWidth="373.0" text="File Information" textFill="#12213a">
+                      <font>
+                          <Font name="System Bold" size="18.0" />
+                      </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+                  </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="125.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../img/file_icon.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                        <GridPane prefHeight="75.0" prefWidth="356.0">
+                            <columnConstraints>
+                                <ColumnConstraints maxWidth="124.0" minWidth="123.0" prefWidth="123.0" />
+                                <ColumnConstraints halignment="LEFT" maxWidth="227.0" minWidth="226.0" prefWidth="227.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="30.0" minHeight="-Infinity" prefHeight="30.0" />
+                                <RowConstraints maxHeight="41.0" minHeight="-Infinity" prefHeight="33.0" />
+                                <RowConstraints maxHeight="38.0" minHeight="-Infinity" prefHeight="32.0" />
+                            </rowConstraints>
+                            <children>
+                           <Label text="Creation date" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label text="File format version" GridPane.rowIndex="2">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="creationDate" text="Label"
+                                    GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="fileFormatVersion" text="Label"
+                                    GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label text="GameId">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="game" text="Label" GridPane.columnIndex="1">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" top="15.0" />
+                     </HBox.margin>
+                        </GridPane>
+               </children>
+            </HBox>
+            </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
+        </VBox>
+      <Label prefHeight="34.0" prefWidth="565.0" text="Settlers Meta View">
+         <font>
+            <Font size="28.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+    </children>
+</GridPane>
