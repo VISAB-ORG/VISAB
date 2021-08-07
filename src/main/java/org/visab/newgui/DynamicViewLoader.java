@@ -105,7 +105,6 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
      */
     private static void showView(ViewTuple<? extends FxmlView<? extends ViewModel>, ViewModel> viewTuple, String title,
             VisualizeScope scope) {
-        // TODO: Get the style here
         var parent = viewTuple.getView();
         var stage = new Stage();
         stage.setTitle(title);
