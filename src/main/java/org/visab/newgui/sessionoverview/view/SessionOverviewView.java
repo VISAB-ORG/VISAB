@@ -61,7 +61,6 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
 
     @FXML
     public void createDummySessions() {
-        stopUpdateLoop();
         sessionGrid.getChildren().clear();
         anchorPane.getChildren().clear();
         var activeSessionsCount = 0;
@@ -128,7 +127,7 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
     public void initialize(URL location, ResourceBundle resources) {
         viewModel.getScope().registerOnStageClosing(Consumer -> {
             if (updateLoop != null) {
-                stopUpdateLoop();
+                updateLoop.interrupt();
             }
         });
         anchorPane = new AnchorPane();
@@ -210,12 +209,6 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
         scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollPane.setContent(anchorPane);
 
-    }
-
-    public void stopUpdateLoop() {
-        if (updateLoop != null) {
-            updateLoop.interrupt();
-        }
     }
 
 }
