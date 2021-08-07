@@ -3,7 +3,6 @@ package org.visab.newgui.visualize.settlers.model.comparison;
 import java.util.HashMap;
 import java.util.List;
 
-import org.visab.globalmodel.cbrshooter.Player;
 import org.visab.globalmodel.settlers.PlayerResources;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.newgui.visualize.StatisticsDataStructure;
