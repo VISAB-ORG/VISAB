@@ -173,9 +173,8 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlayer;
     }
 
-    public static final List<Series<String, Number>> resourcesSpentSeries(SettlersFile file) {
-        var resourcesPerTurnPlayer1 = accumulatedResourcesSpentPerTurn("Player1", file);
-        var resourcesPerTurnPlayer2 = accumulatedResourcesSpentPerTurn("Player2", file);
+    private static List<Series<String, Number>> createResourceSerieses(ArrayList<StatisticsDataStructure<PlayerResources>> player1Data,
+        ArrayList<StatisticsDataStructure<PlayerResources>> player2Data) {
 
         Series<String, Number> woodSeries = new Series<>();
         Series<String, Number> sheepSeries = new Series<>();
@@ -188,9 +187,9 @@ public final class SettlersImplicator {
         wheatSeries.setName("Wheat");
         brickSeries.setName("Brick");
 
-        for (int i = 0; i < resourcesPerTurnPlayer1.size(); i++) {
-            var resourcesPlayer1 = resourcesPerTurnPlayer1.get(i).getValue();
-            var resourcesPlayer2 = resourcesPerTurnPlayer2.get(i).getValue();
+        for (int i = 0; i < player1Data.size(); i++) {
+            var resourcesPlayer1 = player1Data.get(i).getValue();
+            var resourcesPlayer2 = player2Data.get(i).getValue();
 
             woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWood()));
             woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWood() ));
@@ -205,40 +204,21 @@ public final class SettlersImplicator {
         }
         
         return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
+
+    }
+
+    public static final List<Series<String, Number>> resourcesSpentSeries(SettlersFile file) {
+        var resourcesPlayer1 = accumulatedResourcesSpentPerTurn("Player1", file);
+        var resourcesPlayer2 = accumulatedResourcesSpentPerTurn("Player2", file);
+
+        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
     }
 
     public static final List<Series<String, Number>> resourcesGainedSeries(SettlersFile file) {
-        var resourcesPerTurnPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
-        var resourcesPerTurnPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
-
-        Series<String, Number> woodSeries = new Series<>();
-        Series<String, Number> sheepSeries = new Series<>();
-        Series<String, Number> stoneSeries = new Series<>();
-        Series<String, Number> wheatSeries = new Series<>();
-        Series<String, Number> brickSeries = new Series<>();
-        sheepSeries.setName("Sheep");
-        woodSeries.setName("Wood");
-        stoneSeries.setName("Stone");
-        wheatSeries.setName("Wheat");
-        brickSeries.setName("Brick");
-
-        for (int i = 0; i < resourcesPerTurnPlayer1.size(); i++) {
-            var resourcesPlayer1 = resourcesPerTurnPlayer1.get(i).getValue();
-            var resourcesPlayer2 = resourcesPerTurnPlayer2.get(i).getValue();
-
-            woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWood()));
-            woodSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWood()));
-            sheepSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getSheep()));
-            sheepSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getSheep()));
-            stoneSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getStone()));
-            stoneSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getStone()));
-            wheatSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWheat()));
-            wheatSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWheat()));
-            brickSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getBrick()));
-            brickSeries.getData().add(new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getBrick()));
-        }
+        var resourcesPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
+        var resourcesPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
         
-        return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
+        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
     }
 
     public enum BuildingType {
