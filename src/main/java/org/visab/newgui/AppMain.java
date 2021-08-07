@@ -8,6 +8,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The javafx application.
+ */
 public class AppMain extends Application {
 
     private static Stage primaryStage;
