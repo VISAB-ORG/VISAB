@@ -46,9 +46,12 @@ public class Player {
     private BooleanProperty showRoadsPropery = new SimpleBooleanProperty(true);
     private BooleanProperty showPlanChangeProperty = new SimpleBooleanProperty(true);
 
-    public Player(String name, Color color) {
+    public Player(String name) {
         this.name = name;
-        this.playerColorProperty.set(color);
+    }
+
+    public void initializeVisuals(Color playerColor) {
+        this.playerColorProperty.set(playerColor);
     }
 
     /**
