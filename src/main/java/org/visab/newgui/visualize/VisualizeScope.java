@@ -1,12 +1,12 @@
 package org.visab.newgui.visualize;
 
 import org.visab.globalmodel.IVISABFile;
-import org.visab.newgui.GenericScope;
+import org.visab.newgui.GeneralScope;
 import org.visab.processing.ILiveViewable;
 
 import javafx.stage.Stage;
 
-public class VisualizeScope extends GenericScope {
+public class VisualizeScope extends GeneralScope {
 
     private Stage stage;
     private boolean isLive;

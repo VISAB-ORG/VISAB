@@ -8,7 +8,7 @@ import java.util.List;
 import org.visab.api.SessionAdministration;
 import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
-import org.visab.newgui.GenericScope;
+import org.visab.newgui.GeneralScope;
 import org.visab.newgui.ViewModelBase;
 import org.visab.workspace.Workspace;
 
@@ -22,7 +22,7 @@ import javafx.beans.property.StringProperty;
 public class SessionOverviewViewModel extends ViewModelBase {
 
     @InjectScope
-    GenericScope scope;
+    GeneralScope scope;
 
     private IntegerProperty totalSessionsProperty = new SimpleIntegerProperty(0);
     private IntegerProperty activeSessionsProperty = new SimpleIntegerProperty(0);
@@ -78,7 +78,7 @@ public class SessionOverviewViewModel extends ViewModelBase {
         return statuses;
     }
 
-    public GenericScope getScope() {
+    public GeneralScope getScope() {
         return scope;
     }
 

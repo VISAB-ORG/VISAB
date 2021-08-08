@@ -164,7 +164,7 @@ public class DialogHelper {
         if (viewModel != null)
             viewStep.viewModel(viewModel);
 
-        var additionalScope = new GenericScope();
+        var additionalScope = new GeneralScope();
         additionalScope.setStage(stage);
 
         var scopesArr = Arrays.copyOf(scopes, scopes.length + 1);
