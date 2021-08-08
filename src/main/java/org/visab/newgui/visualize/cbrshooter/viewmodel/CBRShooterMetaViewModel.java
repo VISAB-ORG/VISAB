@@ -6,7 +6,7 @@ import java.util.List;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.WeaponInformation;
-import org.visab.newgui.visualize.LiveViewModelBase;
+import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
 import org.visab.newgui.visualize.PlayerInformation;
 import org.visab.processing.ILiveViewable;
 
@@ -21,7 +21,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+public class CBRShooterMetaViewModel extends LiveVisualizeViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private IntegerProperty roundsProperty;
     private FloatProperty statisticsPerSecondProperty;

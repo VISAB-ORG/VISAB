@@ -7,10 +7,15 @@ import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
+/**
+ * A base implementation for viewmodels that want to support live views. In a
+ * live view, the datasource is the session listener instead of a VISAB file.
+ * Live views extend regular non live views by the capability of reacting to
+ * data the moment it is processed by the session listener.
+ */
+public abstract class LiveVisualizeViewModelBase<TFile extends IVISABFile, TStatistics extends IStatistics>
         extends VisualizeViewModelBase<TFile> implements ILiveViewModel<TStatistics> {
 
     /**
@@ -57,8 +62,6 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
     @Override
     public void onSessionClosed() {
         liveViewActiveProperty.set(false);
-        if (listener != null)
-            listener.removeViewModel(this);
     }
 
 }

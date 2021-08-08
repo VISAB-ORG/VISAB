@@ -8,7 +8,7 @@ import java.util.Map;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
-import org.visab.newgui.visualize.LiveViewModelBase;
+import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerPlanTime;
 import org.visab.newgui.visualize.cbrshooter.model.comparison.*;
@@ -25,7 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
-public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterFile, CBRShooterStatistics> {
+public class CBRShooterStatisticsViewModel extends LiveVisualizeViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private List<PlayerPlanTime> planTimes = new ArrayList<>();
 

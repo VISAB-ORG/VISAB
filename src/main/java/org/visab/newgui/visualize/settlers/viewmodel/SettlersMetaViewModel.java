@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
-import org.visab.newgui.visualize.LiveViewModelBase;
+import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
 import org.visab.newgui.visualize.PlayerInformation;
 import org.visab.processing.ILiveViewable;
 
@@ -18,7 +18,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class SettlersMetaViewModel extends LiveViewModelBase<SettlersFile, SettlersStatistics> {
+public class SettlersMetaViewModel extends LiveVisualizeViewModelBase<SettlersFile, SettlersStatistics> {
 
     private IntegerProperty roundsProperty;
     private ObservableList<PlayerInformation> playerInformation;

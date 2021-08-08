@@ -15,8 +15,8 @@ import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
-import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
@@ -34,7 +34,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFile>
+public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooterFile>
         implements ILiveViewModel<CBRShooterStatistics> {
 
     // Logger needs .class for each class to use for log traces
