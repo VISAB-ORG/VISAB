@@ -77,8 +77,8 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
             }
         });
 
-        // Default update interval of 0.1 seconds
-        updateInterval = 100;
+        // Default update interval of 1 second
+        updateInterval = 1000;
 
         if (scope.isLive()) {
             initialize(scope.getSessionListener());
@@ -260,7 +260,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         statisticsReceived += 1;
         data.add(newStatistics);
 
-        if (statisticsReceived % 20 == 0)
+        if (statisticsReceived % 5 == 0)
             frameSliderMaxProperty.set(data.size() - 1);
         // TODO: If current frame is last, advance.
 
