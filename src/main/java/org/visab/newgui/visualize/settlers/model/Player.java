@@ -44,6 +44,8 @@ public class Player {
     // Visual table
     private BooleanProperty showPlayerProperty = new SimpleBooleanProperty(true);
     private BooleanProperty showRoadsPropery = new SimpleBooleanProperty(true);
+    private BooleanProperty showVillagesPropery = new SimpleBooleanProperty(true);
+    private BooleanProperty showCitiesPropery = new SimpleBooleanProperty(true);
     private BooleanProperty showPlanChangeProperty = new SimpleBooleanProperty(true);
 
     public Player(String name) {
@@ -97,6 +99,14 @@ public class Player {
 
     public ListProperty<Vector2> streetPositionsProperty() {
         return streetPositionsProperty;
+    }
+
+    public BooleanProperty showVillagesPropery() {
+        return showVillagesPropery;
+    }
+
+    public BooleanProperty showCitiesPropery() {
+        return showCitiesPropery;
     }
 
     public IntegerProperty cityCountProperty() {
