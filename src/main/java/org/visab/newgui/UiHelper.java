@@ -17,10 +17,10 @@ import javafx.scene.paint.Color;
 public final class UiHelper {
 
     /**
-     * invoke a Runnable on the Ui Thread. Use this when you you want to update the
-     * Ui but are not on the Ui Thread.
+     * Runs a Runnable on the Ui thread. Use this when you you want to update the Ui
+     * but are not on the Ui tread.
      * 
-     * @param runnable The runnable to invoke
+     * @param runnable The runnable to run
      */
     public static void inovkeOnUiThread(Runnable runnable) {
         Platform.runLater(runnable);
