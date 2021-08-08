@@ -8,8 +8,9 @@ import org.visab.globalmodel.GameName;
 import org.visab.main.Main;
 
 /**
- * Class containing constants and helper methods for obtaining resources used
- * inside the views.
+ * Class containing constants and helper methods for obtaining resources from
+ * the resource directory. Used mainly by the views, but is also used for
+ * loading configuration files.
  */
 public final class ResourceHelper {
 
