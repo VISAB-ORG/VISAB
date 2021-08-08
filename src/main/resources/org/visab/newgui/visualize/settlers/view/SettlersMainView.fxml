@@ -32,6 +32,7 @@
             			<fx:include source="SettlersStatisticsView.fxml"></fx:include>
         			</Tab>
         			<Tab text="Replay">
+        			    <fx:include source="SettlersReplayView.fxml"></fx:include>
         			</Tab>
     			</tabs>
 			</TabPane>
