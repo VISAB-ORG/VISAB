@@ -51,21 +51,21 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     private double updateInterval;
 
     // Generic properties of the replay view to display information
-    private IntegerProperty frameSliderMaxProperty = new SimpleIntegerProperty();
-    private IntegerProperty frameSliderTickUnitProperty = new SimpleIntegerProperty();
+    private IntegerProperty turnSliderMaxProperty = new SimpleIntegerProperty();
+    private IntegerProperty turnSliderTickUnitProperty = new SimpleIntegerProperty();
     private IntegerProperty velocityProperty = new SimpleIntegerProperty(1);
 
     private IntegerProperty turnProperty = new SimpleIntegerProperty();
     private StringProperty turnTimeStampProperty = new SimpleStringProperty();
     private IntegerProperty diceNumberRolledProperty = new SimpleIntegerProperty();
 
-    // Contains all information that changes based on the frame
+    // Contains all information that changes based on the turn
     private List<SettlersStatistics> data = new ArrayList<SettlersStatistics>();
 
-    private IntegerProperty currentFrameProperty = new SimpleIntegerProperty();
+    private IntegerProperty currentturnProperty = new SimpleIntegerProperty();
 
     // Viewmodel always has a reference to the statistics of the current stat
-    private ObjectProperty<SettlersStatistics> frameBasedStatsProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<SettlersStatistics> turnBasedStatsProperty = new SimpleObjectProperty<>();
     private List<Player> players = new ArrayList<>();
 
     public void initialize() {
@@ -88,29 +88,29 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
 
         data = file.getStatistics();
 
-        // Make the frame sliders values always reasonable according to shooter file
-        frameSliderMaxProperty.set(data.size() - 1);
+        // Make the turn sliders values always reasonable according to shooter file
+        turnSliderMaxProperty.set(data.size() - 1);
 
         var tickUnit = data.size() / 10;
         // Make sure it is at least 1,
         tickUnit = tickUnit < 1 ? 1 : tickUnit;
-        frameSliderTickUnitProperty.set(tickUnit);
+        turnSliderTickUnitProperty.set(tickUnit);
 
         for (var name : file.getPlayerNames())
             players.add(new Player(name));
 
-        updateCurrentGameStatsByFrame(0);
+        updateCurrentGameStatsByturn(0);
 
         // Add listener that will update the players and the general data
-        currentFrameProperty.addListener((o, oldValue, newValue) -> {
-            updateCurrentGameStatsByFrame(newValue.intValue());
+        currentturnProperty.addListener((o, oldValue, newValue) -> {
+            updateCurrentGameStatsByturn(newValue.intValue());
         });
 
     }
 
     /**
      * This method is responsible to update the given statistics according to the
-     * global variable of the currently selected frame based on various types of
+     * global variable of the currently selected turn based on various types of
      * inputs or events.
      * 
      * The view model always refers to a specific index of the overall statistics
@@ -118,18 +118,18 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
      * information on the underlying UI of the CBR Shooter visualizer.
      * 
      */
-    private void updateCurrentGameStatsByFrame(int frame) {
-        var statistics = data.get(frame);
+    private void updateCurrentGameStatsByturn(int turn) {
+        var statistics = data.get(turn);
 
         // This object holds all information that is available
-        frameBasedStatsProperty.set(statistics);
+        turnBasedStatsProperty.set(statistics);
 
         turnProperty.set(statistics.getTurn());
         turnTimeStampProperty.set(statistics.getTurnTimeStamp());
         diceNumberRolledProperty.set(statistics.getDiceNumberRolled());
 
         for (var player : players) {
-            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(frame).getPlayers(),
+            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(turn).getPlayers(),
                     x -> x.getName().equals(player.getName()));
             player.updatePlayerData(globalmodelPlayer);
         }
@@ -148,7 +148,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                currentFrameProperty.set(Math.min((currentFrameProperty.get() + 1), data.size() - 1));
+                                currentturnProperty.set(Math.min((currentturnProperty.get() + 1), data.size() - 1));
                             }
                         });
                         // Sleeping time depends on the velocity sliders value
@@ -211,24 +211,24 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         return iconMap;
     }
 
-    public ObjectProperty<SettlersStatistics> frameBasedStatsProperty() {
-        return frameBasedStatsProperty;
+    public ObjectProperty<SettlersStatistics> turnBasedStatsProperty() {
+        return turnBasedStatsProperty;
     }
 
-    public IntegerProperty frameSliderMaxProperty() {
-        return frameSliderMaxProperty;
+    public IntegerProperty turnSliderMaxProperty() {
+        return turnSliderMaxProperty;
     }
 
-    public IntegerProperty frameSliderTickUnitProperty() {
-        return frameSliderTickUnitProperty;
+    public IntegerProperty turnSliderTickUnitProperty() {
+        return turnSliderTickUnitProperty;
     }
 
     public IntegerProperty diceNumberRolledProperty() {
         return diceNumberRolledProperty;
     }
 
-    public IntegerProperty currentFrameProperty() {
-        return currentFrameProperty;
+    public IntegerProperty currentturnProperty() {
+        return currentturnProperty;
     }
 
     public IntegerProperty velocityProperty() {
@@ -261,8 +261,8 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         data.add(newStatistics);
 
         if (statisticsReceived % 5 == 0)
-            frameSliderMaxProperty.set(data.size() - 1);
-        // TODO: If current frame is last, advance.
+            turnSliderMaxProperty.set(data.size() - 1);
+        // TODO: If current turn is last, advance.
 
     }
 

@@ -141,7 +141,7 @@
                                           <Insets left="20.0" right="20.0" top="10.0" />
                                        </VBox.margin>
                                     </GridPane>
-                                    <Label fx:id="frameLabel" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
+                                    <Label fx:id="turnLabel" prefHeight="27.0" prefWidth="118.0" text="Selected Turn" visible="true">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -149,7 +149,7 @@
                                           <Insets top="40.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <Slider fx:id="frameSlider" blockIncrement="1.0" majorTickUnit="10.0" min="0.0" prefHeight="38.0" prefWidth="472.0" showTickLabels="true" showTickMarks="true" visible="true">
+                                    <Slider fx:id="turnSlider" blockIncrement="1.0" majorTickUnit="10.0" min="0.0" prefHeight="38.0" prefWidth="472.0" showTickLabels="true" showTickMarks="true" visible="true">
                                        <VBox.margin>
                                           <Insets left="20.0" right="20.0" top="20.0" />
                                        </VBox.margin>

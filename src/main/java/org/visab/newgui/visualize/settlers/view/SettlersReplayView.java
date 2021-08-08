@@ -37,7 +37,7 @@ import javafx.scene.layout.Pane;
 public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, Initializable {
 
     @FXML
-    private Slider frameSlider;
+    private Slider turnSlider;
     @FXML
     private Slider veloSlider;
 
@@ -73,12 +73,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2(32, 32));
     private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2(32, 32));
 
-    private ObjectProperty<SettlersStatistics> frameBasedStats = new SimpleObjectProperty<>();
+    private ObjectProperty<SettlersStatistics> turnBasedStats = new SimpleObjectProperty<>();
 
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
 
-    // Players whose values will always be up to date with the current frame
+    // Players whose values will always be up to date with the current turn
     private List<Player> players;
 
     @InjectViewModel
@@ -87,7 +87,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         players = viewModel.getPlayers();
-        frameBasedStats.bind(viewModel.frameBasedStatsProperty());
+        turnBasedStats.bind(viewModel.turnBasedStatsProperty());
 
         drawPane.setPrefWidth(DRAW_PANE_WIDTH);
         var drawPanePrefHeight = DRAW_PANE_WIDTH
@@ -106,11 +106,11 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
         playPauseButton.setGraphic(playImageView);
         veloSlider.valueProperty().bindBidirectional(viewModel.velocityProperty());
-        frameSlider.maxProperty().bind(viewModel.frameSliderMaxProperty());
-        frameSlider.valueProperty().bindBidirectional(viewModel.currentFrameProperty());
-        frameSlider.majorTickUnitProperty().bind(viewModel.frameSliderTickUnitProperty());
-        frameSlider.setBlockIncrement(1);
-        frameSlider.setSnapToTicks(false);
+        turnSlider.maxProperty().bind(viewModel.turnSliderMaxProperty());
+        turnSlider.valueProperty().bindBidirectional(viewModel.currentturnProperty());
+        turnSlider.majorTickUnitProperty().bind(viewModel.turnSliderTickUnitProperty());
+        turnSlider.setBlockIncrement(1);
+        turnSlider.setSnapToTicks(false);
 
         drawPane.getChildren().setAll(mapElements.values());
     }
