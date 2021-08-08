@@ -77,7 +77,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
 
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
-            playerStatsChartCommand = runnableCommand(() -> {
+            playerStatsChartCommand = makeCommand(() -> {
                 var selectedRow = selectedStatistics.get();
                 if (selectedRow != null && graphComparisonRow != selectedRow) {
                     selectedRow.updateSeries(file);

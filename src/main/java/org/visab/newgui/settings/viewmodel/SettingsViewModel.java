@@ -140,7 +140,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return Saves the updated settings.
      */
     public Command addAllowedGameCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             ArrayList<String> games = new ArrayList<>(configManager.getAllowedGames());
             games.add(editAllowedNewGame.get());
 
@@ -160,7 +160,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return Saves the updated settings.
      */
     public Command removeAllowedGameCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             ArrayList<String> games = new ArrayList<>(configManager.getAllowedGames());
 
             for (int i = 0; i < games.size(); i++) {
@@ -183,7 +183,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return Saves the updated settings.
      */
     public Command updateSessionTimeoutCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             HashMap<String, Integer> sessionTimeout = configManager.getSessionTimeout();
             sessionTimeout.replace(editTimeoutsSelectedGame.get(), editTimeoutsTimeout.get());
 
@@ -206,7 +206,7 @@ public class SettingsViewModel extends ViewModelBase {
      */
     public Command openSessionTimeoutEditViewCommand() {
         if (openSessionTimeoutEditViewCommand == null) {
-            openSessionTimeoutEditViewCommand = runnableCommand(() -> {
+            openSessionTimeoutEditViewCommand = makeCommand(() -> {
                 if (selectedSessionTimeout.get() != null) {
                     editTimeoutsSelectedGame.set(selectedSessionTimeout.get().getGame());
                     editTimeoutsTimeout.set(selectedSessionTimeout.get().getTimeout());
@@ -229,7 +229,7 @@ public class SettingsViewModel extends ViewModelBase {
      */
     public Command openAllowedGameEditViewCommand() {
         if (openAllowedGameEditViewCommand == null) {
-            openAllowedGameEditViewCommand = runnableCommand(() -> {
+            openAllowedGameEditViewCommand = makeCommand(() -> {
                 if (selectedAllowedGame.get() != null) {
                     editAllowedSelectedGame.set(selectedAllowedGame.get());
                 } else {
@@ -249,7 +249,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return Saves the settings per runnableCommand.
      */
     public Command updateSettingsCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             // updating and saving the settings
             configManager.updateWebApiPort(webApiPort.get());
 
@@ -263,7 +263,7 @@ public class SettingsViewModel extends ViewModelBase {
      * @return REstores the default settings per runnableCommand.
      */
     public Command restoreDefaultSettingsCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             Workspace.getInstance().getConfigManager().restoreDefaultSettings();
         });
     }

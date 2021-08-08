@@ -249,7 +249,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     // --- Command methods ---
 
     public Command playData() {
-        playData = runnableCommand(() -> {
+        playData = makeCommand(() -> {
             logger.debug("Pressed play button.");
             // Start this as a thread to provide the possibility of interrupting it on pause
             updateLoop = new Thread() {
@@ -281,7 +281,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     public Command pauseData() {
-        pauseData = runnableCommand(() -> {
+        pauseData = makeCommand(() -> {
             if (updateLoop != null) {
                 updateLoop.interrupt();
             }

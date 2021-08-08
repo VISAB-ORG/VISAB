@@ -48,7 +48,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     // ----- Command methods -----
     public Command openMain() {
         if (openMain == null) {
-            openMain = runnableCommand(() -> {
+            openMain = makeCommand(() -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/MainWindow.fxml"));
                 Scene scene;
                 try {
@@ -69,7 +69,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openStatisticsViewer() {
         if (openStatisticsViewer == null) {
-            openStatisticsViewer = runnableCommand(() -> {
+            openStatisticsViewer = makeCommand(() -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/StatisticsWindow.fxml"));
                 Scene scene;
                 try {
@@ -91,7 +91,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openPathViewer() {
         if (openPathViewer == null) {
-            openPathViewer = runnableCommand(() -> {
+            openPathViewer = makeCommand(() -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/PathViewerWindow.fxml"));
                 Scene scene;
                 try {
@@ -113,7 +113,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openAbout() {
         if (openAbout == null) {
-            openAbout = runnableCommand(() -> {
+            openAbout = makeCommand(() -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/AboutWindow.fxml"));
                 Scene scene;
                 try {
@@ -135,7 +135,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openHelp() {
         if (openHelp == null) {
-            openHelp = runnableCommand(() -> {
+            openHelp = makeCommand(() -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(HomeViewModel.class.getResource("/HelpWindow.fxml"));
                 Scene scene;
                 try {
@@ -163,7 +163,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openApi() {
         if (openApiDashboard == null) {
-            openApiDashboard = runnableCommand(() -> {
+            openApiDashboard = makeCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(SessionOverviewView.class, "API Dashboard", false, 600, 930);
                 dialogHelper.showView(viewConfig);
             });
@@ -174,7 +174,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openSettings() {
         if (openSettings == null) {
-            openSettings = runnableCommand(() -> {
+            openSettings = makeCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(SettingsView.class, "Settings", true);
                 dialogHelper.showView(viewConfig);
             });
@@ -185,7 +185,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openNewHelp() {
         if (openNewHelp == null) {
-            openNewHelp = runnableCommand(() -> {
+            openNewHelp = makeCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(HelpView.class, "Help", true);
                 dialogHelper.showView(viewConfig);
             });
@@ -196,7 +196,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
     public Command openNewAbout() {
         if (openNewAbout == null) {
-            openNewAbout = runnableCommand(() -> {
+            openNewAbout = makeCommand(() -> {
                 var viewConfig = new ShowViewConfiguration(AboutView.class, "About", true);
                 dialogHelper.showView(viewConfig);
             });
@@ -290,7 +290,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
      */
     public Command addFileCommand() {
         if (addFileCommand == null) {
-            addFileCommand = runnableCommand(() -> {
+            addFileCommand = makeCommand(() -> {
                 var allowedExtensions = new HashMap<String, String>();
                 allowedExtensions.put("VISAB files", "*.visab2");
 
@@ -356,7 +356,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
      */
     public Command deleteSelectedFileCommand() {
         if (deleteFileCommand == null) {
-            deleteFileCommand = runnableCommand(() -> {
+            deleteFileCommand = makeCommand(() -> {
                 var selectedFile = getSelectedFile();
                 // Dont allow removing deleting base file
                 if (selectedFile != null && !selectedFile.getName().equals(baseFile.getName()))
@@ -389,7 +389,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
      */
     public Command showInExplorerCommand() {
         if (showInExplorerCommand == null) {
-            showInExplorerCommand = runnableCommand(() -> {
+            showInExplorerCommand = makeCommand(() -> {
                 var selectedFile = getSelectedFile();
                 try {
                     switch (OSUtil.getOS()) {
@@ -504,7 +504,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
      */
     public Command renameFileCommand() {
         if (renameSelectedFileCommand == null) {
-            renameSelectedFileCommand = runnableCommand(() -> {
+            renameSelectedFileCommand = makeCommand(() -> {
                 var selectedFile = getSelectedFile();
                 if (selectedFile != null && selectedFile != baseFile) {
                     var newName = dialogHelper.showInputDialog("New File Name:", selectedFile.getName(), "Rename File");
@@ -554,7 +554,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     }
 
     public Command visualizeCommand() {
-        return runnableCommand(() -> {
+        return makeCommand(() -> {
             var selectedFile = getSelectedFile();
             if (selectedFile != null) {
                 var visabFile = Workspace.getInstance().getDatabaseManager().loadFile(selectedFile.getAbsolutePath());

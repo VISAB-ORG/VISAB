@@ -75,7 +75,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     public Command playerStatsChartCommand() {
         if (playerStatsChartCommand == null) {
-            playerStatsChartCommand = runnableCommand(() -> {
+            playerStatsChartCommand = makeCommand(() -> {
                 var selectedRow = selectedRowProperty.get();
                 if (selectedRow != null && selectedRow != graphComparisonRow) {
 

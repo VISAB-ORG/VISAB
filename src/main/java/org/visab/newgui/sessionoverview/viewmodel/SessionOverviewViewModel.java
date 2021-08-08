@@ -46,7 +46,7 @@ public class SessionOverviewViewModel extends ViewModelBase {
 
     public Command clearInactiveSessionsCommand() {
         if (clearInactiveSessionsCommand == null) {
-            clearInactiveSessionsCommand = runnableCommand(() -> {
+            clearInactiveSessionsCommand = makeCommand(() -> {
                 for (SessionStatus status : WebAPI.getInstance().getSessionAdministration().getSessionStatuses()) {
                     if (!status.getStatusType().equals("active")) {
                         WebAPI.getInstance().getSessionAdministration().removeByUUID(status.getSessionId());
