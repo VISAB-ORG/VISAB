@@ -185,7 +185,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     }
 
     public Image getMapImage() {
-        return new Image(ResourceHelper.IMAGE_PATH + "fps_map.png");
+        return new Image(ResourceHelper.IMAGE_PATH + "/settlersMap.png");
         // Not in here yet
         // return new Image(new ByteArrayInputStream(file.getImages().getMap()));
     }

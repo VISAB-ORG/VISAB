@@ -112,6 +112,14 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         turnSlider.setBlockIncrement(1);
         turnSlider.setSnapToTicks(false);
 
+        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
+        mapImage.setViewOrder(1);
+        mapImage.setFitWidth(DRAW_PANE_WIDTH);
+        mapImage.setFitHeight(DRAW_PANE_WIDTH
+                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+
+        mapElements.put("map", mapImage);
+
         drawPane.getChildren().setAll(mapElements.values());
     }
 
@@ -180,7 +188,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private void updateMapElements() {
         // TODO: Optimize with more dynamic way - dont clear and simply put everything
         // again
-        mapElements.clear();
+        mapElements.values().clear();
         // We do not have any player-independent map items in here currently
         for (Player player : players) {
 
