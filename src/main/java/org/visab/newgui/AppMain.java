@@ -15,6 +15,9 @@ public class AppMain extends Application {
 
     private static Stage primaryStage;
 
+    /**
+     * The primary stage of the Application.
+     */
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -35,7 +38,7 @@ public class AppMain extends Application {
     }
 
     /**
-     * Is called when the Application is closed.
+     * Is called before the Application is csosed.
      */
     @Override
     public void stop() {

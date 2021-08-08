@@ -176,6 +176,14 @@ public final class UiHelper {
         imageView.setFitHeight(fitSizes.getY());
     }
 
+    /**
+     * Reesizes an ImageView to the size of a given vector.
+     * 
+     * @param resizeImage The ImageView to resize
+     * @param sizeVector  The vector whose X and Y coordinates determine the new
+     *                    width and height respectively
+     * @return The resized ImageView
+     */
     public static ImageView resizeImage(ImageView resizeImage, Vector2 sizeVector) {
         resizeImage.setFitWidth(sizeVector.getX());
         resizeImage.setFitHeight(sizeVector.getY());
