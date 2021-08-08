@@ -147,10 +147,10 @@ public class DialogHelper {
      * @param scopes        The scopes to provide
      */
     public void showView(ShowViewConfiguration configuration, ViewModel viewModel, Scope... scopes) {
-        var viewStep = FluentViewLoader.fxmlView(configuration.getViewType());
+        var viewStep = FluentViewLoader.fxmlView(configuration.getViewClass());
 
         var stage = new Stage();
-        stage.setTitle(configuration.getWindowTitle());
+        stage.setTitle(configuration.getStageTitle());
 
         // TODO: Calculate relative to screen resolution
         // TODO: Perhaps it will be provided relative in the config and we calculate the

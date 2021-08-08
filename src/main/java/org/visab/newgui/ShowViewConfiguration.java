@@ -3,44 +3,77 @@ package org.visab.newgui;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.ViewModel;
 
+/**
+ * Configuration for showing views from the viewmodel via the dialog helper.
+ */
 public class ShowViewConfiguration {
 
     private boolean shouldBlock;
     private String windowTitle;
-    private Class<? extends FxmlView<? extends ViewModel>> viewType;
+    private Class<? extends FxmlView<? extends ViewModel>> viewClass;
     private int width;
     private int height;
 
-    public ShowViewConfiguration(Class<? extends FxmlView<? extends ViewModel>> viewType, String windowTitle,
+    /**
+     * @param viewClass   The class of the view to load
+     * @param stageTitle  The title of the stage
+     * @param shouldBlock True if view should make other open views inaccesible
+     *                    until it is closed
+     */
+    public ShowViewConfiguration(Class<? extends FxmlView<? extends ViewModel>> viewClass, String stageTitle,
             boolean shouldBlock) {
-        this.viewType = viewType;
-        this.windowTitle = windowTitle;
+        this.viewClass = viewClass;
+        this.windowTitle = stageTitle;
         this.shouldBlock = shouldBlock;
     }
 
-    public ShowViewConfiguration(Class<? extends FxmlView<? extends ViewModel>> viewType, String windowTitle,
+    /**
+     * 
+     * @param viewClass   The class of the view to load
+     * @param stageTitle  The title of the stage
+     * @param shouldBlock True if view should make other open views inaccesible
+     *                    until it is closed
+     * @param height      The height of the stage
+     * @param width       The width of the stage
+     */
+    public ShowViewConfiguration(Class<? extends FxmlView<? extends ViewModel>> viewClass, String windowTitle,
             boolean shouldBlock, int height, int width) {
-        this(viewType, windowTitle, shouldBlock);
+        this(viewClass, windowTitle, shouldBlock);
         this.height = height;
         this.width = width;
     }
 
+    /**
+     * The height of the stage.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * The width of the stage.
+     */
     public int getWidth() {
         return width;
     }
 
-    public Class<? extends FxmlView<? extends ViewModel>> getViewType() {
-        return viewType;
+    /**
+     * The class of the view to load.
+     */
+    public Class<? extends FxmlView<? extends ViewModel>> getViewClass() {
+        return viewClass;
     }
 
-    public String getWindowTitle() {
+    /**
+     * The title of the stage.
+     */
+    public String getStageTitle() {
         return windowTitle;
     }
 
+    /**
+     * True if view should make other open views inaccesible until it is closed
+     */
     public boolean shouldBlock() {
         return shouldBlock;
     }
