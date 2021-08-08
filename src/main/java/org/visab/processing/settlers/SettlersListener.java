@@ -95,6 +95,7 @@ public class SettlersListener
 
     @Override
     public void processImage(SettlersImages images) {
+        writeLog(Level.DEBUG, "Received images!");
         file.setImages(images);
     }
 

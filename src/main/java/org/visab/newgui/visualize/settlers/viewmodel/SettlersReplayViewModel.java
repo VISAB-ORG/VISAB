@@ -1,5 +1,6 @@
 package org.visab.newgui.visualize.settlers.viewmodel;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -185,9 +186,10 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     }
 
     public Image getMapImage() {
-        return new Image(ResourceHelper.IMAGE_PATH + "/settlersMap.png");
+        var filex = file;
+        // return new Image(ResourceHelper.IMAGE_PATH + "/settlersMap.png");
         // Not in here yet
-        // return new Image(new ByteArrayInputStream(file.getImages().getMap()));
+        return new Image(new ByteArrayInputStream(file.getImages().getMapImage()));
     }
 
     public HashMap<String, Color> getPlayerColors() {
