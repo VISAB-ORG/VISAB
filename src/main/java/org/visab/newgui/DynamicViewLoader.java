@@ -23,6 +23,12 @@ import de.saxsys.mvvmfx.ViewTuple;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The DynamicViewLoader provides methods for loading visualizer views based on
+ * a given game name. Views may be loaded from a transmission session or from a
+ * file. As a basis for deciding which view should be loaded, the mappings
+ * defined in the json configuration file are used.
+ */
 public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEvent> {
 
     private static final Logger logger = LogManager.getLogger(DynamicViewLoader.class);
@@ -32,7 +38,15 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
      */
     private static DynamicViewLoader instance = new DynamicViewLoader();
 
-    public static final void loadVisualizer(String game, String fileName, IVISABFile file) {
+    /**
+     * Loads the visualizer view for a given file.
+     * 
+     * @param game     The game of the file
+     * @param fileName The fileName of the file. This has to be only the fileName,
+     *                 paths are not supported.
+     * @param file     The file to visualize
+     */
+    public static final void loadVisualizerView(String game, String fileName, IVISABFile file) {
         if (file == null) {
             logger.fatal("Given file was null!");
             return;
@@ -70,15 +84,24 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             instance.publish(new VISABFileVisualizedEvent(fileName, game));
     }
 
-    public static final void loadVisualizer(String game, UUID sessionId) {
+    /**
+     * Loads the visualizer view for a given transmission session. If the
+     * transmission session is active and the corresponding session listener
+     * implements ILiveViewable the live view is loaded. Otherwise the regular, non
+     * live, view is loaded.
+     * 
+     * @param game      The game of the session
+     * @param sessionId The sessionId of the session
+     */
+    public static final void loadVisualizerView(String game, UUID sessionId) {
         var listener = SessionListenerAdministration.getSessionListener(sessionId);
         if (listener == null) {
             var file = Workspace.getInstance().getDatabaseManager().loadSessionFile(sessionId);
             var fileName = Workspace.getInstance().getDatabaseManager().getSessionFileName(sessionId);
-            loadVisualizer(game, fileName, file);
+            loadVisualizerView(game, fileName, file);
             return;
         } else if (!(listener instanceof ILiveViewable<?>)) {
-            loadVisualizer(game, null, listener.getCurrentFile());
+            loadVisualizerView(game, null, listener.getCurrentFile());
             return;
         }
 
@@ -98,6 +121,7 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
             var asLiveViewable = (ILiveViewable<?>) listener;
             scope.setSessionListener(asLiveViewable);
             scope.setLive(true);
+            scope.setFile(listener.getCurrentFile());
         } else {
             logger.info(NiceString.make("Listener for game {0} did not implement ILiveViewable.", game));
         }

@@ -64,7 +64,7 @@ public class CustomSessionObject extends GridPane {
             @Override
             public void handle(ActionEvent e) {
                 // TODO: Popup if live viewing not supported
-                DynamicViewLoader.loadVisualizer(sessionStatus.getGame(), sessionStatus.getSessionId());
+                DynamicViewLoader.loadVisualizerView(sessionStatus.getGame(), sessionStatus.getSessionId());
             }
         });
         this.sessionIdValue = new Label(sessionStatus.getSessionId().toString());
