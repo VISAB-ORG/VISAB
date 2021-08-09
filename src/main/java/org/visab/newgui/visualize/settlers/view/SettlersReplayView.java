@@ -112,7 +112,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         turnSlider.setBlockIncrement(1);
         turnSlider.setSnapToTicks(false);
 
-        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
+        // ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
+        var mapImage = new ImageView(viewModel.getMapImage());
         mapImage.setViewOrder(1);
         mapImage.setFitWidth(DRAW_PANE_WIDTH);
         mapImage.setFitHeight(DRAW_PANE_WIDTH

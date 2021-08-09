@@ -29,18 +29,9 @@ public class Player {
     private int victoryPoints;
     private PlayerResources resourcesGained;
     private boolean isMyTurn;
-    private PlayerResources villageResourcesGained;
 
     public int getVillageCount() {
         return villageCount;
-    }
-
-    public PlayerResources getVillageResourcesGained() {
-        return villageResourcesGained;
-    }
-
-    public void setVillageResourcesGained(PlayerResources villageResourcesGained) {
-        this.villageResourcesGained = villageResourcesGained;
     }
 
     public boolean isMyTurn() {
