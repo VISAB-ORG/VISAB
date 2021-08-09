@@ -30,5 +30,6 @@
             </yAxis>
         </StackedBarChart>
         <Slider fx:id="roundSlider" GridPane.rowIndex="1" />
+        <Label fx:id="sliderLabel" GridPane.rowIndex="2" />
     </children>
 </GridPane>

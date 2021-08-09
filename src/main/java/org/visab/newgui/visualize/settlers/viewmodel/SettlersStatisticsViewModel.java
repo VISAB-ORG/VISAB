@@ -74,6 +74,12 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private String resourceUsageType;
 
+    private StringProperty sliderText = new SimpleStringProperty();
+
+    public StringProperty sliderTextProperty() {
+        return sliderText;
+    }
+
     public IntegerProperty sliderValueProperty() {
         return sliderValue;
     }
@@ -142,6 +148,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
                     resourceUsageType = "Spent";
                     initializeStackedBarChart();
                 }
+                sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + 10));
             });
         }
         return showDetailsCommand;
@@ -154,6 +161,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > 10 + sliderValue.get());
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
+            sliderText.setValue("");
+            sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + 10));
         playerDetailedStatisticsSeries.addAll(serieses);
         });
 
