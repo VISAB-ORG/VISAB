@@ -39,6 +39,7 @@
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
+                        <CheckBox fx:id="showInBlackAndWhiteCheckBox" mnemonicParsing="false" text="Show in black and white" />
                         <GridPane prefHeight="655.0" prefWidth="1065.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="591.0" />
