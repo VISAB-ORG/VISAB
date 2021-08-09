@@ -13,33 +13,32 @@ import org.visab.globalmodel.Vector2;
 public class CoordinateHelper {
 
     private Rectangle mapRectangle;
-    private int drawPaneHeight;
-    private int drawPaneWidth;
-    private Vector2 drawPanePositioning;
+    private double drawPaneHeight;
+    private double drawPaneWidth;
+    private Vector2 standardIconVector;
 
     /**
      * Constructs a CoordinateHelper with specific boundary information.
      * 
-     * @param mapRectangle        the rectangle model of the unity game.
-     * @param drawPaneHeight      the height of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPaneWidth       the width of the draw pane elements shall be
-     *                            positioned on.
-     * @param drawPanePositioning the position (top-left-anchor) of the draw pane.
+     * @param mapRectangle   the rectangle model of the unity game.
+     * @param drawPaneHeight the height of the draw pane elements shall be
+     *                       positioned on.
+     * @param drawPaneWidth  the width of the draw pane elements shall be positioned
+     *                       on.
      */
-    public CoordinateHelper(Rectangle mapRectangle, int drawPaneHeight, int drawPaneWidth,
-            Vector2 drawPanePositioning) {
+    public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth,
+            Vector2 standardIconVector) {
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
-        this.drawPanePositioning = drawPanePositioning;
+        this.standardIconVector = standardIconVector;
     }
 
     /**
      * @param coordinatesUnity the coordinates provided by unity.
      * @return the vector that can be used for positioning in JavaFX
      */
-    public Vector2 translateAccordingToMap(Vector2 coordinatesUnity) {
+    public Vector2 translateAccordingToMap(Vector2 coordinatesUnity, boolean isIcon) {
 
         // Compute positioning relative to the top left anchor point with distances
         double relativeXDistanceToTopLeftAnchorPoint = Math
@@ -49,15 +48,20 @@ public class CoordinateHelper {
 
         // Calculate the percentage distance on the unity map
         double percentageMovedOnX = relativeXDistanceToTopLeftAnchorPoint / this.mapRectangle.getWidth();
-
         double percentageMovedOnY = relativeYDistanceToTopLeftAnchorPoint / this.mapRectangle.getHeight();
 
-        // Calculate the positioning on the JavaFX pane that should be drawn on
-        int relativePanePositionX = (int) (this.drawPanePositioning.getX() + (percentageMovedOnX * this.drawPaneWidth));
-        int relativePanePositionY = (int) (this.drawPanePositioning.getY()
-                + (percentageMovedOnY * this.drawPaneHeight));
+        double centerOnXOffset = 0.0;
+        double centerOnYOffset = 0.0;
+        if (isIcon) {
+            centerOnXOffset = (-1) * (this.standardIconVector.getX() / 2);
+            centerOnYOffset = (-1) * (this.standardIconVector.getY() / 2);
+        }
 
-        return new Vector2(relativePanePositionX, relativePanePositionY);
+        // Calculate the positioning on the JavaFX pane that should be drawn on
+        double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth + centerOnXOffset;
+        double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight + centerOnYOffset;
+
+        return new Vector2((int) relativePanePositionX, (int) relativePanePositionY);
     }
 
 }

@@ -30,7 +30,7 @@ public class PlayerVisualsRow {
 
         // Contents for each row
         Label playerNameLabel = new Label(playerName);
-        playerNameLabel.setStyle("");
+        playerNameLabel.setStyle("-fx-background-color: transparent; -fx-text-fill: black;");
         CheckBox showPlayer = new CheckBox();
         CheckBox showPlayerIcon = new CheckBox();
         CheckBox showPlayerPath = new CheckBox();

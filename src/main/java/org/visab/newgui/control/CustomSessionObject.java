@@ -45,7 +45,10 @@ public class CustomSessionObject extends GridPane {
     private Label sessionClosedValue;
     private Button openLiveViewButton;
 
-    public CustomSessionObject(SessionStatus sessionStatus, String gameIconPath) {
+    public CustomSessionObject(SessionStatus sessionStatus, String gameIconPath, double fitWidth) {
+
+        this.setMinWidth(fitWidth);
+        this.setMaxWidth(fitWidth);
 
         this.gameNameValue = new Label(sessionStatus.getGame());
         this.gameIconView = new ImageView(new Image(gameIconPath, 24, 24, false, false));

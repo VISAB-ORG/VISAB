@@ -7,8 +7,11 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Vector2;
 
 /**
- * The CBRShooter statistics, that are periodically sent by the Unity game. The
- * visualization is based on all the statistics received.
+ * The CBRShooterStatistics class, representing the information given by the
+ * CBRShooter.
+ *
+ * @author moritz
+ *
  */
 public class CBRShooterStatistics implements IStatistics {
 
@@ -97,5 +100,14 @@ public class CBRShooterStatistics implements IStatistics {
 
     public void setWeaponPosition(Vector2 weaponPosition) {
         this.weaponPosition = weaponPosition;
+    }
+
+    public Player getInfoByPlayerName(String playerName) {
+        for (Player playerInfo : this.getPlayers()) {
+            if (playerInfo.getName().equals(playerName)) {
+                return playerInfo;
+            }
+        }
+        return null;
     }
 }

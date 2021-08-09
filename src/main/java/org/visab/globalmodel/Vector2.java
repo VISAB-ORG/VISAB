@@ -33,6 +33,10 @@ public class Vector2 {
         this.y = y;
     }
 
+    public boolean checkIfZero() {
+        return (this.x == 0 && this.y == 0);
+    }
+
     public String toString() {
         return "(X: " + this.x + ", Y: " + this.y + ")";
     }
