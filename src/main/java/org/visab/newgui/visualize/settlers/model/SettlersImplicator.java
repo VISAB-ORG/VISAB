@@ -74,7 +74,7 @@ public final class SettlersImplicator {
             SettlersFile file) {
         var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
         var countResourcesSpent = new PlayerResources();
-        var currentTurn = new PlayerResources();
+        var currentTurnEndResources = new PlayerResources();
         var playerData = new PlayerResources();
         var turn = 0;
         var playerNumber = 0;
@@ -87,25 +87,27 @@ public final class SettlersImplicator {
 
             if (turn < statistics.getTurn()) {
                 resourcesSpentPerTurnPerPlayer.add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesSpent));
+                countResourcesSpent = new PlayerResources();
             }
 
-            var lastTurn = currentTurn;
-            currentTurn = statistics.getPlayers().get(playerNumber).getResources();
+            var lastTurn = currentTurnEndResources;
+            currentTurnEndResources = statistics.getPlayers().get(playerNumber).getResources();
+            var currentTurnGainedResources = statistics.getPlayers().get(playerNumber).getResourcesGained();
 
-            if (lastTurn.getBrick() - currentTurn.getBrick() >= 0) {
-                playerData.setBrick(lastTurn.getBrick() - currentTurn.getBrick());
+            if (lastTurn.getBrick() - (currentTurnEndResources.getBrick() + currentTurnGainedResources.getBrick()) >= 0) {
+                playerData.setBrick(lastTurn.getBrick() - (currentTurnEndResources.getBrick() + currentTurnGainedResources.getBrick()));
             } 
-            if (lastTurn.getStone() - currentTurn.getStone() >= 0) {
-                playerData.setStone(lastTurn.getStone() - currentTurn.getStone());
+            if (lastTurn.getStone() - (currentTurnEndResources.getStone() + currentTurnGainedResources.getStone()) >= 0) {
+                playerData.setStone(lastTurn.getStone() - (currentTurnEndResources.getStone() + currentTurnGainedResources.getStone()));
             }
-            if (lastTurn.getSheep() - currentTurn.getSheep() >= 0) {
-                playerData.setSheep(lastTurn.getSheep() - currentTurn.getSheep());
+            if (lastTurn.getSheep() - (currentTurnEndResources.getSheep() + currentTurnGainedResources.getSheep()) >= 0) {
+                playerData.setSheep(lastTurn.getSheep() - (currentTurnEndResources.getSheep() + currentTurnGainedResources.getSheep()));
             }
-            if (lastTurn.getWood() - currentTurn.getWood() >= 0) {
-                playerData.setWood(lastTurn.getWood() - currentTurn.getWood());
+            if (lastTurn.getWood() - (currentTurnEndResources.getWood() + currentTurnGainedResources.getWood()) >= 0) {
+                playerData.setWood(lastTurn.getWood() - (currentTurnEndResources.getWood() + currentTurnGainedResources.getWood()));
             }
-            if (lastTurn.getWheat() - currentTurn.getWheat() >= 0) {
-                playerData.setWheat(lastTurn.getWheat() - currentTurn.getWheat());
+            if (lastTurn.getWheat() - (currentTurnEndResources.getWheat() + currentTurnGainedResources.getWheat()) >= 0) {
+                playerData.setWheat(lastTurn.getWheat() - (currentTurnEndResources.getWheat() + currentTurnGainedResources.getWheat()));
             }
 
             countResourcesSpent = PlayerResources.add(countResourcesSpent, playerData);
