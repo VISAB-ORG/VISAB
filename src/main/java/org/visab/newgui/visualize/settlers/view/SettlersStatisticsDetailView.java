@@ -9,7 +9,6 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
