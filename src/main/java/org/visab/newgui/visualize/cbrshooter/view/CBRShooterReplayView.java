@@ -72,6 +72,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private Pane drawPane;
     @FXML
+    private CheckBox showInBlackAndWhiteCheckBox;
+    @FXML
     private Label totalTimeValueLabel;
     @FXML
     private Label roundValueLabel;
@@ -126,6 +128,16 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    	showInBlackAndWhiteCheckBox.setSelected(false);
+    	showInBlackAndWhiteCheckBox.setOnAction(e -> {
+    		if (showInBlackAndWhiteCheckBox.isSelected()) {
+    			mapElements.get("coloredMap").setVisible(false);
+    			mapElements.get("blackAndWhiteMap").setVisible(true);
+    		} else {
+    			mapElements.get("coloredMap").setVisible(true);
+    			mapElements.get("blackAndWhiteMap").setVisible(false);
+    		}	
+    	});
         players = viewModel.getPlayers();
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
 
@@ -228,9 +240,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * underlying player-specific visuals data.
      */
     private void initializeMapElements() {
-        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
-        mapImage.setViewOrder(1);
-        mapElements.put("map", mapImage);
+        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.0);
+        mapImageBlackAndWhite.setViewOrder(1);
+        mapImageBlackAndWhite.setVisible(false);
+        mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
+        
+        ImageView mapImageColored = new ImageView(viewModel.getMapImage());
+        mapImageColored.setViewOrder(1);
+        mapImageColored.setVisible(true);
+        mapElements.put("coloredMap", mapImageColored);
 
         ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
         ImageView weapon = new ImageView(viewModel.getWeaponIcon());
