@@ -39,7 +39,6 @@ public class Player {
     private IntegerProperty victoryPointsProperty = new SimpleIntegerProperty();
     private ObjectProperty<PlayerResources> resourcesGainedProperty = new SimpleObjectProperty<PlayerResources>();
     private BooleanProperty isMyTurnProperty = new SimpleBooleanProperty();
-    private ObjectProperty<PlayerResources> villageResourcesGainedProperty = new SimpleObjectProperty<PlayerResources>();
     private ObjectProperty<Color> playerColorProperty = new SimpleObjectProperty<>();
 
     // Visual table
@@ -86,7 +85,6 @@ public class Player {
         victoryPointsProperty.set(playerInfo.getVictoryPoints());
         resourcesGainedProperty.set(playerInfo.getResourcesGained());
         isMyTurnProperty.set(playerInfo.isMyTurn());
-        villageResourcesGainedProperty.set(playerInfo.getVillageResourcesGained());
     }
 
     public String getName() {
@@ -151,10 +149,6 @@ public class Player {
 
     public BooleanProperty isMyTurnProperty() {
         return isMyTurnProperty;
-    }
-
-    public ObjectProperty<PlayerResources> villageResourcesGainedProperty() {
-        return villageResourcesGainedProperty;
     }
 
     public ObjectProperty<Color> playerColorProperty() {
