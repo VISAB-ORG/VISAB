@@ -76,6 +76,8 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private StringProperty sliderText = new SimpleStringProperty();
 
+    private static final int SHOWN_GRAPHS_PER_PLAYER = 10;
+
     public StringProperty sliderTextProperty() {
         return sliderText;
     }
@@ -148,7 +150,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
                     resourceUsageType = "Spent";
                     initializeStackedBarChart();
                 }
-                sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + 10));
+                sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + SHOWN_GRAPHS_PER_PLAYER));
             });
         }
         return showDetailsCommand;
@@ -158,11 +160,11 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         updateStackedBarChartCommand = runnableCommand(() -> {
             var serieses = getStackedBarChartData();
             for (var series : serieses) {
-                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > 10 + sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
             sliderText.setValue("");
-            sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + 10));
+            sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + SHOWN_GRAPHS_PER_PLAYER));
         playerDetailedStatisticsSeries.addAll(serieses);
         });
 
@@ -191,7 +193,7 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
         List<Series<String, Number>> serieses = getStackedBarChartData();       
         for (var series : serieses) {
-            series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > 10);
+            series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }
