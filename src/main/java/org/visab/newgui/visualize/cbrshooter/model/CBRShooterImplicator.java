@@ -15,7 +15,7 @@ import org.visab.workspace.Workspace;
 public final class CBRShooterImplicator {
 
     public static ArrayList<StatisticsDataStructure> shotsPerRound(String player, CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var countShots = 0;
@@ -48,7 +48,7 @@ public final class CBRShooterImplicator {
 
     public static ArrayList<StatisticsDataStructure> collectedCollectablesPerRound(String player, CBRShooterFile file,
             Collectable collectable) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var countCollectedCollectables = 0;
@@ -121,7 +121,7 @@ public final class CBRShooterImplicator {
     }
 
     public static ArrayList<StatisticsDataStructure> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var countHits = 0;
@@ -155,7 +155,7 @@ public final class CBRShooterImplicator {
     }
 
     public static ArrayList<StatisticsDataStructure> unitsWalkedPerRound(String player, CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var unitsWalked = 0;
@@ -190,7 +190,7 @@ public final class CBRShooterImplicator {
     }
 
     public static ArrayList<StatisticsDataStructure> accumulatedDeathsPerRound(String player, CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var round = 0;
@@ -213,7 +213,7 @@ public final class CBRShooterImplicator {
     }
 
     public static ArrayList<StatisticsDataStructure> accumulatedKillsPerRound(String player, CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var round = 0;
@@ -311,7 +311,7 @@ public final class CBRShooterImplicator {
     }
 
     public static Map<String, Integer> concludeShotsFired(CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var shots = new HashMap<String, Integer>();
         for (var name : file.getPlayerNames())
@@ -338,7 +338,7 @@ public final class CBRShooterImplicator {
     }
 
     public static Map<String, Integer> concludeCollected(CBRShooterFile file, Collectable collectable) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var collected = new HashMap<String, Integer>();
         for (var name : file.getPlayerNames())
@@ -360,7 +360,7 @@ public final class CBRShooterImplicator {
     }
 
     public static Map<String, Integer> concludeHitsTaken(CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var hitsTaken = new HashMap<String, Integer>();
         for (var name : file.getPlayerNames())
@@ -415,7 +415,7 @@ public final class CBRShooterImplicator {
     }
 
     public static Map<String, Double> concludeUnitsWalked(CBRShooterFile file) {
-        var statistics = MakeStatisticsCopy(file);
+        var statistics = file.getStatistics();
 
         var walked = new HashMap<String, Double>();
         for (var name : file.getPlayerNames())
@@ -439,10 +439,6 @@ public final class CBRShooterImplicator {
         }
 
         return walked;
-    }
-
-    private static List<CBRShooterStatistics> MakeStatisticsCopy(CBRShooterFile file) {
-        return new ArrayList<>(file.getStatistics());
     }
 
     private static String otherPlayerName(String myPlayer, CBRShooterFile file) {
