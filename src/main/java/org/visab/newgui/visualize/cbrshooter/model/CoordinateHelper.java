@@ -61,7 +61,7 @@ public class CoordinateHelper {
         double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth + centerOnXOffset;
         double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight + centerOnYOffset;
 
-        return new Vector2((int) relativePanePositionX, (int) relativePanePositionY);
+        return new Vector2<Double>(relativePanePositionX, relativePanePositionY);
     }
 
 }
