@@ -38,11 +38,9 @@ public interface ILiveViewable<TStatistics extends IStatistics> {
     IVISABFile getCurrentFile();
 
     /**
-     * Returns a copy of all statistics that were added till now.
-     * 
-     * @return The list of received statistics
+     * Returns a list of all statistics that were added till now.
      */
-    List<TStatistics> getStatisticsCopy();
+    List<TStatistics> getStatistics();
 
     /**
      * Notifies the observing ViewModels that statistics were added.

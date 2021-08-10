@@ -31,7 +31,7 @@ public class SettlersMetaViewModel extends LiveViewModelBase<SettlersFile, Settl
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(s -> onSessionClosed());
 
-            statistics = ((ILiveViewable<SettlersStatistics>) scope.getSessionListener()).getStatisticsCopy();
+            statistics = ((ILiveViewable<SettlersStatistics>) scope.getSessionListener()).getStatistics();
         } else {
             super.initialize(scope.getFile());
             statistics = file.getStatistics();
