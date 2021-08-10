@@ -19,7 +19,7 @@ public class Player {
     private List<Vector2> streetPositions;
     private int cityCount;
     private List<Vector2> cityPositions;
-    
+
     private PlayerResources resources;
     private boolean hasLongestRoad;
     private boolean isAi;
@@ -29,18 +29,9 @@ public class Player {
     private int victoryPoints;
     private PlayerResources resourcesGained;
     private boolean isMyTurn;
-    private PlayerResources villageResourcesGained;
 
     public int getVillageCount() {
         return villageCount;
-    }
-
-    public PlayerResources getVillageResourcesGained() {
-        return villageResourcesGained;
-    }
-
-    public void setVillageResourcesGained(PlayerResources villageResourcesGained) {
-        this.villageResourcesGained = villageResourcesGained;
     }
 
     public boolean isMyTurn() {
