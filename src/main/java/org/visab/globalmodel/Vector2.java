@@ -34,14 +34,11 @@ public class Vector2<T> {
     }
 
     public boolean checkIfZero() {
-        if (this.x instanceof Integer) {
-            return ((int) this.x == 0 && (int) this.y == 0);
-        } else if (this.x instanceof Double) {
-            return ((double) this.x == 0.0 && (double) this.y == 0.0);
-        } else {
-            throw new IllegalArgumentException(
-                    "Cannot check if the vector is zero, because it has an incompatible type.");
-        }
+        return ((double) this.x == 0.0 && (double) this.y == 0.0);
+    }
+
+    public boolean checkIfNull() {
+        return this.x == null;
     }
 
     public String toString() {

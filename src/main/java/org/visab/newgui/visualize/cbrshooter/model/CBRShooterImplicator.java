@@ -177,7 +177,7 @@ public final class CBRShooterImplicator {
             var lastPos = currentPos;
             currentPos = statistics.get(i).getPlayers().get(playerNumber).getPosition();
 
-            if (lastPos != currentPos) {
+            if (lastPos != currentPos && !lastPos.checkIfNull()) {
                 moved = Math.sqrt(Math.pow(lastPos.getX() - currentPos.getX(), 2.0)
                         + Math.pow(lastPos.getY() - currentPos.getY(), 2.0));
             }
