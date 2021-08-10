@@ -62,7 +62,7 @@ public final class CBRShooterImplicator {
 
             if (round < statistics.get(i).getRound()) {
                 collectedCollectablesPerRoundPerPlayer
-                        .add(new StatisticsDataStructure(round, (double)countCollectedCollectables));
+                        .add(new StatisticsDataStructure(round, (double) countCollectedCollectables));
             }
 
             switch (collectable) {
@@ -110,8 +110,7 @@ public final class CBRShooterImplicator {
 
             if (shotsFired.get(i).getValue() > 0) {
                 var aimRatio = (hits.get(i).getValue() / shotsFired.get(i).getValue());
-                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, 
-                        aimRatio));
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, aimRatio));
             } else {
                 aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, 0.0));
             }
@@ -137,7 +136,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double)countHits));
+                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) countHits));
                 countHits = 0;
             }
             lastHealth = currentHealth;
@@ -160,7 +159,7 @@ public final class CBRShooterImplicator {
 
         var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
         var unitsWalked = 0;
-        var currentPos = new Vector2();
+        var currentPos = new Vector2<Double>();
         var moved = 0.0;
         var round = 0;
         var playerNumber = 0;
@@ -204,7 +203,7 @@ public final class CBRShooterImplicator {
 
             if (round < statistics.get(i).getRound()) {
                 accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
-                        (double)statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
+                        (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
             round = statistics.get(i).getRound();
@@ -227,7 +226,7 @@ public final class CBRShooterImplicator {
 
             if (round < statistics.get(i).getRound()) {
                 accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
-                        (double)statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
+                        (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
             round = statistics.get(i).getRound();
@@ -422,7 +421,7 @@ public final class CBRShooterImplicator {
         for (var name : file.getPlayerNames())
             walked.put(name, 0.0);
 
-        var lastPositions = new HashMap<String, Vector2>();
+        var lastPositions = new HashMap<String, Vector2<Double>>();
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
                 var name = player.getName();

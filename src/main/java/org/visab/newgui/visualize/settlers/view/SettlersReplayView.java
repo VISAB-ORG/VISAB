@@ -67,15 +67,16 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
     private static final double DRAW_PANE_WIDTH = 550.0;
 
-    private static final Vector2 STANDARD_ICON_VECTOR = new Vector2(16, 16);
+    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
+    private static final Vector2<Double> BIG_ICON_VECTOR = new Vector2<Double>(32.0, 32.0);
 
     private CoordinateHelper coordinateHelper;
 
     private Image pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
     private Image playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
 
-    private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2(32, 32));
-    private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2(32, 32));
+    private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2<Double>(32.0, 32.0));
+    private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2<Double>(32.0, 32.0));
 
     private ObjectProperty<SettlersStatistics> turnBasedStats = new SimpleObjectProperty<>();
 
@@ -272,7 +273,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                         UiHelper.recolorImage(player.getPlayerRoad(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true),
-                        STANDARD_ICON_VECTOR);
+                        BIG_ICON_VECTOR);
                 Label streetAnnotation = new Label(player.getRoadAnnotation());
                 streetAnnotation.setTextFill(player.playerColorProperty().get());
                 streetAnnotation.getStyleClass().add("boldLabel");
@@ -289,7 +290,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                         UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true),
-                        STANDARD_ICON_VECTOR);
+                        BIG_ICON_VECTOR);
 
                 Label villageAnnotation = new Label(player.getVillageAnnotation());
                 villageAnnotation.setTextFill(player.playerColorProperty().get());
@@ -308,7 +309,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
                     UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
                             coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
-                            STANDARD_ICON_VECTOR);
+                            BIG_ICON_VECTOR);
                     Label cityAnnotation = new Label(player.getCityAnnotation());
                     cityAnnotation.setTextFill(player.playerColorProperty().get());
                     cityAnnotation.getStyleClass().add("boldLabel");

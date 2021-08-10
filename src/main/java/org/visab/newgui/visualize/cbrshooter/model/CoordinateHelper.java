@@ -15,7 +15,7 @@ public class CoordinateHelper {
     private Rectangle mapRectangle;
     private double drawPaneHeight;
     private double drawPaneWidth;
-    private Vector2 standardIconVector;
+    private Vector2<Double> standardIconVector;
 
     /**
      * Constructs a CoordinateHelper with specific boundary information.
@@ -27,7 +27,7 @@ public class CoordinateHelper {
      *                       on.
      */
     public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth,
-            Vector2 standardIconVector) {
+            Vector2<Double> standardIconVector) {
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
@@ -38,7 +38,7 @@ public class CoordinateHelper {
      * @param coordinatesUnity the coordinates provided by unity.
      * @return the vector that can be used for positioning in JavaFX
      */
-    public Vector2 translateAccordingToMap(Vector2 coordinatesUnity, boolean isIcon) {
+    public Vector2<Double> translateAccordingToMap(Vector2<Double> coordinatesUnity, boolean isIcon) {
 
         // Compute positioning relative to the top left anchor point with distances
         double relativeXDistanceToTopLeftAnchorPoint = Math

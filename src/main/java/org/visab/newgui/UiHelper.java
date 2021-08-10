@@ -110,7 +110,7 @@ public final class UiHelper {
      * @param imageView the image view that shall be adjusted.
      * @param position  the positioning vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position) {
+    public static void adjustVisual(ImageView imageView, Vector2<Double> position) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
     }
@@ -122,7 +122,7 @@ public final class UiHelper {
      * @param visible   the visibility for the given image view.
      * @param position  the positioning vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position) {
+    public static void adjustVisual(ImageView imageView, boolean visible, Vector2<Double> position) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
         imageView.setVisible(visible);
@@ -135,7 +135,7 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, Vector2<Double> position, Vector2<Double> fitSizes) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
         imageView.setFitWidth(fitSizes.getX());
@@ -183,7 +183,8 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, boolean visible, Vector2<Double> position,
+            Vector2<Double> fitSizes) {
         imageView.setVisible(visible);
         imageView.setX(position.getX());
         imageView.setY(position.getY());
@@ -191,7 +192,7 @@ public final class UiHelper {
         imageView.setFitHeight(fitSizes.getY());
     }
 
-    public static ImageView resizeImage(ImageView resizeImage, Vector2 sizeVector) {
+    public static ImageView resizeImage(ImageView resizeImage, Vector2<Double> sizeVector) {
         resizeImage.setFitWidth(sizeVector.getX());
         resizeImage.setFitHeight(sizeVector.getY());
         return resizeImage;

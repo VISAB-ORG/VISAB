@@ -28,11 +28,11 @@ public class Player {
 
     // Table + Replay view
     private IntegerProperty villageCountProperty = new SimpleIntegerProperty();
-    private ObjectProperty<List<Vector2>> villagePositionsProperty = new SimpleObjectProperty<List<Vector2>>();
+    private ObjectProperty<List<Vector2<Double>>> villagePositionsProperty = new SimpleObjectProperty<List<Vector2<Double>>>();
     private IntegerProperty streetCountProperty = new SimpleIntegerProperty();
-    private ObjectProperty<List<Vector2>> streetPositionsProperty = new SimpleObjectProperty<List<Vector2>>();
+    private ObjectProperty<List<Vector2<Double>>> streetPositionsProperty = new SimpleObjectProperty<List<Vector2<Double>>>();
     private IntegerProperty cityCountProperty = new SimpleIntegerProperty();
-    private ObjectProperty<List<Vector2>> cityPositionsProperty = new SimpleObjectProperty<List<Vector2>>();
+    private ObjectProperty<List<Vector2<Double>>> cityPositionsProperty = new SimpleObjectProperty<List<Vector2<Double>>>();
     private ObjectProperty<PlayerResources> resourcesProperty = new SimpleObjectProperty<PlayerResources>();
     private BooleanProperty hasLongestRoadProperty = new SimpleBooleanProperty();
     private IntegerProperty longestRoadProperty = new SimpleIntegerProperty();
@@ -104,7 +104,7 @@ public class Player {
         return villageCountProperty;
     }
 
-    public ObjectProperty<List<Vector2>> villagePositionsProperty() {
+    public ObjectProperty<List<Vector2<Double>>> villagePositionsProperty() {
         return villagePositionsProperty;
     }
 
@@ -112,7 +112,7 @@ public class Player {
         return streetCountProperty;
     }
 
-    public ObjectProperty<List<Vector2>> streetPositionsProperty() {
+    public ObjectProperty<List<Vector2<Double>>> streetPositionsProperty() {
         return streetPositionsProperty;
     }
 
@@ -128,7 +128,7 @@ public class Player {
         return cityCountProperty;
     }
 
-    public ObjectProperty<List<Vector2>> cityPositionsProperty() {
+    public ObjectProperty<List<Vector2<Double>>> cityPositionsProperty() {
         return cityPositionsProperty;
     }
 
