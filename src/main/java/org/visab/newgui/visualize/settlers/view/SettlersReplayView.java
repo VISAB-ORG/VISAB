@@ -207,10 +207,11 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         // Only decides the visibility for each players items
         // Additional check for village to city transition is needed
         for (Player player : players) {
+            var playerName = player.getName();
             for (String key : mapElements.keySet()) {
-                if (key.contains("_street")) {
+                if (key.contains(playerName + "_street")) {
                     var roadIndex = Integer.parseInt(key.substring(key.length() - 1));
-                    if (!player.showRoadProperty().get()) {
+                    if (player.showRoadProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
                     } else {
                         if (roadIndex > player.streetCountProperty().get() - 1) {
@@ -219,9 +220,9 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             mapElements.get(key).setVisible(true);
                         }
                     }
-                } else if (key.contains("_village")) {
+                } else if (key.contains(playerName + "_village")) {
                     var villageIndex = Integer.parseInt(key.substring(key.length() - 1));
-                    if (!player.showRoadProperty().get()) {
+                    if (player.showVillagesProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
                     } else {
                         if (villageIndex > player.villageCountProperty().get() - 1) {
@@ -230,9 +231,9 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             mapElements.get(key).setVisible(true);
                         }
                     }
-                } else if (key.contains("_city")) {
+                } else if (key.contains(playerName + "_city")) {
                     var cityIndex = Integer.parseInt(key.substring(key.length() - 1));
-                    if (!player.showRoadProperty().get()) {
+                    if (player.showCitiesProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
                     } else {
                         if (cityIndex > player.cityCountProperty().get() - 1) {
