@@ -57,11 +57,13 @@ public final class UiHelper {
      * seen on it.
      * 
      * @param inputImage the image that needs to be grey-scaled.
+     * @param contrast the contrast for the image.
      * @return the grey-scaled image.
      */
-    public static ImageView greyScaleImage(Image inputImage) {
+    public static ImageView greyScaleImage(Image inputImage, double contrast) {
         ColorAdjust monochrome = new ColorAdjust();
         monochrome.setSaturation(-1);
+        monochrome.setContrast(contrast);
         ImageView grayScaledImage = new ImageView(inputImage);
         grayScaledImage.setEffect(monochrome);
         return grayScaledImage;
