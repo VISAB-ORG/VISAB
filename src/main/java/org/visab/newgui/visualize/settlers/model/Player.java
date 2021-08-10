@@ -1,5 +1,6 @@
 package org.visab.newgui.visualize.settlers.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.Vector2;
@@ -13,6 +14,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 
 /**
  * 
@@ -51,15 +53,23 @@ public class Player {
     private Image playerCity;
     private Image playerRoad;
 
+    private String villageAnnotation;
+    private String cityAnnotation;
+    private String roadAnnotation;
+
     public Player(String name) {
         this.name = name;
     }
 
-    public void initializeVisuals(Color playerColor, Image playerRoad, Image playerVillage, Image playerCity) {
+    public void initializeVisuals(Color playerColor, HashMap<String, Pair<Image, String>> annotatedIconsMap) {
         this.playerColorProperty.set(playerColor);
-        this.playerRoad = playerRoad;
-        this.playerVillage = playerVillage;
-        this.playerCity = playerCity;
+        this.playerRoad = annotatedIconsMap.get("playerRoad").getKey();
+        this.playerVillage = annotatedIconsMap.get("playerVillage").getKey();
+        this.playerCity = annotatedIconsMap.get("playerCity").getKey();
+        this.villageAnnotation = annotatedIconsMap.get("playerVillage").getValue();
+        this.cityAnnotation = annotatedIconsMap.get("playerCity").getValue();
+        this.roadAnnotation = annotatedIconsMap.get("playerRoad").getValue();
+
     }
 
     /**
@@ -176,6 +186,18 @@ public class Player {
 
     public Image getPlayerRoad() {
         return playerRoad;
+    }
+
+    public String getVillageAnnotation() {
+        return villageAnnotation;
+    }
+
+    public String getCityAnnotation() {
+        return cityAnnotation;
+    }
+
+    public String getRoadAnnotation() {
+        return roadAnnotation;
     }
 
 }

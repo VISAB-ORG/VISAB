@@ -33,6 +33,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, Initializable {
 
@@ -141,6 +142,13 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         mapElements.put("coloredMap", mapImageColored);
 
         drawPane.getChildren().setAll(mapElements.values());
+
+        viewModel.subscribe("DATA_UPDATED", this::onDataUpdated);
+    }
+
+    private void onDataUpdated(String message, Object[] payloadObjects) {
+        updateMapElements();
+        System.out.println("data updated");
     }
 
     /**
@@ -150,9 +158,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private void initializePlayersVisuals() {
         for (Player player : viewModel.getPlayers()) {
             var playerName = player.getName();
-            HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
-            player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerRoad"),
-                    iconMap.get("playerVillage"), iconMap.get("playerCity"));
+            HashMap<String, Pair<Image, String>> iconMap = viewModel.getAnnotatedIconsForPlayer(playerName);
+            player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap);
             PlayerVisualsRow row = new PlayerVisualsRow(player.getName(),
                     UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), STANDARD_ICON_VECTOR),
                     new ImageView(player.getPlayerVillage()), new ImageView(player.getPlayerCity()));
@@ -208,7 +215,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private void updateMapElements() {
         // TODO: Optimize with more dynamic way - dont clear and simply put everything
         // again
-        mapElements.values().clear();
+        mapElements.clear();
         // We do not have any player-independent map items in here currently
         for (Player player : players) {
 
@@ -219,15 +226,26 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 ImageView playerStreet = new ImageView(player.getPlayerRoad());
                 UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true));
+                Label streetAnnotation = new Label(player.getRoadAnnotation());
+                streetAnnotation.setTextFill(player.playerColorProperty().get());
                 mapElements.put(playerName + "_street_" + i, playerStreet);
+                mapElements.put(playerName + "_streetAnnotation_" + i, streetAnnotation);
             }
 
             for (int i = 0; i < player.villagePositionsProperty().get().size(); i++) {
 
-                ImageView playerVillage = new ImageView(player.getPlayerVillage());
+                ImageView playerVillage = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "/playerDeath.png"));
+                // ImageView playerVillage = new ImageView(player.getPlayerVillage());
                 UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true));
+
+                System.out
+                        .println("Village placed on coordinate: " + playerVillage.getX() + ", " + playerVillage.getY());
+                Label villageAnnotation = new Label(player.getVillageAnnotation());
+                villageAnnotation.setTextFill(player.playerColorProperty().get());
+                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX(), playerVillage.getY());
                 mapElements.put(playerName + "_village_" + i, playerVillage);
+                mapElements.put(playerName + "_villageAnnotation_" + i, villageAnnotation);
             }
 
             for (int i = 0; i < player.cityPositionsProperty().get().size(); i++) {
@@ -235,9 +253,14 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 ImageView playerCity = new ImageView(player.getPlayerRoad());
                 UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true));
+                Label cityAnnotation = new Label(player.getCityAnnotation());
+                cityAnnotation.setTextFill(player.playerColorProperty().get());
                 mapElements.put(playerName + "_city_" + i, playerCity);
+                mapElements.put(playerName + "_cityAnnotation_" + i, cityAnnotation);
             }
         }
+
+        drawPane.getChildren().setAll(mapElements.values());
     }
 
     @FXML
