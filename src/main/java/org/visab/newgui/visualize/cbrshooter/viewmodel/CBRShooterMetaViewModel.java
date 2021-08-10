@@ -102,10 +102,10 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
     }
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         roundsProperty.set(newStatistics.getRound());
         ingameTimeProperty.set(newStatistics.getTotalTime());
-        statisticsPerSecondProperty.set(statisticsCopy.size() / newStatistics.getTotalTime());
+        statisticsPerSecondProperty.set(file.getStatistics().size() / newStatistics.getTotalTime());
     }
 
     @Override

@@ -63,11 +63,11 @@ public class SettlersListener
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override
-    public void onSessionClosed() {
+    public synchronized void onSessionClosed() {
         if (file.getStatistics().size() > 0) {
             var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
@@ -94,13 +94,13 @@ public class SettlersListener
     }
 
     @Override
-    public void processImage(SettlersImages images) {
+    public synchronized void processImage(SettlersImages images) {
         writeLog(Level.DEBUG, "Received images!");
         file.setImages(images);
     }
 
     @Override
-    public void processStatistics(SettlersStatistics statistics) {
+    public synchronized void processStatistics(SettlersStatistics statistics) {
         file.getStatistics().add(statistics);
 
         writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));

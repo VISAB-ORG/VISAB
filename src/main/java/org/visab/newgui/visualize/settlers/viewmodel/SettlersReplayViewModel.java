@@ -283,7 +283,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     private int statisticsReceived = 0;
 
     @Override
-    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
+    public void onStatisticsAdded(SettlersStatistics newStatistics) {
         statisticsReceived += 1;
         data.add(newStatistics);
 

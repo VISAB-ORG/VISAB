@@ -159,7 +159,7 @@ public class CBRShooterStatisticsViewModel extends LiveViewModelBase<CBRShooterF
     }
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         updatePlanUsage(newStatistics);
 
         for (var row : comparisonStatistics) {

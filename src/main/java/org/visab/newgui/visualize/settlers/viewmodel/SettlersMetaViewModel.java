@@ -81,7 +81,7 @@ public class SettlersMetaViewModel extends LiveViewModelBase<SettlersFile, Settl
     }
 
     @Override
-    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
+    public void onStatisticsAdded(SettlersStatistics newStatistics) {
         roundsProperty.set(newStatistics.getTurn());
     }
 
