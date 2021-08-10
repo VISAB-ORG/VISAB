@@ -3,6 +3,7 @@ package org.visab.newgui;
 import org.visab.globalmodel.Vector2;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,7 +58,7 @@ public final class UiHelper {
      * seen on it.
      * 
      * @param inputImage the image that needs to be grey-scaled.
-     * @param contrast the contrast for the image.
+     * @param contrast   the contrast for the image.
      * @return the grey-scaled image.
      */
     public static ImageView greyScaleImage(Image inputImage, double contrast) {
@@ -89,6 +90,18 @@ public final class UiHelper {
     public static void adjustVisual(ImageView imageView, double x, double y) {
         imageView.setX(x);
         imageView.setY(y);
+    }
+
+    /**
+     * Simple method that sets relevant information for a given image view.
+     * 
+     * @param label the label that shall be adjusted.
+     * @param x     the x coordinate for the JavaFX positioning.
+     * @param y     the y coordinate for the JavaFX positioning.
+     */
+    public static void adjustVisual(Label label, double x, double y) {
+        label.setLayoutX(x);
+        label.setLayoutY(y);
     }
 
     /**

@@ -211,6 +211,7 @@ public final class SettlersImplicator {
                 var lastTurn = resourcesLastTurn.getOrDefault(name, new PlayerResources());
 
                 var gainedThisTurn = player.getResourcesGained();
+
                 var lastTurnAndGained = PlayerResources.add(lastTurn, gainedThisTurn);
 
                 var thisTurn = player.getResources();

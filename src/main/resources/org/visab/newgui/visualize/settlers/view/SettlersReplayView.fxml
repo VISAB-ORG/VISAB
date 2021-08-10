@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
@@ -104,7 +105,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Dice Rolls" />
+                                                <Label text="Turns Dice Roll" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
@@ -229,12 +230,6 @@
                                   <TableColumn prefWidth="107.419189453125" text="Resources Gained">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="resourcesGained">
-                                        </PropertyValueFactory>
-                                    </cellValueFactory>
-                                  </TableColumn>
-                                  <TableColumn prefWidth="71.58074951171875" text="Resources Gained By Villages">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="villageResourcesGained">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>

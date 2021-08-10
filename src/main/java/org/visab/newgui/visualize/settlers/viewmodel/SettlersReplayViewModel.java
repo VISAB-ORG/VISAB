@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +12,6 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
-import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
 import org.visab.newgui.visualize.ReplayViewModelBase;
@@ -31,6 +31,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 
 public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         implements ILiveViewModel<SettlersStatistics> {
@@ -69,6 +70,8 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     private ObjectProperty<SettlersStatistics> turnBasedStatsProperty = new SimpleObjectProperty<>();
     private List<Player> players = new ArrayList<>();
 
+    private Map<String, Player> playersOfLastTurn = new HashMap<String, Player>();
+
     public void initialize() {
 
         // Update loop eventually needs to be stopped on stage close
@@ -100,11 +103,22 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         for (var name : file.getPlayerNames())
             players.add(new Player(name));
 
+        // Get reference of the last game stat for each player
+        for (var name : file.getPlayerNames()) {
+            Player visualizePlayer = new Player(name);
+            visualizePlayer.initializeVisuals(getPlayerColors().get(name), getAnnotatedIconsForPlayer(name));
+            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(data.size() - 1).getPlayers(),
+                    x -> x.getName().equals(name));
+            visualizePlayer.updatePlayerData(globalmodelPlayer);
+            playersOfLastTurn.put(name, visualizePlayer);
+        }
+
         updateCurrentGameStatsByturn(0);
 
         // Add listener that will update the players and the general data
         currentturnProperty.addListener((o, oldValue, newValue) -> {
             updateCurrentGameStatsByturn(newValue.intValue());
+            publish("DATA_UPDATED", new Object());
         });
 
     }
@@ -181,14 +195,15 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         return players;
     }
 
+    public Map<String, Player> getPlayersOfLastTurn() {
+        return playersOfLastTurn;
+    }
+
     public Rectangle getMapRectangle() {
         return file.getMapRectangle();
     }
 
     public Image getMapImage() {
-        var filex = file;
-        // return new Image(ResourceHelper.IMAGE_PATH + "/settlersMap.png");
-        // Not in here yet
         return new Image(new ByteArrayInputStream(file.getImages().getMapImage()));
     }
 
@@ -200,16 +215,26 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         return playerColorMap;
     }
 
-    public HashMap<String, Image> getIconsForPlayer(String playerName) {
+    public HashMap<String, Pair<Image, String>> getAnnotatedIconsForPlayer(String playerName) {
         // TODO: Later on replace with original visuals of the map --- only placeholders
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
-        HashMap<String, Image> iconMap = new HashMap<String, Image>();
-        iconMap.put("playerRoad",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/weapon.png"), playerColor));
-        iconMap.put("playerVillage",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
-        iconMap.put("playerCity",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerDeath.png"), playerColor));
+        HashMap<String, Pair<Image, String>> iconMap = new HashMap<String, Pair<Image, String>>();
+        Image playerRoad = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getStreetImage())),
+                playerColor);
+        Image playerVillage = UiHelper
+                .recolorImage(new Image(new ByteArrayInputStream(file.getImages().getVillageImage())), playerColor);
+
+        Image playerCity = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getCityImage())),
+                playerColor);
+        Pair<Image, String> roadPair = new Pair<Image, String>(playerRoad, file.getImages().getStreetAnnotation());
+        Pair<Image, String> villagePair = new Pair<Image, String>(playerVillage,
+                file.getImages().getVillageAnnotation());
+        Pair<Image, String> cityPair = new Pair<Image, String>(playerCity, file.getImages().getCityAnnotation());
+
+        iconMap.put("playerRoad", roadPair);
+        iconMap.put("playerVillage", villagePair);
+        iconMap.put("playerCity", cityPair);
+
         return iconMap;
     }
 

@@ -3,6 +3,7 @@ package org.visab.newgui.visualize.settlers.view;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.visab.globalmodel.Vector2;
@@ -33,6 +34,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, Initializable {
 
@@ -83,21 +85,25 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     // Players whose values will always be up to date with the current turn
     private List<Player> players;
 
+    private Map<String, Player> playersOfLastTurn;
+
     @InjectViewModel
     SettlersReplayViewModel viewModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	showInBlackAndWhiteCheckBox.setSelected(false);
-    	showInBlackAndWhiteCheckBox.setOnAction(e -> {
-    		if (showInBlackAndWhiteCheckBox.isSelected()) {
-    			mapElements.get("coloredMap").setVisible(false);
-    			mapElements.get("blackAndWhiteMap").setVisible(true);
-    		} else {
-    			mapElements.get("coloredMap").setVisible(true);
-    			mapElements.get("blackAndWhiteMap").setVisible(false);
-    		}	
-    	});
+        showInBlackAndWhiteCheckBox.setSelected(false);
+        showInBlackAndWhiteCheckBox.setOnAction(e -> {
+            if (showInBlackAndWhiteCheckBox.isSelected()) {
+                mapElements.get("coloredMap").setVisible(false);
+                mapElements.get("blackAndWhiteMap").setVisible(true);
+            } else {
+                mapElements.get("coloredMap").setVisible(true);
+                mapElements.get("blackAndWhiteMap").setVisible(false);
+            }
+        });
+        playersOfLastTurn = viewModel.getPlayersOfLastTurn();
+
         players = viewModel.getPlayers();
         turnBasedStats.bind(viewModel.turnBasedStatsProperty());
 
@@ -124,29 +130,13 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         turnSlider.setBlockIncrement(1);
         turnSlider.setSnapToTicks(false);
 
-        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.5);
-        mapImage.setViewOrder(1);
-        mapImage.setFitWidth(DRAW_PANE_WIDTH);
-        mapImage.setFitHeight(DRAW_PANE_WIDTH
-                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
-        
-        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.5);
-        mapImageBlackAndWhite.setFitWidth(DRAW_PANE_WIDTH);
-        mapImageBlackAndWhite.setFitHeight(DRAW_PANE_WIDTH
-                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
-        mapImageBlackAndWhite.setViewOrder(1);
-        mapImageBlackAndWhite.setVisible(false);
-        mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
-        
-        ImageView mapImageColored = new ImageView(viewModel.getMapImage());
-        mapImageColored.setFitWidth(DRAW_PANE_WIDTH);
-        mapImageColored.setFitHeight(DRAW_PANE_WIDTH
-                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
-        mapImageColored.setViewOrder(1);
-        mapImageColored.setVisible(true);
-        mapElements.put("coloredMap", mapImageColored);
-        
-        drawPane.getChildren().setAll(mapElements.values());
+        initializeMapVisuals();
+
+        viewModel.subscribe("DATA_UPDATED", this::onDataUpdated);
+    }
+
+    private void onDataUpdated(String message, Object[] payloadObjects) {
+        updateMapElements();
     }
 
     /**
@@ -156,12 +146,13 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private void initializePlayersVisuals() {
         for (Player player : viewModel.getPlayers()) {
             var playerName = player.getName();
-            HashMap<String, Image> iconMap = viewModel.getIconsForPlayer(playerName);
-            player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerRoad"),
-                    iconMap.get("playerVillage"), iconMap.get("playerCity"));
+            HashMap<String, Pair<Image, String>> iconMap = viewModel.getAnnotatedIconsForPlayer(playerName);
+            player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap);
             PlayerVisualsRow row = new PlayerVisualsRow(player.getName(),
                     UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), STANDARD_ICON_VECTOR),
-                    new ImageView(player.getPlayerVillage()), new ImageView(player.getPlayerCity()));
+                    UiHelper.resizeImage(new ImageView(player.getPlayerVillage()), STANDARD_ICON_VECTOR),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerCity()), STANDARD_ICON_VECTOR),
+                    player.playerColorProperty().get());
             initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
         }
@@ -212,38 +203,126 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
      * are directly accessed and adjusted as necessary.
      */
     private void updateMapElements() {
-        // TODO: Optimize with more dynamic way - dont clear and simply put everything
-        // again
-        mapElements.values().clear();
-        // We do not have any player-independent map items in here currently
+        // Only decides the visibility for each players items
+        // Additional check for village to city transition is needed
         for (Player player : players) {
+            for (String key : mapElements.keySet()) {
+                if (key.contains("_street")) {
+                    var roadIndex = Integer.parseInt(key.substring(key.length() - 1));
+                    if (!player.showRoadProperty().get()) {
+                        mapElements.get(key).setVisible(false);
+                    } else {
+                        if (roadIndex > player.streetCountProperty().get() - 1) {
+                            mapElements.get(key).setVisible(false);
+                        } else {
+                            mapElements.get(key).setVisible(true);
+                        }
+                    }
+                } else if (key.contains("_village")) {
+                    var villageIndex = Integer.parseInt(key.substring(key.length() - 1));
+                    if (!player.showRoadProperty().get()) {
+                        mapElements.get(key).setVisible(false);
+                    } else {
+                        if (villageIndex > player.villageCountProperty().get() - 1) {
+                            mapElements.get(key).setVisible(false);
+                        } else {
+                            mapElements.get(key).setVisible(true);
+                        }
+                    }
+                } else if (key.contains("_city")) {
+                    var cityIndex = Integer.parseInt(key.substring(key.length() - 1));
+                    if (!player.showRoadProperty().get()) {
+                        mapElements.get(key).setVisible(false);
+                    } else {
+                        if (cityIndex > player.cityCountProperty().get() - 1) {
+                            mapElements.get(key).setVisible(false);
+                        } else {
+                            mapElements.get(key).setVisible(true);
+                        }
+                    }
+                }
+            }
+        }
 
+        drawPane.getChildren().setAll(mapElements.values());
+    }
+
+    private void initializeMapVisuals() {
+        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), -0.3);
+        mapImageBlackAndWhite.setFitWidth(DRAW_PANE_WIDTH);
+        mapImageBlackAndWhite.setFitHeight(DRAW_PANE_WIDTH
+                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+        mapImageBlackAndWhite.setViewOrder(1);
+        mapImageBlackAndWhite.setVisible(false);
+        mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
+
+        ImageView mapImageColored = new ImageView(viewModel.getMapImage());
+        mapImageColored.setFitWidth(DRAW_PANE_WIDTH);
+        mapImageColored.setFitHeight(DRAW_PANE_WIDTH
+                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+        mapImageColored.setVisible(true);
+        mapElements.put("coloredMap", mapImageColored);
+
+        for (Player player : viewModel.getPlayersOfLastTurn().values()) {
             var playerName = player.getName();
 
             for (int i = 0; i < player.streetPositionsProperty().get().size(); i++) {
 
-                ImageView playerStreet = new ImageView(player.getPlayerRoad());
+                ImageView playerStreet = new ImageView(
+                        UiHelper.recolorImage(player.getPlayerRoad(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true));
+                        coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true),
+                        STANDARD_ICON_VECTOR);
+                Label streetAnnotation = new Label(player.getRoadAnnotation());
+                streetAnnotation.setTextFill(player.playerColorProperty().get());
+                streetAnnotation.getStyleClass().add("boldLabel");
+                UiHelper.adjustVisual(streetAnnotation, playerStreet.getX() + (STANDARD_ICON_VECTOR.getX()),
+                        playerStreet.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                 mapElements.put(playerName + "_street_" + i, playerStreet);
+                mapElements.put(playerName + "_streetAnnotation_" + i, streetAnnotation);
+
             }
 
             for (int i = 0; i < player.villagePositionsProperty().get().size(); i++) {
 
-                ImageView playerVillage = new ImageView(player.getPlayerVillage());
+                ImageView playerVillage = new ImageView(
+                        UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true));
-                mapElements.put(playerName + "_village_" + i, playerVillage);
+                        coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true),
+                        STANDARD_ICON_VECTOR);
+
+                Label villageAnnotation = new Label(player.getVillageAnnotation());
+                villageAnnotation.setTextFill(player.playerColorProperty().get());
+                villageAnnotation.getStyleClass().add("boldLabel");
+                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
+                        playerVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
+                mapElements.putIfAbsent(playerName + "_village_" + i, playerVillage);
+                mapElements.putIfAbsent(playerName + "_villageAnnotation_" + i, villageAnnotation);
+
             }
 
             for (int i = 0; i < player.cityPositionsProperty().get().size(); i++) {
 
-                ImageView playerCity = new ImageView(player.getPlayerRoad());
-                UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true));
-                mapElements.put(playerName + "_city_" + i, playerCity);
+                if (mapElements.get(playerName + "_city_" + i) == null) {
+                    ImageView playerCity = new ImageView(
+                            UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
+                    UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
+                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
+                            STANDARD_ICON_VECTOR);
+                    Label cityAnnotation = new Label(player.getCityAnnotation());
+                    cityAnnotation.setTextFill(player.playerColorProperty().get());
+                    cityAnnotation.getStyleClass().add("boldLabel");
+                    UiHelper.adjustVisual(cityAnnotation, playerCity.getX() + (STANDARD_ICON_VECTOR.getX()),
+                            playerCity.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
+                    mapElements.put(playerName + "_city_" + i, playerCity);
+                    mapElements.put(playerName + "_cityAnnotation_" + i, cityAnnotation);
+                }
             }
+
         }
+
+        drawPane.getChildren().setAll(mapElements.values());
+        updateMapElements();
     }
 
     @FXML
