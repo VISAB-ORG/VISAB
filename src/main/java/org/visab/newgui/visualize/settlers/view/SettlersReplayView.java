@@ -147,8 +147,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     }
 
     private void onDataUpdated(String message, Object[] payloadObjects) {
+        System.out.println("new data updated");
         updateMapElements();
-        System.out.println("data updated");
     }
 
     /**
@@ -213,9 +213,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
      * are directly accessed and adjusted as necessary.
      */
     private void updateMapElements() {
-        // TODO: Optimize with more dynamic way - dont clear and simply put everything
-        // again
-        mapElements.clear();
+        long startTime = System.currentTimeMillis();
+        System.out.println("Starting map update at: " + startTime);
         // We do not have any player-independent map items in here currently
         for (Player player : players) {
 
@@ -223,44 +222,54 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
             for (int i = 0; i < player.streetPositionsProperty().get().size(); i++) {
 
-                ImageView playerStreet = new ImageView(player.getPlayerRoad());
+                ImageView playerStreet = new ImageView(
+                        UiHelper.recolorImage(player.getPlayerRoad(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true));
                 Label streetAnnotation = new Label(player.getRoadAnnotation());
                 streetAnnotation.setTextFill(player.playerColorProperty().get());
+                streetAnnotation.setStyle("styleClass='boldLabel'");
+                UiHelper.adjustVisual(streetAnnotation, playerStreet.getX() + (STANDARD_ICON_VECTOR.getX()),
+                        playerStreet.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                 mapElements.put(playerName + "_street_" + i, playerStreet);
                 mapElements.put(playerName + "_streetAnnotation_" + i, streetAnnotation);
             }
 
             for (int i = 0; i < player.villagePositionsProperty().get().size(); i++) {
 
-                ImageView playerVillage = new ImageView(new Image(ResourceHelper.IMAGE_PATH + "/playerDeath.png"));
-                // ImageView playerVillage = new ImageView(player.getPlayerVillage());
+                ImageView playerVillage = new ImageView(
+                        UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true));
 
-                System.out
-                        .println("Village placed on coordinate: " + playerVillage.getX() + ", " + playerVillage.getY());
                 Label villageAnnotation = new Label(player.getVillageAnnotation());
                 villageAnnotation.setTextFill(player.playerColorProperty().get());
-                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX(), playerVillage.getY());
+                villageAnnotation.setStyle("styleClass='boldLabel'");
+                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
+                        playerVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                 mapElements.put(playerName + "_village_" + i, playerVillage);
                 mapElements.put(playerName + "_villageAnnotation_" + i, villageAnnotation);
             }
 
             for (int i = 0; i < player.cityPositionsProperty().get().size(); i++) {
 
-                ImageView playerCity = new ImageView(player.getPlayerRoad());
+                ImageView playerCity = new ImageView(
+                        UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
                 UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true));
                 Label cityAnnotation = new Label(player.getCityAnnotation());
                 cityAnnotation.setTextFill(player.playerColorProperty().get());
+                cityAnnotation.setStyle("styleClass='boldLabel'");
+                UiHelper.adjustVisual(cityAnnotation, playerCity.getX() + (STANDARD_ICON_VECTOR.getX()),
+                        playerCity.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                 mapElements.put(playerName + "_city_" + i, playerCity);
                 mapElements.put(playerName + "_cityAnnotation_" + i, cityAnnotation);
             }
         }
 
         drawPane.getChildren().setAll(mapElements.values());
+        System.out.println("update end at: " + System.currentTimeMillis());
+        System.out.println("Update took: " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
     }
 
     @FXML
