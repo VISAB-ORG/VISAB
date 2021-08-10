@@ -210,8 +210,7 @@ public final class SettlersImplicator {
                 var name = player.getName();
                 var lastTurn = resourcesLastTurn.getOrDefault(name, new PlayerResources());
 
-                PlayerResources gainedThisTurn = null;
-                gainedThisTurn = player.getResourcesGained();
+                var gainedThisTurn = player.getResourcesGained();
 
                 var lastTurnAndGained = PlayerResources.add(lastTurn, gainedThisTurn);
 
@@ -237,7 +236,7 @@ public final class SettlersImplicator {
 
         var test = accumulatedVictoryPointsPerTurn("Player2", file);
         for (int i = 0; i < test.size(); i++) {
-//            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
+            // System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
         }
     }
 }
