@@ -113,7 +113,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
         drawPane.setPrefHeight(drawPanePrefHeight);
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
-                drawPane.getPrefWidth(), STANDARD_ICON_VECTOR);
+                drawPane.getPrefWidth(), BIG_ICON_VECTOR);
         initializePlayersVisuals();
 
         playerDataTable.setItems(FXCollections.observableArrayList(players));
