@@ -1,9 +1,15 @@
 package org.visab.newgui.visualize.settlers.model;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class PlayerVisualsRow {
 
@@ -12,7 +18,8 @@ public class PlayerVisualsRow {
     private HBox playerVillagesHBox;
     private HBox playerCitiesHBox;
 
-    public PlayerVisualsRow(String playerName, ImageView playerRoad, ImageView playerVillage, ImageView playerCity) {
+    public PlayerVisualsRow(String playerName, ImageView playerRoad, ImageView playerVillage, ImageView playerCity,
+            Color playerColor) {
 
         this.playerHBox = new HBox();
         this.playerRoadHBox = new HBox();
@@ -26,13 +33,17 @@ public class PlayerVisualsRow {
         CheckBox showPlayerRoad = new CheckBox();
         CheckBox showPlayerVillages = new CheckBox();
         CheckBox showPlayerCities = new CheckBox();
+        Pane colorPane = new Pane();
+        colorPane.setPrefWidth(16);
+        colorPane.setPrefHeight(16);
+        colorPane.setBackground(new Background(new BackgroundFill(playerColor, CornerRadii.EMPTY, Insets.EMPTY)));
 
         showPlayer.setSelected(true);
         showPlayerRoad.setSelected(true);
         showPlayerVillages.setSelected(true);
         showPlayerCities.setSelected(true);
 
-        this.playerHBox.getChildren().addAll(showPlayer, playerNameLabel);
+        this.playerHBox.getChildren().addAll(showPlayer, colorPane, playerNameLabel);
         this.playerRoadHBox.getChildren().addAll(showPlayerRoad, playerRoad);
         this.playerVillagesHBox.getChildren().addAll(showPlayerVillages, playerVillage);
         this.playerCitiesHBox.getChildren().addAll(showPlayerCities, playerCity);
