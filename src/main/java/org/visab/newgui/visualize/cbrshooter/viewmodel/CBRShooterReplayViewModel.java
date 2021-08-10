@@ -86,7 +86,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         return new Image(new ByteArrayInputStream(file.getImages().getMap()));
     }
 
-    public Image getPlayerIconByName(String playerName) {
+    public Image getPlayerIcon() {
         // return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Player")));
     }
@@ -292,7 +292,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Image> iconMap = new HashMap<String, Image>();
         iconMap.put("playerIcon",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/cbrBot.png"), playerColor));
+                UiHelper.recolorImage(getPlayerIcon(), playerColor));
         iconMap.put("playerPlanChange",
                 UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
         iconMap.put("playerDeath",
