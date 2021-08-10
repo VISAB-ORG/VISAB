@@ -291,8 +291,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     public HashMap<String, Image> getIconsForPlayer(String playerName) {
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Image> iconMap = new HashMap<String, Image>();
-        iconMap.put("playerIcon",
-                UiHelper.recolorImage(getPlayerIcon(), playerColor));
+        iconMap.put("playerIcon", UiHelper.recolorImage(getPlayerIcon(), playerColor));
         iconMap.put("playerPlanChange",
                 UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
         iconMap.put("playerDeath",
@@ -348,7 +347,7 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     private int statisticsReceived = 0;
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         statisticsReceived += 1;
         data.add(newStatistics);
 

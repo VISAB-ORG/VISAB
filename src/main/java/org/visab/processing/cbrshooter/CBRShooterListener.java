@@ -46,7 +46,8 @@ public class CBRShooterListener
     @Override
     public List<CBRShooterStatistics> getStatisticsCopy() {
         // Return a copy to avoid concurrent modification
-        return new ArrayList<CBRShooterStatistics>(file.getStatistics());
+        // return new ArrayList<CBRShooterStatistics>(file.getStatistics());
+        return file.getStatistics();
     }
 
     @Override
@@ -60,11 +61,11 @@ public class CBRShooterListener
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override
-    public void onSessionClosed() {
+    public synchronized void onSessionClosed() {
         if (file.getStatistics().size() > 0) {
             var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
@@ -96,13 +97,13 @@ public class CBRShooterListener
     }
 
     @Override
-    public void processImage(CBRShooterImages mapImage) {
+    public synchronized void processImage(CBRShooterImages mapImage) {
         writeLog(Level.DEBUG, "Received images");
         file.setImages(mapImage);
     }
 
     @Override
-    public void processStatistics(CBRShooterStatistics statistics) {
+    public synchronized void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
         writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));

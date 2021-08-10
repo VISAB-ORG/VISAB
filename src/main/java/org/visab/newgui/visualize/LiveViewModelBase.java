@@ -52,7 +52,7 @@ public abstract class LiveViewModelBase<TFile extends IVISABFile, TStatistics ex
     }
 
     @Override
-    public abstract void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
+    public abstract void onStatisticsAdded(TStatistics newStatistics);
 
     @Override
     public void onSessionClosed() {
