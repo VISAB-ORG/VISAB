@@ -88,16 +88,16 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	showInBlackAndWhiteCheckBox.setSelected(false);
-    	showInBlackAndWhiteCheckBox.setOnAction(e -> {
-    		if (showInBlackAndWhiteCheckBox.isSelected()) {
-    			mapElements.get("coloredMap").setVisible(false);
-    			mapElements.get("blackAndWhiteMap").setVisible(true);
-    		} else {
-    			mapElements.get("coloredMap").setVisible(true);
-    			mapElements.get("blackAndWhiteMap").setVisible(false);
-    		}	
-    	});
+        showInBlackAndWhiteCheckBox.setSelected(false);
+        showInBlackAndWhiteCheckBox.setOnAction(e -> {
+            if (showInBlackAndWhiteCheckBox.isSelected()) {
+                mapElements.get("coloredMap").setVisible(false);
+                mapElements.get("blackAndWhiteMap").setVisible(true);
+            } else {
+                mapElements.get("coloredMap").setVisible(true);
+                mapElements.get("blackAndWhiteMap").setVisible(false);
+            }
+        });
         players = viewModel.getPlayers();
         turnBasedStats.bind(viewModel.turnBasedStatsProperty());
 
@@ -124,20 +124,14 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         turnSlider.setBlockIncrement(1);
         turnSlider.setSnapToTicks(false);
 
-        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.5);
-        mapImage.setViewOrder(1);
-        mapImage.setFitWidth(DRAW_PANE_WIDTH);
-        mapImage.setFitHeight(DRAW_PANE_WIDTH
-                * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
-        
-        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.5);
+        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), -0.3);
         mapImageBlackAndWhite.setFitWidth(DRAW_PANE_WIDTH);
         mapImageBlackAndWhite.setFitHeight(DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
         mapImageBlackAndWhite.setViewOrder(1);
         mapImageBlackAndWhite.setVisible(false);
         mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
-        
+
         ImageView mapImageColored = new ImageView(viewModel.getMapImage());
         mapImageColored.setFitWidth(DRAW_PANE_WIDTH);
         mapImageColored.setFitHeight(DRAW_PANE_WIDTH
@@ -145,7 +139,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         mapImageColored.setViewOrder(1);
         mapImageColored.setVisible(true);
         mapElements.put("coloredMap", mapImageColored);
-        
+
         drawPane.getChildren().setAll(mapElements.values());
     }
 
