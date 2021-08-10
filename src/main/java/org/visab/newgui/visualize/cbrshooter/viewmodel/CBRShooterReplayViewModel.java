@@ -87,9 +87,8 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     public Image getPlayerIconByName(String playerName) {
-        // return new Image(new
-        // ByteArrayInputStream(file.getImages().getMoveableObjects().get(playerName)));
-        return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
+        // return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Player")));
     }
 
     public List<String> getPlayerNames() {
@@ -302,10 +301,9 @@ public class CBRShooterReplayViewModel extends ReplayViewModelBase<CBRShooterFil
     }
 
     public Image getWeaponIcon() {
-        return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
+        // return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
         // Analogous to map visuals does not work yet
-        // return new Image(new
-        // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
     }
 
     public Image getAmmuIcon() {
