@@ -37,7 +37,7 @@ public class CBRShooterMetaViewModel extends LiveViewModelBase<CBRShooterFile, C
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(s -> onSessionClosed());
 
-            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatisticsCopy();
+            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatistics();
         } else {
             super.initialize(scope.getFile());
             statistics = file.getStatistics();

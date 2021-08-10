@@ -44,7 +44,7 @@ public class CBRShooterListener
     }
 
     @Override
-    public List<CBRShooterStatistics> getStatisticsCopy() {
+    public List<CBRShooterStatistics> getStatistics() {
         // Return a copy to avoid concurrent modification
         // return new ArrayList<CBRShooterStatistics>(file.getStatistics());
         return file.getStatistics();
