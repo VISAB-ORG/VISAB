@@ -12,8 +12,11 @@ import org.visab.globalmodel.IImageContainer;
 public class SettlersImages implements IImageContainer {
 
     private byte[] cityImage;
+    private String cityAnnotation;
     private byte[] streetImage;
+    private String streetAnnotation;
     private byte[] villageImage;
+    private String villageAnnotation;
     private byte[] mapImage;
 
     public byte[] getCityImage() {
@@ -46,6 +49,30 @@ public class SettlersImages implements IImageContainer {
 
     public void setMapImage(byte[] mapImage) {
         this.mapImage = mapImage;
+    }
+
+    public String getCityAnnotation() {
+        return cityAnnotation;
+    }
+
+    public void setCityAnnotation(String cityAnnotation) {
+        this.cityAnnotation = cityAnnotation;
+    }
+
+    public String getStreetAnnotation() {
+        return streetAnnotation;
+    }
+
+    public void setStreetAnnotation(String streetAnnotation) {
+        this.streetAnnotation = streetAnnotation;
+    }
+
+    public String getVillageAnnotation() {
+        return villageAnnotation;
+    }
+
+    public void setVillageAnnotation(String villageAnnotation) {
+        this.villageAnnotation = villageAnnotation;
     }
 
 }
