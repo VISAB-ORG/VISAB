@@ -227,6 +227,9 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     } else {
                         if (villageIndex > player.villageCountProperty().get() - 1) {
                             mapElements.get(key).setVisible(false);
+                        } else if (checkIfNodeAlreadyAtThisPosition(mapElements.get(key), "city")) {
+                            System.out.println("City found at village position");
+                            mapElements.get(key).setVisible(false);
                         } else {
                             mapElements.get(key).setVisible(true);
                         }
@@ -247,6 +250,18 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         }
 
         drawPane.getChildren().setAll(mapElements.values());
+    }
+
+    private boolean checkIfNodeAlreadyAtThisPosition(Node node, String nodeSearchKey) {
+
+        for (String key : mapElements.keySet()) {
+            if (!key.contains(nodeSearchKey) && node.getLayoutX() == mapElements.get(key).getLayoutX()
+                    && node.getLayoutY() == mapElements.get(key).getLayoutY()) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     private void initializeMapVisuals() {
@@ -303,9 +318,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
             }
 
+            // Special case: if there is a city, there must have been a village on this
+            // position as well
             for (int i = 0; i < player.cityPositionsProperty().get().size(); i++) {
 
                 if (mapElements.get(playerName + "_city_" + i) == null) {
+                    // Cities
                     ImageView playerCity = new ImageView(
                             UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
                     UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
@@ -318,6 +336,21 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             playerCity.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                     mapElements.put(playerName + "_city_" + i, playerCity);
                     mapElements.put(playerName + "_cityAnnotation_" + i, cityAnnotation);
+
+                    // "Pre-" Villages
+                    ImageView playerPreVillage = new ImageView(
+                            UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
+                    UiHelper.adjustVisual(playerPreVillage, player.showVillagesProperty().get(),
+                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
+                            BIG_ICON_VECTOR);
+
+                    Label preVillageAnnotation = new Label(player.getVillageAnnotation());
+                    preVillageAnnotation.setTextFill(player.playerColorProperty().get());
+                    preVillageAnnotation.getStyleClass().add("boldLabel");
+                    UiHelper.adjustVisual(preVillageAnnotation, playerPreVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
+                            playerPreVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
+                    mapElements.putIfAbsent(playerName + "_village_pre" + i, playerPreVillage);
+                    mapElements.putIfAbsent(playerName + "_villageAnnotation_pre" + i, preVillageAnnotation);
                 }
             }
 
