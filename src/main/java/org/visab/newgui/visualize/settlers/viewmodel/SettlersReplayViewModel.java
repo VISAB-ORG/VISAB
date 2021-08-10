@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,6 +70,8 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     private ObjectProperty<SettlersStatistics> turnBasedStatsProperty = new SimpleObjectProperty<>();
     private List<Player> players = new ArrayList<>();
 
+    private Map<String, Player> playersOfLastTurn = new HashMap<String, Player>();
+
     public void initialize() {
 
         // Update loop eventually needs to be stopped on stage close
@@ -99,6 +102,16 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
 
         for (var name : file.getPlayerNames())
             players.add(new Player(name));
+
+        // Get reference of the last game stat for each player
+        for (var name : file.getPlayerNames()) {
+            Player visualizePlayer = new Player(name);
+            visualizePlayer.initializeVisuals(getPlayerColors().get(name), getAnnotatedIconsForPlayer(name));
+            var globalmodelPlayer = StreamUtil.firstOrNull(data.get(data.size() - 1).getPlayers(),
+                    x -> x.getName().equals(name));
+            visualizePlayer.updatePlayerData(globalmodelPlayer);
+            playersOfLastTurn.put(name, visualizePlayer);
+        }
 
         updateCurrentGameStatsByturn(0);
 
@@ -180,6 +193,10 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public Map<String, Player> getPlayersOfLastTurn() {
+        return playersOfLastTurn;
     }
 
     public Rectangle getMapRectangle() {

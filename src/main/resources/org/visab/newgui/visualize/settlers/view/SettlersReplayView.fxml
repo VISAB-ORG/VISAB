@@ -105,7 +105,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Dice Rolls" />
+                                                <Label text="Turns Dice Roll" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
