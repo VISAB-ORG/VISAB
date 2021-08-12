@@ -17,16 +17,24 @@ import org.visab.globalmodel.Rectangle;
  *
  */
 public class SettlersFile extends BasicVISABFile {
-
     private List<SettlersStatistics> statistics = new ArrayList<>();
     private Map<String, String> playerInformation;
     private Map<String, String> playerColors;
     private int playerCount;
     private Rectangle mapRectangle;
     private String winner;
+    private SettlersImages images;
 
     public SettlersFile() {
         super(GameName.SETTLERS_OF_CATAN, "2.0");
+    }
+
+    public SettlersImages getImages() {
+        return images;
+    }
+
+    public void setImages(SettlersImages images) {
+        this.images = images;
     }
 
     public Map<String, String> getPlayerColors() {

@@ -18,20 +18,18 @@ public abstract class CBRShooterComparisonRowBase<TProperty extends Property<?>>
 
     @Override
     public void updateValues(IVISABFile file) {
-        updateValues((CBRShooterFile) file);
+        var concreteFile = (CBRShooterFile) file;
+        updateValues(concreteFile, new ArrayList<>(concreteFile.getStatistics()));
     }
 
     @Override
     public void updateSeries(IVISABFile file) {
-        updateSeries((CBRShooterFile) file);
+        var concreteFile = (CBRShooterFile) file;
+        updateSeries(concreteFile, new ArrayList<>(concreteFile.getStatistics()));
     }
 
-    public List<CBRShooterStatistics> makeStatisticsCopy(CBRShooterFile file) {
-        return new ArrayList<>(file.getStatistics());
-    }
+    public abstract void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics);
 
-    public abstract void updateValues(CBRShooterFile file);
-
-    public abstract void updateSeries(CBRShooterFile file);
+    public abstract void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics);
 
 }

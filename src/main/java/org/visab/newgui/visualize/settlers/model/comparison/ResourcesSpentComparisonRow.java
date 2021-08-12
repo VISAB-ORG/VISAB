@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.visab.globalmodel.settlers.PlayerResources;
 import org.visab.globalmodel.settlers.SettlersFile;
+import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.settlers.model.SettlersComparisonRowBase;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator;
@@ -22,19 +23,17 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
     }
 
     @Override
-    public void updateValues(SettlersFile file) {
-        var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
+    public void updateValues(SettlersFile file, List<SettlersStatistics> statistics) {
+        var resourcesSpent = SettlersImplicator.concludeResourcesSpent(statistics, file.getPlayerNames());
         for (var entry : resourcesSpent.entrySet())
             playerValues.put(entry.getKey(), new SimpleObjectProperty<PlayerResources>(entry.getValue()));
     }
 
     @Override
-    public void updateSeries(SettlersFile file) {
-        var statistics = file.getStatistics();
-
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+    public void updateSeries(SettlersFile file, List<SettlersStatistics> statistics) {
+        var playerData = new HashMap<String, List<StatisticsDataStructure<PlayerResources>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, SettlersImplicator.accumulatedResourcesSpentPerTurn(name, file));
+            playerData.put(name, SettlersImplicator.accumulatedResourcesSpentPerTurn(name, statistics));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -49,13 +48,16 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
 
                 var graphData = playerSeries.get(name).getData();
                 for (var data : resourcesSpentPerTurn) {
+                    var sum = 0;
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
+
+                        sum += (data.getValue().getBrick() + data.getValue().getSheep() + data.getValue().getStone()
+                                + data.getValue().getWheat() + data.getValue().getWood());
+                        graphData.add(new Data<Integer, Number>(data.getRound(), sum));
                     }
                 }
             }
         }
-        
     }
-
+    
 }

@@ -58,9 +58,9 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     private StringProperty totalTimeProperty = new SimpleStringProperty();
     private StringProperty roundTimeProperty = new SimpleStringProperty();
     private IntegerProperty roundProperty = new SimpleIntegerProperty();
-    private ObjectProperty<Vector2> healthCoordsProperty = new SimpleObjectProperty<Vector2>();
-    private ObjectProperty<Vector2> weaponCoordsProperty = new SimpleObjectProperty<Vector2>();
-    private ObjectProperty<Vector2> ammuCoordsProperty = new SimpleObjectProperty<Vector2>();
+    private ObjectProperty<Vector2<Double>> healthCoordsProperty = new SimpleObjectProperty<Vector2<Double>>();
+    private ObjectProperty<Vector2<Double>> weaponCoordsProperty = new SimpleObjectProperty<Vector2<Double>>();
+    private ObjectProperty<Vector2<Double>> ammuCoordsProperty = new SimpleObjectProperty<Vector2<Double>>();
 
     // Used to control the speed in which the data is updated in the replay view
     private double updateInterval;
@@ -86,10 +86,9 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
         return new Image(new ByteArrayInputStream(file.getImages().getMap()));
     }
 
-    public Image getPlayerIconByName(String playerName) {
-        // return new Image(new
-        // ByteArrayInputStream(file.getImages().getMoveableObjects().get(playerName)));
-        return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
+    public Image getPlayerIcon() {
+        // return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Player")));
     }
 
     public List<String> getPlayerNames() {
@@ -120,15 +119,15 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
         return roundTimeProperty;
     }
 
-    public ObjectProperty<Vector2> healthCoordsProperty() {
+    public ObjectProperty<Vector2<Double>> healthCoordsProperty() {
         return healthCoordsProperty;
     }
 
-    public ObjectProperty<Vector2> weaponCoordsProperty() {
+    public ObjectProperty<Vector2<Double>> weaponCoordsProperty() {
         return weaponCoordsProperty;
     }
 
-    public ObjectProperty<Vector2> ammuCoordsProperty() {
+    public ObjectProperty<Vector2<Double>> ammuCoordsProperty() {
         return ammuCoordsProperty;
     }
 
@@ -197,8 +196,8 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
         return playerColorMap;
     }
 
-    public List<Vector2> getPlayerPositionsForInterval(String playerName, int start, int end) {
-        List<Vector2> positionList = new ArrayList<Vector2>();
+    public List<Vector2<Double>> getPlayerPositionsForInterval(String playerName, int start, int end) {
+        List<Vector2<Double>> positionList = new ArrayList<Vector2<Double>>();
 
         for (int i = start; i <= end; i++) {
             positionList.add(data.get(i).getInfoByPlayerName(playerName).getPosition());
@@ -292,8 +291,7 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     public HashMap<String, Image> getIconsForPlayer(String playerName) {
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Image> iconMap = new HashMap<String, Image>();
-        iconMap.put("playerIcon",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/cbrBot.png"), playerColor));
+        iconMap.put("playerIcon", UiHelper.recolorImage(getPlayerIcon(), playerColor));
         iconMap.put("playerPlanChange",
                 UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
         iconMap.put("playerDeath",
@@ -302,10 +300,9 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     }
 
     public Image getWeaponIcon() {
-        return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
+        // return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
         // Analogous to map visuals does not work yet
-        // return new Image(new
-        // ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
+        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
     }
 
     public Image getAmmuIcon() {
@@ -316,8 +313,8 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Health")));
     }
 
-    public Vector2 getLastPlanChangePositionForPlayer(String playerName, int frameIndex) {
-        Vector2 pos = new Vector2(0, 0);
+    public Vector2<Double> getLastPlanChangePositionForPlayer(String playerName, int frameIndex) {
+        Vector2<Double> pos = new Vector2<Double>(0.0, 0.0);
         String planAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getPlan();
         for (int i = frameIndex; i >= 0; i--) {
             if (!data.get(i).getInfoByPlayerName(playerName).getPlan().equals(planAtFrameIndex)) {
@@ -327,8 +324,8 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
         return pos;
     }
 
-    public Vector2 getLastDeathPositionForPlayer(String playerName, int frameIndex) {
-        Vector2 pos = new Vector2(0, 0);
+    public Vector2<Double> getLastDeathPositionForPlayer(String playerName, int frameIndex) {
+        Vector2<Double> pos = new Vector2<Double>(0.0, 0.0);
         var deathsAtFrameIndex = data.get(frameIndex).getInfoByPlayerName(playerName).getStatistics().getDeaths();
         for (int i = frameIndex; i >= 0; i--) {
             if (data.get(i).getInfoByPlayerName(playerName).getStatistics().getDeaths() < deathsAtFrameIndex) {
@@ -350,7 +347,7 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     private int statisticsReceived = 0;
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         statisticsReceived += 1;
         data.add(newStatistics);
 

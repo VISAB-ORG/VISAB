@@ -1,6 +1,5 @@
 package org.visab.newgui.visualize;
 
-import java.util.List;
 
 import org.visab.globalmodel.IStatistics;
 import org.visab.processing.ILiveViewable;
@@ -14,7 +13,7 @@ public interface ILiveViewModel<TStatistics extends IStatistics> extends IVisual
      * 
      * @param newStatistics The newely received statistics.
      */
-    void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
+    void onStatisticsAdded(TStatistics newStatistics);
 
     /**
      * Called by the docked listener upon closing the session.

@@ -14,12 +14,12 @@ import org.visab.globalmodel.Vector2;
 public class Player {
 
     private int villageCount;
-    private List<Vector2> villagePositions;
+    private List<Vector2<Double>> villagePositions;
     private int streetCount;
-    private List<Vector2> streetPositions;
+    private List<Vector2<Double>> streetPositions;
     private int cityCount;
-    private List<Vector2> cityPositions;
-    
+    private List<Vector2<Double>> cityPositions;
+
     private PlayerResources resources;
     private boolean hasLongestRoad;
     private boolean isAi;
@@ -29,18 +29,9 @@ public class Player {
     private int victoryPoints;
     private PlayerResources resourcesGained;
     private boolean isMyTurn;
-    private PlayerResources villageResourcesGained;
 
     public int getVillageCount() {
         return villageCount;
-    }
-
-    public PlayerResources getVillageResourcesGained() {
-        return villageResourcesGained;
-    }
-
-    public void setVillageResourcesGained(PlayerResources villageResourcesGained) {
-        this.villageResourcesGained = villageResourcesGained;
     }
 
     public boolean isMyTurn() {
@@ -67,11 +58,11 @@ public class Player {
         this.villageCount = villageCount;
     }
 
-    public List<Vector2> getVillagePositions() {
+    public List<Vector2<Double>> getVillagePositions() {
         return villagePositions;
     }
 
-    public void setVillagePositions(List<Vector2> villagePositions) {
+    public void setVillagePositions(List<Vector2<Double>> villagePositions) {
         this.villagePositions = villagePositions;
     }
 
@@ -83,11 +74,11 @@ public class Player {
         this.streetCount = streetCount;
     }
 
-    public List<Vector2> getStreetPositions() {
+    public List<Vector2<Double>> getStreetPositions() {
         return streetPositions;
     }
 
-    public void setStreetPositions(List<Vector2> streetPositions) {
+    public void setStreetPositions(List<Vector2<Double>> streetPositions) {
         this.streetPositions = streetPositions;
     }
 
@@ -99,11 +90,11 @@ public class Player {
         this.cityCount = cityCount;
     }
 
-    public List<Vector2> getCityPositions() {
+    public List<Vector2<Double>> getCityPositions() {
         return cityPositions;
     }
 
-    public void setCityPositions(List<Vector2> cityPositions) {
+    public void setCityPositions(List<Vector2<Double>> cityPositions) {
         this.cityPositions = cityPositions;
     }
 

@@ -34,7 +34,7 @@ public class Player {
     private IntegerProperty healthProperty = new SimpleIntegerProperty();
     private FloatProperty relativeHealthProperty = new SimpleFloatProperty();
     private StringProperty planProperty = new SimpleStringProperty();
-    private ObjectProperty<Vector2> positionProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Vector2<Double>> positionProperty = new SimpleObjectProperty<>();
     private StringProperty weaponProperty = new SimpleStringProperty();
     private IntegerProperty magazineAmmuProperty = new SimpleIntegerProperty();
     private IntegerProperty totalAmmuProperty = new SimpleIntegerProperty();
@@ -108,7 +108,7 @@ public class Player {
         this.playerPath.getElements().clear();
     }
 
-    public void redrawPath(List<Vector2> positionList, CoordinateHelper coordinateHelper) {
+    public void redrawPath(List<Vector2<Double>> positionList, CoordinateHelper coordinateHelper) {
         this.playerPath.getElements().clear();
 
         if (positionList.size() > 0) {
@@ -160,7 +160,7 @@ public class Player {
         return planProperty;
     }
 
-    public ObjectProperty<Vector2> positionProperty() {
+    public ObjectProperty<Vector2<Double>> positionProperty() {
         return positionProperty;
     }
 

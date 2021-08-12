@@ -37,7 +37,7 @@ public class CBRShooterMetaViewModel extends LiveVisualizeViewModelBase<CBRShoot
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(s -> onSessionClosed());
 
-            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatisticsCopy();
+            statistics = ((ILiveViewable<CBRShooterStatistics>) scope.getSessionListener()).getStatistics();
         } else {
             super.initialize(scope.getFile());
             statistics = file.getStatistics();
@@ -102,10 +102,10 @@ public class CBRShooterMetaViewModel extends LiveVisualizeViewModelBase<CBRShoot
     }
 
     @Override
-    public void onStatisticsAdded(CBRShooterStatistics newStatistics, List<CBRShooterStatistics> statisticsCopy) {
+    public void onStatisticsAdded(CBRShooterStatistics newStatistics) {
         roundsProperty.set(newStatistics.getRound());
         ingameTimeProperty.set(newStatistics.getTotalTime());
-        statisticsPerSecondProperty.set(statisticsCopy.size() / newStatistics.getTotalTime());
+        statisticsPerSecondProperty.set(file.getStatistics().size() / newStatistics.getTotalTime());
     }
 
     @Override

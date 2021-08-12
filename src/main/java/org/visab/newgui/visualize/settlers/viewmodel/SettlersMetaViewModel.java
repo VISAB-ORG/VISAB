@@ -31,7 +31,7 @@ public class SettlersMetaViewModel extends LiveVisualizeViewModelBase<SettlersFi
             // Register ourselves, for when the view closes
             scope.registerOnStageClosing(s -> onSessionClosed());
 
-            statistics = ((ILiveViewable<SettlersStatistics>) scope.getSessionListener()).getStatisticsCopy();
+            statistics = ((ILiveViewable<SettlersStatistics>) scope.getSessionListener()).getStatistics();
         } else {
             super.initialize(scope.getFile());
             statistics = file.getStatistics();
@@ -81,7 +81,7 @@ public class SettlersMetaViewModel extends LiveVisualizeViewModelBase<SettlersFi
     }
 
     @Override
-    public void onStatisticsAdded(SettlersStatistics newStatistics, List<SettlersStatistics> statisticsCopy) {
+    public void onStatisticsAdded(SettlersStatistics newStatistics) {
         roundsProperty.set(newStatistics.getTurn());
     }
 

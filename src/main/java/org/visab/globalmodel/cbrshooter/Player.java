@@ -10,7 +10,7 @@ public class Player {
     private String name;
     private String plan;
 
-    private Vector2 position;
+    private Vector2<Double> position;
 
     private float relativeHealth;
 
@@ -42,7 +42,7 @@ public class Player {
         return plan;
     }
 
-    public Vector2 getPosition() {
+    public Vector2<Double> getPosition() {
         return position;
     }
 
@@ -74,7 +74,7 @@ public class Player {
         this.plan = plan;
     }
 
-    public void setPosition(Vector2 position) {
+    public void setPosition(Vector2<Double> position) {
         this.position = position;
     }
 

@@ -47,9 +47,8 @@ public class SettlersListener
     }
 
     @Override
-    public List<SettlersStatistics> getStatisticsCopy() {
-        // Return a copy to avoid concurrent modification
-        return new ArrayList<SettlersStatistics>(file.getStatistics());
+    public List<SettlersStatistics> getStatistics() {
+        return file.getStatistics();
     }
 
     @Override
@@ -63,7 +62,7 @@ public class SettlersListener
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override
@@ -94,8 +93,9 @@ public class SettlersListener
     }
 
     @Override
-    public void processImage(SettlersImages mapImage) {
-        // TODO Auto-generated method stub
+    public void processImage(SettlersImages images) {
+        writeLog(Level.DEBUG, "Received images!");
+        file.setImages(images);
     }
 
     @Override

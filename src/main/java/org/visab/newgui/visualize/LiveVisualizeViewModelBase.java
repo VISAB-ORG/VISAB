@@ -57,7 +57,7 @@ public abstract class LiveVisualizeViewModelBase<TFile extends IVISABFile, TStat
     }
 
     @Override
-    public abstract void onStatisticsAdded(TStatistics newStatistics, List<TStatistics> statisticsCopy);
+    public abstract void onStatisticsAdded(TStatistics newStatistics);
 
     @Override
     public void onSessionClosed() {
