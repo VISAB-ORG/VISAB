@@ -96,7 +96,6 @@ public class DialogHelper {
      * @return The text field value if OK pressed, "" else
      */
     public String showInputDialog(String contentText, String defaultValue, String title) {
-        // TODO: https://code.makery.ch/blog/javafx-dialogs-official/
         var dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);
         dialog.setContentText(contentText);
@@ -152,9 +151,6 @@ public class DialogHelper {
         var stage = new Stage();
         stage.setTitle(configuration.getStageTitle());
 
-        // TODO: Calculate relative to screen resolution
-        // TODO: Perhaps it will be provided relative in the config and we calculate the
-        // absolute values here
         if (configuration.getWidth() != 0)
             stage.setMinWidth(configuration.getWidth());
 

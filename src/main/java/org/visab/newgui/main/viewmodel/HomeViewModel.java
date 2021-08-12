@@ -118,7 +118,6 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
         } else {
             try {
                 var fileName = fileToAdd.getName();
-                // TODO:
                 if (!fileToAdd.getName().endsWith(".visab2"))
                     return false;
 

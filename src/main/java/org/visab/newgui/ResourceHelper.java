@@ -44,7 +44,7 @@ public final class ResourceHelper {
         if (gameLogoPaths.containsKey(game))
             return gameLogoPaths.get(game);
         else
-            return gameLogoPaths.get(GameName.CBR_SHOOTER); // TODO
+            return gameLogoPaths.get(GameName.CBR_SHOOTER); // TODO: Add default image
     }
 
     /**

@@ -194,7 +194,8 @@ public class SettingsViewModel extends ViewModelBase {
                 editAllowedNewGame.set(null);
                 configManager.saveSettings();
             } else {
-                // TODO:
+                dialogHelper.showWarning(
+                        "Couldent update session timeouts, since atleast one of the given timeouts was < 1.");
             }
         });
     }
@@ -214,7 +215,7 @@ public class SettingsViewModel extends ViewModelBase {
                     editTimeoutsSelectedGame.set(gameSessionTimeouts.get(0).getGame());
                     editTimeoutsTimeout.set(gameSessionTimeouts.get(0).getTimeout());
                 }
-                
+
                 var viewConfig = new ShowViewConfiguration(SessionTimeoutEditView.class, "Session Timeout", true);
                 dialogHelper.showView(viewConfig, this);
             });
