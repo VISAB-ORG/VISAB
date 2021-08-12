@@ -14,8 +14,8 @@ import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.ILiveViewModel;
-import org.visab.newgui.visualize.ReplayViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
+import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.settlers.model.Player;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
@@ -33,7 +33,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
+public class SettlersReplayViewModel extends VisualizeViewModelBase<SettlersFile>
         implements ILiveViewModel<SettlersStatistics> {
 
     // Thread necessary to control data updating in the background
@@ -151,7 +151,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     }
 
     public Command playData() {
-        playData = runnableCommand(() -> {
+        playData = makeCommand(() -> {
             logger.debug("Pressed play button.");
             // Start this as a thread to provide the possibility of interrupting it on pause
             updateLoop = new Thread() {
@@ -183,7 +183,7 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
     }
 
     public Command pauseData() {
-        pauseData = runnableCommand(() -> {
+        pauseData = makeCommand(() -> {
             if (updateLoop != null) {
                 updateLoop.interrupt();
             }

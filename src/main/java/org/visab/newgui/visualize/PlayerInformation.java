@@ -1,5 +1,8 @@
 package org.visab.newgui.visualize;
 
+/**
+ * Helper class for displaying player information in meta views.
+ */
 public class PlayerInformation {
     private String name;
     private String controlledBy;

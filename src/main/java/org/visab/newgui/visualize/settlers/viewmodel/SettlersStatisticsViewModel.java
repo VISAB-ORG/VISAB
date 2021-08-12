@@ -134,7 +134,7 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
         playerDetailedStatisticsSeries.clear();
 
         if (showDetailsCommand == null) {
-            showDetailsCommand = runnableCommand(() -> {
+            showDetailsCommand = makeCommand(() -> {
                 var selectedRow = selectedRowProperty.get();
 
                 if (selectedRow.getRowDescription().equals("Cumulated resource gain by dice")) {
@@ -158,7 +158,7 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
     }
 
     public Command updateStackedBarChartCommand() {
-        updateStackedBarChartCommand = runnableCommand(() -> {
+        updateStackedBarChartCommand = makeCommand(() -> {
             var serieses = getStackedBarChartData();
             for (var series : serieses) {
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "")

@@ -1,7 +1,5 @@
 package org.visab.newgui.visualize;
 
-import java.util.List;
-
 import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.IVISABFile;
 import org.visab.processing.ILiveViewable;
@@ -62,6 +60,7 @@ public abstract class LiveVisualizeViewModelBase<TFile extends IVISABFile, TStat
     @Override
     public void onSessionClosed() {
         liveViewActiveProperty.set(false);
+        listener.removeViewModel(this);
     }
 
 }

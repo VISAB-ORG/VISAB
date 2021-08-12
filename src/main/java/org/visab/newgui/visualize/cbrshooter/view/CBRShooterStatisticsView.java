@@ -114,7 +114,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
 
             // Create cell value factory
             column.setCellValueFactory(
-                    cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerValues().get(name));
+                    cellData -> (ObservableValue<Object>) cellData.getValue().getPlayerProperties().get(name));
             columns.add(column);
         }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.visualize.StatisticsDataStructure;
+import org.visab.newgui.visualize.StatisticsData;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -37,7 +37,7 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
 
     @Override
     public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
-        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
+        var playerData = new HashMap<String, List<StatisticsData<Double>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, CBRShooterImplicator.accumulatedDeathsPerRound(name, statistics));
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.visualize.StatisticsDataStructure;
+import org.visab.newgui.visualize.StatisticsData;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.util.StreamUtil;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
@@ -46,7 +46,7 @@ public class HitsComparisonRow extends CBRShooterComparisonRowBase<IntegerProper
 
     @Override
     public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
-        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
+        var playerData = new HashMap<String, List<StatisticsData<Double>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name,
                     CBRShooterImplicator.hitsOnEnemyPerRound(name, statistics, file.getWeaponInformation()));

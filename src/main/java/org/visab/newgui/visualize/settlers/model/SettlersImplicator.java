@@ -8,16 +8,16 @@ import java.util.Map;
 
 import org.visab.globalmodel.settlers.PlayerResources;
 import org.visab.globalmodel.settlers.SettlersStatistics;
-import org.visab.newgui.visualize.StatisticsDataStructure;
+import org.visab.newgui.visualize.StatisticsData;
 
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 public final class SettlersImplicator {
 
-    public static List<StatisticsDataStructure<Double>> accumulatedVictoryPointsPerTurn(String player,
+    public static List<StatisticsData<Double>> accumulatedVictoryPointsPerTurn(String player,
             List<SettlersStatistics> statisticsList) {
-        var victoryPointsPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
+        var victoryPointsPerTurnPerPlayer = new ArrayList<StatisticsData<Double>>();
         var countVictoryPoints = 0;
         var turn = 0;
         var playerNumber = 0;
@@ -31,7 +31,7 @@ public final class SettlersImplicator {
 
             if (turn < statisticsList.get(i).getTurn()) {
                 victoryPointsPerTurnPerPlayer
-                        .add(new StatisticsDataStructure<Double>(turn, (double) countVictoryPoints));
+                        .add(new StatisticsData<Double>(turn, (double) countVictoryPoints));
             }
 
             countVictoryPoints = statisticsList.get(i).getPlayers().get(playerNumber).getVictoryPoints();
@@ -40,14 +40,14 @@ public final class SettlersImplicator {
 
         }
 
-        victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countVictoryPoints));
+        victoryPointsPerTurnPerPlayer.add(new StatisticsData<Double>(turn, (double) countVictoryPoints));
 
         return victoryPointsPerTurnPerPlayer;
     }
 
-    public static List<StatisticsDataStructure<PlayerResources>> accumulatedResourcesGainedPerTurn(String player,
+    public static List<StatisticsData<PlayerResources>> accumulatedResourcesGainedPerTurn(String player,
             List<SettlersStatistics> statisticsList) {
-        var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
+        var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsData<PlayerResources>>();
         var countResourcesGained = new PlayerResources();
         var turn = 0;
         var playerNumber = 0;
@@ -59,7 +59,7 @@ public final class SettlersImplicator {
         for (var statistics : statisticsList) {
 
             if (turn < statistics.getTurn()) {
-                resourcesGaintPerTurnPerPlayer.add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesGained));
+                resourcesGaintPerTurnPerPlayer.add(new StatisticsData<PlayerResources>(turn, countResourcesGained));
             }
             var playerData = statistics.getPlayers().get(playerNumber);
             countResourcesGained = PlayerResources.add(countResourcesGained, playerData.getResourcesGained());
@@ -70,9 +70,9 @@ public final class SettlersImplicator {
         return resourcesGaintPerTurnPerPlayer;
     }
 
-    public static List<StatisticsDataStructure<PlayerResources>> accumulatedResourcesSpentPerTurn(String player,
+    public static List<StatisticsData<PlayerResources>> accumulatedResourcesSpentPerTurn(String player,
             List<SettlersStatistics> statisticsList) {
-        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
+        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsData<PlayerResources>>();
         var countResourcesSpent = new PlayerResources();
         var currentTurnEndResources = new PlayerResources();
         var playerData = new PlayerResources();
@@ -87,7 +87,7 @@ public final class SettlersImplicator {
 
             if (turn < statistics.getTurn()) {
                 resourcesSpentPerTurnPerPlayer
-                        .add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesSpent));
+                        .add(new StatisticsData<PlayerResources>(turn, countResourcesSpent));
                 countResourcesSpent = new PlayerResources();
             }
 
@@ -128,9 +128,9 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlayer;
     }
 
-    public static List<StatisticsDataStructure<Double>> accumulatedBuildingBuiltPerTurn(String player,
+    public static List<StatisticsData<Double>> accumulatedBuildingBuiltPerTurn(String player,
             List<SettlersStatistics> statisticsList, BuildingType buildingType) {
-        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
+        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsData<Double>>();
         var countBuildingsbuilt = 0;
         var actualBuilding = 0;
         var lastBuilding = 0;
@@ -146,7 +146,7 @@ public final class SettlersImplicator {
 
             if (turn < statisticsList.get(i).getTurn()) {
                 resourcesSpentPerTurnPerPlayer
-                        .add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
+                        .add(new StatisticsData<Double>(turn, (double) countBuildingsbuilt));
             }
 
             switch (buildingType) {
@@ -181,14 +181,14 @@ public final class SettlersImplicator {
             turn = statisticsList.get(i).getTurn();
         }
 
-        resourcesSpentPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
+        resourcesSpentPerTurnPerPlayer.add(new StatisticsData<Double>(turn, (double) countBuildingsbuilt));
 
         return resourcesSpentPerTurnPerPlayer;
     }
 
     private static List<Series<String, Number>> createResourceSeries(
-            List<StatisticsDataStructure<PlayerResources>> player1Data,
-            List<StatisticsDataStructure<PlayerResources>> player2Data) {
+            List<StatisticsData<PlayerResources>> player1Data,
+            List<StatisticsData<PlayerResources>> player2Data) {
 
         Series<String, Number> woodSeries = new Series<>();
         Series<String, Number> sheepSeries = new Series<>();

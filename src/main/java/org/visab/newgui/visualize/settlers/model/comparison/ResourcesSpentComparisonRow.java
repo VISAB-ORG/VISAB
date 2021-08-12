@@ -6,7 +6,7 @@ import java.util.List;
 import org.visab.globalmodel.settlers.PlayerResources;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
-import org.visab.newgui.visualize.StatisticsDataStructure;
+import org.visab.newgui.visualize.StatisticsData;
 import org.visab.newgui.visualize.settlers.model.SettlersComparisonRowBase;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator;
 import org.visab.util.StreamUtil;
@@ -31,7 +31,7 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
 
     @Override
     public void updateSeries(SettlersFile file, List<SettlersStatistics> statistics) {
-        var playerData = new HashMap<String, List<StatisticsDataStructure<PlayerResources>>>();
+        var playerData = new HashMap<String, List<StatisticsData<PlayerResources>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, SettlersImplicator.accumulatedResourcesSpentPerTurn(name, statistics));
 

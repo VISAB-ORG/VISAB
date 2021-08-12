@@ -5,8 +5,12 @@ import org.visab.newgui.ViewModelBase;
 
 import de.saxsys.mvvmfx.InjectScope;
 
-public abstract class VisualizeViewModelBase<TFile extends IVISABFile> extends ViewModelBase
-        implements IVisualizeViewModel {
+/**
+ * The base class for any visualizer view model. If your view model should not
+ * be live viewable and isnt dependant on images, extend this. Otherwise, use
+ * one of the more specific base implementations.
+ */
+public abstract class VisualizeViewModelBase<TFile extends IVISABFile> extends ViewModelBase {
 
     /**
      * The scope that is injected by the DynamicViewLoader.

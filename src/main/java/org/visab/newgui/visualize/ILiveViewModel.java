@@ -1,11 +1,20 @@
 package org.visab.newgui.visualize;
 
-
 import org.visab.globalmodel.IStatistics;
 import org.visab.processing.ILiveViewable;
 
-public interface ILiveViewModel<TStatistics extends IStatistics> extends IVisualizeViewModel {
+/**
+ * The ILiveViewModel interface, that view models wanting to support live views
+ * have to implement. The session listener that is docked onto has this
+ * interface as its dependancy to the viewmodel.
+ */
+public interface ILiveViewModel<TStatistics extends IStatistics> {
 
+    /**
+     * Initalizes the viewmodel with the listener by docking on to it.
+     * 
+     * @param listener The lister to dock on to
+     */
     void initialize(ILiveViewable<? extends IStatistics> listener);
 
     /**
