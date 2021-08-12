@@ -29,16 +29,13 @@ import javafx.scene.input.TransferMode;
  */
 public class FileExplorer extends TreeTableView<ExplorerFile> {
 
-    /**
-     * Graphics for FileView TOOD: Get theres from somewhere else I Suppose
-     */
-    private static final Image fileImage = new Image("/repository/file.png", 16, 16, false, false);
+    private static final Image fileImage = new Image("/img/file.png", 16, 16, false, false);
 
-    private static final Image folderClosedImage = new Image("/repository/folder_closed.png", 16, 16, false, false);
+    private static final Image folderClosedImage = new Image("/img/folder_closed.png", 16, 16, false, false);
 
-    private static final Image folderOpenImage = new Image("/repository/folder_open.png", 16, 16, false, false);
+    private static final Image folderOpenImage = new Image("/img/folder_open.png", 16, 16, false, false);
 
-    private static final Image visabFileImage = new Image("/repository/visab_file.png", 16, 16, false, false);
+    private static final Image visabFileImage = new Image("/img/visab_file.png", 16, 16, false, false);
 
     TreeTableColumn<ExplorerFile, String> nameColumn = new TreeTableColumn<>();
 
