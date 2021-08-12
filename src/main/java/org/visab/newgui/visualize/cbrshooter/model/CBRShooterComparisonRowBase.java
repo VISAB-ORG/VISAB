@@ -26,10 +26,6 @@ public abstract class CBRShooterComparisonRowBase<TProperty extends Property<?>>
         updateSeries((CBRShooterFile) file);
     }
 
-    public List<CBRShooterStatistics> makeStatisticsCopy(CBRShooterFile file) {
-        return new ArrayList<>(file.getStatistics());
-    }
-
     public abstract void updateValues(CBRShooterFile file);
 
     public abstract void updateSeries(CBRShooterFile file);
