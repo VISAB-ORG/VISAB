@@ -47,21 +47,5 @@ public class HelpView implements FxmlView<HelpViewModel>, Initializable {
         displayerAsPane.setPrefHeight(630);
         showPDF.getChildren().add(displayerAsPane);
         showVideo.getEngine().load("https://www.youtube.com/embed/Lq_KxImBGUY");
- 
-        
-        // TODO Auto-generated method stub
-        //showPDF.getEngine().load("http://www.google.com");
-
-        // String url =
-        // getClass().getResource("/pdf/visab_documentation.html").toExternalForm();
-        // System.out.println(url);
-
-        // File file = new File(url);
-
-        // showPDF.getEngine().load(file.toURI().toString());
-
-        // Would work for our online hosted documentation
-        // showPDF.getEngine().load("https://visab-org.github.io/index.html");
-
     }
 }

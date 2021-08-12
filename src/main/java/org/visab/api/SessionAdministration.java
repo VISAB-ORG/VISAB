@@ -150,7 +150,7 @@ public class SessionAdministration {
      * current runtime.
      */
     public List<SessionStatus> getSessionStatuses() {
-        return new ArrayList<SessionStatus>(statuses);
+        return statuses;
     }
 
     /**

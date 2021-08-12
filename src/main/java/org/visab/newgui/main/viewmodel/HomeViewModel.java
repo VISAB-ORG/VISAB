@@ -26,7 +26,8 @@ import org.visab.util.StreamUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -36,6 +37,8 @@ import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 
 public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFileSavedEvent> {
+
+    private static Logger logger = LogManager.getLogger(HomeViewModel.class);
 
     // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
     // ----- Command class variables -----
@@ -401,7 +404,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
                         Runtime.getRuntime().exec(osCommand);
                         break;
                     default:
-                        System.out.println("Opening explorer not supported for non windows OS.");
+                        logger.info("Opening explorer not supported for non windows OS.");
                         break;
                     }
                 } catch (IOException e) {

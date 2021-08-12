@@ -122,7 +122,7 @@ public class WebAPI extends RouterNanoHTTPD {
 
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         listenerFactory.startFactory();
-        watchdog.StartTimeoutLoop();
+        watchdog.startTimeoutLoop();
     }
 
 }

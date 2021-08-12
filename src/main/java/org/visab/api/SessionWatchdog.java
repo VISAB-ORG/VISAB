@@ -56,7 +56,7 @@ public class SessionWatchdog extends APIPublisherBase<SessionClosedEvent> {
      * Starts the infinite timeout checking loop on a seperate thread. This loop
      * will be stopped upong calling stopTimeoutLoop.
      */
-    public void StartTimeoutLoop() {
+    public void startTimeoutLoop() {
         logger.info("Starting timeout loop for SessionWatchdog.");
         checkTimeouts = true;
         new Thread(() -> {
