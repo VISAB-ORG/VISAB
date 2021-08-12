@@ -10,7 +10,6 @@ import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.ShowViewConfiguration;
 import org.visab.newgui.visualize.ComparisonRowBase;
 import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
-import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.settlers.model.PlayerPlanOccurance;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator;
 import org.visab.newgui.visualize.settlers.model.SettlersImplicator.BuildingType;
@@ -20,7 +19,6 @@ import org.visab.newgui.visualize.settlers.model.comparison.ResourcesSpentCompar
 import org.visab.newgui.visualize.settlers.model.comparison.VictoryPointsComparisonRow;
 import org.visab.newgui.visualize.settlers.view.SettlersStatisticsDetailView;
 
-import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -34,9 +32,6 @@ import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<SettlersFile, SettlersStatistics> {
-
-    @InjectScope
-    VisualizeScope scope;
 
     /**
      * Only used within this viewmodel as a helper object to update the plan

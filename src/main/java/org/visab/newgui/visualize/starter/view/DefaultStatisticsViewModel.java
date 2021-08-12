@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.newgui.visualize.VisualizeViewModelBase;
-import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.util.JSONConvert;
 
-import de.saxsys.mvvmfx.InjectScope;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -17,9 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 public class DefaultStatisticsViewModel extends VisualizeViewModelBase<DefaultFile> {
-
-    @InjectScope
-    VisualizeScope scope;
 
     private ObjectProperty<TreeItem<String>> selectedStatisticsProperty = new SimpleObjectProperty<>();
 

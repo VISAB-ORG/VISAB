@@ -15,13 +15,11 @@ import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
 import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
-import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
-import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -36,9 +34,6 @@ import javafx.scene.paint.Color;
 public class CBRShooterReplayViewModel extends LiveVisualizeViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
     private static Logger logger = LogManager.getLogger(CBRShooterReplayViewModel.class);
-
-    @InjectScope
-    VisualizeScope scope;
 
     // Commands that are responsible to handle the JavaFX control element actions
     private Command playData;
