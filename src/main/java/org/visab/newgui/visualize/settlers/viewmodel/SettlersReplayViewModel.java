@@ -207,6 +207,11 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         return new Image(new ByteArrayInputStream(file.getImages().getMapImage()));
     }
 
+    /**
+     * This method returns the player color codes as JavaFX colors in a map.
+     * 
+     * @return the player color map.
+     */
     public HashMap<String, Color> getPlayerColors() {
         HashMap<String, Color> playerColorMap = new HashMap<String, Color>();
         for (String playerName : file.getPlayerNames()) {
@@ -215,8 +220,16 @@ public class SettlersReplayViewModel extends ReplayViewModelBase<SettlersFile>
         return playerColorMap;
     }
 
+    /**
+     * This method returns all player-related icons correctly color coded and paired
+     * with its annotation, because the raw visuals in Settlers of Catan are hardly
+     * to differentiate in terms of shape.
+     * 
+     * @param playerName the name of the player the icons and annotations shall be
+     *                   retrieved for.
+     * @return the map of icons and annotations for a specific player.
+     */
     public HashMap<String, Pair<Image, String>> getAnnotatedIconsForPlayer(String playerName) {
-        // TODO: Later on replace with original visuals of the map --- only placeholders
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Pair<Image, String>> iconMap = new HashMap<String, Pair<Image, String>>();
         Image playerRoad = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getStreetImage())),
