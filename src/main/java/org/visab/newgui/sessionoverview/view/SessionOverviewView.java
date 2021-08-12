@@ -60,65 +60,6 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
     private SessionOverviewViewModel viewModel;
 
     @FXML
-    public void createDummySessions() {
-        sessionGrid.getChildren().clear();
-        anchorPane.getChildren().clear();
-        var activeSessionsCount = 0;
-        var timeoutedSessionsCount = 0;
-        var canceledSessionsCount = 0;
-
-        // Used to calculate coordinates on which the session objects should be placed
-        var rowIterator = 0;
-        var colIterator = 0;
-
-        String status;
-
-        for (int i = 0; i < 8; i++) {
-
-            if (i % 2 == 0) {
-                status = "active";
-                activeSessionsCount++;
-            } else if (i % 3 == 0) {
-                status = "timeouted";
-                timeoutedSessionsCount++;
-            } else {
-                status = "canceled";
-                canceledSessionsCount++;
-            }
-
-            var logoPath = ResourceHelper.getLogoPathByGame("Settlers");
-
-            // Customized JavaFX Gridpane which displays relevant session information
-            SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
-                    LocalTime.now(), LocalTime.now(), 3, 1, 10, "127.0.0.1", status);
-            SessionObject sessionObject = new SessionObject(dummyStatus, logoPath,
-                    SESSION_OBJECT_FIT_WIDTH);
-
-            sessionObject.setBackgroundColorByStatus(status);
-
-            sessionGrid.add(sessionObject, colIterator, rowIterator);
-
-            colIterator++;
-
-            // Once there the col size is reached, move on to the next row
-            if (colIterator == 3) {
-                rowIterator++;
-                colIterator = 0;
-            }
-        }
-
-        anchorPane.getChildren().add(sessionGrid);
-
-        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-        scrollPane.setContent(anchorPane);
-
-        sessionsTotalLabel.setText("8");
-        sessionsActiveLabel.setText(String.valueOf(activeSessionsCount));
-        sessionsTimeoutedLabel.setText(String.valueOf(timeoutedSessionsCount));
-        sessionsCanceledLabel.setText(String.valueOf(canceledSessionsCount));
-    }
-
-    @FXML
     public void clearInactiveSessions() {
         viewModel.clearInactiveSessionsCommand().execute();
     }

@@ -3,7 +3,6 @@ package org.visab.newgui.main.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.visab.newgui.AppMain;
 import org.visab.newgui.control.ExplorerFile;
 import org.visab.newgui.control.FileExplorer;
 import org.visab.newgui.control.RecursiveTreeItem;
@@ -11,8 +10,6 @@ import org.visab.newgui.main.viewmodel.HomeViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import de.saxsys.mvvmfx.MvvmFX;
-import de.saxsys.mvvmfx.utils.notifications.NotificationObserver;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -52,49 +49,6 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     private Button visualizeButton;
     @FXML
     private Button refreshButton;
-
-    // Deprecated VISAB 1.0 GUI code @TODO: delete this later on
-    // ----- Command class variables -----
-    @FXML
-    private Menu oldGui;
-
-    @FXML
-    private MenuItem statisticsViewer;
-
-    @FXML
-    private MenuItem pathViewer;
-
-    @FXML
-    private MenuItem help;
-
-    @FXML
-    private MenuItem about;
-
-    @FXML
-    public void openMain() {
-        viewModel.openMain().execute();
-    }
-
-    @FXML
-    public void openStatisticsViewer() {
-        viewModel.openStatisticsViewer().execute();
-    }
-
-    @FXML
-    public void openPathViewer() {
-        viewModel.openPathViewer().execute();
-    }
-
-    @FXML
-    public void openHelp() {
-        viewModel.openHelp().execute();
-    }
-
-    @FXML
-    public void openAbout() {
-        viewModel.openAbout().execute();
-    }
-    // ----- End of deprecated VISAB 1.0 GUI code -----
 
     @InjectViewModel
     private HomeViewModel viewModel;

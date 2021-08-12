@@ -98,7 +98,6 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#createDummySessions" prefHeight="26.0" prefWidth="174.0" text="Create Dummy Sessions!" />
                               <Button mnemonicParsing="false" onAction="#clearInactiveSessions" prefHeight="26.0" prefWidth="174.0" text="Clear Inactive Sessions!" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
