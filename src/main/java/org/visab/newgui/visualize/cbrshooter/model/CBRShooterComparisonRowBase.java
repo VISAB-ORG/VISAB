@@ -1,11 +1,8 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
-import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 
 import javafx.beans.property.Property;

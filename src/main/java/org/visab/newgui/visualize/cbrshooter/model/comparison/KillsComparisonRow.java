@@ -34,32 +34,33 @@ public class KillsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
 
     @Override
     public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-        
-        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
-        for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.accumulatedKillsPerRound(name, file));
+        synchronized (file.getStatistics()) {
+            var statistics = file.getStatistics();
 
-        for (var snapshot : statistics) {
-            for (var player : snapshot.getPlayers()) {
-                var name = player.getName();
+            var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
+            for (var name : file.getPlayerNames())
+                playerData.put(name, CBRShooterImplicator.accumulatedKillsPerRound(name, file));
 
-                if (!playerSeries.containsKey(name)) {
-                    var newSeries = new Series<Integer, Number>();
-                    newSeries.setName(name);
-                    playerSeries.put(name, newSeries);
-                }
-                var killsPerRound = playerData.get(name);
+            for (var snapshot : statistics) {
+                for (var player : snapshot.getPlayers()) {
+                    var name = player.getName();
 
-                var graphData = playerSeries.get(name).getData();
-                for (var data : killsPerRound) {
-                    if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
+                    if (!playerSeries.containsKey(name)) {
+                        var newSeries = new Series<Integer, Number>();
+                        newSeries.setName(name);
+                        playerSeries.put(name, newSeries);
+                    }
+                    var killsPerRound = playerData.get(name);
+
+                    var graphData = playerSeries.get(name).getData();
+                    for (var data : killsPerRound) {
+                        if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
+                            graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
+                        }
                     }
                 }
             }
         }
-        
     }
 
 }

@@ -30,7 +30,8 @@ public class ResourcesGainedByDiceComparisonRow extends SettlersComparisonRowBas
 
     @Override
     public void updateSeries(SettlersFile file) {
-        var statistics = file.getStatistics();
+        synchronized (file.getStatistics()) { 
+var statistics = file.getStatistics();
 
         var playerData = new HashMap<String, List<StatisticsDataStructure<PlayerResources>>>();
         for (var name : file.getPlayerNames())
@@ -57,7 +58,7 @@ public class ResourcesGainedByDiceComparisonRow extends SettlersComparisonRowBas
                     }
                 }
             }
-        }
+        }}
         
     }
 

@@ -65,22 +65,24 @@ public class CBRShooterListener
     }
 
     @Override
-    public synchronized void onSessionClosed() {
-        if (file.getStatistics().size() > 0) {
-            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+    public void onSessionClosed() {
+        synchronized (file.getStatistics()) {
+            if (file.getStatistics().size() > 0) {
+                var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-            int mostKills = 0;
-            var playerName = "";
-            for (var player : lastStatistics.getPlayers()) {
-                if (player.getStatistics().getFrags() > mostKills) {
-                    playerName = player.getName();
-                    mostKills = player.getStatistics().getFrags();
+                int mostKills = 0;
+                var playerName = "";
+                for (var player : lastStatistics.getPlayers()) {
+                    if (player.getStatistics().getFrags() > mostKills) {
+                        playerName = player.getName();
+                        mostKills = player.getStatistics().getFrags();
+                    }
                 }
+                file.setWinner(playerName);
             }
-            file.setWinner(playerName);
-        }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+            manager.saveFile(file, sessionId.toString(), sessionId);
+        }
 
         notifySessionClosed();
     }
@@ -97,16 +99,18 @@ public class CBRShooterListener
     }
 
     @Override
-    public synchronized void processImage(CBRShooterImages mapImage) {
+    public void processImage(CBRShooterImages mapImage) {
         writeLog(Level.DEBUG, "Received images");
         file.setImages(mapImage);
     }
 
     @Override
-    public synchronized void processStatistics(CBRShooterStatistics statistics) {
-        file.getStatistics().add(statistics);
+    public void processStatistics(CBRShooterStatistics statistics) {
+        synchronized (file.getStatistics()) {
+            file.getStatistics().add(statistics);
 
-        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
+            writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
+        }
 
         notifyStatisticsAdded(statistics);
     }

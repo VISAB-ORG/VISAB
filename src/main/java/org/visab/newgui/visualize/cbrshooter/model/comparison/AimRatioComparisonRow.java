@@ -34,33 +34,34 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
 
     @Override
     public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
+        synchronized (file.getStatistics()) {
+            var statistics = file.getStatistics();
 
-        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
-        for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.aimRatioPerRound(name, file));
+            var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
+            for (var name : file.getPlayerNames())
+                playerData.put(name, CBRShooterImplicator.aimRatioPerRound(name, file));
 
-        for (var snapshot : statistics) {
-            for (var player : snapshot.getPlayers()) {
-                var name = player.getName();
+            for (var snapshot : statistics) {
+                for (var player : snapshot.getPlayers()) {
+                    var name = player.getName();
 
-                if (!playerSeries.containsKey(name)) {
-                    var newSeries = new Series<Integer, Number>();
-                    newSeries.setName(name);
-                    playerSeries.put(name, newSeries);
-                }
-                var aimRatioPerRound = playerData.get(name);
+                    if (!playerSeries.containsKey(name)) {
+                        var newSeries = new Series<Integer, Number>();
+                        newSeries.setName(name);
+                        playerSeries.put(name, newSeries);
+                    }
+                    var aimRatioPerRound = playerData.get(name);
 
-                var graphData = playerSeries.get(name).getData();
-                for (var data : aimRatioPerRound) {
-                    // If there is no value for this round
-                    if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue() * 100));
+                    var graphData = playerSeries.get(name).getData();
+                    for (var data : aimRatioPerRound) {
+                        // If there is no value for this round
+                        if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
+                            graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue() * 100));
+                        }
                     }
                 }
             }
         }
-        
     }
 
 }
