@@ -1,3 +1,5 @@
+# VISAB
+
 <b>VISAB</b> stands for <b style="color: blue">VIS</b>ualizing <b style="color: green">A</b>gent <b>B</b>ehaviour</p>
 
 VISAB is a standalone util to visualize artificial intelligence agent actions in video games. 
