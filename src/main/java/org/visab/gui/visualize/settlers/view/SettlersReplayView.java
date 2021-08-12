@@ -3,7 +3,6 @@ package org.visab.gui.visualize.settlers.view;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.visab.globalmodel.Vector2;
@@ -86,8 +85,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     // Players whose values will always be up to date with the current turn
     private List<Player> players;
 
-    private Map<String, Player> playersOfLastTurn;
-
     @InjectViewModel
     SettlersReplayViewModel viewModel;
 
@@ -103,7 +100,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 mapElements.get("blackAndWhiteMap").setVisible(false);
             }
         });
-        playersOfLastTurn = viewModel.getPlayersOfLastTurn();
 
         players = viewModel.getPlayers();
         turnBasedStats.bind(viewModel.turnBasedStatsProperty());
@@ -205,11 +201,10 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
      */
     private void updateMapElements() {
         // Only decides the visibility for each players items
-        // Additional check for village to city transition is needed
         for (Player player : players) {
             var playerName = player.getName();
             for (String key : mapElements.keySet()) {
-                if (key.contains(playerName + "_street")) {
+                if (key.contains(playerName + "_street_")) {
                     var roadIndex = Integer.parseInt(key.substring(key.length() - 1));
                     if (player.showRoadProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
@@ -220,21 +215,18 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             mapElements.get(key).setVisible(true);
                         }
                     }
-                } else if (key.contains(playerName + "_village")) {
+                } else if (key.contains(playerName + "_village_final_")) {
                     var villageIndex = Integer.parseInt(key.substring(key.length() - 1));
                     if (player.showVillagesProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
                     } else {
                         if (villageIndex > player.villageCountProperty().get() - 1) {
                             mapElements.get(key).setVisible(false);
-                        } else if (checkIfNodeAlreadyAtThisPosition(mapElements.get(key), "city")) {
-                            System.out.println("City found at village position");
-                            mapElements.get(key).setVisible(false);
                         } else {
                             mapElements.get(key).setVisible(true);
                         }
                     }
-                } else if (key.contains(playerName + "_city")) {
+                } else if (key.contains(playerName + "_city_")) {
                     var cityIndex = Integer.parseInt(key.substring(key.length() - 1));
                     if (player.showCitiesProperty().get() == false) {
                         mapElements.get(key).setVisible(false);
@@ -245,26 +237,36 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             mapElements.get(key).setVisible(true);
                         }
                     }
+                } else if (key.contains(playerName + "_village_pre_")) {
+                    // Indexes for cities and pre-villages are identical
+                    var preVillageIndex = Integer.parseInt(key.substring(key.length() - 1));
+
+                    // If the associated city is already visible, the pre-village shall be hidden
+                    if (mapElements.get(playerName + "_city_" + preVillageIndex).isVisible()) {
+                        mapElements.get(key).setVisible(false);
+                    } else {
+                        mapElements.get(key).setVisible(true);
+                    }
                 }
             }
+
+            System.out.println("------------------ PRINT MAP ELEMENTS ----------------");
+            for (String key : mapElements.keySet()) {
+                System.out.println("Key in map: " + key + " is visible: " + mapElements.get(key).isVisible());
+            }
+            System.out.println("------------------ END ----------------");
         }
 
         drawPane.getChildren().setAll(mapElements.values());
     }
 
-    private boolean checkIfNodeAlreadyAtThisPosition(Node node, String nodeSearchKey) {
-
-        for (String key : mapElements.keySet()) {
-            if (!key.contains(nodeSearchKey) && node.getLayoutX() == mapElements.get(key).getLayoutX()
-                    && node.getLayoutY() == mapElements.get(key).getLayoutY()) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
+    /**
+     * This method initializes all map visuals on the basis of the end of the game
+     * to optimize performance whilst updating the map. Replacing the items in a
+     * frame based manner appeared to be too costly at runtime.
+     */
     private void initializeMapVisuals() {
+        // Have the map in grey scale as well as in colored
         ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), -0.3);
         mapImageBlackAndWhite.setFitWidth(DRAW_PANE_WIDTH);
         mapImageBlackAndWhite.setFitHeight(DRAW_PANE_WIDTH
@@ -280,6 +282,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         mapImageColored.setVisible(true);
         mapElements.put("coloredMap", mapImageColored);
 
+        // Initialize streets, (pre-) villages and cities for each player
         for (Player player : viewModel.getPlayersOfLastTurn().values()) {
             var playerName = player.getName();
 
@@ -296,7 +299,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 UiHelper.adjustVisual(streetAnnotation, playerStreet.getX() + (STANDARD_ICON_VECTOR.getX()),
                         playerStreet.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                 mapElements.put(playerName + "_street_" + i, playerStreet);
-                mapElements.put(playerName + "_streetAnnotation_" + i, streetAnnotation);
+                mapElements.put(playerName + "_street_annotation_" + i, streetAnnotation);
 
             }
 
@@ -313,13 +316,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 villageAnnotation.getStyleClass().add("boldLabel");
                 UiHelper.adjustVisual(villageAnnotation, playerVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
                         playerVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                mapElements.putIfAbsent(playerName + "_village_" + i, playerVillage);
-                mapElements.putIfAbsent(playerName + "_villageAnnotation_" + i, villageAnnotation);
+                mapElements.put(playerName + "_village_final_" + i, playerVillage);
+                mapElements.put(playerName + "_village_final_annotation_" + i, villageAnnotation);
 
             }
 
-            // Special case: if there is a city, there must have been a village on this
-            // position as well
+            // For each city, a "pre-village" also needs to be put on the map
             for (int i = 0; i < player.cityPositionsProperty().get().size(); i++) {
 
                 if (mapElements.get(playerName + "_city_" + i) == null) {
@@ -335,7 +337,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     UiHelper.adjustVisual(cityAnnotation, playerCity.getX() + (STANDARD_ICON_VECTOR.getX()),
                             playerCity.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
                     mapElements.put(playerName + "_city_" + i, playerCity);
-                    mapElements.put(playerName + "_cityAnnotation_" + i, cityAnnotation);
+                    mapElements.put(playerName + "_city_annotation_" + i, cityAnnotation);
 
                     // "Pre-" Villages
                     ImageView playerPreVillage = new ImageView(
@@ -349,8 +351,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     preVillageAnnotation.getStyleClass().add("boldLabel");
                     UiHelper.adjustVisual(preVillageAnnotation, playerPreVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
                             playerPreVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                    mapElements.putIfAbsent(playerName + "_village_pre" + i, playerPreVillage);
-                    mapElements.putIfAbsent(playerName + "_villageAnnotation_pre" + i, preVillageAnnotation);
+                    mapElements.put(playerName + "_village_pre_" + i, playerPreVillage);
+                    mapElements.put(playerName + "_village_pre_annotation_" + i, preVillageAnnotation);
                 }
             }
 
@@ -358,6 +360,10 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
         drawPane.getChildren().setAll(mapElements.values());
         updateMapElements();
+
+        for (String key : mapElements.keySet()) {
+            System.out.println(key);
+        }
     }
 
     @FXML

@@ -3,7 +3,7 @@ package org.visab.globalmodel;
 /**
  * A two dimensional vector representation.
  */
-public class Vector2<T> {
+public class Vector2<T extends Number> {
 
     private T x;
     private T y;
@@ -34,7 +34,14 @@ public class Vector2<T> {
     }
 
     public boolean checkIfZero() {
-        return ((double) this.x == 0.0 && (double) this.y == 0.0);
+        if (this.x instanceof Integer) {
+            return ((int) this.x == 0 && (int) this.y == 0);
+        } else if (this.x instanceof Double) {
+            return ((double) this.x == 0 && (double) this.y == 0);
+        } else {
+            throw new IllegalArgumentException("Cannot check if vector is zero (default) - unsupported Class given.");
+        }
+
     }
 
     public boolean checkIfNull() {
