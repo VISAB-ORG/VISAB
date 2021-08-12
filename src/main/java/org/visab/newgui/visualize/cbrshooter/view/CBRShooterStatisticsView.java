@@ -22,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 
 public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsViewModel>, Initializable {
 
@@ -29,10 +30,7 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     TableView<ComparisonRowBase<?>> comparisonTable;
 
     @FXML
-    CustomLabelPieChart planUsageOne;
-
-    @FXML
-    CustomLabelPieChart planUsageTwo;
+    HBox planUsageHBox;
 
     @FXML
     LineChart<Integer, Number> playerStats;
@@ -54,24 +52,9 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize pie charts
-        // TODO: Do like in settlers
-        if (viewModel.getPlayerNames().size() == 2) {
-            var name = viewModel.getPlayerNames().get(0);
-            planUsageOne.setData(viewModel.getPlanUsage(name));
-            planUsageOne.setTitle(name + " Plan Usage");
-
-            name = viewModel.getPlayerNames().get(1);
-            planUsageTwo.setData(viewModel.getPlanUsage(name));
-            planUsageTwo.setTitle(name + " Plan Usage");
-
-            // Set the label format for pie charts
-            var df = new DecimalFormat("#.##");
-            planUsageOne.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
-            planUsageTwo.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
-        }
+        addPlanPieCharts();
 
         comparisonTable.setItems(viewModel.getComparisonStatistics());
-
         var columns = createComparisonColumns();
         comparisonTable.getColumns().addAll(columns);
 
@@ -119,6 +102,17 @@ public class CBRShooterStatisticsView implements FxmlView<CBRShooterStatisticsVi
         }
 
         return columns;
+    }
+
+    private void addPlanPieCharts() {
+        for (String name : viewModel.getPlayerNames()) {
+            var pieChart = new CustomLabelPieChart();
+            pieChart.setTitle(name + " Plan Usage");
+            var df = new DecimalFormat("#.##");
+            pieChart.setLabelFormat(d -> d.getName() + " " + df.format(d.getPieValue()) + "s");
+            pieChart.setData(viewModel.getPlanUsage(name));
+            planUsageHBox.getChildren().add(pieChart);
+        }
     }
 
 }
