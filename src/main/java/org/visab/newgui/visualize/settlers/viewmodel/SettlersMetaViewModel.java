@@ -2,7 +2,6 @@ package org.visab.newgui.visualize.settlers.viewmodel;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;

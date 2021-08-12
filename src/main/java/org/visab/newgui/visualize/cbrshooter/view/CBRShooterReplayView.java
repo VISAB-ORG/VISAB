@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
@@ -48,51 +46,68 @@ import javafx.scene.shape.Path;
  */
 public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>, Initializable {
 
-    // Logger needs .class for each class to use for log traces
-    private static Logger logger = LogManager.getLogger(CBRShooterReplayView.class);
-
     @FXML
     private ImageView healthImage;
+
     @FXML
     private ImageView ammuImage;
+
     @FXML
     private ImageView weaponImage;
     @FXML
     private CheckBox checkBoxWeapon;
+
     @FXML
     private CheckBox checkBoxAmmuItem;
+
     @FXML
     private CheckBox checkBoxHealthItem;
+
     @FXML
     private Slider frameSlider;
+
     @FXML
     private Slider veloSlider;
+
     @FXML
     private ToggleButton playPauseButton;
+
     @FXML
     private Pane drawPane;
+
     @FXML
     private CheckBox showInBlackAndWhiteCheckBox;
+
     @FXML
     private Label totalTimeValueLabel;
+
     @FXML
     private Label roundValueLabel;
+
     @FXML
     private Label roundTimeValueLabel;
+
     @FXML
     private Label healthItemCoordsValueLabel;
+
     @FXML
     private Label weaponCoordsValueLabel;
+
     @FXML
     private Label ammuCoordsValueLabel;
+
     @FXML
     private TableView<org.visab.newgui.visualize.cbrshooter.model.Player> playerDataTable;
+
     @FXML
     private TableView<PlayerVisualsRow> playerVisualsTable;
+
     @FXML
     private ImageView weaponIcon;
+
     @FXML
     private ImageView healthIcon;
+
     @FXML
     private ImageView ammuIcon;
 

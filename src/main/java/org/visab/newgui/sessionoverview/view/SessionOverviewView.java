@@ -1,10 +1,8 @@
 package org.visab.newgui.sessionoverview.view;
 
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.ResourceHelper;

@@ -42,6 +42,10 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     private Command openNewAbout;
     private Command openNewHelp;
 
+    public void initialize() {
+        GeneralEventBus.getInstance().subscribe(this);
+    }
+
     public Command openApi() {
         if (openApiDashboard == null) {
             openApiDashboard = makeCommand(() -> {
@@ -85,8 +89,6 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
         return openNewAbout;
     }
-
-    /** REGION: DATABASE VIEW */
 
     private String baseDirPath = DatabaseManager.DATABASE_PATH;
 
@@ -444,28 +446,7 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
                     DynamicViewLoader.loadVisualizerView(visabFile.getGame(), fileName, visabFile);
                 }
             }
-            // if (selectedFile != null && selectedFile != baseFile) {
-            // if (selectedFile.isDirectory()) {
-            // for (var file : selectedFile.getFiles()) {
-            // var visabFile = Workspace.getInstance().getDatabaseManager()
-            // .loadFile(file.getAbsolutePath());
-            // if (visabFile != null)
-            // DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
-            // }
-            // } else {
-            // var visabFile = Workspace.getInstance().getDatabaseManager()
-            // .loadFile(selectedFile.getAbsolutePath());
-            // if (visabFile != null)
-            // DynamicViewLoader.loadVisualizer(visabFile.getGame(), visabFile);
-            // }
-            // }
         });
-    }
-
-    /** ENDREGION: DATABASE VIEW */
-
-    public void initialize() {
-        GeneralEventBus.getInstance().subscribe(this);
     }
 
     @Override
