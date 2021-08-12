@@ -13,14 +13,11 @@ import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveViewModel;
-import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.VisualizeViewModelBase;
+import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
 import org.visab.newgui.visualize.settlers.model.Player;
 import org.visab.processing.ILiveViewable;
 import org.visab.util.StreamUtil;
 
-import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -33,14 +30,10 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-public class SettlersReplayViewModel extends VisualizeViewModelBase<SettlersFile>
-        implements ILiveViewModel<SettlersStatistics> {
+public class SettlersReplayViewModel extends LiveVisualizeViewModelBase<SettlersFile, SettlersStatistics> {
 
     // Thread necessary to control data updating in the background
     private Thread updateLoop;
-
-    @InjectScope
-    VisualizeScope scope;
 
     // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(SettlersReplayViewModel.class);
@@ -289,14 +282,6 @@ public class SettlersReplayViewModel extends VisualizeViewModelBase<SettlersFile
 
         if (statisticsReceived % 5 == 0)
             turnSliderMaxProperty.set(data.size() - 1);
-        // TODO: If current turn is last, advance.
-
-    }
-
-    @Override
-    public void onSessionClosed() {
-        // TODO Auto-generated method stub
-
     }
 
 }

@@ -23,6 +23,7 @@ public class SettlersMetaViewModel extends LiveVisualizeViewModelBase<SettlersFi
     private ObservableList<PlayerInformation> playerInformation;
     private StringProperty winnerProperty;
 
+    @SuppressWarnings("unchecked")
     public void initialize() {
         List<SettlersStatistics> statistics = null;
         if (scope.isLive()) {
@@ -69,14 +70,6 @@ public class SettlersMetaViewModel extends LiveVisualizeViewModelBase<SettlersFi
 
     public ObservableList<PlayerInformation> getPlayerInformation() {
         return playerInformation;
-    }
-
-    @Override
-    public void onSessionClosed() {
-        winnerProperty.set(file.getWinner());
-        if (listener != null)
-            listener.removeViewModel(this);
-        liveViewActiveProperty.set(false);
     }
 
     @Override

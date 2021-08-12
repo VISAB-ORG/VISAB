@@ -109,14 +109,6 @@ public class CBRShooterMetaViewModel extends LiveVisualizeViewModelBase<CBRShoot
         statisticsPerSecondProperty.set(file.getStatistics().size() / newStatistics.getTotalTime());
     }
 
-    @Override
-    public void onSessionClosed() {
-        winnerProperty.set(file.getWinner());
-        if (listener != null)
-            listener.removeViewModel(this);
-        liveViewActiveProperty.set(false);
-    }
-
     public StringProperty winnerProperty() {
         return winnerProperty;
     }

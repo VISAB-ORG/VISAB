@@ -288,11 +288,6 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
         updatePlanUsage(newStatistics);
     }
 
-    @Override
-    public void onSessionClosed() {
-        liveViewActiveProperty().set(false);
-    }
-
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
         return comparisonStatistics;
     }
