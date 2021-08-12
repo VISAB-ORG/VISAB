@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" stylesheets="@../../../../../template_style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
+   <children>
+      <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Pane styleClass="menu-bar" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../img/visab_innerLogo1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox>
+                     <children>
+                          <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="About" HBox.hgrow="ALWAYS">
+                              <font>
+                                  <Font size="25.0" />
+                              </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                          </Label>
+                     </children>
+                  </HBox>
+                  <TabPane prefHeight="719.0" prefWidth="796.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="VISAB 2.0">
+                        <content>
+                          <AnchorPane prefHeight="673.0" prefWidth="800.0">
+                                 <children>
+                                    <ScrollPane hbarPolicy="NEVER" layoutX="-9.0" prefHeight="689.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <VBox alignment="TOP_CENTER" prefHeight="686.0" prefWidth="800.0">
+                                             <children>
+                                                <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="607.0" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <HBox alignment="CENTER" prefHeight="283.0" prefWidth="800.0" style="-fx-background-color: white;" styleClass="shadow">
+                                                   <children>
+                                                      <ImageView fitHeight="263.0" fitWidth="316.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../../../img/visabLogo.png" />
+                                                         </image>
+                                                         <HBox.margin>
+                                                            <Insets right="20.0" />
+                                                         </HBox.margin>
+                                                      </ImageView>
+                                                      <TextArea editable="false" prefHeight="250.0" prefWidth="348.0" text="Developers:&#10;Moritz Fröhlich&#10;Leon Römer&#10;Tim Kunold&#10;Marcel Gaal &#10;Vanessa Schriefer&#10;&#10;Contact:&#10;froeh010@uni-hildesheim.de&#10;roemerl@uni-hildesheim.de&#10;kunold@uni-hildesheim.de&#10;gaalma@uni-hildesheim.de&#10;schriefe@uni-hildesheim.de&#10;&#10;© 2021 VISAB 2.0">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                         <cursor>
+                                                            <Cursor fx:constant="DEFAULT" />
+                                                         </cursor>
+                                                         <HBox.margin>
+                                                            <Insets bottom="5.0" left="20.0" top="5.0" />
+                                                         </HBox.margin>
+                                                      </TextArea>
+                                                   </children>
+                                                </HBox>
+                                                <Label prefHeight="23.0" prefWidth="769.0" text="New VISAB 2.0 features:">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextArea editable="false" prefHeight="251.0" prefWidth="800.0" promptText="Hallo" text="&#10;  - Scalable http-API (generic communication interface) &#10;  - Dynamic instantiation of VISAB&#10;  - Visab workspace &#10;  - Logging &#10;  - Visual use of original game objects &#10;  - Visab toolkit (connector, snapshot creation) &#10;  - Complete revision of the statistics view &#10;  - MVVM &#10;  - Integration of a new game (Settlers) &#10;  - New VISAB 2.0 logo&#10;  - Integration of pdf file view &amp; video description of VISAB &#10;  - File explorer on the start page for direct selection of files in the tool&#10;">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" top="5.0" />
+                                                   </VBox.margin>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </TextArea>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab closable="false" text="VISAB 1.0">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="392.0" prefWidth="800.0">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER" layoutY="6.0" prefHeight="452.0" prefWidth="800.0">
+                                       <children>
+                                          <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="IT project for the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="40.0" left="20.0" right="20.0" top="25.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox alignment="CENTER" prefHeight="272.0" prefWidth="804.0" style="-fx-background-color: white;" styleClass="shadow">
+                                             <children>
+                                                <ImageView fitHeight="263.0" fitWidth="349.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../../img/visabLogo_old.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </ImageView>
+                                                <TextArea editable="false" prefHeight="220.0" prefWidth="348.0" text="&#10;&#10;Developers:&#10;Jobst-Julius Bartels&#10;Philipp Yasrebi-Soppa&#10;Sebastian Viefhaus&#10;&#10;Contact:&#10;bartelsj@uni-hildesheim.de&#10;yasrebis@uni-hildesheim.de&#10;viefhaus@uni-hildesheim.de&#10;&#10;© 2020 VISAB">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <cursor>
+                                                      <Cursor fx:constant="DEFAULT" />
+                                                   </cursor>
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="20.0" top="7.0" />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
