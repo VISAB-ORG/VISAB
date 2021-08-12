@@ -2,6 +2,7 @@ package org.visab.processing.cbrshooter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -80,7 +81,8 @@ public class CBRShooterListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")),
+                sessionId);
 
         notifySessionClosed();
     }

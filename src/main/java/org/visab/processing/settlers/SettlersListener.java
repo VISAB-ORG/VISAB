@@ -80,7 +80,8 @@ public class SettlersListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")),
+                sessionId);
 
         notifySessionClosed();
     }
