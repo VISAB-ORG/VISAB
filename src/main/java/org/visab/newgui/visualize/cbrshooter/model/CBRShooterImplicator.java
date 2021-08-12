@@ -14,10 +14,10 @@ import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
 
-    public static ArrayList<StatisticsDataStructure> shotsPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> shotsPerRound(String player, CBRShooterFile file) {
         var statistics = MakeStatisticsCopy(file);
 
-        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countShots = 0;
         var maxAmmunition = 0;
         var currentAmmunition = 0;
@@ -30,7 +30,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                shotsPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) countShots));
+                shotsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round, (double) countShots));
                 countShots = 0;
             }
             maxAmmunition = currentAmmunition;
@@ -46,11 +46,11 @@ public final class CBRShooterImplicator {
         return shotsPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> collectedCollectablesPerRound(String player, CBRShooterFile file,
-            Collectable collectable) {
+    public static ArrayList<StatisticsDataStructure<Double>> collectedCollectablesPerRound(String player,
+            CBRShooterFile file, Collectable collectable) {
         var statistics = MakeStatisticsCopy(file);
 
-        var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countCollectedCollectables = 0;
         var round = 0;
         var playerNumber = 0;
@@ -62,7 +62,7 @@ public final class CBRShooterImplicator {
 
             if (round < statistics.get(i).getRound()) {
                 collectedCollectablesPerRoundPerPlayer
-                        .add(new StatisticsDataStructure(round, (double) countCollectedCollectables));
+                        .add(new StatisticsDataStructure<Double>(round, (double) countCollectedCollectables));
             }
 
             switch (collectable) {
@@ -100,9 +100,9 @@ public final class CBRShooterImplicator {
         return collectedCollectablesPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> aimRatioPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> aimRatioPerRound(String player, CBRShooterFile file) {
         // aim Ratio = hits / shotsFired
-        var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var shotsFired = shotsPerRound(player, file);
         var hits = hitsOnEnemyPerRound(player, file);
 
@@ -110,9 +110,9 @@ public final class CBRShooterImplicator {
 
             if (shotsFired.get(i).getValue() > 0) {
                 var aimRatio = (hits.get(i).getValue() / shotsFired.get(i).getValue());
-                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, aimRatio));
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(i, aimRatio));
             } else {
-                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, 0.0));
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(i, 0.0));
             }
 
         }
@@ -120,10 +120,10 @@ public final class CBRShooterImplicator {
         return aimRatioPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
         var statistics = MakeStatisticsCopy(file);
 
-        var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countHits = 0;
         var lastHealth = 100;
         var currentHealth = 0;
@@ -136,7 +136,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) countHits));
+                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round, (double) countHits));
                 countHits = 0;
             }
             lastHealth = currentHealth;
@@ -154,10 +154,10 @@ public final class CBRShooterImplicator {
         return hitsTakenPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> unitsWalkedPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> unitsWalkedPerRound(String player, CBRShooterFile file) {
         var statistics = MakeStatisticsCopy(file);
 
-        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var unitsWalked = 0;
         var currentPos = new Vector2<Double>();
         var moved = 0.0;
@@ -170,7 +170,8 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < file.getStatistics().get(i).getRound()) {
-                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) unitsWalked));
+                accumulatedDeathsPerRoundPerPlayer
+                        .add(new StatisticsDataStructure<Double>(round, (double) unitsWalked));
                 unitsWalked = 0;
             }
 
@@ -189,10 +190,11 @@ public final class CBRShooterImplicator {
         return accumulatedDeathsPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedDeathsPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedDeathsPerRound(String player,
+            CBRShooterFile file) {
         var statistics = MakeStatisticsCopy(file);
 
-        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var round = 0;
         var playerNumber = 0;
         if (player.contains("Jane Doe")) {
@@ -202,7 +204,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
+                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round,
                         (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
@@ -212,10 +214,11 @@ public final class CBRShooterImplicator {
         return accumulatedDeathsPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedKillsPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedKillsPerRound(String player,
+            CBRShooterFile file) {
         var statistics = MakeStatisticsCopy(file);
 
-        var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+        var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var round = 0;
         var playerNumber = 1;
         if (player.contains("Jane Doe")) {
@@ -225,7 +228,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
+                accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round,
                         (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 

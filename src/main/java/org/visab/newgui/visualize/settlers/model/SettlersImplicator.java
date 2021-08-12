@@ -1,7 +1,9 @@
 package org.visab.newgui.visualize.settlers.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.settlers.PlayerResources;
@@ -9,10 +11,14 @@ import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.workspace.Workspace;
 
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
+
 public final class SettlersImplicator {
 
-    public static ArrayList<StatisticsDataStructure> accumulatedVictoryPointsPerTurn(String player, SettlersFile file) {
-        var victoryPointsPerTurnPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedVictoryPointsPerTurn(String player,
+            SettlersFile file) {
+        var victoryPointsPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countVictoryPoints = 0;
         var turn = 0;
         var playerNumber = 0;
@@ -25,7 +31,8 @@ public final class SettlersImplicator {
         for (int i = 0; i < file.getStatistics().size(); i++) {
 
             if (turn < file.getStatistics().get(i).getTurn()) {
-                victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure(turn, (double) countVictoryPoints));
+                victoryPointsPerTurnPerPlayer
+                        .add(new StatisticsDataStructure<Double>(turn, (double) countVictoryPoints));
             }
 
             countVictoryPoints = file.getStatistics().get(i).getPlayers().get(playerNumber).getVictoryPoints();
@@ -34,15 +41,15 @@ public final class SettlersImplicator {
 
         }
 
-        victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure(turn, (double) countVictoryPoints));
+        victoryPointsPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countVictoryPoints));
 
         return victoryPointsPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedResourcesGaintPerTurn(String player,
+    public static ArrayList<StatisticsDataStructure<PlayerResources>> accumulatedResourcesGainedPerTurn(String player,
             SettlersFile file) {
-        var resourcesGaintPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
-        var countResourcesSpent = 0;
+        var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
+        var countResourcesGained = new PlayerResources();
         var turn = 0;
         var playerNumber = 0;
 
@@ -50,36 +57,27 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
+        for (var statistics : file.getStatistics()) {
 
-            if (turn < file.getStatistics().get(i).getTurn()) {
-                resourcesGaintPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countResourcesSpent));
+            if (turn < statistics.getTurn()) {
+                resourcesGaintPerTurnPerPlayer
+                        .add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesGained));
             }
+            var playerData = statistics.getPlayers().get(playerNumber);
+            countResourcesGained = PlayerResources.add(countResourcesGained, playerData.getResourcesGained());
 
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained()
-                    .getBrick();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained()
-                    .getSheep();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained()
-                    .getStone();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained()
-                    .getWheat();
-            countResourcesSpent += file.getStatistics().get(i).getPlayers().get(playerNumber).getResourcesGained()
-                    .getWood();
-
-            turn = file.getStatistics().get(i).getTurn();
-
+            turn = statistics.getTurn();
         }
 
-        return resourcesGaintPerTurnPerPlaye;
+        return resourcesGaintPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedResourcesSpentPerTurn(String player,
+    public static ArrayList<StatisticsDataStructure<PlayerResources>> accumulatedResourcesSpentPerTurn(String player,
             SettlersFile file) {
-        var resourcesSpentPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
-        var countResourcesSpent = 0;
-        var actualResources = 0;
+        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
+        var countResourcesSpent = new PlayerResources();
+        var currentTurnEndResources = new PlayerResources();
+        var playerData = new PlayerResources();
         var turn = 0;
         var playerNumber = 0;
 
@@ -87,35 +85,54 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
+        for (var statistics : file.getStatistics()) {
 
-            if (turn < file.getStatistics().get(i).getTurn()) {
-                resourcesSpentPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countResourcesSpent));
+            if (turn < statistics.getTurn()) {
+                resourcesSpentPerTurnPerPlayer
+                        .add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesSpent));
+                countResourcesSpent = new PlayerResources();
             }
 
-            int lastResources = actualResources;
+            var lastTurn = currentTurnEndResources;
+            currentTurnEndResources = statistics.getPlayers().get(playerNumber).getResources();
+            var currentTurnGainedResources = statistics.getPlayers().get(playerNumber).getResourcesGained();
 
-            actualResources = (file.getStatistics().get(i).getPlayers().get(playerNumber).getResources().getBrick()
-                    + file.getStatistics().get(i).getPlayers().get(playerNumber).getResources().getSheep()
-                    + file.getStatistics().get(i).getPlayers().get(playerNumber).getResources().getStone()
-                    + file.getStatistics().get(i).getPlayers().get(playerNumber).getResources().getWheat()
-                    + file.getStatistics().get(i).getPlayers().get(playerNumber).getResources().getWood());
-
-            if (actualResources < lastResources) {
-                countResourcesSpent += lastResources - actualResources;
+            if (lastTurn.getBrick()
+                    - (currentTurnEndResources.getBrick() + currentTurnGainedResources.getBrick()) >= 0) {
+                playerData.setBrick(lastTurn.getBrick()
+                        - (currentTurnEndResources.getBrick() + currentTurnGainedResources.getBrick()));
+            }
+            if (lastTurn.getStone()
+                    - (currentTurnEndResources.getStone() + currentTurnGainedResources.getStone()) >= 0) {
+                playerData.setStone(lastTurn.getStone()
+                        - (currentTurnEndResources.getStone() + currentTurnGainedResources.getStone()));
+            }
+            if (lastTurn.getSheep()
+                    - (currentTurnEndResources.getSheep() + currentTurnGainedResources.getSheep()) >= 0) {
+                playerData.setSheep(lastTurn.getSheep()
+                        - (currentTurnEndResources.getSheep() + currentTurnGainedResources.getSheep()));
+            }
+            if (lastTurn.getWood() - (currentTurnEndResources.getWood() + currentTurnGainedResources.getWood()) >= 0) {
+                playerData.setWood(lastTurn.getWood()
+                        - (currentTurnEndResources.getWood() + currentTurnGainedResources.getWood()));
+            }
+            if (lastTurn.getWheat()
+                    - (currentTurnEndResources.getWheat() + currentTurnGainedResources.getWheat()) >= 0) {
+                playerData.setWheat(lastTurn.getWheat()
+                        - (currentTurnEndResources.getWheat() + currentTurnGainedResources.getWheat()));
             }
 
-            turn = file.getStatistics().get(i).getTurn();
+            countResourcesSpent = PlayerResources.add(countResourcesSpent, playerData);
 
+            turn = statistics.getTurn();
         }
 
-        return resourcesSpentPerTurnPerPlaye;
+        return resourcesSpentPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedBuildingBuiltPerTurn(String player, SettlersFile file,
-            BuildingType buildingType) {
-        var resourcesSpentPerTurnPerPlaye = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedBuildingBuiltPerTurn(String player,
+            SettlersFile file, BuildingType buildingType) {
+        var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countBuildingsbuilt = 0;
         var actualBuilding = 0;
         var lastBuilding = 0;
@@ -130,7 +147,8 @@ public final class SettlersImplicator {
         for (int i = 0; i < file.getStatistics().size(); i++) {
 
             if (turn < file.getStatistics().get(i).getTurn()) {
-                resourcesSpentPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countBuildingsbuilt));
+                resourcesSpentPerTurnPerPlayer
+                        .add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
             }
 
             switch (buildingType) {
@@ -165,13 +183,83 @@ public final class SettlersImplicator {
             turn = file.getStatistics().get(i).getTurn();
         }
 
-        resourcesSpentPerTurnPerPlaye.add(new StatisticsDataStructure(turn, (double) countBuildingsbuilt));
+        resourcesSpentPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
 
-        return resourcesSpentPerTurnPerPlaye;
+        return resourcesSpentPerTurnPerPlayer;
+    }
+
+    private static List<Series<String, Number>> createResourceSerieses(
+            ArrayList<StatisticsDataStructure<PlayerResources>> player1Data,
+            ArrayList<StatisticsDataStructure<PlayerResources>> player2Data) {
+
+        Series<String, Number> woodSeries = new Series<>();
+        Series<String, Number> sheepSeries = new Series<>();
+        Series<String, Number> stoneSeries = new Series<>();
+        Series<String, Number> wheatSeries = new Series<>();
+        Series<String, Number> brickSeries = new Series<>();
+        sheepSeries.setName("Sheep");
+        woodSeries.setName("Wood");
+        stoneSeries.setName("Stone");
+        wheatSeries.setName("Wheat");
+        brickSeries.setName("Brick");
+
+        for (int i = 0; i < player1Data.size(); i++) {
+            var resourcesPlayer1 = player1Data.get(i).getValue();
+            var resourcesPlayer2 = player2Data.get(i).getValue();
+
+            woodSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWood()));
+            woodSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWood()));
+            sheepSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getSheep()));
+            sheepSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getSheep()));
+            stoneSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getStone()));
+            stoneSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getStone()));
+            wheatSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWheat()));
+            wheatSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWheat()));
+            brickSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getBrick()));
+            brickSeries.getData().add(
+                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getBrick()));
+        }
+
+        return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
+
+    }
+
+    public static final List<Series<String, Number>> resourcesSpentSeries(SettlersFile file) {
+        var resourcesPlayer1 = accumulatedResourcesSpentPerTurn("Player1", file);
+        var resourcesPlayer2 = accumulatedResourcesSpentPerTurn("Player2", file);
+
+        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
+    }
+
+    public static final List<Series<String, Number>> resourcesGainedSeries(SettlersFile file) {
+        var resourcesPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
+        var resourcesPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
+
+        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
     }
 
     public enum BuildingType {
         Town, Village, Road
+    }
+
+    public enum ResourceType {
+        Brick, Sheep, Stone, Wheat, Wood
+    }
+
+    public static final List<String> getResourceNames() {
+        List<String> resources = new ArrayList<>();
+        resources.addAll(Arrays.asList(ResourceType.values().toString()));
+
+        return resources;
     }
 
     public static final Map<String, PlayerResources> concludeResourcesGainedByDice(SettlersFile file) {
@@ -210,7 +298,7 @@ public final class SettlersImplicator {
                 var name = player.getName();
                 var lastTurn = resourcesLastTurn.getOrDefault(name, new PlayerResources());
 
-                var gainedThisTurn = player.getResourcesGained();
+                PlayerResources gainedThisTurn = player.getResourcesGained();
 
                 var lastTurnAndGained = PlayerResources.add(lastTurn, gainedThisTurn);
 

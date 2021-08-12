@@ -1,11 +1,11 @@
 package org.visab.newgui.visualize;
 
-public class StatisticsDataStructure {
+public class StatisticsDataStructure<T> {
     
     private int round;
-    private double value;
+    private T value;
     
-    public StatisticsDataStructure(Integer round, Double value) {
+    public StatisticsDataStructure(Integer round, T value) {
         this.round = round;
         this.value = value;
     }
@@ -14,7 +14,7 @@ public class StatisticsDataStructure {
         return round;
     }
     
-    public double getValue() {
+    public T getValue() {
         return value;
     }
 

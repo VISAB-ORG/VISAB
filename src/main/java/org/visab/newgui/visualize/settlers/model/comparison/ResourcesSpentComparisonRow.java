@@ -32,7 +32,7 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
     public void updateSeries(SettlersFile file) {
         var statistics = file.getStatistics();
 
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+        var playerData = new HashMap<String, List<StatisticsDataStructure<PlayerResources>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, SettlersImplicator.accumulatedResourcesSpentPerTurn(name, file));
 
@@ -49,8 +49,12 @@ public class ResourcesSpentComparisonRow extends SettlersComparisonRowBase<Objec
 
                 var graphData = playerSeries.get(name).getData();
                 for (var data : resourcesSpentPerTurn) {
+                    var sum = 0;
                     if (!StreamUtil.contains(graphData, x -> x.getXValue() == data.getRound())) {
-                        graphData.add(new Data<Integer, Number>(data.getRound(), data.getValue()));
+                        
+                        sum += (data.getValue().getBrick() + data.getValue().getSheep() + data.getValue().getStone() 
+                            + data.getValue().getWheat() + data.getValue().getWood());
+                        graphData.add(new Data<Integer, Number>(data.getRound(), sum));
                     }
                 }
             }
