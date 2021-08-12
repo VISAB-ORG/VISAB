@@ -11,7 +11,7 @@ import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
+import org.visab.newgui.visualize.CoordinateHelper;
 import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.newgui.visualize.cbrshooter.model.PlayerVisualsRow;

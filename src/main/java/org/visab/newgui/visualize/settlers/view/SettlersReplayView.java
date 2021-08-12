@@ -10,7 +10,7 @@ import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.cbrshooter.model.CoordinateHelper;
+import org.visab.newgui.visualize.CoordinateHelper;
 import org.visab.newgui.visualize.settlers.model.Player;
 import org.visab.newgui.visualize.settlers.model.PlayerVisualsRow;
 import org.visab.newgui.visualize.settlers.viewmodel.SettlersReplayViewModel;

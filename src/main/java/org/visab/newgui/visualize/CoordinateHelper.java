@@ -1,4 +1,4 @@
-package org.visab.newgui.visualize.cbrshooter.model;
+package org.visab.newgui.visualize;
 
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.Vector2;

@@ -3,6 +3,7 @@ package org.visab.newgui.visualize.cbrshooter.model;
 import java.util.List;
 
 import org.visab.globalmodel.Vector2;
+import org.visab.newgui.visualize.CoordinateHelper;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;

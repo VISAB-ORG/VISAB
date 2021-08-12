@@ -13,6 +13,10 @@ import org.visab.newgui.visualize.StatisticsData;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
+/**
+ * Helper class for concluding information based on a list of given Settlers
+ * statistics.
+ */
 public final class SettlersImplicator {
 
     public static List<StatisticsData<Double>> accumulatedVictoryPointsPerTurn(String player,
@@ -30,8 +34,7 @@ public final class SettlersImplicator {
         for (int i = 0; i < statisticsList.size(); i++) {
 
             if (turn < statisticsList.get(i).getTurn()) {
-                victoryPointsPerTurnPerPlayer
-                        .add(new StatisticsData<Double>(turn, (double) countVictoryPoints));
+                victoryPointsPerTurnPerPlayer.add(new StatisticsData<Double>(turn, (double) countVictoryPoints));
             }
 
             countVictoryPoints = statisticsList.get(i).getPlayers().get(playerNumber).getVictoryPoints();
@@ -86,8 +89,7 @@ public final class SettlersImplicator {
         for (var statistics : statisticsList) {
 
             if (turn < statistics.getTurn()) {
-                resourcesSpentPerTurnPerPlayer
-                        .add(new StatisticsData<PlayerResources>(turn, countResourcesSpent));
+                resourcesSpentPerTurnPerPlayer.add(new StatisticsData<PlayerResources>(turn, countResourcesSpent));
                 countResourcesSpent = new PlayerResources();
             }
 
@@ -145,8 +147,7 @@ public final class SettlersImplicator {
         for (int i = 0; i < statisticsList.size(); i++) {
 
             if (turn < statisticsList.get(i).getTurn()) {
-                resourcesSpentPerTurnPerPlayer
-                        .add(new StatisticsData<Double>(turn, (double) countBuildingsbuilt));
+                resourcesSpentPerTurnPerPlayer.add(new StatisticsData<Double>(turn, (double) countBuildingsbuilt));
             }
 
             switch (buildingType) {
@@ -186,8 +187,7 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlayer;
     }
 
-    private static List<Series<String, Number>> createResourceSeries(
-            List<StatisticsData<PlayerResources>> player1Data,
+    private static List<Series<String, Number>> createResourceSeries(List<StatisticsData<PlayerResources>> player1Data,
             List<StatisticsData<PlayerResources>> player2Data) {
 
         Series<String, Number> woodSeries = new Series<>();

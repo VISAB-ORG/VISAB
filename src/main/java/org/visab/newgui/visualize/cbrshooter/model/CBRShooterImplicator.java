@@ -5,13 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.visab.globalmodel.Vector2;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.globalmodel.cbrshooter.WeaponInformation;
 import org.visab.newgui.visualize.StatisticsData;
 import org.visab.util.StreamUtil;
 
+/**
+ * Helper class for concluding information based on a list of given CBRShooter
+ * statistics.
+ */
 public final class CBRShooterImplicator {
 
     public static ArrayList<StatisticsData<Double>> shotsPerRound(String player,
@@ -167,8 +170,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                accumulatedDeathsPerRoundPerPlayer
-                        .add(new StatisticsData<Double>(round, (double) unitsWalked));
+                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsData<Double>(round, (double) unitsWalked));
                 unitsWalked = 0;
             }
 
