@@ -7,17 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.visab.globalmodel.settlers.PlayerResources;
-import org.visab.globalmodel.settlers.SettlersFile;
+import org.visab.globalmodel.settlers.SettlersStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
-import org.visab.workspace.Workspace;
 
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 public final class SettlersImplicator {
 
-    public static ArrayList<StatisticsDataStructure<Double>> accumulatedVictoryPointsPerTurn(String player,
-            SettlersFile file) {
+    public static List<StatisticsDataStructure<Double>> accumulatedVictoryPointsPerTurn(String player,
+            List<SettlersStatistics> statisticsList) {
         var victoryPointsPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countVictoryPoints = 0;
         var turn = 0;
@@ -27,17 +26,17 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
+        statisticsList.get(0).getPlayers().get(playerNumber).getVictoryPoints();
+        for (int i = 0; i < statisticsList.size(); i++) {
 
-            if (turn < file.getStatistics().get(i).getTurn()) {
+            if (turn < statisticsList.get(i).getTurn()) {
                 victoryPointsPerTurnPerPlayer
                         .add(new StatisticsDataStructure<Double>(turn, (double) countVictoryPoints));
             }
 
-            countVictoryPoints = file.getStatistics().get(i).getPlayers().get(playerNumber).getVictoryPoints();
+            countVictoryPoints = statisticsList.get(i).getPlayers().get(playerNumber).getVictoryPoints();
 
-            turn = file.getStatistics().get(i).getTurn();
+            turn = statisticsList.get(i).getTurn();
 
         }
 
@@ -46,8 +45,8 @@ public final class SettlersImplicator {
         return victoryPointsPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure<PlayerResources>> accumulatedResourcesGainedPerTurn(String player,
-            SettlersFile file) {
+    public static List<StatisticsDataStructure<PlayerResources>> accumulatedResourcesGainedPerTurn(String player,
+            List<SettlersStatistics> statisticsList) {
         var resourcesGaintPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
         var countResourcesGained = new PlayerResources();
         var turn = 0;
@@ -57,11 +56,10 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        for (var statistics : file.getStatistics()) {
+        for (var statistics : statisticsList) {
 
             if (turn < statistics.getTurn()) {
-                resourcesGaintPerTurnPerPlayer
-                        .add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesGained));
+                resourcesGaintPerTurnPerPlayer.add(new StatisticsDataStructure<PlayerResources>(turn, countResourcesGained));
             }
             var playerData = statistics.getPlayers().get(playerNumber);
             countResourcesGained = PlayerResources.add(countResourcesGained, playerData.getResourcesGained());
@@ -72,8 +70,8 @@ public final class SettlersImplicator {
         return resourcesGaintPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure<PlayerResources>> accumulatedResourcesSpentPerTurn(String player,
-            SettlersFile file) {
+    public static List<StatisticsDataStructure<PlayerResources>> accumulatedResourcesSpentPerTurn(String player,
+            List<SettlersStatistics> statisticsList) {
         var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<PlayerResources>>();
         var countResourcesSpent = new PlayerResources();
         var currentTurnEndResources = new PlayerResources();
@@ -85,7 +83,7 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        for (var statistics : file.getStatistics()) {
+        for (var statistics : statisticsList) {
 
             if (turn < statistics.getTurn()) {
                 resourcesSpentPerTurnPerPlayer
@@ -130,8 +128,8 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure<Double>> accumulatedBuildingBuiltPerTurn(String player,
-            SettlersFile file, BuildingType buildingType) {
+    public static List<StatisticsDataStructure<Double>> accumulatedBuildingBuiltPerTurn(String player,
+            List<SettlersStatistics> statisticsList, BuildingType buildingType) {
         var resourcesSpentPerTurnPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countBuildingsbuilt = 0;
         var actualBuilding = 0;
@@ -143,10 +141,10 @@ public final class SettlersImplicator {
             playerNumber = 1;
         }
 
-        file.getStatistics().get(0).getPlayers().get(playerNumber).getVictoryPoints();
-        for (int i = 0; i < file.getStatistics().size(); i++) {
+        statisticsList.get(0).getPlayers().get(playerNumber).getVictoryPoints();
+        for (int i = 0; i < statisticsList.size(); i++) {
 
-            if (turn < file.getStatistics().get(i).getTurn()) {
+            if (turn < statisticsList.get(i).getTurn()) {
                 resourcesSpentPerTurnPerPlayer
                         .add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
             }
@@ -154,7 +152,7 @@ public final class SettlersImplicator {
             switch (buildingType) {
             case Road:
                 lastBuilding = actualBuilding;
-                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getStreetCount();
+                actualBuilding = statisticsList.get(i).getPlayers().get(playerNumber).getStreetCount();
 
                 if (lastBuilding < actualBuilding) {
                     countBuildingsbuilt += (actualBuilding - lastBuilding);
@@ -162,7 +160,7 @@ public final class SettlersImplicator {
                 break;
             case Town:
                 lastBuilding = actualBuilding;
-                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getCityCount();
+                actualBuilding = statisticsList.get(i).getPlayers().get(playerNumber).getCityCount();
 
                 if (lastBuilding < actualBuilding) {
                     countBuildingsbuilt += (actualBuilding - lastBuilding);
@@ -170,7 +168,7 @@ public final class SettlersImplicator {
                 break;
             case Village:
                 lastBuilding = actualBuilding;
-                actualBuilding = file.getStatistics().get(i).getPlayers().get(playerNumber).getVillageCount();
+                actualBuilding = statisticsList.get(i).getPlayers().get(playerNumber).getVillageCount();
 
                 if (lastBuilding < actualBuilding) {
                     countBuildingsbuilt += (actualBuilding - lastBuilding);
@@ -180,7 +178,7 @@ public final class SettlersImplicator {
                 throw new RuntimeException("Building type not implemented!");
             }
 
-            turn = file.getStatistics().get(i).getTurn();
+            turn = statisticsList.get(i).getTurn();
         }
 
         resourcesSpentPerTurnPerPlayer.add(new StatisticsDataStructure<Double>(turn, (double) countBuildingsbuilt));
@@ -188,9 +186,9 @@ public final class SettlersImplicator {
         return resourcesSpentPerTurnPerPlayer;
     }
 
-    private static List<Series<String, Number>> createResourceSerieses(
-            ArrayList<StatisticsDataStructure<PlayerResources>> player1Data,
-            ArrayList<StatisticsDataStructure<PlayerResources>> player2Data) {
+    private static List<Series<String, Number>> createResourceSeries(
+            List<StatisticsDataStructure<PlayerResources>> player1Data,
+            List<StatisticsDataStructure<PlayerResources>> player2Data) {
 
         Series<String, Number> woodSeries = new Series<>();
         Series<String, Number> sheepSeries = new Series<>();
@@ -233,18 +231,18 @@ public final class SettlersImplicator {
 
     }
 
-    public static final List<Series<String, Number>> resourcesSpentSeries(SettlersFile file) {
-        var resourcesPlayer1 = accumulatedResourcesSpentPerTurn("Player1", file);
-        var resourcesPlayer2 = accumulatedResourcesSpentPerTurn("Player2", file);
+    public static final List<Series<String, Number>> resourcesSpentSeries(List<SettlersStatistics> statisticsList) {
+        var resourcesPlayer1 = accumulatedResourcesSpentPerTurn("Player1", statisticsList);
+        var resourcesPlayer2 = accumulatedResourcesSpentPerTurn("Player2", statisticsList);
 
-        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
+        return createResourceSeries(resourcesPlayer1, resourcesPlayer2);
     }
 
-    public static final List<Series<String, Number>> resourcesGainedSeries(SettlersFile file) {
-        var resourcesPlayer1 = accumulatedResourcesGainedPerTurn("Player1", file);
-        var resourcesPlayer2 = accumulatedResourcesGainedPerTurn("Player2", file);
+    public static final List<Series<String, Number>> resourcesGainedSeries(List<SettlersStatistics> statisticsList) {
+        var resourcesPlayer1 = accumulatedResourcesGainedPerTurn("Player1", statisticsList);
+        var resourcesPlayer2 = accumulatedResourcesGainedPerTurn("Player2", statisticsList);
 
-        return createResourceSerieses(resourcesPlayer1, resourcesPlayer2);
+        return createResourceSeries(resourcesPlayer1, resourcesPlayer2);
     }
 
     public enum BuildingType {
@@ -262,12 +260,13 @@ public final class SettlersImplicator {
         return resources;
     }
 
-    public static final Map<String, PlayerResources> concludeResourcesGainedByDice(SettlersFile file) {
+    public static final Map<String, PlayerResources> concludeResourcesGainedByDice(
+            List<SettlersStatistics> statisticsList, List<String> playerNames) {
         var resourcesGained = new HashMap<String, PlayerResources>();
-        for (String name : file.getPlayerNames())
+        for (String name : playerNames)
             resourcesGained.put(name, new PlayerResources());
 
-        for (var statistics : file.getStatistics()) {
+        for (var statistics : statisticsList) {
             for (var player : statistics.getPlayers()) {
                 var name = player.getName();
 
@@ -281,13 +280,14 @@ public final class SettlersImplicator {
         return resourcesGained;
     }
 
-    public static final Map<String, PlayerResources> concludeResourcesSpent(SettlersFile file) {
+    public static final Map<String, PlayerResources> concludeResourcesSpent(List<SettlersStatistics> statisticsList,
+            List<String> playerNames) {
         var resourcesSpent = new HashMap<String, PlayerResources>();
-        for (String name : file.getPlayerNames())
+        for (String name : playerNames)
             resourcesSpent.put(name, new PlayerResources());
 
         var resourcesLastTurn = new HashMap<String, PlayerResources>();
-        for (var statistics : file.getStatistics()) {
+        for (var statistics : statisticsList) {
             for (var player : statistics.getPlayers()) {
                 if (!player.isMyTurn()) {
                     resourcesLastTurn.put(player.getName(), player.getResources());
@@ -315,16 +315,4 @@ public final class SettlersImplicator {
         return resourcesSpent;
     }
 
-    public static void main(String[] args) {
-        var file = (SettlersFile) Workspace.getInstance().getDatabaseManager()
-                .loadFile("563f919a-0991-4d08-8a96-22d86a3f7198.visab2", "Settlers");
-
-        var resourcesGained = SettlersImplicator.concludeResourcesGainedByDice(file);
-        var resourcesSpent = SettlersImplicator.concludeResourcesSpent(file);
-
-        var test = accumulatedVictoryPointsPerTurn("Player2", file);
-        for (int i = 0; i < test.size(); i++) {
-            // System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
-        }
-    }
 }

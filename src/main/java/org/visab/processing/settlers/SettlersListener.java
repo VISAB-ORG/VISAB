@@ -67,20 +67,18 @@ public class SettlersListener
 
     @Override
     public void onSessionClosed() {
-        synchronized (file.getStatistics()) {
-            if (file.getStatistics().size() > 0) {
-                var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+        if (file.getStatistics().size() > 0) {
+            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-                var playerName = "";
-                for (var player : lastStatistics.getPlayers()) {
-                    if (player.getVictoryPoints() == 10)
-                        playerName = player.getName();
-                }
-                file.setWinner(playerName);
+            var playerName = "";
+            for (var player : lastStatistics.getPlayers()) {
+                if (player.getVictoryPoints() == 10)
+                    playerName = player.getName();
             }
-
-            manager.saveFile(file, sessionId.toString(), sessionId);
+            file.setWinner(playerName);
         }
+
+        manager.saveFile(file, sessionId.toString(), sessionId);
 
         notifySessionClosed();
     }
@@ -95,18 +93,16 @@ public class SettlersListener
     }
 
     @Override
-    public synchronized void processImage(SettlersImages images) {
+    public void processImage(SettlersImages images) {
         writeLog(Level.DEBUG, "Received images!");
         file.setImages(images);
     }
 
     @Override
     public void processStatistics(SettlersStatistics statistics) {
-        synchronized (file.getStatistics()) {
-            file.getStatistics().add(statistics);
+        file.getStatistics().add(statistics);
 
-            writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
-        }
+        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
 
         notifyStatisticsAdded(statistics);
     }

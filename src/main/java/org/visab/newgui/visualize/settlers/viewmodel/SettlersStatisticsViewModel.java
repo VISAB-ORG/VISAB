@@ -136,21 +136,22 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         if (showDetailsCommand == null) {
             showDetailsCommand = runnableCommand(() -> {
                 var selectedRow = selectedRowProperty.get();
-                
+
                 if (selectedRow.getRowDescription().equals("Cumulated resource gain by dice")) {
-                    var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics",
-                    true, 800, 800);
+                    var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class,
+                            "Detailed Statistics", true, 800, 800);
                     dialogHelper.showView(viewConfig, this, scope);
                     resourceUsageType = "Gained";
                     initializeStackedBarChart();
                 } else if (selectedRow.getRowDescription().equals("Cumulated resources spent")) {
-                    var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class, "Detailed Statistics",
-                    true, 800, 800);
+                    var viewConfig = new ShowViewConfiguration(SettlersStatisticsDetailView.class,
+                            "Detailed Statistics", true, 800, 800);
                     dialogHelper.showView(viewConfig, this, scope);
                     resourceUsageType = "Spent";
                     initializeStackedBarChart();
                 }
-                sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + SHOWN_GRAPHS_PER_PLAYER));
+                sliderText.setValue(
+                        "Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + SHOWN_GRAPHS_PER_PLAYER));
             });
         }
         return showDetailsCommand;
@@ -160,12 +161,14 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
         updateStackedBarChartCommand = runnableCommand(() -> {
             var serieses = getStackedBarChartData();
             for (var series : serieses) {
-                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
-                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "")
+                        .replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
+                series.getData().removeIf(x -> Integer.parseInt(
+                        x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
             sliderText.setValue("");
             sliderText.setValue("Rounds: " + sliderValue.get() + " - " + (sliderValue.get() + SHOWN_GRAPHS_PER_PLAYER));
-        playerDetailedStatisticsSeries.addAll(serieses);
+            playerDetailedStatisticsSeries.addAll(serieses);
         });
 
         return updateStackedBarChartCommand;
@@ -173,17 +176,17 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
 
     private List<Series<String, Number>> getStackedBarChartData() {
         playerDetailedStatisticsSeries.clear();
-        while(!playerDetailedStatisticsSeries.isEmpty()) {
+        while (!playerDetailedStatisticsSeries.isEmpty()) {
             // Helps just a little
         }
-        List<Series<String, Number>> data = new ArrayList<>();
+        List<Series<String, Number>> data = null;
         switch (resourceUsageType) {
-            case "Gained":
-                data = SettlersImplicator.resourcesGainedSeries(file);
-                break;
-            case "Spent":
-            	data = SettlersImplicator.resourcesSpentSeries(file);
-                break;
+        case "Gained":
+            data = SettlersImplicator.resourcesGainedSeries(new ArrayList<>(file.getStatistics()));
+            break;
+        case "Spent":
+            data = SettlersImplicator.resourcesSpentSeries(new ArrayList<>(file.getStatistics()));
+            break;
         }
         return data;
     }
@@ -191,9 +194,10 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     private void initializeStackedBarChart() {
         yLabelDetail.set("Values");
 
-        List<Series<String, Number>> serieses = getStackedBarChartData();       
+        List<Series<String, Number>> serieses = getStackedBarChartData();
         for (var series : serieses) {
-            series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER);
+            series.getData().removeIf(x -> Integer.parseInt(
+                    x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }
@@ -292,7 +296,6 @@ public class SettlersStatisticsViewModel extends LiveViewModelBase<SettlersFile,
     @Override
     public void onSessionClosed() {
         liveViewActiveProperty().set(false);
-        listener.removeViewModel(this);
     }
 
     public ObservableList<ComparisonRowBase<?>> getComparisonStatistics() {
