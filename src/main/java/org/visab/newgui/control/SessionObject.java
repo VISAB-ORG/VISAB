@@ -4,11 +4,8 @@ import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.DynamicViewLoader;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
