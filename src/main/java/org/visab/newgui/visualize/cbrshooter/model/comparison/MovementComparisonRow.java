@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.util.StreamUtil;
@@ -21,24 +23,21 @@ public class MovementComparisonRow extends CBRShooterComparisonRowBase<DoublePro
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var result = CBRShooterImplicator.concludeUnitsWalked(file);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var result = CBRShooterImplicator.concludeUnitsWalked(statistics, file.getPlayerNames());
         for (var name : result.keySet()) {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleDoubleProperty(0));
-            
+
             playerValues.get(name).set(result.get(name));
         }
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        synchronized (file.getStatistics()) { 
-var statistics = file.getStatistics();
-
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
         var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.unitsWalkedPerRound(name, file));
+            playerData.put(name, CBRShooterImplicator.unitsWalkedPerRound(name, statistics));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -59,7 +58,6 @@ var statistics = file.getStatistics();
                 }
             }
         }
-    }
     }
 
 }

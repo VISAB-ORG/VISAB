@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 
 import javafx.beans.property.IntegerProperty;
@@ -22,8 +24,8 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var lastStatistics = statistics.get(statistics.size() - 1);
         for (var player : lastStatistics.getPlayers()) {
             var name = player.getName();
             if (!playerValues.containsKey(name))
@@ -34,13 +36,10 @@ public class DeathsComparisonRow extends CBRShooterComparisonRowBase<IntegerProp
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        synchronized (file.getStatistics()) { 
-var statistics = file.getStatistics();
-
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
         var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.accumulatedDeathsPerRound(name, file));
+            playerData.put(name, CBRShooterImplicator.accumulatedDeathsPerRound(name, statistics));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -61,8 +60,6 @@ var statistics = file.getStatistics();
                 }
             }
         }
-    }
-        
     }
 
 }

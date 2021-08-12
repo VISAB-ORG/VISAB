@@ -1,8 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.visab.globalmodel.IVISABFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.ComparisonRowBase;
 
 import javafx.beans.property.Property;
@@ -15,16 +18,18 @@ public abstract class CBRShooterComparisonRowBase<TProperty extends Property<?>>
 
     @Override
     public void updateValues(IVISABFile file) {
-        updateValues((CBRShooterFile) file);
+        var concreteFile = (CBRShooterFile) file;
+        updateValues(concreteFile, new ArrayList<>(concreteFile.getStatistics()));
     }
 
     @Override
     public void updateSeries(IVISABFile file) {
-        updateSeries((CBRShooterFile) file);
+        var concreteFile = (CBRShooterFile) file;
+        updateSeries(concreteFile, new ArrayList<>(concreteFile.getStatistics()));
     }
 
-    public abstract void updateValues(CBRShooterFile file);
+    public abstract void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics);
 
-    public abstract void updateSeries(CBRShooterFile file);
+    public abstract void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics);
 
 }
