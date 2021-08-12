@@ -28,7 +28,6 @@ public class DefaultSessionListener extends SessionListenerBase<DefaultMetaInfor
     @Override
     public void onSessionStarted(DefaultMetaInformation metaInformation) {
         file = new DefaultFile(game);
-        // TODO: Do something with the meta information
     }
 
     @Override

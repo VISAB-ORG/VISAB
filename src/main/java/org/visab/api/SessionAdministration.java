@@ -21,9 +21,6 @@ import org.visab.util.StreamUtil;
  * The SessionAdministration class is used for administering the current
  * transmission sessions. It has a list of all the transmission sessions that
  * are currently open and publishes all API related events.
- *
- * @author moritz
- *
  */
 public class SessionAdministration {
 
@@ -153,7 +150,7 @@ public class SessionAdministration {
      * current runtime.
      */
     public List<SessionStatus> getSessionStatuses() {
-        return new ArrayList<SessionStatus>(statuses);
+        return statuses;
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
-import org.visab.newgui.ResourceHelper;
+import org.visab.gui.ResourceHelper;
 import org.visab.util.JSONConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;
