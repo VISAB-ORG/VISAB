@@ -149,7 +149,6 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
         anchorPane.getChildren().add(sessionGrid);
         scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollPane.setContent(anchorPane);
-
     }
 
 }
