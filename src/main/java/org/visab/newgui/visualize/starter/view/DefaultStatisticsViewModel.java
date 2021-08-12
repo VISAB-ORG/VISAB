@@ -1,21 +1,17 @@
 package org.visab.newgui.visualize.starter.view;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.visab.globalmodel.starter.DefaultFile;
 import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
 import org.visab.util.JSONConvert;
-import org.visab.workspace.DatabaseRepository;
 
 import de.saxsys.mvvmfx.InjectScope;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -25,10 +21,11 @@ public class DefaultStatisticsViewModel extends VisualizeViewModelBase<DefaultFi
     @InjectScope
     VisualizeScope scope;
 
+    private ObjectProperty<TreeItem<String>> selectedStatisticsProperty = new SimpleObjectProperty<>();
+
     public void initialize() {
-        if (scope.isLive()) {
+        if (scope.isLive())
             throw new RuntimeException();
-        }
 
         super.initialize(scope.getFile());
 
@@ -80,6 +77,10 @@ public class DefaultStatisticsViewModel extends VisualizeViewModelBase<DefaultFi
         }
 
         return item;
+    }
+
+    public ObjectProperty<TreeItem<String>> selectedStatisticsProperty() {
+        return selectedStatisticsProperty;
     }
 
 }

@@ -5,7 +5,6 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.processing.IReplayLiveViewable;
 
 /**
- *
  * The ILiveReplayViewModel interface, that view models wanting to support live
  * views that depend on images have to implement. The session listener that is
  * docked onto has this interface as its dependancy to the viewmodel.
