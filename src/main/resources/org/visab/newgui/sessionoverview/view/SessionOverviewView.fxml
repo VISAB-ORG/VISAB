@@ -81,7 +81,7 @@
                               <HBox prefHeight="0.0" prefWidth="218.0">
                                  <children>
                                     <Label prefHeight="10.0" prefWidth="93.0" text="Web API Adress:" />
-                                    <TextField fx:id="webApiAdressLabel">
+                                    <TextField fx:id="webApiAdressLabel" disable="true">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></TextField>
