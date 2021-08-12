@@ -60,7 +60,6 @@ public abstract class LiveVisualizeViewModelBase<TFile extends IVISABFile, TStat
     @Override
     public void onSessionClosed() {
         liveViewActiveProperty.set(false);
-        listener.removeViewModel(this);
     }
 
 }
