@@ -3,6 +3,8 @@ package org.visab.processing.settlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.logging.log4j.Level;
 import org.visab.globalmodel.GameName;
@@ -78,7 +80,7 @@ public class SettlersListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), sessionId);
 
         notifySessionClosed();
     }

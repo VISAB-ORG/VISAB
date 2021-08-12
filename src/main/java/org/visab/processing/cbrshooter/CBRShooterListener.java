@@ -1,5 +1,7 @@
 package org.visab.processing.cbrshooter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,8 +47,6 @@ public class CBRShooterListener
 
     @Override
     public List<CBRShooterStatistics> getStatistics() {
-        // Return a copy to avoid concurrent modification
-        // return new ArrayList<CBRShooterStatistics>(file.getStatistics());
         return file.getStatistics();
     }
 
@@ -80,7 +80,7 @@ public class CBRShooterListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), sessionId);
 
         notifySessionClosed();
     }
