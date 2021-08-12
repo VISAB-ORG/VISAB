@@ -30,6 +30,7 @@ public class CBRShooterMetaViewModel extends LiveVisualizeViewModelBase<CBRShoot
     private ObservableList<PlayerInformation> playerInformation;
     private StringProperty winnerProperty;
 
+    @SuppressWarnings("unchecked")
     public void initialize() {
         List<CBRShooterStatistics> statistics = null;
         if (scope.isLive()) {

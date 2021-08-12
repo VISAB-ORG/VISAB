@@ -14,9 +14,8 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.ResourceHelper;
 import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveViewModel;
+import org.visab.newgui.visualize.LiveVisualizeViewModelBase;
 import org.visab.newgui.visualize.VisualizeScope;
-import org.visab.newgui.visualize.VisualizeViewModelBase;
 import org.visab.newgui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.newgui.visualize.cbrshooter.model.Player;
 import org.visab.processing.ILiveViewable;
@@ -34,16 +33,14 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooterFile>
-        implements ILiveViewModel<CBRShooterStatistics> {
+public class CBRShooterReplayViewModel extends LiveVisualizeViewModelBase<CBRShooterFile, CBRShooterStatistics> {
 
-    // Logger needs .class for each class to use for log traces
     private static Logger logger = LogManager.getLogger(CBRShooterReplayViewModel.class);
 
     @InjectScope
     VisualizeScope scope;
 
-    // Controls that are responsible to handle the JavaFX control element actions
+    // Commands that are responsible to handle the JavaFX control element actions
     private Command playData;
     private Command pauseData;
 
@@ -87,7 +84,6 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     }
 
     public Image getPlayerIcon() {
-        // return new Image(ResourceHelper.IMAGE_PATH + "cbrBot.png");
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Player")));
     }
 
@@ -143,7 +139,6 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
      * Called after the instance was constructed by javafx/mvvmfx.
      */
     public void initialize() {
-
         // Update loop eventually needs to be stopped on stage close
         scope.registerOnStageClosing(stage -> {
             if (updateLoop != null) {
@@ -223,7 +218,6 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
      * The view model always refers to a specific index of the overall statistics
      * that have been loaded from the file to properly display the relevant
      * information on the underlying UI of the CBR Shooter visualizer.
-     * 
      */
     private void updateCurrentGameStatsByFrame(int frame) {
         var statistics = data.get(frame);
@@ -300,8 +294,6 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
     }
 
     public Image getWeaponIcon() {
-        // return new Image(ResourceHelper.IMAGE_PATH + "/weapon.png");
-        // Analogous to map visuals does not work yet
         return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("M4a1")));
     }
 
@@ -353,11 +345,6 @@ public class CBRShooterReplayViewModel extends VisualizeViewModelBase<CBRShooter
 
         if (statisticsReceived % 20 == 0)
             frameSliderMaxProperty.set(data.size() - 1);
-        // TODO: If current frame is last, advance.
-    }
-
-    @Override
-    public void onSessionClosed() {
     }
 
 }
