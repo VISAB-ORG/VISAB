@@ -94,8 +94,9 @@ public class SettlersListener
     }
 
     @Override
-    public void processImage(SettlersImages mapImage) {
-        // TODO Auto-generated method stub
+    public void processImage(SettlersImages images) {
+        writeLog(Level.DEBUG, "Received images!");
+        file.setImages(images);
     }
 
     @Override

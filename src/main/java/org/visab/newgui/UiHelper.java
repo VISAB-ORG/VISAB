@@ -3,6 +3,7 @@ package org.visab.newgui;
 import org.visab.globalmodel.Vector2;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,11 +58,13 @@ public final class UiHelper {
      * seen on it.
      * 
      * @param inputImage the image that needs to be grey-scaled.
+     * @param contrast   the contrast for the image.
      * @return the grey-scaled image.
      */
-    public static ImageView greyScaleImage(Image inputImage) {
+    public static ImageView greyScaleImage(Image inputImage, double contrast) {
         ColorAdjust monochrome = new ColorAdjust();
         monochrome.setSaturation(-1);
+        monochrome.setContrast(contrast);
         ImageView grayScaledImage = new ImageView(inputImage);
         grayScaledImage.setEffect(monochrome);
         return grayScaledImage;
@@ -92,10 +95,22 @@ public final class UiHelper {
     /**
      * Simple method that sets relevant information for a given image view.
      * 
+     * @param label the label that shall be adjusted.
+     * @param x     the x coordinate for the JavaFX positioning.
+     * @param y     the y coordinate for the JavaFX positioning.
+     */
+    public static void adjustVisual(Label label, double x, double y) {
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+    }
+
+    /**
+     * Simple method that sets relevant information for a given image view.
+     * 
      * @param imageView the image view that shall be adjusted.
      * @param position  the positioning vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position) {
+    public static void adjustVisual(ImageView imageView, Vector2<Double> position) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
     }
@@ -107,7 +122,7 @@ public final class UiHelper {
      * @param visible   the visibility for the given image view.
      * @param position  the positioning vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position) {
+    public static void adjustVisual(ImageView imageView, boolean visible, Vector2<Double> position) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
         imageView.setVisible(visible);
@@ -120,7 +135,7 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, Vector2<Double> position, Vector2<Double> fitSizes) {
         imageView.setX(position.getX());
         imageView.setY(position.getY());
         imageView.setFitWidth(fitSizes.getX());
@@ -168,7 +183,8 @@ public final class UiHelper {
      * @param position  the positioning vector for the given image view.
      * @param fitSizes  the fit size vector for the given image view.
      */
-    public static void adjustVisual(ImageView imageView, boolean visible, Vector2 position, Vector2 fitSizes) {
+    public static void adjustVisual(ImageView imageView, boolean visible, Vector2<Double> position,
+            Vector2<Double> fitSizes) {
         imageView.setVisible(visible);
         imageView.setX(position.getX());
         imageView.setY(position.getY());
@@ -176,7 +192,7 @@ public final class UiHelper {
         imageView.setFitHeight(fitSizes.getY());
     }
 
-    public static ImageView resizeImage(ImageView resizeImage, Vector2 sizeVector) {
+    public static ImageView resizeImage(ImageView resizeImage, Vector2<Double> sizeVector) {
         resizeImage.setFitWidth(sizeVector.getX());
         resizeImage.setFitHeight(sizeVector.getY());
         return resizeImage;

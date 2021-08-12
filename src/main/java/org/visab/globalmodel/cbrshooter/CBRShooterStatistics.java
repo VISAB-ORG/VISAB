@@ -15,18 +15,18 @@ import org.visab.globalmodel.Vector2;
  */
 public class CBRShooterStatistics implements IStatistics {
 
-    private Vector2 ammunitionPosition;
+    private Vector2<Double> ammunitionPosition;
     private List<Player> players = new ArrayList<>();
-    private Vector2 healthPosition;
+    private Vector2<Double> healthPosition;
     private boolean isAmmunitionCollected;
     private boolean isHealthCollected;
     private boolean isWeaponCollected;
     private int round;
     private float roundTime;
-    private Vector2 weaponPosition;
+    private Vector2<Double> weaponPosition;
     private float totalTime;
 
-    public Vector2 getAmmunitionPosition() {
+    public Vector2<Double> getAmmunitionPosition() {
         return ammunitionPosition;
     }
 
@@ -42,7 +42,7 @@ public class CBRShooterStatistics implements IStatistics {
         return players;
     }
 
-    public Vector2 getHealthPosition() {
+    public Vector2<Double> getHealthPosition() {
         return healthPosition;
     }
 
@@ -66,15 +66,15 @@ public class CBRShooterStatistics implements IStatistics {
         return roundTime;
     }
 
-    public Vector2 getWeaponPosition() {
+    public Vector2<Double> getWeaponPosition() {
         return weaponPosition;
     }
 
-    public void setAmmunitionPosition(Vector2 ammunitionPosition) {
+    public void setAmmunitionPosition(Vector2<Double> ammunitionPosition) {
         this.ammunitionPosition = ammunitionPosition;
     }
 
-    public void setHealthPosition(Vector2 healthPosition) {
+    public void setHealthPosition(Vector2<Double> healthPosition) {
         this.healthPosition = healthPosition;
     }
 
@@ -98,7 +98,7 @@ public class CBRShooterStatistics implements IStatistics {
         this.roundTime = roundTime;
     }
 
-    public void setWeaponPosition(Vector2 weaponPosition) {
+    public void setWeaponPosition(Vector2<Double> weaponPosition) {
         this.weaponPosition = weaponPosition;
     }
 

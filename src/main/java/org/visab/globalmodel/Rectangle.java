@@ -6,11 +6,11 @@ package org.visab.globalmodel;
  */
 public class Rectangle {
 
-    private Vector2 topLeftAnchorPoint;
-    private int width;
-    private int height;
+    private Vector2<Double> topLeftAnchorPoint;
+    private double width;
+    private double height;
 
-    public int getWidth() {
+    public double getWidth() {
         return this.width;
     }
 
@@ -18,19 +18,19 @@ public class Rectangle {
         this.width = width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return this.height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public Vector2 getTopLeftAnchorPoint() {
+    public Vector2<Double> getTopLeftAnchorPoint() {
         return topLeftAnchorPoint;
     }
 
-    public void setTopLeftAnchorPoint(Vector2 topLeftAnchorPoint) {
+    public void setTopLeftAnchorPoint(Vector2<Double> topLeftAnchorPoint) {
         this.topLeftAnchorPoint = topLeftAnchorPoint;
     }
 

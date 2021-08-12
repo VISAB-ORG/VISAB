@@ -72,6 +72,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     @FXML
     private Pane drawPane;
     @FXML
+    private CheckBox showInBlackAndWhiteCheckBox;
+    @FXML
     private Label totalTimeValueLabel;
     @FXML
     private Label roundValueLabel;
@@ -96,15 +98,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     private static final double DRAW_PANE_WIDTH = 550.0;
 
-    private static final Vector2 STANDARD_ICON_VECTOR = new Vector2(16, 16);
+    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
 
     private CoordinateHelper coordinateHelper;
 
     private Image pauseImage = new Image(ResourceHelper.IMAGE_PATH + "pause.png");
     private Image playImage = new Image(ResourceHelper.IMAGE_PATH + "play.png");
 
-    private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2(32, 32));
-    private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2(32, 32));
+    private ImageView playImageView = UiHelper.resizeImage(new ImageView(playImage), new Vector2<Double>(32.0, 32.0));
+    private ImageView pauseImageView = UiHelper.resizeImage(new ImageView(pauseImage), new Vector2<Double>(32.0, 32.0));
 
     private ObservableList<PlayerVisualsRow> playerVisualsRows = FXCollections.observableArrayList();
     private ObservableMap<String, Node> mapElements = FXCollections.observableHashMap();
@@ -126,6 +128,16 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        showInBlackAndWhiteCheckBox.setSelected(false);
+        showInBlackAndWhiteCheckBox.setOnAction(e -> {
+            if (showInBlackAndWhiteCheckBox.isSelected()) {
+                mapElements.get("coloredMap").setVisible(false);
+                mapElements.get("blackAndWhiteMap").setVisible(true);
+            } else {
+                mapElements.get("coloredMap").setVisible(true);
+                mapElements.get("blackAndWhiteMap").setVisible(false);
+            }
+        });
         players = viewModel.getPlayers();
         frameBasedStats.bind(viewModel.frameBasedStatsProperty());
 
@@ -228,9 +240,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
      * underlying player-specific visuals data.
      */
     private void initializeMapElements() {
-        ImageView mapImage = UiHelper.greyScaleImage(viewModel.getMapImage());
-        mapImage.setViewOrder(1);
-        mapElements.put("map", mapImage);
+        ImageView mapImageBlackAndWhite = UiHelper.greyScaleImage(viewModel.getMapImage(), 0.0);
+        mapImageBlackAndWhite.setViewOrder(1);
+        mapImageBlackAndWhite.setVisible(false);
+        mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
+
+        ImageView mapImageColored = new ImageView(viewModel.getMapImage());
+        mapImageColored.setViewOrder(1);
+        mapImageColored.setVisible(true);
+        mapElements.put("coloredMap", mapImageColored);
 
         ImageView ammuItem = new ImageView(viewModel.getAmmuIcon());
         ImageView weapon = new ImageView(viewModel.getWeaponIcon());
@@ -346,12 +364,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             player.updatePlayerCoordinates(coordinateHelper);
 
             ImageView playerIcon = (ImageView) mapElements.get(player.getName() + "_playerIcon");
-            Vector2 newPos = coordinateHelper.translateAccordingToMap(player.positionProperty().get(), true);
+            Vector2<Double> newPos = coordinateHelper.translateAccordingToMap(player.positionProperty().get(), true);
             ImageView playerPlanChange = (ImageView) mapElements.get(player.getName() + "_playerPlanChange");
-            Vector2 newPosPlanChange = viewModel.getLastPlanChangePositionForPlayer(player.getName(),
+            Vector2<Double> newPosPlanChange = viewModel.getLastPlanChangePositionForPlayer(player.getName(),
                     (int) frameSlider.getValue());
             ImageView playerDeath = (ImageView) mapElements.get(player.getName() + "_playerDeath");
-            Vector2 newPosDeath = viewModel.getLastDeathPositionForPlayer(player.getName(),
+            Vector2<Double> newPosDeath = viewModel.getLastDeathPositionForPlayer(player.getName(),
                     (int) frameSlider.getValue());
 
             UiHelper.adjustVisual(playerIcon, player.showIconProperty().get(), newPos);
