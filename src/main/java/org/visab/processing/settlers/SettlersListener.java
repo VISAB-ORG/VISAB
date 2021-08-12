@@ -66,19 +66,21 @@ public class SettlersListener
     }
 
     @Override
-    public synchronized void onSessionClosed() {
-        if (file.getStatistics().size() > 0) {
-            var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+    public void onSessionClosed() {
+        synchronized (file.getStatistics()) {
+            if (file.getStatistics().size() > 0) {
+                var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
-            var playerName = "";
-            for (var player : lastStatistics.getPlayers()) {
-                if (player.getVictoryPoints() == 10)
-                    playerName = player.getName();
+                var playerName = "";
+                for (var player : lastStatistics.getPlayers()) {
+                    if (player.getVictoryPoints() == 10)
+                        playerName = player.getName();
+                }
+                file.setWinner(playerName);
             }
-            file.setWinner(playerName);
-        }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+            manager.saveFile(file, sessionId.toString(), sessionId);
+        }
 
         notifySessionClosed();
     }
@@ -99,10 +101,12 @@ public class SettlersListener
     }
 
     @Override
-    public synchronized void processStatistics(SettlersStatistics statistics) {
-        file.getStatistics().add(statistics);
+    public void processStatistics(SettlersStatistics statistics) {
+        synchronized (file.getStatistics()) {
+            file.getStatistics().add(statistics);
 
-        writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
+            writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));
+        }
 
         notifyStatisticsAdded(statistics);
     }

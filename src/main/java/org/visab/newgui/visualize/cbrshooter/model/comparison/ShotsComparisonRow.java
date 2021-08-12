@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
@@ -21,8 +23,8 @@ public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var result = CBRShooterImplicator.concludeShotsFired(file);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var result = CBRShooterImplicator.concludeShotsFired(statistics, file.getPlayerNames());
         for (var name : result.keySet()) {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleIntegerProperty(0));
@@ -32,12 +34,10 @@ public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.shotsPerRound(name, file));
+            playerData.put(name, CBRShooterImplicator.shotsPerRound(name, statistics));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -59,5 +59,4 @@ public class ShotsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
             }
         }
     }
-
 }

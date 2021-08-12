@@ -34,9 +34,10 @@ public class VictoryPointsComparisonRow extends SettlersComparisonRowBase<Intege
 
     @Override
     public void updateSeries(SettlersFile file) {
-        var statistics = file.getStatistics();
+        synchronized (file.getStatistics()) { 
+var statistics = file.getStatistics();
 
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
             playerData.put(name, SettlersImplicator.accumulatedVictoryPointsPerTurn(name, file));
 
@@ -61,5 +62,5 @@ public class VictoryPointsComparisonRow extends SettlersComparisonRowBase<Intege
         }
         
     }
-
+    }
 }

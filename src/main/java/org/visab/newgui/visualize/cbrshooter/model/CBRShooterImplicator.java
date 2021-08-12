@@ -5,19 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.visab.globalmodel.Vector2;
-import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
+import org.visab.globalmodel.cbrshooter.WeaponInformation;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.util.StreamUtil;
-import org.visab.workspace.Workspace;
 
 public final class CBRShooterImplicator {
 
-    public static ArrayList<StatisticsDataStructure> shotsPerRound(String player, CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> shotsPerRound(String player,
+            List<CBRShooterStatistics> statistics) {
+        var shotsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countShots = 0;
         var maxAmmunition = 0;
         var currentAmmunition = 0;
@@ -30,7 +29,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                shotsPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) countShots));
+                shotsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round, (double) countShots));
                 countShots = 0;
             }
             maxAmmunition = currentAmmunition;
@@ -46,11 +45,9 @@ public final class CBRShooterImplicator {
         return shotsPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> collectedCollectablesPerRound(String player, CBRShooterFile file,
-            Collectable collectable) {
-        var statistics = file.getStatistics();
-
-        var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> collectedCollectablesPerRound(String player,
+            List<CBRShooterStatistics> statistics, Collectable collectable) {
+        var collectedCollectablesPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countCollectedCollectables = 0;
         var round = 0;
         var playerNumber = 0;
@@ -62,7 +59,7 @@ public final class CBRShooterImplicator {
 
             if (round < statistics.get(i).getRound()) {
                 collectedCollectablesPerRoundPerPlayer
-                        .add(new StatisticsDataStructure(round, (double) countCollectedCollectables));
+                        .add(new StatisticsDataStructure<Double>(round, (double) countCollectedCollectables));
             }
 
             switch (collectable) {
@@ -100,19 +97,20 @@ public final class CBRShooterImplicator {
         return collectedCollectablesPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> aimRatioPerRound(String player, CBRShooterFile file) {
+    public static ArrayList<StatisticsDataStructure<Double>> aimRatioPerRound(String player,
+            List<CBRShooterStatistics> statistics, List<WeaponInformation> weaponInformation) {
         // aim Ratio = hits / shotsFired
-        var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
-        var shotsFired = shotsPerRound(player, file);
-        var hits = hitsOnEnemyPerRound(player, file);
+        var aimRatioPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
+        var shotsFired = shotsPerRound(player, statistics);
+        var hits = hitsOnEnemyPerRound(player, statistics, weaponInformation);
 
         for (int i = 0; i < shotsFired.size(); i++) {
 
             if (shotsFired.get(i).getValue() > 0) {
                 var aimRatio = (hits.get(i).getValue() / shotsFired.get(i).getValue());
-                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, aimRatio));
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(i, aimRatio));
             } else {
-                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure(i, 0.0));
+                aimRatioPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(i, 0.0));
             }
 
         }
@@ -120,10 +118,9 @@ public final class CBRShooterImplicator {
         return aimRatioPerRoundPerPlayer;
     }
 
-    public static ArrayList<StatisticsDataStructure> hitsOnEnemyPerRound(String player, CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> hitsOnEnemyPerRound(String player,
+            List<CBRShooterStatistics> statistics, List<WeaponInformation> weaponInformation) {
+        var hitsTakenPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var countHits = 0;
         var lastHealth = 100;
         var currentHealth = 0;
@@ -136,7 +133,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) countHits));
+                hitsTakenPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round, (double) countHits));
                 countHits = 0;
             }
             lastHealth = currentHealth;
@@ -144,7 +141,7 @@ public final class CBRShooterImplicator {
 
             if (currentHealth < lastHealth) {
                 countHits += (int) Math
-                        .ceil((lastHealth - currentHealth) / file.getWeaponInformation().get(playerNumber).getDamage());
+                        .ceil((lastHealth - currentHealth) / weaponInformation.get(playerNumber).getDamage());
             }
 
             round = statistics.get(i).getRound();
@@ -152,12 +149,12 @@ public final class CBRShooterImplicator {
         }
 
         return hitsTakenPerRoundPerPlayer;
+
     }
 
-    public static ArrayList<StatisticsDataStructure> unitsWalkedPerRound(String player, CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> unitsWalkedPerRound(String player,
+            List<CBRShooterStatistics> statistics) {
+        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var unitsWalked = 0;
         var currentPos = new Vector2<Double>();
         var moved = 0.0;
@@ -169,8 +166,9 @@ public final class CBRShooterImplicator {
 
         for (int i = 0; i < statistics.size(); i++) {
 
-            if (round < file.getStatistics().get(i).getRound()) {
-                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure(round, (double) unitsWalked));
+            if (round < statistics.get(i).getRound()) {
+                accumulatedDeathsPerRoundPerPlayer
+                        .add(new StatisticsDataStructure<Double>(round, (double) unitsWalked));
                 unitsWalked = 0;
             }
 
@@ -187,12 +185,12 @@ public final class CBRShooterImplicator {
         }
 
         return accumulatedDeathsPerRoundPerPlayer;
+
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedDeathsPerRound(String player, CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedDeathsPerRound(String player,
+            List<CBRShooterStatistics> statistics) {
+        var accumulatedDeathsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var round = 0;
         var playerNumber = 0;
         if (player.contains("Jane Doe")) {
@@ -202,7 +200,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
+                accumulatedDeathsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round,
                         (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
@@ -210,12 +208,12 @@ public final class CBRShooterImplicator {
         }
 
         return accumulatedDeathsPerRoundPerPlayer;
+
     }
 
-    public static ArrayList<StatisticsDataStructure> accumulatedKillsPerRound(String player, CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure>();
+    public static ArrayList<StatisticsDataStructure<Double>> accumulatedKillsPerRound(String player,
+            List<CBRShooterStatistics> statistics) {
+        var accumulatedKillsPerRoundPerPlayer = new ArrayList<StatisticsDataStructure<Double>>();
         var round = 0;
         var playerNumber = 1;
         if (player.contains("Jane Doe")) {
@@ -225,7 +223,7 @@ public final class CBRShooterImplicator {
         for (int i = 0; i < statistics.size(); i++) {
 
             if (round < statistics.get(i).getRound()) {
-                accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure(round,
+                accumulatedKillsPerRoundPerPlayer.add(new StatisticsDataStructure<Double>(round,
                         (double) statistics.get(i).getPlayers().get(playerNumber).getStatistics().getDeaths()));
             }
 
@@ -291,30 +289,30 @@ public final class CBRShooterImplicator {
         }
     }
 
-    public static Map<String, Double> concludeAimRatio(CBRShooterFile file) {
+    public static Map<String, Double> concludeAimRatio(List<CBRShooterStatistics> statistics, List<String> playerNames,
+            List<WeaponInformation> weaponInformation) {
         var ratios = new HashMap<String, Double>();
-        for (var name : file.getPlayerNames())
+        for (var name : playerNames)
             ratios.put(name, 1.0);
 
-        if (file.getPlayerCount() != 2)
+        if (playerNames.size() != 2)
             return ratios;
 
-        var shotsFired = concludeShotsFired(file);
-        var hitsTaken = concludeHitsTaken(file);
+        var shotsFired = concludeShotsFired(statistics, playerNames);
+        var hitsTaken = concludeHitsTaken(statistics, playerNames, weaponInformation);
 
         for (var name : ratios.keySet()) {
-            var otherHitsTaken = hitsTaken.get(otherPlayerName(name, file));
+            var otherHitsTaken = hitsTaken.get(otherPlayerName(name, playerNames));
             ratios.put(name, ((double) otherHitsTaken) / shotsFired.get(name));
         }
 
         return ratios;
     }
 
-    public static Map<String, Integer> concludeShotsFired(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
+    public static Map<String, Integer> concludeShotsFired(List<CBRShooterStatistics> statistics,
+            List<String> playerNames) {
         var shots = new HashMap<String, Integer>();
-        for (var name : file.getPlayerNames())
+        for (var name : playerNames)
             shots.put(name, 0);
 
         var lastAmmunitions = new HashMap<String, Integer>();
@@ -337,11 +335,10 @@ public final class CBRShooterImplicator {
         return shots;
     }
 
-    public static Map<String, Integer> concludeCollected(CBRShooterFile file, Collectable collectable) {
-        var statistics = file.getStatistics();
-
+    public static Map<String, Integer> concludeCollected(List<CBRShooterStatistics> statistics,
+            List<String> playerNames, Collectable collectable) {
         var collected = new HashMap<String, Integer>();
-        for (var name : file.getPlayerNames())
+        for (var name : playerNames)
             collected.put(name, 0);
 
         CBRShooterStatistics lastStatistics = null;
@@ -359,14 +356,13 @@ public final class CBRShooterImplicator {
         return collected;
     }
 
-    public static Map<String, Integer> concludeHitsTaken(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
+    public static Map<String, Integer> concludeHitsTaken(List<CBRShooterStatistics> statistics,
+            List<String> playerNames, List<WeaponInformation> weaponInformation) {
         var hitsTaken = new HashMap<String, Integer>();
-        for (var name : file.getPlayerNames())
+        for (var name : playerNames)
             hitsTaken.put(name, 0);
 
-        if (file.getPlayerCount() != 2)
+        if (playerNames.size() != 2)
             return hitsTaken;
 
         var lastDeaths = new HashMap<String, Integer>();
@@ -384,9 +380,9 @@ public final class CBRShooterImplicator {
 
                 // Calculate the hits taken
                 if (lastHealth != currentHealth || lastDeath != currentDeath) {
-                    var otherPlayerWeapon = lastWeapons.get(otherPlayerName(name, file));
+                    var otherPlayerWeapon = lastWeapons.get(otherPlayerName(name, playerNames));
 
-                    var weaponInfo = StreamUtil.firstOrNull(file.getWeaponInformation(),
+                    var weaponInfo = StreamUtil.firstOrNull(weaponInformation,
                             x -> x.getName().equals(otherPlayerWeapon));
                     if (weaponInfo == null)
                         throw new RuntimeException("Weapon info was null");
@@ -414,11 +410,10 @@ public final class CBRShooterImplicator {
         return hitsTaken;
     }
 
-    public static Map<String, Double> concludeUnitsWalked(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
+    public static Map<String, Double> concludeUnitsWalked(List<CBRShooterStatistics> statistics,
+            List<String> playerNames) {
         var walked = new HashMap<String, Double>();
-        for (var name : file.getPlayerNames())
+        for (var name : playerNames)
             walked.put(name, 0.0);
 
         var lastPositions = new HashMap<String, Vector2<Double>>();
@@ -441,28 +436,16 @@ public final class CBRShooterImplicator {
         return walked;
     }
 
-    private static String otherPlayerName(String myPlayer, CBRShooterFile file) {
-        if (file.getPlayerCount() > 2)
+    private static String otherPlayerName(String myPlayer, List<String> playerNames) {
+        if (playerNames.size() > 2)
             return "";
 
-        for (var name : file.getPlayerNames()) {
+        for (var name : playerNames) {
             if (name != myPlayer)
                 return name;
         }
 
         return "";
-    }
-
-    public static void main(String[] args) {
-        var file = (CBRShooterFile) Workspace.getInstance().getDatabaseManager()
-                .loadFile("bd632b71-f2bf-43e4-ab1d-11c231a4a860.visab2", "CBRShooter");
-        var test = collectedCollectablesPerRound("John Doe", file, Collectable.Ammunition);
-        for (int i = 0; i < test.size(); i++) {
-            System.out.println(test.get(i).getRound() + " : " + test.get(i).getValue());
-        }
-
-        // var shots = concludeShotsFired(file);
-        // System.out.println(shots);
     }
 
 }

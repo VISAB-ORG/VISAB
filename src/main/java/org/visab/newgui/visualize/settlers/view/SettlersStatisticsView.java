@@ -39,12 +39,18 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     LineChart<Integer, Number> playerStats;
 
     @FXML
+    private void handleShowDetailsButtonAction() {
+        viewModel.showDetailsCommand().execute();
+    }
+
+    @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println(viewModel);
         comparisonStatistics.setItems(viewModel.getComparisonStatistics());
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());

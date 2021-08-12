@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
@@ -21,8 +23,8 @@ public class KillsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var lastStatistics = statistics.get(statistics.size() - 1);
         for (var player : lastStatistics.getPlayers()) {
             var name = player.getName();
             if (!playerValues.containsKey(name))
@@ -33,12 +35,10 @@ public class KillsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-        
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.accumulatedKillsPerRound(name, file));
+            playerData.put(name, CBRShooterImplicator.accumulatedKillsPerRound(name, statistics));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -59,7 +59,6 @@ public class KillsComparisonRow extends CBRShooterComparisonRowBase<IntegerPrope
                 }
             }
         }
-        
     }
 
 }

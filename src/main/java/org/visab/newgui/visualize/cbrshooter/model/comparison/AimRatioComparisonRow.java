@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterComparisonRowBase;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
@@ -22,8 +24,9 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var result = CBRShooterImplicator.concludeAimRatio(file);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var result = CBRShooterImplicator.concludeAimRatio(statistics, file.getPlayerNames(),
+                file.getWeaponInformation());
         for (var name : result.keySet()) {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleDoubleProperty(0));
@@ -33,12 +36,10 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.aimRatioPerRound(name, file));
+            playerData.put(name, CBRShooterImplicator.aimRatioPerRound(name, statistics, file.getWeaponInformation()));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -60,7 +61,6 @@ public class AimRatioComparisonRow extends CBRShooterComparisonRowBase<DoublePro
                 }
             }
         }
-        
     }
 
 }

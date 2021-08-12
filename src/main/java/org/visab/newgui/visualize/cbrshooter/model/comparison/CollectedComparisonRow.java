@@ -1,9 +1,11 @@
 package org.visab.newgui.visualize.cbrshooter.model.comparison;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.visab.globalmodel.cbrshooter.CBRShooterFile;
+import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
 import org.visab.newgui.visualize.StatisticsDataStructure;
 import org.visab.newgui.visualize.cbrshooter.model.CBRShooterImplicator;
 import org.visab.newgui.visualize.cbrshooter.model.Collectable;
@@ -25,8 +27,8 @@ public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerP
     }
 
     @Override
-    public void updateValues(CBRShooterFile file) {
-        var result = CBRShooterImplicator.concludeCollected(file, collectable);
+    public void updateValues(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var result = CBRShooterImplicator.concludeCollected(statistics, file.getPlayerNames(), collectable);
         for (var name : result.keySet()) {
             if (!playerValues.containsKey(name))
                 playerValues.put(name, new SimpleIntegerProperty(0));
@@ -36,12 +38,10 @@ public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerP
     }
 
     @Override
-    public void updateSeries(CBRShooterFile file) {
-        var statistics = file.getStatistics();
-
-        var playerData = new HashMap<String, List<StatisticsDataStructure>>();
+    public void updateSeries(CBRShooterFile file, List<CBRShooterStatistics> statistics) {
+        var playerData = new HashMap<String, List<StatisticsDataStructure<Double>>>();
         for (var name : file.getPlayerNames())
-            playerData.put(name, CBRShooterImplicator.collectedCollectablesPerRound(name, file, collectable));
+            playerData.put(name, CBRShooterImplicator.collectedCollectablesPerRound(name, statistics, collectable));
 
         for (var snapshot : statistics) {
             for (var player : snapshot.getPlayers()) {
@@ -62,7 +62,6 @@ public class CollectedComparisonRow extends CBRShooterComparisonRowBase<IntegerP
                 }
             }
         }
-        
     }
 
 }
