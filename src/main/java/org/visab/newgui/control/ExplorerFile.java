@@ -11,6 +11,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Represents a file in the explorer in your os. A file can therefore be an
+ * directory or a file. Is used by the FileExplorer control.
+ */
 public class ExplorerFile {
 
     private ObservableList<ExplorerFile> files = FXCollections.observableArrayList();
@@ -18,7 +22,7 @@ public class ExplorerFile {
     private StringProperty nameProperty = new SimpleStringProperty();
     private LongProperty sizeProperty = new SimpleLongProperty();
     private ObjectProperty<ExplorerFile> parentDirProperty = new SimpleObjectProperty<>();
-    
+
     private boolean isDirectory;
     private LocalDateTime creationDate;
 

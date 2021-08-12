@@ -68,7 +68,6 @@ public class RecursiveTreeItem<T> extends TreeItem<T> {
                         RecursiveTreeItem.this.getChildren().removeAll(itemsToRemove);
                     });
                 }
-
             }
         });
     }

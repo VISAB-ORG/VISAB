@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.visab.globalmodel.SessionStatus;
 import org.visab.newgui.ResourceHelper;
-import org.visab.newgui.control.CustomSessionObject;
+import org.visab.newgui.control.SessionObject;
 import org.visab.newgui.sessionoverview.viewmodel.SessionOverviewViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
@@ -91,7 +91,7 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
             // Customized JavaFX Gridpane which displays relevant session information
             SessionStatus dummyStatus = new SessionStatus(new UUID(0, 10), "DummyGame", true, LocalTime.now(),
                     LocalTime.now(), LocalTime.now(), 3, 1, 10, "127.0.0.1", status);
-            CustomSessionObject sessionObject = new CustomSessionObject(dummyStatus, logoPath,
+            SessionObject sessionObject = new SessionObject(dummyStatus, logoPath,
                     SESSION_OBJECT_FIT_WIDTH);
 
             sessionObject.setBackgroundColorByStatus(status);
@@ -187,7 +187,7 @@ public class SessionOverviewView implements FxmlView<SessionOverviewViewModel>, 
             var logoPath = ResourceHelper.getLogoPathByGame(sessionStatus.getGame());
 
             // Customized JavaFX Gridpane which displays relevant session information
-            CustomSessionObject sessionObject = new CustomSessionObject(sessionStatus, logoPath, 300.0);
+            SessionObject sessionObject = new SessionObject(sessionStatus, logoPath, 300.0);
 
             sessionObject.setBackgroundColorByStatus(sessionStatus.getStatusType());
 

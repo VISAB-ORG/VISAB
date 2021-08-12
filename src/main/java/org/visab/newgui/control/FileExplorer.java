@@ -24,6 +24,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 
+/**
+ * The FileExplorer control that represents a file view.
+ */
 public class FileExplorer extends TreeTableView<ExplorerFile> {
 
     /**

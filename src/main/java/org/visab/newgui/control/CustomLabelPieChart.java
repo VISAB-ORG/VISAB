@@ -3,7 +3,6 @@ package org.visab.newgui.control;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.text.Text;
@@ -22,22 +21,6 @@ public class CustomLabelPieChart extends PieChart {
     private Function<Data, String> basicLabelFormat = d -> d.getName() + " " + d.getPieValue();
 
     private Function<Data, String> labelFormat;
-
-    private Function<Data, String> toolTipFormat;
-
-    public void setToolTipFormat(Function<Data, String> func) {
-        this.getData().addListener(new ListChangeListener<Data>() {
-            @Override
-            public void onChanged(Change<? extends Data> c) {
-                c.next();
-                if (c.wasAdded() && c.getAddedSize() == 1) {
-                    var data = c.getList().get(c.getFrom());
-                    // TODO: Add tooltip thingy here.
-                }
-
-            }
-        });
-    }
 
     public void setLabelFormat(Function<Data, String> func) {
         labelFormat = func;

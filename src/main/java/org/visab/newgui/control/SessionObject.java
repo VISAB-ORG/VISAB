@@ -2,6 +2,7 @@ package org.visab.newgui.control;
 
 import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
+import org.visab.newgui.DialogHelper;
 import org.visab.newgui.DynamicViewLoader;
 
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import javafx.scene.layout.GridPane;
  * @author vanessa
  *
  */
-public class CustomSessionObject extends GridPane {
+public class SessionObject extends GridPane {
 
     // "Static" content
     private static Image CLOSE_ICON = new Image("/img/closeIcon.png", 12, 12, false, false);
@@ -45,7 +46,7 @@ public class CustomSessionObject extends GridPane {
     private Label sessionClosedValue;
     private Button openLiveViewButton;
 
-    public CustomSessionObject(SessionStatus sessionStatus, String gameIconPath, double fitWidth) {
+    public SessionObject(SessionStatus sessionStatus, String gameIconPath, double fitWidth) {
 
         this.setMinWidth(fitWidth);
         this.setMaxWidth(fitWidth);
@@ -60,13 +61,9 @@ public class CustomSessionObject extends GridPane {
             viewDescription = "Visualize";
         }
         this.openLiveViewButton = new Button(viewDescription);
-        this.openLiveViewButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                // TODO: Popup if live viewing not supported
-                DynamicViewLoader.loadVisualizerView(sessionStatus.getGame(), sessionStatus.getSessionId());
-            }
-        });
+        this.openLiveViewButton.setOnAction(
+                e -> DynamicViewLoader.loadVisualizerView(sessionStatus.getGame(), sessionStatus.getSessionId()));
+                
         this.sessionIdValue = new Label(sessionStatus.getSessionId().toString());
         this.hostNameValue = new Label("TODO");
         this.ipValue = new Label(sessionStatus.getIp());
