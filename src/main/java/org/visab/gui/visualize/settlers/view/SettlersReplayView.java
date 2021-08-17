@@ -104,12 +104,14 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         players = viewModel.getPlayers();
         turnBasedStats.bind(viewModel.turnBasedStatsProperty());
 
-        drawPane.setPrefWidth(DRAW_PANE_WIDTH);
-        var drawPanePrefHeight = DRAW_PANE_WIDTH
+        drawPane.setMinWidth(DRAW_PANE_WIDTH);
+        drawPane.setMaxWidth(DRAW_PANE_WIDTH);
+        var drawPaneFitHeight = DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
-        drawPane.setPrefHeight(drawPanePrefHeight);
-        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
-                drawPane.getPrefWidth(), BIG_ICON_VECTOR);
+        drawPane.setMinHeight(drawPaneFitHeight);
+        drawPane.setMaxHeight(drawPaneFitHeight);
+        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getMinHeight(),
+                drawPane.getMinWidth(), BIG_ICON_VECTOR);
         initializePlayersVisuals();
 
         playerDataTable.setItems(FXCollections.observableArrayList(players));
@@ -249,12 +251,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     }
                 }
             }
-
-            System.out.println("------------------ PRINT MAP ELEMENTS ----------------");
-            for (String key : mapElements.keySet()) {
-                System.out.println("Key in map: " + key + " is visible: " + mapElements.get(key).isVisible());
-            }
-            System.out.println("------------------ END ----------------");
         }
 
         drawPane.getChildren().setAll(mapElements.values());
@@ -273,12 +269,20 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
         mapImageBlackAndWhite.setViewOrder(1);
         mapImageBlackAndWhite.setVisible(false);
-        mapElements.put("blackAndWhiteMap", mapImageBlackAndWhite);
+        Pane mapWrapper = new Pane();
+        mapWrapper.setStyle("-fx-background-color: red;");
+        mapWrapper.getChildren().add(mapImageBlackAndWhite);
+        mapElements.put("blackAndWhiteMap", mapWrapper);
+
+        System.out.println("draw pane pref-size: " + drawPane.getPrefWidth() + " x " + drawPane.getPrefHeight());
+        System.out.println("map image size: " + mapImageBlackAndWhite.getFitWidth() + " x "
+                + mapImageBlackAndWhite.getFitHeight());
 
         ImageView mapImageColored = new ImageView(viewModel.getMapImage());
         mapImageColored.setFitWidth(DRAW_PANE_WIDTH);
         mapImageColored.setFitHeight(DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+        mapImageColored.setViewOrder(1);
         mapImageColored.setVisible(true);
         mapElements.put("coloredMap", mapImageColored);
 
@@ -293,7 +297,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                 UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
                         coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true),
                         BIG_ICON_VECTOR);
-                Label streetAnnotation = new Label(player.getRoadAnnotation());
+                Label streetAnnotation = new Label(
+                        player.getRoadAnnotation() + ", " + player.streetPositionsProperty().get().get(i).toString());
                 streetAnnotation.setTextFill(player.playerColorProperty().get());
                 streetAnnotation.getStyleClass().add("boldLabel");
                 UiHelper.adjustVisual(streetAnnotation, playerStreet.getX() + (STANDARD_ICON_VECTOR.getX()),
@@ -311,7 +316,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                         coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true),
                         BIG_ICON_VECTOR);
 
-                Label villageAnnotation = new Label(player.getVillageAnnotation());
+                Label villageAnnotation = new Label(player.getVillageAnnotation() + ", "
+                        + player.villagePositionsProperty().get().get(i).toString());
                 villageAnnotation.setTextFill(player.playerColorProperty().get());
                 villageAnnotation.getStyleClass().add("boldLabel");
                 UiHelper.adjustVisual(villageAnnotation, playerVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
@@ -328,10 +334,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     // Cities
                     ImageView playerCity = new ImageView(
                             UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
+                    playerCity.setStyle("-fx-border-color: black;");
                     UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
                             coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
                             BIG_ICON_VECTOR);
-                    Label cityAnnotation = new Label(player.getCityAnnotation());
+                    Label cityAnnotation = new Label(
+                            player.getCityAnnotation() + ", " + player.cityPositionsProperty().get().get(i).toString());
                     cityAnnotation.setTextFill(player.playerColorProperty().get());
                     cityAnnotation.getStyleClass().add("boldLabel");
                     UiHelper.adjustVisual(cityAnnotation, playerCity.getX() + (STANDARD_ICON_VECTOR.getX()),
@@ -346,7 +354,8 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                             coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
                             BIG_ICON_VECTOR);
 
-                    Label preVillageAnnotation = new Label(player.getVillageAnnotation());
+                    Label preVillageAnnotation = new Label(player.getVillageAnnotation() + ", "
+                            + player.cityPositionsProperty().get().get(i).toString());
                     preVillageAnnotation.setTextFill(player.playerColorProperty().get());
                     preVillageAnnotation.getStyleClass().add("boldLabel");
                     UiHelper.adjustVisual(preVillageAnnotation, playerPreVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
@@ -360,10 +369,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
         drawPane.getChildren().setAll(mapElements.values());
         updateMapElements();
-
-        for (String key : mapElements.keySet()) {
-            System.out.println(key);
-        }
     }
 
     @FXML

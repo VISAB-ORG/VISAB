@@ -28,6 +28,8 @@ public class CoordinateHelper {
      */
     public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth,
             Vector2<Double> standardIconVector) {
+        System.out.println("Initializing coordinate helper with drawPaneHeight: " + drawPaneHeight + " and width of: "
+                + drawPaneWidth);
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
@@ -40,15 +42,27 @@ public class CoordinateHelper {
      */
     public Vector2<Double> translateAccordingToMap(Vector2<Double> coordinatesUnity, boolean isIcon) {
 
+        System.out.println("Map rectangle anchorpoint unity: " + this.mapRectangle.getTopLeftAnchorPoint().toString());
+        System.out.println("Map rectangle width unity: " + this.mapRectangle.getWidth());
+        System.out.println("Map rectangle height unity: " + this.mapRectangle.getHeight());
+
+        System.out.println("Coordinates unity: " + coordinatesUnity.toString());
+
         // Compute positioning relative to the top left anchor point with distances
         double relativeXDistanceToTopLeftAnchorPoint = Math
                 .abs(this.mapRectangle.getTopLeftAnchorPoint().getX() - coordinatesUnity.getX());
         double relativeYDistanceToTopLeftAnchorPoint = Math
                 .abs(this.mapRectangle.getTopLeftAnchorPoint().getY() - coordinatesUnity.getY());
 
+        System.out.println("Relative X Distance to top left anchor: " + relativeXDistanceToTopLeftAnchorPoint);
+        System.out.println("Relative Y Distance to top left anchor: " + relativeYDistanceToTopLeftAnchorPoint);
+
         // Calculate the percentage distance on the unity map
         double percentageMovedOnX = relativeXDistanceToTopLeftAnchorPoint / this.mapRectangle.getWidth();
         double percentageMovedOnY = relativeYDistanceToTopLeftAnchorPoint / this.mapRectangle.getHeight();
+
+        System.out.println("Percentagae moved on X: " + percentageMovedOnX);
+        System.out.println("Percentagae moved on Y: " + percentageMovedOnY);
 
         double centerOnXOffset = 0.0;
         double centerOnYOffset = 0.0;
@@ -60,6 +74,9 @@ public class CoordinateHelper {
         // Calculate the positioning on the JavaFX pane that should be drawn on
         double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth + centerOnXOffset;
         double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight + centerOnYOffset;
+
+        System.out.println(
+                "Positioning JavaFX: " + new Vector2<Double>(relativePanePositionX, relativePanePositionY).toString());
 
         return new Vector2<Double>(relativePanePositionX, relativePanePositionY);
     }
