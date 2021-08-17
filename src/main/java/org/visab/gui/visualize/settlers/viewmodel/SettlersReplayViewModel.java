@@ -12,6 +12,7 @@ import org.visab.globalmodel.IStatistics;
 import org.visab.globalmodel.Rectangle;
 import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersStatistics;
+import org.visab.gui.ResourceHelper;
 import org.visab.gui.UiHelper;
 import org.visab.gui.visualize.LiveVisualizeViewModelBase;
 import org.visab.gui.visualize.settlers.model.Player;
@@ -225,13 +226,21 @@ public class SettlersReplayViewModel extends LiveVisualizeViewModelBase<Settlers
     public HashMap<String, Pair<Image, String>> getAnnotatedIconsForPlayer(String playerName) {
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Pair<Image, String>> iconMap = new HashMap<String, Pair<Image, String>>();
-        Image playerRoad = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getStreetImage())),
+        Image playerRoad = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
                 playerColor);
-        Image playerVillage = UiHelper
-                .recolorImage(new Image(new ByteArrayInputStream(file.getImages().getVillageImage())), playerColor);
-
-        Image playerCity = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getCityImage())),
+        Image playerVillage = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
                 playerColor);
+        Image playerCity = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
+                playerColor);
+        // Don't use because they scale very badly and are hard to distinguish from each
+        // other
+//        Image playerRoad = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getStreetImage())),
+//                playerColor);
+//        Image playerVillage = UiHelper
+//                .recolorImage(new Image(new ByteArrayInputStream(file.getImages().getVillageImage())), playerColor);
+//
+//        Image playerCity = UiHelper.recolorImage(new Image(new ByteArrayInputStream(file.getImages().getCityImage())),
+//                playerColor);
         Pair<Image, String> roadPair = new Pair<Image, String>(playerRoad, file.getImages().getStreetAnnotation());
         Pair<Image, String> villagePair = new Pair<Image, String>(playerVillage,
                 file.getImages().getVillageAnnotation());

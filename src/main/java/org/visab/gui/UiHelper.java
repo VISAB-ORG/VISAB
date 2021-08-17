@@ -206,4 +206,24 @@ public final class UiHelper {
         return resizeImage;
     }
 
+//    public static Pair<Vector2<Double>, Vector2<Double>> getTransparentEdgeBoundaries(Image inputImage) {
+//        Vector2<Double> upperBoundary = new Vector2<Double>();
+//        Vector2<Double> lowerBoundary = new Vector2<Double>();
+//        final int w = (int) inputImage.getWidth();
+//        final int h = (int) inputImage.getHeight();
+//
+//        BufferedImage image = SwingFXUtils.fromFXImage(inputImage, null);
+//        for (int y = 0; y < h; y++) {
+//            for (int x = 0; x < w; x++) {
+//                int pixel = image.getRGB(x, y);
+//
+//                if (!((pixel >> 24) == 0x00)) {
+//                    if (y > upperBo)
+//                }
+//            }
+//        }
+//
+//        return new Pair<Vector2<Double>, Vector2<Double>>(upperBoundary, lowerBoundary);
+//    }
+
 }

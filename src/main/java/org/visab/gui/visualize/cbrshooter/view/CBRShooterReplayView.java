@@ -114,6 +114,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
     private static final double DRAW_PANE_WIDTH = 550.0;
 
     private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
+    private static final Vector2<Double> OFFSET_VECTOR = new Vector2<Double>(0.0, 0.0);
 
     private CoordinateHelper coordinateHelper;
 
@@ -161,7 +162,7 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
         drawPane.setPrefHeight(drawPanePrefHeight);
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
-                drawPane.getPrefWidth(), STANDARD_ICON_VECTOR);
+                drawPane.getPrefWidth(), STANDARD_ICON_VECTOR, OFFSET_VECTOR);
         initializePlayersVisuals();
         initializeMapElements();
         drawPane.getChildren().setAll(mapElements.values());

@@ -49,7 +49,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Pane fx:id="drawPane" prefHeight="584.0" prefWidth="548.0">
+                              <Pane fx:id="drawPane" style="-fx-border-color: black;" prefHeight="584.0" prefWidth="548.0">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" right="20.0" top="20.0" />
                                  </GridPane.margin>
