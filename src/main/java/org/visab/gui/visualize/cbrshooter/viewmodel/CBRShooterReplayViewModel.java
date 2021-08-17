@@ -79,7 +79,7 @@ public class CBRShooterReplayViewModel extends LiveVisualizeViewModelBase<CBRSho
     }
 
     public Image getPlayerIcon() {
-        return new Image(new ByteArrayInputStream(file.getImages().getStaticObjects().get("Player")));
+        return new Image(new ByteArrayInputStream(file.getImages().getMoveableObjects().get("Player")));
     }
 
     public List<String> getPlayerNames() {
