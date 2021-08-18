@@ -48,7 +48,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="800.0" stylesheets="@../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
+<AnchorPane prefHeight="800.0" prefWidth="800.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>

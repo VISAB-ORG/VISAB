@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.Label?>
 
-<GridPane prefWidth="600.0"  xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../../../../../../template_style.css" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
+<GridPane prefWidth="600.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" />
         <ColumnConstraints hgrow="SOMETIMES" />

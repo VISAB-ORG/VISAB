@@ -27,7 +27,6 @@ public class ConfigManager {
     private static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_SUFFIX);
     private static final String LIGHT_MODE_CSS = ConfigManager.class.getResource("/template_style.css").toExternalForm();
     private static final String DARK_MODE_CSS = ConfigManager.class.getResource("/template_style_darkmode.css").toExternalForm();
-    public String cssPath;
     private static final String SETTINGS_PATH = "settings.json";
     private static final String MAPPING_PATH = "classMapping.json";
     private static final String DEFAULT_SETTINGS_PATH = "/configs/defaultSettings.json";
@@ -41,15 +40,14 @@ public class ConfigManager {
     public ConfigManager() {
         loadSettings();
         loadMappings();
-        if (this.settings.isDarkMode()) {
-        	this.cssPath = DARK_MODE_CSS;
-        } else {
-        	this.cssPath = LIGHT_MODE_CSS;
-        }
     }
     
     public String getCssPath() {
-    	return this.cssPath;
+    	if (this.settings.isDarkMode()) {
+    		return DARK_MODE_CSS;
+    	} else {
+    		return LIGHT_MODE_CSS;
+    	}
     }
 
     public List<Mapping> getMappings() {

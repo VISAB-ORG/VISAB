@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="997.0" prefWidth="1100.0" stylesheets="@../../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
+<AnchorPane prefHeight="997.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
       <ScrollPane prefHeight="997.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
          <content>

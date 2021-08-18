@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.visab.workspace.Workspace;
+
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.Scope;
 import de.saxsys.mvvmfx.ViewModel;
@@ -68,7 +70,7 @@ public class DialogHelper {
      * @param message The message to display
      */
     public void showError(String message) {
-        showMessageDialog(AlertType.WARNING, message, "Error");
+        showMessageDialog(AlertType.ERROR, message, "Error");
     }
 
     /**
@@ -171,6 +173,8 @@ public class DialogHelper {
         var view = viewTuple.getView();
 
         stage.setScene(new Scene(view));
+		stage.getScene().getStylesheets().clear();
+        stage.getScene().getStylesheets().add(Workspace.getInstance().getConfigManager().getCssPath());
 
         if (configuration.shouldBlock())
             stage.initModality(Modality.APPLICATION_MODAL);
