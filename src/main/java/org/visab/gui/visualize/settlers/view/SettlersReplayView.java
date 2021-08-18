@@ -69,6 +69,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private static final double DRAW_PANE_WIDTH = 550.0;
 
     private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(24.0, 24.0);
+    private static final Vector2<Double> SMALL_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
     private static final Vector2<Double> OFFSET_VECTOR = new Vector2<Double>(0.0, 40.0);
 
     private CoordinateHelper coordinateHelper;
@@ -150,10 +151,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
             HashMap<String, Pair<Image, String>> iconMap = viewModel.getAnnotatedIconsForPlayer(playerName);
             player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap);
             PlayerVisualsRow row = new PlayerVisualsRow(player.getName(),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), STANDARD_ICON_VECTOR),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerVillage()), STANDARD_ICON_VECTOR),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerCity()), STANDARD_ICON_VECTOR),
-                    player.playerColorProperty().get());
+                    UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), SMALL_ICON_VECTOR),
+                    player.getRoadAnnotation(),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerVillage()), SMALL_ICON_VECTOR),
+                    player.getVillageAnnotation(),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerCity()), SMALL_ICON_VECTOR),
+                    player.getCityAnnotation(), player.playerColorProperty().get());
             initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
         }
