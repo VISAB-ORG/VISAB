@@ -128,16 +128,21 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         viewModel.subscribe("FILE_ADDED", (e, o) -> refreshFileExplorer());
-        
+        darkModeOn.selectedProperty().bindBidirectional(viewModel.darkModeOnProperty());
+        if (darkModeOn.isSelected()) {
+        	darkModeOn.setText("on");
+        } else {
+        	darkModeOn.setText("off");
+        }
         darkModeOn.selectedProperty().addListener(e -> {
             if (darkModeOn.isSelected()) {
             	// Put dark mode CSS
-            	System.out.println("Dark mode selected");
-            	viewModel.changeColorScheme(false);
+            	darkModeOn.setText("on");
+            	viewModel.changeColorScheme(true);
             } else {
             	// Put Light Mode CSS
-            	System.out.println("Dark mode un-selected");
-            	viewModel.changeColorScheme(true);
+            	darkModeOn.setText("off");
+            	viewModel.changeColorScheme(false);
             }
         });
 

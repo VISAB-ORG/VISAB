@@ -78,7 +78,7 @@
                                 </MenuItem>
                                 <MenuItem mnemonicParsing="false" text="dark mode">
                                     <graphic>
-                                        <ToggleButton fx:id="darkModeOn" mnemonicParsing="false" selected="true" text="on" />
+                                        <ToggleButton fx:id="darkModeOn" mnemonicParsing="false" selected="false" text="off" />
                                     </graphic>
                                 </MenuItem>
                             </items>

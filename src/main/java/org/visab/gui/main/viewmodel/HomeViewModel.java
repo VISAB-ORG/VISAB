@@ -31,7 +31,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TreeItem;
 
@@ -43,8 +45,11 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     private Command openSettings;
     private Command openNewAbout;
     private Command openNewHelp;
+    
+    private BooleanProperty darkModeOnProperty = new SimpleBooleanProperty();
 
     public void initialize() {
+    	darkModeOnProperty.set(Workspace.getInstance().getConfigManager().isDarkModeOn());
         GeneralEventBus.getInstance().subscribe(this);
     }
 
@@ -90,6 +95,10 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
         }
 
         return openNewAbout;
+    }
+    
+    public BooleanProperty darkModeOnProperty() {
+    	return darkModeOnProperty;
     }
     
     public void changeColorScheme(boolean dark) {
