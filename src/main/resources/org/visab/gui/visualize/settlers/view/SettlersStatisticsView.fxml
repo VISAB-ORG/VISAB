@@ -73,7 +73,7 @@
                                     </VBox.margin>
                                 </Label>
 
-                                <Button fx:id="showDetailsButton" onAction="#handleShowDetailsButtonAction" text="Show Detail" />
+                                <Button fx:id="showDetailsButton" onAction="#handleShowDetailsButtonAction" text="Show Resource Details" visible="false" />
                                 <LineChart fx:id="playerStats" prefHeight="502.0" prefWidth="530.0">
                                     <xAxis>
                                         <NumberAxis label="Round" side="bottom" />
