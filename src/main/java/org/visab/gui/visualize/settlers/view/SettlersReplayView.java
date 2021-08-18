@@ -33,6 +33,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
@@ -288,36 +289,36 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
                 ImageView playerStreet = new ImageView(
                         UiHelper.recolorImage(player.getPlayerRoad(), player.playerColorProperty().get()));
-                UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true),
-                        STANDARD_ICON_VECTOR);
                 Label streetAnnotation = new Label(player.getRoadAnnotation());
                 streetAnnotation.setTextFill(Color.WHITE);
-                streetAnnotation.setViewOrder(-1);
                 streetAnnotation.getStyleClass().add("boldLabel");
-                UiHelper.adjustVisual(streetAnnotation, playerStreet.getX(), playerStreet.getY());
 
-                mapElements.put(playerName + "_street_" + i, playerStreet);
-                mapElements.put(playerName + "_street_annotation_" + i, streetAnnotation);
+                StackPane annotatedStreet = new StackPane();
+                annotatedStreet.getChildren().addAll(playerStreet, streetAnnotation);
+                annotatedStreet.setLayoutX(coordinateHelper
+                        .translateAccordingToMap(player.streetPositionsProperty().get().get(i), true).getX());
+                annotatedStreet.setLayoutY(coordinateHelper
+                        .translateAccordingToMap(player.streetPositionsProperty().get().get(i), true).getY());
 
+                mapElements.put(playerName + "_street_" + i, annotatedStreet);
             }
 
             for (int i = 0; i < player.villagePositionsProperty().get().size(); i++) {
 
                 ImageView playerVillage = new ImageView(
                         UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
-                UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true),
-                        STANDARD_ICON_VECTOR);
-
                 Label villageAnnotation = new Label(player.getVillageAnnotation());
                 villageAnnotation.setTextFill(Color.WHITE);
-                villageAnnotation.setViewOrder(-1);
-
                 villageAnnotation.getStyleClass().add("boldLabel");
-                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX(), playerVillage.getY());
-                mapElements.put(playerName + "_village_final_" + i, playerVillage);
-                mapElements.put(playerName + "_village_final_annotation_" + i, villageAnnotation);
+
+                StackPane annotatedVillage = new StackPane();
+                annotatedVillage.getChildren().addAll(playerVillage, villageAnnotation);
+                annotatedVillage.setLayoutX(coordinateHelper
+                        .translateAccordingToMap(player.villagePositionsProperty().get().get(i), true).getX());
+                annotatedVillage.setLayoutY(coordinateHelper
+                        .translateAccordingToMap(player.villagePositionsProperty().get().get(i), true).getY());
+
+                mapElements.put(playerName + "_village_final_" + i, annotatedVillage);
 
             }
 
@@ -328,32 +329,34 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     // Cities
                     ImageView playerCity = new ImageView(
                             UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
-                    playerCity.setStyle("-fx-border-color: black;");
-                    UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
-                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
-                            STANDARD_ICON_VECTOR);
                     Label cityAnnotation = new Label(player.getCityAnnotation());
                     cityAnnotation.setTextFill(Color.WHITE);
-                    cityAnnotation.setViewOrder(-1);
                     cityAnnotation.getStyleClass().add("boldLabel");
-                    UiHelper.adjustVisual(cityAnnotation, playerCity.getX(), playerCity.getY());
-                    mapElements.put(playerName + "_city_" + i, playerCity);
-                    mapElements.put(playerName + "_city_annotation_" + i, cityAnnotation);
+
+                    StackPane annotatedCity = new StackPane();
+                    annotatedCity.getChildren().addAll(playerCity, cityAnnotation);
+                    annotatedCity.setLayoutX(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getX());
+                    annotatedCity.setLayoutY(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getY());
+
+                    mapElements.put(playerName + "_city_" + i, annotatedCity);
 
                     // "Pre-" Villages
                     ImageView playerPreVillage = new ImageView(
                             UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
-                    UiHelper.adjustVisual(playerPreVillage, player.showVillagesProperty().get(),
-                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
-                            STANDARD_ICON_VECTOR);
-
                     Label preVillageAnnotation = new Label(player.getVillageAnnotation());
                     preVillageAnnotation.setTextFill(Color.WHITE);
-                    preVillageAnnotation.setViewOrder(-1);
                     preVillageAnnotation.getStyleClass().add("boldLabel");
-                    UiHelper.adjustVisual(preVillageAnnotation, playerPreVillage.getX(), playerPreVillage.getY());
-                    mapElements.put(playerName + "_village_pre_" + i, playerPreVillage);
-                    mapElements.put(playerName + "_village_pre_annotation_" + i, preVillageAnnotation);
+
+                    StackPane annotatedPreVillage = new StackPane();
+                    annotatedPreVillage.getChildren().addAll(playerPreVillage, preVillageAnnotation);
+                    annotatedPreVillage.setLayoutX(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getX());
+                    annotatedPreVillage.setLayoutY(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getY());
+
+                    mapElements.put(playerName + "_village_pre_" + i, annotatedPreVillage);
                 }
             }
 
