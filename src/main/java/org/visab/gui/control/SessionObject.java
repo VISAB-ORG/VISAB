@@ -59,7 +59,7 @@ public class SessionObject extends GridPane {
         }
         this.openLiveViewButton = new Button(viewDescription);
         this.openLiveViewButton.setOnAction(e -> {
-            if (sessionStatus.getStatusType().equals("active")) {
+            if (sessionStatus.getGame().equals("Settlers") && sessionStatus.getStatusType().equals("active")) {
                 DialogHelper.showMessageDialog(AlertType.WARNING,
                         "Please be aware that the live view is not fully optimized for Settlers of Catan and using it might result in strange application behaviour.",
                         "LiveView not fully supported!");
