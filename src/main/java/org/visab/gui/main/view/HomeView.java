@@ -7,6 +7,8 @@ import org.visab.gui.control.ExplorerFile;
 import org.visab.gui.control.FileExplorer;
 import org.visab.gui.control.RecursiveTreeItem;
 import org.visab.gui.main.viewmodel.HomeViewModel;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -16,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
 
 public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 
@@ -33,6 +36,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     private Menu settingsMenu;
     @FXML
     private MenuItem settingsMenuItem;
+    @FXML
+    private ToggleButton darkModeOn;
     @FXML
     private Menu aboutMenu;
     @FXML
@@ -123,6 +128,18 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         viewModel.subscribe("FILE_ADDED", (e, o) -> refreshFileExplorer());
+        
+        darkModeOn.selectedProperty().addListener(e -> {
+            if (darkModeOn.isSelected()) {
+            	// Put dark mode CSS
+            	System.out.println("Dark mode selected");
+            	viewModel.changeColorScheme(false);
+            } else {
+            	// Put Light Mode CSS
+            	System.out.println("Dark mode un-selected");
+            	viewModel.changeColorScheme(true);
+            }
+        });
 
         refreshFileExplorer();
 

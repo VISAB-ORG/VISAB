@@ -13,6 +13,7 @@ import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
+import org.visab.gui.AppMain;
 import org.visab.gui.DynamicViewLoader;
 import org.visab.gui.ShowViewConfiguration;
 import org.visab.gui.ViewModelBase;
@@ -29,6 +30,7 @@ import org.visab.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TreeItem;
@@ -88,6 +90,21 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
         }
 
         return openNewAbout;
+    }
+    
+    public void changeColorScheme(boolean dark) {
+    	// If dark is true, set dark theme
+    	if (dark) {
+    		scope.getStage().getScene().getStylesheets().clear();
+    		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style_darkmode.css").toExternalForm());
+    		scope.getStage().close();
+    		scope.getStage().show();
+    	} else {
+    		scope.getStage().getScene().getStylesheets().clear();
+    		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style.css").toExternalForm());
+    		scope.getStage().close();
+    		scope.getStage().show();
+    	}
     }
 
     private String baseDirPath = DatabaseManager.DATABASE_PATH;
