@@ -113,7 +113,8 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     private static final double DRAW_PANE_WIDTH = 550.0;
 
-    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
+    private static final Vector2<Double> SMALL_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
+    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(24.0, 24.0);
     private static final Vector2<Double> OFFSET_VECTOR = new Vector2<Double>(0.0, 0.0);
 
     private CoordinateHelper coordinateHelper;
@@ -242,8 +243,9 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
             player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap.get("playerIcon"),
                     iconMap.get("playerPlanChange"), iconMap.get("playerDeath"), new Path());
             PlayerVisualsRow row = new PlayerVisualsRow(playerName,
-                    UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), STANDARD_ICON_VECTOR),
-                    new ImageView(player.getPlayerPlanChange()), new ImageView(player.getPlayerDeath()),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerIcon()), SMALL_ICON_VECTOR),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerPlanChange()), SMALL_ICON_VECTOR),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerDeath()), SMALL_ICON_VECTOR),
                     player.playerColorProperty().get());
             initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
