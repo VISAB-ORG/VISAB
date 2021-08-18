@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.github.visab-org</groupId>
             <artifactId>nanohttpd</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
@@ -94,6 +94,13 @@
             <version>11.0.2</version>
             <classifier>mac</classifier>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-swing</artifactId>
+		    <version>18-ea+1</version>
+		</dependency>
+		        
 		<!-- https://mvnrepository.com/artifact/org.jpedal/OpenViewerFX -->
 		<dependency>
     		<groupId>org.jpedal</groupId>
@@ -183,7 +190,8 @@
                   </docletArtifact> -->
                   <useStandardDocletOptions>false</useStandardDocletOptions>
                   <additionalOptions>-outputpath ${project.basedir}/doc/yml-files</additionalOptions>
-                  <!-- Add additional options here when needed -->
+                  <packages>org.visab.gui:org.visab.gui.visualize:org.visab.gui.control</packages>
+                  <excludePackageNames>org.visab.gui.about*:org.visab.gui.help*:org.visab.gui.main*:org.visab.gui.sessionoverview*:org.visab.gui.settings*:org.visab.gui.visualize.*:org.visab.globalmodel.*:org.visab.processing.*</excludePackageNames>
                 </configuration>
               </plugin>
         </plugins>

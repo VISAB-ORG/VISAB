@@ -32,8 +32,6 @@ public final class FileSizeHelper {
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
 
-                    if (exc != null)
-                        System.out.println("had trouble traversing: " + dir + " (" + exc + ")");
                     // Ignore errors traversing a folder
                     return FileVisitResult.CONTINUE;
                 }
@@ -48,7 +46,6 @@ public final class FileSizeHelper {
                 @Override
                 public FileVisitResult visitFileFailed(Path file, IOException exc) {
 
-                    System.out.println("skipped: " + file + " (" + exc + ")");
                     // Skip folders that can't be traversed
                     return FileVisitResult.CONTINUE;
                 }

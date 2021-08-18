@@ -3,6 +3,8 @@ package org.visab.processing.settlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.logging.log4j.Level;
 import org.visab.globalmodel.GameName;
@@ -11,8 +13,8 @@ import org.visab.globalmodel.settlers.SettlersFile;
 import org.visab.globalmodel.settlers.SettlersImages;
 import org.visab.globalmodel.settlers.SettlersMetaInformation;
 import org.visab.globalmodel.settlers.SettlersStatistics;
-import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveViewModel;
+import org.visab.gui.UiHelper;
+import org.visab.gui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.NiceString;
@@ -47,9 +49,8 @@ public class SettlersListener
     }
 
     @Override
-    public List<SettlersStatistics> getStatisticsCopy() {
-        // Return a copy to avoid concurrent modification
-        return new ArrayList<SettlersStatistics>(file.getStatistics());
+    public List<SettlersStatistics> getStatistics() {
+        return file.getStatistics();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class SettlersListener
     @Override
     public void notifyStatisticsAdded(SettlersStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override
@@ -79,7 +80,8 @@ public class SettlersListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")),
+                sessionId);
 
         notifySessionClosed();
     }

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.visab.newgui.control.FileExplorer?> 
+
+<AnchorPane minHeight="400.0" minWidth="800.0" prefHeight="400.0" prefWidth="800.0" styleClass="body" stylesheets="@../../../../../template_style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.main.view.HomeView">
+    <children>
+        <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <MenuBar id="menuBar" fx:id="menuBar" styleClass="menu-item" BorderPane.alignment="CENTER">
+                    <menus>
+                        <Menu fx:id="homeMenu" mnemonicParsing="false" style="-fx-text-fill: white;">
+                            <graphic>
+                                <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../../img/home_icon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <items>
+                                <MenuItem fx:id="homeMenuItem" mnemonicParsing="false" style="-fx-text-fill: white;" text="Home">
+                                    <graphic>
+                                        <ImageView fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/home_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </Menu>
+                        <Menu fx:id="apiMenu" mnemonicParsing="false">
+                            <items>
+                                <MenuItem fx:id="apiMenuItem" mnemonicParsing="false" onAction="#openApi" text="API Dashboard">
+                                    <graphic>
+                                        <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/apiDashboard_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../../img/apiDashboard_icon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Menu>
+                        <Menu fx:id="settingsMenu" mnemonicParsing="false">
+                            <items>
+                                <MenuItem fx:id="settingsMenuItem" mnemonicParsing="false" onAction="#openSettings" text="Settings">
+                                    <graphic>
+                                        <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/settings_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="dark mode">
+                                    <graphic>
+                                        <ToggleButton mnemonicParsing="false" selected="true" text="on" />
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                            <graphic>
+                                <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../../img/settings_icon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Menu>
+                        <Menu fx:id="aboutMenu" onAction="#openNewAbout" mnemonicParsing="false">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../../img/about_icon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <items>
+                                <MenuItem fx:id="aboutMenuItem" onAction="#openNewAbout" mnemonicParsing="false" text="About">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/about_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </Menu>
+                        <Menu fx:id="helpMenu" onAction="#openNewHelp" mnemonicParsing="false">
+                            <graphic>
+                                <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../../../img/help_icon.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <items>
+                                <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="Help">
+                                    <graphic>
+                                        <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/help_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </Menu>
+                    </menus>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets top="5.0" />
+                    </padding>
+                </MenuBar>
+            </top>
+            <center>
+                <HBox prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox alignment="TOP_LEFT" prefHeight="400.0" prefWidth="300.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <children>
+                                <HBox alignment="CENTER" prefHeight="273.0" prefWidth="300.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <ImageView fitHeight="244.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                            <image>
+                                                <Image url="@../../../../../img/visabLogo.png" />
+                                            </image>
+                                            <HBox.margin>
+                                                <Insets left="3.0" top="10.0" />
+                                            </HBox.margin>
+                                            <viewport>
+                                                <Rectangle2D />
+                                            </viewport>
+                                        </ImageView>
+                                    </children>
+                                </HBox>
+                                <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Label prefHeight="0.0" prefWidth="266.0" text="Your tool to visualize agent behavior from different games." textFill="#2a5394">
+                                            <font>
+                                                <Font name="System Bold" size="11.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets top="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <Label text="We currently support FBS Shooter and Settlers of Catan, but more to come.">
+                                            <font>
+                                                <Font size="9.0" />
+                                            </font>
+                                            <VBox.margin>
+                                                <Insets top="3.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                    </children>
+                                    <opaqueInsets>
+                                        <Insets top="5.0" />
+                                    </opaqueInsets>
+                                </VBox>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="363.0" prefWidth="458.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox alignment="TOP_RIGHT" prefHeight="379.0" prefWidth="300.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <HBox fx:id="eraseBorder" alignment="CENTER" prefHeight="277.0" prefWidth="423.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                            <FileExplorer fx:id="fileExplorer" prefHeight="270.0" prefWidth="430.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                                <styleClass>
+                                                    <String fx:value="file-explorer" />
+                                                </styleClass>
+                                            </FileExplorer>
+                                            <styleClass>
+                                                <String fx:value="feAnchorPane" />
+                                                <String fx:value="shadow" />
+                                            </styleClass>
+                                            <VBox.margin>
+                                                <Insets bottom="4.0" />
+                                            </VBox.margin>
+                                        </HBox>
+
+
+                                        <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="269.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#refreshFileExplorer" prefHeight="28.0" prefWidth="37.0">
+                                                    <HBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </HBox.margin>
+                                                    <graphic>
+                                                        <ImageView fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../../../../img/refreshIcon.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showInExplorerAction" prefHeight="28.0" prefWidth="110.0" text="Show in explorer">
+                                                    <HBox.margin>
+                                                        <Insets left="3.0" top="5.0" />
+                                                    </HBox.margin>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#renameFileAction" prefHeight="28.0" prefWidth="60.0" text="Rename">
+                                                    <HBox.margin>
+                                                        <Insets left="3.0" top="5.0" />
+                                                    </HBox.margin>
+                                                    <font>
+                                                        <Font size="12.0" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="uploadButton" alignment="CENTER" mnemonicParsing="false" onAction="#addFilesAction" prefHeight="28.0" prefWidth="60.0" text="Upload" HBox.hgrow="ALWAYS">
+                                                    <HBox.margin>
+                                                        <Insets left="3.0" top="5.0" />
+                                                    </HBox.margin>
+                                                    <styleClass>
+                                                        <String fx:value="button" />
+                                                        <String fx:value="shadow" />
+                                                    </styleClass>
+                                                    <font>
+                                                        <Font size="12.0" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteFileAction" prefHeight="28.0" prefWidth="55.0" text="Delete" textFill="#12213a" HBox.hgrow="ALWAYS">
+                                                    <HBox.margin>
+                                                        <Insets left="3.0" top="5.0" />
+                                                    </HBox.margin>
+                                                    <styleClass>
+                                                        <String fx:value="shadow" />
+                                                        <String fx:value="delete-button" />
+                                                    </styleClass>
+                                                    <font>
+                                                        <Font size="12.0" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="visualizeButton" alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="100.0" text="VISUALIZE" HBox.hgrow="ALWAYS" onAction="#visualizeAction">
+                                                    <HBox.margin>
+                                                        <Insets bottom="25.0" left="5.0" top="5.0" />
+                                                    </HBox.margin>
+                                                    <styleClass>
+                                                        <String fx:value="button" />
+                                                        <String fx:value="shadow" />
+                                                    </styleClass>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets bottom="7.0" left="20.0" right="20.0" top="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
