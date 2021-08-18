@@ -2,10 +2,12 @@ package org.visab.gui.control;
 
 import org.visab.api.WebAPI;
 import org.visab.globalmodel.SessionStatus;
+import org.visab.gui.DialogHelper;
 import org.visab.gui.DynamicViewLoader;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -56,8 +58,14 @@ public class SessionObject extends GridPane {
             viewDescription = "Visualize";
         }
         this.openLiveViewButton = new Button(viewDescription);
-        this.openLiveViewButton.setOnAction(
-                e -> DynamicViewLoader.loadVisualizerView(sessionStatus.getGame(), sessionStatus.getSessionId()));
+        this.openLiveViewButton.setOnAction(e -> {
+            if (sessionStatus.getGame().equals("Settlers") && sessionStatus.getStatusType().equals("active")) {
+                DialogHelper.showMessageDialog(AlertType.WARNING,
+                        "Please be aware that the live view is not fully optimized for Settlers of Catan and using it might result in strange application behaviour.",
+                        "LiveView not fully supported!");
+            }
+            DynamicViewLoader.loadVisualizerView(sessionStatus.getGame(), sessionStatus.getSessionId());
+        });
 
         this.sessionIdValue = new Label(sessionStatus.getSessionId().toString());
         this.ipValue = new Label(sessionStatus.getIp());

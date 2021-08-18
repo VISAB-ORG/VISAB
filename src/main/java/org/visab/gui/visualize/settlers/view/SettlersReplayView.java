@@ -33,6 +33,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, Initializable {
@@ -66,8 +68,9 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
     private static final double DRAW_PANE_WIDTH = 550.0;
 
-    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
-    private static final Vector2<Double> BIG_ICON_VECTOR = new Vector2<Double>(32.0, 32.0);
+    private static final Vector2<Double> STANDARD_ICON_VECTOR = new Vector2<Double>(24.0, 24.0);
+    private static final Vector2<Double> SMALL_ICON_VECTOR = new Vector2<Double>(16.0, 16.0);
+    private static final Vector2<Double> OFFSET_VECTOR = new Vector2<Double>(0.0, 40.0);
 
     private CoordinateHelper coordinateHelper;
 
@@ -104,12 +107,14 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         players = viewModel.getPlayers();
         turnBasedStats.bind(viewModel.turnBasedStatsProperty());
 
-        drawPane.setPrefWidth(DRAW_PANE_WIDTH);
-        var drawPanePrefHeight = DRAW_PANE_WIDTH
+        drawPane.setMinWidth(DRAW_PANE_WIDTH);
+        drawPane.setMaxWidth(DRAW_PANE_WIDTH);
+        var drawPaneFitHeight = DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth());
-        drawPane.setPrefHeight(drawPanePrefHeight);
-        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getPrefHeight(),
-                drawPane.getPrefWidth(), BIG_ICON_VECTOR);
+        drawPane.setMinHeight(drawPaneFitHeight);
+        drawPane.setMaxHeight(drawPaneFitHeight);
+        coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getMinHeight(),
+                drawPane.getMinWidth(), STANDARD_ICON_VECTOR, OFFSET_VECTOR);
         initializePlayersVisuals();
 
         playerDataTable.setItems(FXCollections.observableArrayList(players));
@@ -146,10 +151,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
             HashMap<String, Pair<Image, String>> iconMap = viewModel.getAnnotatedIconsForPlayer(playerName);
             player.initializeVisuals(viewModel.getPlayerColors().get(playerName), iconMap);
             PlayerVisualsRow row = new PlayerVisualsRow(player.getName(),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), STANDARD_ICON_VECTOR),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerVillage()), STANDARD_ICON_VECTOR),
-                    UiHelper.resizeImage(new ImageView(player.getPlayerCity()), STANDARD_ICON_VECTOR),
-                    player.playerColorProperty().get());
+                    UiHelper.resizeImage(new ImageView(player.getPlayerRoad()), SMALL_ICON_VECTOR),
+                    player.getRoadAnnotation(),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerVillage()), SMALL_ICON_VECTOR),
+                    player.getVillageAnnotation(),
+                    UiHelper.resizeImage(new ImageView(player.getPlayerCity()), SMALL_ICON_VECTOR),
+                    player.getCityAnnotation(), player.playerColorProperty().get());
             initializeEventListenersForRow(row, player);
             playerVisualsRows.add(row);
         }
@@ -249,12 +256,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     }
                 }
             }
-
-            System.out.println("------------------ PRINT MAP ELEMENTS ----------------");
-            for (String key : mapElements.keySet()) {
-                System.out.println("Key in map: " + key + " is visible: " + mapElements.get(key).isVisible());
-            }
-            System.out.println("------------------ END ----------------");
         }
 
         drawPane.getChildren().setAll(mapElements.values());
@@ -279,6 +280,7 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         mapImageColored.setFitWidth(DRAW_PANE_WIDTH);
         mapImageColored.setFitHeight(DRAW_PANE_WIDTH
                 * ((double) viewModel.getMapRectangle().getHeight() / (double) viewModel.getMapRectangle().getWidth()));
+        mapImageColored.setViewOrder(1);
         mapImageColored.setVisible(true);
         mapElements.put("coloredMap", mapImageColored);
 
@@ -290,34 +292,36 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
                 ImageView playerStreet = new ImageView(
                         UiHelper.recolorImage(player.getPlayerRoad(), player.playerColorProperty().get()));
-                UiHelper.adjustVisual(playerStreet, player.showRoadProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.streetPositionsProperty().get().get(i), true),
-                        BIG_ICON_VECTOR);
                 Label streetAnnotation = new Label(player.getRoadAnnotation());
-                streetAnnotation.setTextFill(player.playerColorProperty().get());
+                streetAnnotation.setTextFill(Color.WHITE);
                 streetAnnotation.getStyleClass().add("boldLabel");
-                UiHelper.adjustVisual(streetAnnotation, playerStreet.getX() + (STANDARD_ICON_VECTOR.getX()),
-                        playerStreet.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                mapElements.put(playerName + "_street_" + i, playerStreet);
-                mapElements.put(playerName + "_street_annotation_" + i, streetAnnotation);
 
+                StackPane annotatedStreet = new StackPane();
+                annotatedStreet.getChildren().addAll(playerStreet, streetAnnotation);
+                annotatedStreet.setLayoutX(coordinateHelper
+                        .translateAccordingToMap(player.streetPositionsProperty().get().get(i), true).getX());
+                annotatedStreet.setLayoutY(coordinateHelper
+                        .translateAccordingToMap(player.streetPositionsProperty().get().get(i), true).getY());
+
+                mapElements.put(playerName + "_street_" + i, annotatedStreet);
             }
 
             for (int i = 0; i < player.villagePositionsProperty().get().size(); i++) {
 
                 ImageView playerVillage = new ImageView(
                         UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
-                UiHelper.adjustVisual(playerVillage, player.showVillagesProperty().get(),
-                        coordinateHelper.translateAccordingToMap(player.villagePositionsProperty().get().get(i), true),
-                        BIG_ICON_VECTOR);
-
                 Label villageAnnotation = new Label(player.getVillageAnnotation());
-                villageAnnotation.setTextFill(player.playerColorProperty().get());
+                villageAnnotation.setTextFill(Color.WHITE);
                 villageAnnotation.getStyleClass().add("boldLabel");
-                UiHelper.adjustVisual(villageAnnotation, playerVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
-                        playerVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                mapElements.put(playerName + "_village_final_" + i, playerVillage);
-                mapElements.put(playerName + "_village_final_annotation_" + i, villageAnnotation);
+
+                StackPane annotatedVillage = new StackPane();
+                annotatedVillage.getChildren().addAll(playerVillage, villageAnnotation);
+                annotatedVillage.setLayoutX(coordinateHelper
+                        .translateAccordingToMap(player.villagePositionsProperty().get().get(i), true).getX());
+                annotatedVillage.setLayoutY(coordinateHelper
+                        .translateAccordingToMap(player.villagePositionsProperty().get().get(i), true).getY());
+
+                mapElements.put(playerName + "_village_final_" + i, annotatedVillage);
 
             }
 
@@ -328,31 +332,34 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
                     // Cities
                     ImageView playerCity = new ImageView(
                             UiHelper.recolorImage(player.getPlayerCity(), player.playerColorProperty().get()));
-                    UiHelper.adjustVisual(playerCity, player.showCitiesProperty().get(),
-                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
-                            BIG_ICON_VECTOR);
                     Label cityAnnotation = new Label(player.getCityAnnotation());
-                    cityAnnotation.setTextFill(player.playerColorProperty().get());
+                    cityAnnotation.setTextFill(Color.WHITE);
                     cityAnnotation.getStyleClass().add("boldLabel");
-                    UiHelper.adjustVisual(cityAnnotation, playerCity.getX() + (STANDARD_ICON_VECTOR.getX()),
-                            playerCity.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                    mapElements.put(playerName + "_city_" + i, playerCity);
-                    mapElements.put(playerName + "_city_annotation_" + i, cityAnnotation);
+
+                    StackPane annotatedCity = new StackPane();
+                    annotatedCity.getChildren().addAll(playerCity, cityAnnotation);
+                    annotatedCity.setLayoutX(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getX());
+                    annotatedCity.setLayoutY(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getY());
+
+                    mapElements.put(playerName + "_city_" + i, annotatedCity);
 
                     // "Pre-" Villages
                     ImageView playerPreVillage = new ImageView(
                             UiHelper.recolorImage(player.getPlayerVillage(), player.playerColorProperty().get()));
-                    UiHelper.adjustVisual(playerPreVillage, player.showVillagesProperty().get(),
-                            coordinateHelper.translateAccordingToMap(player.cityPositionsProperty().get().get(i), true),
-                            BIG_ICON_VECTOR);
-
                     Label preVillageAnnotation = new Label(player.getVillageAnnotation());
-                    preVillageAnnotation.setTextFill(player.playerColorProperty().get());
+                    preVillageAnnotation.setTextFill(Color.WHITE);
                     preVillageAnnotation.getStyleClass().add("boldLabel");
-                    UiHelper.adjustVisual(preVillageAnnotation, playerPreVillage.getX() + (STANDARD_ICON_VECTOR.getX()),
-                            playerPreVillage.getY() - (STANDARD_ICON_VECTOR.getY() / 2));
-                    mapElements.put(playerName + "_village_pre_" + i, playerPreVillage);
-                    mapElements.put(playerName + "_village_pre_annotation_" + i, preVillageAnnotation);
+
+                    StackPane annotatedPreVillage = new StackPane();
+                    annotatedPreVillage.getChildren().addAll(playerPreVillage, preVillageAnnotation);
+                    annotatedPreVillage.setLayoutX(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getX());
+                    annotatedPreVillage.setLayoutY(coordinateHelper
+                            .translateAccordingToMap(player.cityPositionsProperty().get().get(i), true).getY());
+
+                    mapElements.put(playerName + "_village_pre_" + i, annotatedPreVillage);
                 }
             }
 
@@ -360,10 +367,6 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
 
         drawPane.getChildren().setAll(mapElements.values());
         updateMapElements();
-
-        for (String key : mapElements.keySet()) {
-            System.out.println(key);
-        }
     }
 
     @FXML

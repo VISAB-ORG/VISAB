@@ -16,22 +16,31 @@ public class CoordinateHelper {
     private double drawPaneHeight;
     private double drawPaneWidth;
     private Vector2<Double> standardIconVector;
+    private Vector2<Double> offsetVector;
+    private Vector2<Double> drawPaneCenter;
 
     /**
      * Constructs a CoordinateHelper with specific boundary information.
      * 
-     * @param mapRectangle   the rectangle model of the unity game.
-     * @param drawPaneHeight the height of the draw pane elements shall be
-     *                       positioned on.
-     * @param drawPaneWidth  the width of the draw pane elements shall be positioned
-     *                       on.
+     * @param mapRectangle       the rectangle model of the unity game.
+     * @param drawPaneHeight     the height of the draw pane elements shall be
+     *                           positioned on.
+     * @param drawPaneWidth      the width of the draw pane elements shall be
+     *                           positioned on.
+     * @param standardIconVector the vector of the used icon size, that is necessary
+     *                           for centering the visuals in the view.
+     * @param offsetVector       the vector used to provide some offset for the
+     *                           calculation if a sent map image has empty space on
+     *                           X or Y axis.
      */
     public CoordinateHelper(Rectangle mapRectangle, double drawPaneHeight, double drawPaneWidth,
-            Vector2<Double> standardIconVector) {
+            Vector2<Double> standardIconVector, Vector2<Double> offsetVector) {
         this.mapRectangle = mapRectangle;
         this.drawPaneHeight = drawPaneHeight;
         this.drawPaneWidth = drawPaneWidth;
         this.standardIconVector = standardIconVector;
+        this.offsetVector = offsetVector;
+        this.drawPaneCenter = new Vector2<Double>(this.drawPaneWidth / 2, this.drawPaneHeight / 2);
     }
 
     /**
@@ -60,6 +69,26 @@ public class CoordinateHelper {
         // Calculate the positioning on the JavaFX pane that should be drawn on
         double relativePanePositionX = percentageMovedOnX * this.drawPaneWidth + centerOnXOffset;
         double relativePanePositionY = percentageMovedOnY * this.drawPaneHeight + centerOnYOffset;
+
+        // If an offset vector is given, adjust the positioning relatively to overcome
+        // map image issues
+        if (!this.offsetVector.checkIfZero()) {
+            if (relativePanePositionX > this.drawPaneCenter.getX()) {
+                relativePanePositionX -= (this.offsetVector.getX()
+                        * (Math.abs(relativePanePositionX - this.drawPaneCenter.getX()) / this.drawPaneWidth));
+            } else {
+                relativePanePositionX += (this.offsetVector.getX()
+                        * (Math.abs(relativePanePositionX - this.drawPaneCenter.getX()) / this.drawPaneWidth));
+            }
+
+            if (relativePanePositionY > this.drawPaneCenter.getY()) {
+                relativePanePositionY -= (this.offsetVector.getY()
+                        * ((Math.abs(relativePanePositionY - this.drawPaneCenter.getY()) / this.drawPaneHeight)));
+            } else {
+                relativePanePositionY += (this.offsetVector.getY()
+                        * ((Math.abs(relativePanePositionY - this.drawPaneCenter.getY()) / this.drawPaneHeight)));
+            }
+        }
 
         return new Vector2<Double>(relativePanePositionX, relativePanePositionY);
     }

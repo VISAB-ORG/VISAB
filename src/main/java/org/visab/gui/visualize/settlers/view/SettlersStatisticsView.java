@@ -6,20 +6,23 @@ import java.util.ResourceBundle;
 
 import org.visab.gui.control.CustomLabelPieChart;
 import org.visab.gui.visualize.ComparisonRowBase;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
 import org.visab.gui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 
 public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewModel>, Initializable {
 
@@ -44,6 +47,9 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     }
 
     @FXML
+    Button showDetailsButton;
+
+    @FXML
     private void handleChartButtonAction() {
         viewModel.playerStatsChartCommand().execute();
     }
@@ -53,6 +59,14 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         comparisonStatistics.setItems(viewModel.getComparisonStatistics());
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());
+
+        // When a resource row is selected, show or hide the details button respectively
+        comparisonStatistics.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldSelection, newSelection) -> {
+                    showDetailsButton.setVisible(newSelection instanceof ResourcesGainedByDiceComparisonRow
+                            || newSelection instanceof ResourcesSpentComparisonRow);
+                });
+
         playerStats.setData(viewModel.getPlayerStatsSeries());
         playerStats.getYAxis().labelProperty().bind(viewModel.yLabelProperty());
 
@@ -62,7 +76,7 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
         isLiveViewActive.selectedProperty().bind(viewModel.liveViewActiveProperty());
         isLiveViewActive.setDisable(true);
         isLiveViewActive.setVisible(viewModel.liveViewActiveProperty().get());
-    
+
         playerStats.dataProperty().get().addListener(new ListChangeListener<LineChart.Series<Integer, Number>>() {
 
             @Override

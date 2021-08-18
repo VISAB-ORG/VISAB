@@ -94,6 +94,13 @@
             <version>11.0.2</version>
             <classifier>mac</classifier>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-swing</artifactId>
+		    <version>18-ea+1</version>
+		</dependency>
+		        
 		<!-- https://mvnrepository.com/artifact/org.jpedal/OpenViewerFX -->
 		<dependency>
     		<groupId>org.jpedal</groupId>

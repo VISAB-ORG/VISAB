@@ -78,7 +78,7 @@ public class DialogHelper {
      * @param contentText The contentText
      * @param title       The title of the dialog
      */
-    private void showMessageDialog(AlertType type, String contentText, String title) {
+    public static void showMessageDialog(AlertType type, String contentText, String title) {
         var dialog = new Alert(type);
         dialog.setTitle(title);
         dialog.setContentText(contentText);

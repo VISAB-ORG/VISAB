@@ -9,6 +9,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class PlayerVisualsRow {
@@ -18,8 +19,8 @@ public class PlayerVisualsRow {
     private HBox playerVillagesHBox;
     private HBox playerCitiesHBox;
 
-    public PlayerVisualsRow(String playerName, ImageView playerRoad, ImageView playerVillage, ImageView playerCity,
-            Color playerColor) {
+    public PlayerVisualsRow(String playerName, ImageView playerRoad, String roadAnnotation, ImageView playerVillage,
+            String villageAnnotation, ImageView playerCity, String cityAnnotation, Color playerColor) {
 
         this.playerHBox = new HBox();
         this.playerRoadHBox = new HBox();
@@ -43,10 +44,27 @@ public class PlayerVisualsRow {
         showPlayerVillages.setSelected(true);
         showPlayerCities.setSelected(true);
 
+        // Override styling for labels inside table cells from style sheet
+        Label roadAnnotationLabel = new Label(roadAnnotation);
+        roadAnnotationLabel.setTextFill(Color.WHITE);
+        roadAnnotationLabel.setStyle("-fx-background-color: transparent");
+        roadAnnotationLabel.getStyleClass().add("boldLabel");
+
+        Label villageAnnotationLabel = new Label(villageAnnotation);
+        villageAnnotationLabel.setTextFill(Color.WHITE);
+        villageAnnotationLabel.setStyle("-fx-background-color: transparent");
+        villageAnnotationLabel.getStyleClass().add("boldLabel");
+
+        Label cityAnnotationLabel = new Label(cityAnnotation);
+        cityAnnotationLabel.setTextFill(Color.WHITE);
+        cityAnnotationLabel.setStyle("-fx-background-color: transparent");
+        cityAnnotationLabel.getStyleClass().add("boldLabel");
+
         this.playerHBox.getChildren().addAll(showPlayer, colorPane, playerNameLabel);
-        this.playerRoadHBox.getChildren().addAll(showPlayerRoad, playerRoad);
-        this.playerVillagesHBox.getChildren().addAll(showPlayerVillages, playerVillage);
-        this.playerCitiesHBox.getChildren().addAll(showPlayerCities, playerCity);
+        this.playerRoadHBox.getChildren().addAll(showPlayerRoad, new StackPane(playerRoad, roadAnnotationLabel));
+        this.playerVillagesHBox.getChildren().addAll(showPlayerVillages,
+                new StackPane(playerVillage, villageAnnotationLabel));
+        this.playerCitiesHBox.getChildren().addAll(showPlayerCities, new StackPane(playerCity, cityAnnotationLabel));
     }
 
     public HBox getPlayerHBox() {
