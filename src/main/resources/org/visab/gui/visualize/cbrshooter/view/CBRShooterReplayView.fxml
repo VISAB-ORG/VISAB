@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -21,13 +22,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="997.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
+<AnchorPane prefHeight="997.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
 	<children>
       <ScrollPane prefHeight="997.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
          <content>
             <BorderPane prefHeight="904.0" prefWidth="1100.0">
                <top>
-            		<Label prefHeight="34.0" prefWidth="1170.0" text="CBR Shooter Replay View" BorderPane.alignment="CENTER">
+            		<Label prefHeight="34.0" prefWidth="1170.0" styleClass="title" text="CBR Shooter Replay View" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -39,7 +40,7 @@
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <CheckBox fx:id="showInBlackAndWhiteCheckBox" mnemonicParsing="false" text="Show in black and white" />
+                        <CheckBox fx:id="showInBlackAndWhiteCheckBox" mnemonicParsing="false" styleClass="label-text" text="Show in black and white" />
                         <GridPane prefHeight="655.0" prefWidth="1065.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="591.0" />
@@ -82,7 +83,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Total Time" />
+                                                <Label styleClass="label-text" text="Total Time" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="1">
@@ -95,7 +96,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Round" />
+                                                <Label styleClass="label-text" text="Round" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="2">
@@ -108,7 +109,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Round Time" />
+                                                <Label styleClass="label-text" text="Round Time" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="3">
@@ -118,7 +119,7 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Weapon" />
+                                                <Label styleClass="label-text" text="Weapon" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="4">
@@ -128,7 +129,7 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Ammunition" />
+                                                <Label styleClass="label-text" text="Ammunition" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
@@ -138,71 +139,93 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Health Item" />
+                                                <Label styleClass="label-text" text="Health Item" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2">
                                              <children>
-                                                <Label fx:id="totalTimeValueLabel" styleClass="boldLabel">
-                                                </Label>
+                                                <Label fx:id="totalTimeValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
-                                                <Label fx:id="roundValueLabel" styleClass="boldLabel" />
+                                                <Label fx:id="roundValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <children>
-                                                <Label fx:id="roundTimeValueLabel" styleClass="boldLabel">
-                                                </Label>
+                                                <Label fx:id="roundTimeValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                              <children>
-                                                <Label fx:id="weaponCoordsValueLabel" styleClass="boldLabel" />
+                                                <Label fx:id="weaponCoordsValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                              <children>
-                                                <Label fx:id="ammuCoordsValueLabel" styleClass="boldLabel" />
+                                                <Label fx:id="ammuCoordsValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                          <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="5">
                                              <children>
-                                                <Label fx:id="healthItemCoordsValueLabel" styleClass="boldLabel" />
+                                                <Label fx:id="healthItemCoordsValueLabel">
+                                                   <styleClass>
+                                                      <String fx:value="boldLabel" />
+                                                      <String fx:value="label-text" />
+                                                   </styleClass></Label>
                                              </children>
                                           </HBox>
                               
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Milliseconds">
+                                                <Label styleClass="label-text" text="Milliseconds">
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Milliseconds" />
+                                                <Label styleClass="label-text" text="Milliseconds" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Coordinate" />
+                                                <Label styleClass="label-text" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Coordinate" />
+                                                <Label styleClass="label-text" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="5">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Coordinate" />
+                                                <Label styleClass="label-text" text="Coordinate" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Counter" />
+                                                <Label styleClass="label-text" text="Counter" />
                                              </children>
                                           </HBox>
                                           <CheckBox fx:id="checkBoxWeapon" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -225,7 +248,7 @@
                                           <Insets left="20.0" right="20.0" top="10.0" />
                                        </VBox.margin>
                                     </GridPane>
-                                    <Label fx:id="frameLabel" prefHeight="27.0" prefWidth="118.0" text="Selected Frame" visible="true">
+                                    <Label fx:id="frameLabel" prefHeight="27.0" prefWidth="118.0" styleClass="label-text-color" text="Selected Frame" visible="true">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -238,7 +261,7 @@
                                           <Insets left="20.0" right="20.0" top="20.0" />
                                        </VBox.margin>
                                     </Slider>
-                                    <Label fx:id="veloLabel" text="Velocity" visible="true">
+                                    <Label fx:id="veloLabel" styleClass="label-text-color" text="Velocity" visible="true">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>

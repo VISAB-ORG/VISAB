@@ -10,13 +10,13 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterMainView">
    <children>
-      <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #D3D3D3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Pane prefHeight="26.0" prefWidth="548.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="24.0" fitWidth="43.0" layoutX="17.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../img/visab_innerLogo1.png" />
+                        <Image url="@../../../../../../img/visab_innerLogo1.png" />
                      </image>
                   </ImageView>
                </children>

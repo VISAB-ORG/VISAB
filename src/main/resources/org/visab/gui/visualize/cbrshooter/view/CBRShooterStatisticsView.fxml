@@ -12,14 +12,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import org.visab.gui.control.CustomLabelPieChart?>
 
-<AnchorPane prefHeight="1600.0" prefWidth="1100.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterStatisticsView">
+<!--  <?import org.visab.gui.control.CustomLabelPieChart?>  -->
+
+<AnchorPane prefHeight="1600.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterStatisticsView">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -38,7 +39,7 @@
                         <HBox fx:id="planUsageHBox" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <Label text="Comparison Graph">
+                                <Label styleClass="label-text-color" text="Comparison Graph">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
@@ -49,22 +50,22 @@
 
                                 <LineChart fx:id="playerStats" prefHeight="502.0" prefWidth="530.0">
                                     <xAxis>
-                                        <NumberAxis label="Round" side="bottom" />
+                                        <NumberAxis label="Round" side="bottom" styleClass="label-text-color" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="" side="left" />
+                                        <NumberAxis label="" side="left" styleClass="label-text-color" />
                                     </yAxis>
                                 </LineChart>
                             </children>
                         </VBox>
-                        <CheckBox fx:id="isLiveViewActive" alignment="TOP_RIGHT" text="LiveView still active" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                        <CheckBox fx:id="isLiveViewActive" alignment="TOP_RIGHT" styleClass="label-text" text="LiveView still active" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                             <GridPane.margin>
                                 <Insets right="20.0" />
                             </GridPane.margin>
                         </CheckBox>
                         <VBox prefHeight="484.0" prefWidth="530.0" GridPane.rowIndex="1">
                             <children>
-                                <Label text="Comparison Statistics">
+                                <Label styleClass="label-text-color" text="Comparison Statistics">
                                     <font>
                                         <Font name="System Bold" size="18.0" />
                                     </font>
@@ -98,7 +99,7 @@
                 </GridPane>
             </center>
             <top>
-                <Label prefHeight="34.0" prefWidth="1081.0" text="CBR Shooter Statistics View" BorderPane.alignment="CENTER">
+                <Label prefHeight="34.0" prefWidth="1081.0" styleClass="title" text="CBR Shooter Statistics View" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </BorderPane.margin>
