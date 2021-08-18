@@ -8,17 +8,20 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.visab.gui.help.view.HelpView;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.visab.dynamic.DynamicSerializer;
 import org.visab.eventbus.GeneralEventBus;
 import org.visab.eventbus.ISubscriber;
 import org.visab.eventbus.event.VISABFileSavedEvent;
-import org.visab.gui.AppMain;
 import org.visab.gui.DynamicViewLoader;
+import org.visab.gui.GeneralScope;
 import org.visab.gui.ShowViewConfiguration;
 import org.visab.gui.ViewModelBase;
 import org.visab.gui.about.view.AboutView;
 import org.visab.gui.control.ExplorerFile;
+import org.visab.gui.help.view.HelpView;
 import org.visab.gui.sessionoverview.view.SessionOverviewView;
 import org.visab.gui.settings.view.SettingsView;
 import org.visab.util.FileSizeHelper;
@@ -27,10 +30,9 @@ import org.visab.util.StreamUtil;
 import org.visab.workspace.DatabaseManager;
 import org.visab.workspace.DatabaseRepository;
 import org.visab.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.utils.commands.Command;
-import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -39,17 +41,23 @@ import javafx.scene.control.TreeItem;
 
 public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFileSavedEvent> {
 
+    /**
+     * The scope that is injected by the DynamicViewLoader.
+     */
+    @InjectScope
+    protected GeneralScope scope;
+
     private static Logger logger = LogManager.getLogger(HomeViewModel.class);
 
     private Command openApiDashboard;
     private Command openSettings;
     private Command openNewAbout;
     private Command openNewHelp;
-    
+
     private BooleanProperty darkModeOnProperty = new SimpleBooleanProperty();
 
     public void initialize() {
-    	darkModeOnProperty.set(Workspace.getInstance().getConfigManager().isDarkModeOn());
+        darkModeOnProperty.set(Workspace.getInstance().getConfigManager().isDarkModeOn());
         GeneralEventBus.getInstance().subscribe(this);
     }
 
@@ -96,28 +104,30 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
 
         return openNewAbout;
     }
-    
+
     public BooleanProperty darkModeOnProperty() {
-    	return darkModeOnProperty;
+        return darkModeOnProperty;
     }
-    
+
     public void changeColorScheme(boolean dark) {
-    	// If dark is true, set dark theme
-    	if (dark) {
-    		scope.getStage().getScene().getStylesheets().clear();
-    		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style_darkmode.css").toExternalForm());
-    		scope.getStage().close();
-    		scope.getStage().show();
-    		Workspace.getInstance().getConfigManager().updateDarkMode(true);
-    		Workspace.getInstance().getConfigManager().saveSettings();
-    	} else {
-    		scope.getStage().getScene().getStylesheets().clear();
-    		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style.css").toExternalForm());
-    		scope.getStage().close();
-    		scope.getStage().show();
-    		Workspace.getInstance().getConfigManager().updateDarkMode(false);
-    		Workspace.getInstance().getConfigManager().saveSettings();
-    	}
+        // If dark is true, set dark theme
+        if (dark) {
+            scope.getStage().getScene().getStylesheets().clear();
+            scope.getStage().getScene().getStylesheets()
+                    .add(getClass().getResource("/template_style_darkmode.css").toExternalForm());
+            scope.getStage().close();
+            scope.getStage().show();
+            Workspace.getInstance().getConfigManager().updateDarkMode(true);
+            Workspace.getInstance().getConfigManager().saveSettings();
+        } else {
+            scope.getStage().getScene().getStylesheets().clear();
+            scope.getStage().getScene().getStylesheets()
+                    .add(getClass().getResource("/template_style.css").toExternalForm());
+            scope.getStage().close();
+            scope.getStage().show();
+            Workspace.getInstance().getConfigManager().updateDarkMode(false);
+            Workspace.getInstance().getConfigManager().saveSettings();
+        }
     }
 
     private String baseDirPath = DatabaseManager.DATABASE_PATH;

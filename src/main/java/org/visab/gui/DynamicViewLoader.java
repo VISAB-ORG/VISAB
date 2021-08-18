@@ -148,9 +148,9 @@ public final class DynamicViewLoader implements IPublisher<VISABFileVisualizedEv
         stage.setScene(new Scene(parent));
         stage.setMinHeight(1000);
         stage.setMinWidth(1150);
-        scope.setStage(stage);
-		stage.getScene().getStylesheets().clear();
+        stage.getScene().getStylesheets().clear();
         stage.getScene().getStylesheets().add(Workspace.getInstance().getConfigManager().getCssPath());
+        scope.setStage(stage);
         stage.show();
     }
 
