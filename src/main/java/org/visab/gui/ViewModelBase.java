@@ -1,5 +1,6 @@
 package org.visab.gui;
 
+import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
@@ -11,6 +12,12 @@ import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
  */
 public abstract class ViewModelBase implements ViewModel {
 
+    /**
+     * The scope that is injected by the DynamicViewLoader.
+     */
+    @InjectScope
+    protected GeneralScope scope;
+    
     /**
      * Creates a DelegateCommand whose action is to run the given Runnable.
      * 
