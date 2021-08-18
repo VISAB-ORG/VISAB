@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.visab.api.WebAPI;
 import org.visab.gui.about.view.AboutView;
 import org.visab.gui.main.view.HomeView;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;
@@ -52,6 +53,7 @@ public class AppMain extends Application {
         var view = viewTuple.getView();
 
         stage.setScene(new Scene(view));
+        stage.getScene().getStylesheets().add(Workspace.getInstance().getConfigManager().getCssPath());
 
         stage.show();
 

@@ -25,7 +25,9 @@ public class ConfigManager {
 
     public static final String CONFIG_PATH_SUFFIX = "config";
     private static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_SUFFIX);
-
+    private static final String LIGHT_MODE_CSS = ConfigManager.class.getResource("/template_style.css").toExternalForm();
+    private static final String DARK_MODE_CSS = ConfigManager.class.getResource("/template_style_darkmode.css").toExternalForm();
+    public String cssPath;
     private static final String SETTINGS_PATH = "settings.json";
     private static final String MAPPING_PATH = "classMapping.json";
     private static final String DEFAULT_SETTINGS_PATH = "/configs/defaultSettings.json";
@@ -39,6 +41,15 @@ public class ConfigManager {
     public ConfigManager() {
         loadSettings();
         loadMappings();
+        if (this.settings.isDarkMode()) {
+        	this.cssPath = DARK_MODE_CSS;
+        } else {
+        	this.cssPath = LIGHT_MODE_CSS;
+        }
+    }
+    
+    public String getCssPath() {
+    	return this.cssPath;
     }
 
     public List<Mapping> getMappings() {
@@ -151,6 +162,15 @@ public class ConfigManager {
     public int getWebApiPort() {
         return this.settings.getWebApiPort();
     }
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * @return the dark mode on value.
+     */
+    public boolean isDarkModeOn() {
+        return this.settings.isDarkMode();
+    }
 
     /**
      * Syntactic sugar to wrap the access on the settings object.
@@ -186,6 +206,16 @@ public class ConfigManager {
         }
 
         this.settings.setWebApiPort(port);
+    }
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object that also provides
+     * detailed logging information according to the changes made.
+     * 
+     * @param darkModeOn the value denoting if dark mode shall be on.
+     */
+    public void updateDarkMode(boolean darkModeOn) {
+        this.settings.setDarkMode(darkModeOn);
     }
 
     /**

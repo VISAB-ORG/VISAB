@@ -99,11 +99,15 @@ public class HomeViewModel extends ViewModelBase implements ISubscriber<VISABFil
     		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style_darkmode.css").toExternalForm());
     		scope.getStage().close();
     		scope.getStage().show();
+    		Workspace.getInstance().getConfigManager().updateDarkMode(true);
+    		Workspace.getInstance().getConfigManager().saveSettings();
     	} else {
     		scope.getStage().getScene().getStylesheets().clear();
     		scope.getStage().getScene().getStylesheets().add(getClass().getResource("/template_style.css").toExternalForm());
     		scope.getStage().close();
     		scope.getStage().show();
+    		Workspace.getInstance().getConfigManager().updateDarkMode(false);
+    		Workspace.getInstance().getConfigManager().saveSettings();
     	}
     }
 
