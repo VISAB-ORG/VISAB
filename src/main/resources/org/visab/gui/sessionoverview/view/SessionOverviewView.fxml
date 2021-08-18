@@ -49,7 +49,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.sessionoverview.view.SessionOverviewView">
+<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.sessionoverview.view.SessionOverviewView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -73,15 +73,18 @@
                               <Insets left="15.0" />
                            </HBox.margin>
                            <children>
-                                <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="218.0" styleClass="title" text="Session Overview">
+                                <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="218.0" styleClass="title" text="Session Overview" VBox.vgrow="ALWAYS">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
+                                 <VBox.margin>
+                                    <Insets right="20.0" />
+                                 </VBox.margin>
                                 </Label>
-                              <HBox prefHeight="0.0" prefWidth="218.0">
+                              <HBox alignment="CENTER" prefHeight="0.0" prefWidth="218.0">
                                  <children>
                                     <Label prefHeight="10.0" prefWidth="93.0" styleClass="label-text" text="Web API Adress:" />
-                                    <TextField fx:id="webApiAdressLabel" styleClass="text-field-transparent"/>
+                                    <TextField fx:id="webApiAdressLabel" styleClass="text-field-transparent" />
                                  </children>
                               </HBox>
                            </children>
