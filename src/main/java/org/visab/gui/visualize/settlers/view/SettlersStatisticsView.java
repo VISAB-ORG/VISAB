@@ -60,15 +60,11 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
         viewModel.selectedRowProperty().bind(comparisonStatistics.getSelectionModel().selectedItemProperty());
 
+        // When a resource row is selected, show or hide the details button respectively
         comparisonStatistics.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection instanceof ResourcesGainedByDiceComparisonRow
-                            || newSelection instanceof ResourcesSpentComparisonRow) {
-                        showDetailsButton.setVisible(true);
-                    } else {
-                        showDetailsButton.setVisible(false);
-                    }
-                    System.out.println(newSelection);
+                    showDetailsButton.setVisible(newSelection instanceof ResourcesGainedByDiceComparisonRow
+                            || newSelection instanceof ResourcesSpentComparisonRow);
                 });
 
         playerStats.setData(viewModel.getPlayerStatsSeries());
