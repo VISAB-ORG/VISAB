@@ -48,7 +48,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="800.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -67,7 +67,7 @@
                <children>
                   <HBox>
                      <children>
-                          <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="About" HBox.hgrow="ALWAYS">
+                          <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" styleClass="title" text="About" HBox.hgrow="ALWAYS">
                               <font>
                                   <Font size="25.0" />
                               </font>
@@ -87,7 +87,7 @@
                                        <content>
                                           <VBox alignment="TOP_CENTER" prefHeight="686.0" prefWidth="800.0">
                                              <children>
-                                                <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="607.0" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                                                <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="607.0" styleClass="subtitle" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS">
                                                    <font>
                                                       <Font name="System Bold" size="24.0" />
                                                    </font>
@@ -118,7 +118,7 @@
                                                       </TextArea>
                                                    </children>
                                                 </HBox>
-                                                <Label prefHeight="23.0" prefWidth="769.0" text="New VISAB 2.0 features:">
+                                                <Label prefHeight="23.0" prefWidth="769.0" styleClass="subtitle" text="New VISAB 2.0 features:" VBox.vgrow="ALWAYS">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
@@ -148,7 +148,7 @@
                                  <children>
                                     <VBox alignment="TOP_CENTER" layoutY="6.0" prefHeight="452.0" prefWidth="800.0">
                                        <children>
-                                          <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="IT project for the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761">
+                                          <Label alignment="TOP_LEFT" contentDisplay="CENTER" styleClass="subtitle" text="IT project for the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761">
                                              <font>
                                                 <Font name="System Bold" size="24.0" />
                                              </font>

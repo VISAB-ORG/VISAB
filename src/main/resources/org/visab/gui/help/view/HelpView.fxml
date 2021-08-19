@@ -45,7 +45,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.help.view.HelpView">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.help.view.HelpView">
    <children>
       <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -62,7 +62,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                    <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" text="Help">
+                    <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" styleClass="title" text="Help">
                         <font>
                             <Font size="25.0" />
                         </font>
