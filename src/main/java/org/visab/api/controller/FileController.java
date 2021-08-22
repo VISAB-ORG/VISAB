@@ -1,5 +1,7 @@
 package org.visab.api.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,7 +64,8 @@ public class FileController extends HTTPControllerBase {
                     "The sent file of game {0} could not be deserialized into the corresponding IVISABFile type.",
                     file.getGame()));
 
-        var saved = Workspace.getInstance().getDatabaseManager().saveFile(concreteFile, file.getGame());
+        var fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+        var saved = Workspace.getInstance().getDatabaseManager().saveFile(concreteFile, fileName);
 
         return getOkResponse(saved ? "Sent file was saved!" : "File received, but failed to save!");
     }

@@ -24,9 +24,6 @@ public class SessionController extends HTTPControllerBase {
 
         // Decide handlers based on uri
         switch (endpointAdress) {
-        case "open":
-            return openSession(httpSession);
-
         case "close":
             return closeSession(httpSession);
 
