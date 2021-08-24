@@ -16,9 +16,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.help.view.HelpView">
    <children>
-      <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <BorderPane styleClass="body">
+            <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
                   <Pane styleClass="menu-bar" BorderPane.alignment="CENTER">
                      <children>
@@ -67,7 +65,5 @@
                   </VBox>
                </center>
             </BorderPane>
-         </content>
-      </ScrollPane>
    </children>
 </AnchorPane>

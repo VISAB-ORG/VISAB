@@ -20,7 +20,7 @@
    <children>
       <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <BorderPane styleClass="body">
+            <BorderPane styleClass="body" >
                <top>
                   <Pane styleClass="menu-bar" BorderPane.alignment="CENTER">
                      <children>
@@ -35,7 +35,7 @@
                <center>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <HBox>
+                        <HBox VBox.vgrow="ALWAYS">
                            <children>
                                 <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="573.0" styleClass="title" text="About" HBox.hgrow="ALWAYS">
                                     <font>
@@ -47,7 +47,7 @@
                                 </Label>
                            </children>
                         </HBox>
-                        <TabPane prefHeight="719.0" prefWidth="796.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane prefHeight="719.0" prefWidth="796.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                           <tabs>
                             <Tab text="VISAB 2.0">
                               <content>
@@ -57,7 +57,7 @@
                                              <content>
                                                 <VBox alignment="TOP_CENTER" prefHeight="686.0" prefWidth="800.0">
                                                    <children>
-                                                      <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="607.0" styleClass="subtitle" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS">
+                                                      <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="713.0" styleClass="subtitle" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS">
                                                          <font>
                                                             <Font name="System Bold" size="24.0" />
                                                          </font>
@@ -67,7 +67,7 @@
                                                       </Label>
                                                       <HBox alignment="CENTER" prefHeight="283.0" prefWidth="800.0" style="-fx-background-color: white;" styleClass="shadow">
                                                          <children>
-                                                            <ImageView fitHeight="263.0" fitWidth="316.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fitHeight="263.0" fitWidth="316.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                                                                <image>
                                                                   <Image url="@../../../../../img/visabLogo.png" />
                                                                </image>
@@ -75,7 +75,7 @@
                                                                   <Insets right="20.0" />
                                                                </HBox.margin>
                                                             </ImageView>
-                                                            <TextArea editable="false" prefHeight="250.0" prefWidth="348.0" text="Developers:&#10;Moritz Fröhlich&#10;Leon Römer&#10;Tim Kunold&#10;Marcel Gaal &#10;Vanessa Schriefer&#10;&#10;Contact:&#10;froeh010@uni-hildesheim.de&#10;roemerl@uni-hildesheim.de&#10;kunold@uni-hildesheim.de&#10;gaalma@uni-hildesheim.de&#10;schriefe@uni-hildesheim.de&#10;&#10;© 2021 VISAB 2.0">
+                                                            <TextArea editable="false" prefHeight="250.0" prefWidth="348.0" text="Developers:&#10;Moritz Fröhlich&#10;Leon Römer&#10;Tim Kunold&#10;Marcel Gaal &#10;Vanessa Schriefer&#10;&#10;Contact:&#10;froeh010@uni-hildesheim.de&#10;roemerl@uni-hildesheim.de&#10;kunold@uni-hildesheim.de&#10;gaalma@uni-hildesheim.de&#10;schriefe@uni-hildesheim.de&#10;&#10;© 2021 VISAB 2.0" HBox.hgrow="ALWAYS">
                                                                <opaqueInsets>
                                                                   <Insets />
                                                                </opaqueInsets>
@@ -96,7 +96,7 @@
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
                                                       </Label>
-                                                      <TextArea editable="false" prefHeight="251.0" prefWidth="800.0" promptText="Hallo" text="&#10;  - Scalable http-API (generic communication interface) &#10;  - Dynamic instantiation of VISAB&#10;  - Visab workspace &#10;  - Logging &#10;  - Visual use of original game objects &#10;  - Visab toolkit (connector, snapshot creation) &#10;  - Complete revision of the statistics view &#10;  - MVVM &#10;  - Integration of a new game (Settlers) &#10;  - New VISAB 2.0 logo&#10;  - Integration of pdf file view &amp; video description of VISAB &#10;  - File explorer on the start page for direct selection of files in the tool&#10;">
+                                                      <TextArea editable="false" prefHeight="251.0" prefWidth="800.0" promptText="Hallo" text="&#10;  - Scalable http-API (generic communication interface) &#10;  - Dynamic instantiation of VISAB&#10;  - Visab workspace &#10;  - Logging &#10;  - Visual use of original game objects &#10;  - Visab toolkit (connector, snapshot creation) &#10;  - Complete revision of the statistics view &#10;  - MVVM &#10;  - Integration of a new game (Settlers) &#10;  - New VISAB 2.0 logo&#10;  - Integration of pdf file view &amp; video description of VISAB &#10;  - File explorer on the start page for direct selection of files in the tool&#10;" VBox.vgrow="ALWAYS">
                                                          <VBox.margin>
                                                             <Insets bottom="10.0" top="5.0" />
                                                          </VBox.margin>
