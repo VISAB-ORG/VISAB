@@ -75,7 +75,7 @@
                 </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="134.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="sessionImage" fitHeight="134.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/session_icon.png" />
                      </image>
@@ -137,7 +137,7 @@
                   </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="125.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="fileImage" fitHeight="125.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../img/file_icon.png" />
                      </image>

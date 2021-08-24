@@ -71,7 +71,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="139.0">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="turnImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/turn.png" />
                                                    </image>
@@ -84,7 +84,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="1">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="clockImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/clock.png" />
                                                    </image>
@@ -97,7 +97,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="2">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="diceImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/dice.png" />
                                                    </image>

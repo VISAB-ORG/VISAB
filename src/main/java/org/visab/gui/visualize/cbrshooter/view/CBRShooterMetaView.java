@@ -4,8 +4,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.globalmodel.cbrshooter.WeaponInformation;
+import org.visab.gui.UiHelper;
 import org.visab.gui.visualize.PlayerInformation;
 import org.visab.gui.visualize.cbrshooter.viewmodel.CBRShooterMetaViewModel;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -13,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class CBRShooterMetaView implements FxmlView<CBRShooterMetaViewModel>, Initializable {
 
@@ -41,6 +45,12 @@ public class CBRShooterMetaView implements FxmlView<CBRShooterMetaViewModel>, In
     Label winner;
 
     @FXML
+    ImageView sessionImage;
+
+    @FXML
+    ImageView fileImage;
+
+    @FXML
     TableView<WeaponInformation> weaponInformationTable;
 
     @FXML
@@ -60,6 +70,11 @@ public class CBRShooterMetaView implements FxmlView<CBRShooterMetaViewModel>, In
         creationDate.setText(viewModel.getCreationDate().toString());
         fileFormatVersion.setText(viewModel.getFileFormatVersion());
         game.setText(viewModel.getGame());
+
+        if (Workspace.getInstance().getConfigManager().isDarkModeOn()) {
+            sessionImage.setImage(UiHelper.recolorImage(sessionImage.getImage(), Color.WHITE));
+            fileImage.setImage(UiHelper.recolorImage(fileImage.getImage(), Color.WHITE));
+        }
 
         weaponInformationTable.setItems(viewModel.getWeaponInformation());
         playerInformationTable.setItems(viewModel.getPlayerInformation());
