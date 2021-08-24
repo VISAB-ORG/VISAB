@@ -146,7 +146,7 @@
                             <children>
                                 <HBox alignment="CENTER" prefHeight="273.0" prefWidth="300.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                     <children>
-                                        <ImageView fitHeight="244.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                        <ImageView fx:id="visabLogo" fitHeight="244.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                             <image>
                                                 <Image url="@../../../../../img/visabLogo.png" />
                                             </image>
