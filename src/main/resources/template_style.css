@@ -260,3 +260,19 @@
 	-fx-border-radius: 7;
 	-fx-background-radius: 10;
 }
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #CCDDFF;
+    }
+.default-color1.chart-bar { 
+    -fx-bar-fill: #00FFCC; 
+    }
+.default-color2.chart-bar {
+    -fx-bar-fill: #FFFF00; 
+    }
+.default-color3.chart-bar { 
+    -fx-bar-fill: #0000CC; 
+    }
+.default-color4.chart-bar { 
+    -fx-bar-fill: #AAAACC; 
+    }

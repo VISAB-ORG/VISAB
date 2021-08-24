@@ -31,6 +31,7 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
     public void initialize(URL location, ResourceBundle resources) {
         resourceChart.setData(viewModel.getPlayerDetailedStatisticsSeries());
         resourceChart.getYAxis().labelProperty().bind(viewModel.yLabelDetailProperty());
+        resourceChart.getStylesheets().addAll("template_style.css");
 
         sliderLabel.textProperty().bind(viewModel.sliderTextProperty());
         
