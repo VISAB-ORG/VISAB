@@ -138,6 +138,41 @@
      -fx-background-color: #ff5c33;
      -fx-highlight-fill: #ff5c33;
   }
+  
+  
+.chart-legend {
+   -fx-background-color: transparent;
+   -fx-padding: 20 0 0 0;
+}
+.chart-legend-item{
+    -fx-text-fill: #FFFFFF;
+}
+
+.axis {
+    -fx-font-size: 1.4em;    
+    -fx-tick-label-fill: #FFFFFF;
+    -fx-tick-length: 20;
+    -fx-minor-tick-length: 10;
+}
+ 
+.axis-label {
+   -fx-text-fill: #FFFFFF; 
+}
+
+.chart-title {
+  -fx-text-fill: #FFFFFF;
+  }
+
+.chart-pie-label-line {
+    -fx-stroke: #FFFFFF;
+    -fx-fill: #FFFFFF;
+}
+ 
+.chart-pie-label {
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 1em;
+} 
+
 
 .tree-table-view {
 	-fx-background-radius: 7;
