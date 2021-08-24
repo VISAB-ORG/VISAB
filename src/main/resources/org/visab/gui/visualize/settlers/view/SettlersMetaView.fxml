@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="1600.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersMetaView">
+<GridPane prefHeight="1600.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.visualize.settlers.view.SettlersMetaView">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" percentWidth="45.0" />
         <ColumnConstraints halignment="CENTER" percentWidth="55.0" />
@@ -28,7 +28,7 @@
     <children>
         <VBox GridPane.rowIndex="2">
             <children>
-                <Label text="Player Information">
+                <Label styleClass="subtitle" text="Player Information">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -45,8 +45,7 @@
                         </TableColumn>
                         <TableColumn prefWidth="116.0" text="Controlled by">
                             <cellValueFactory>
-                                <PropertyValueFactory
-                                    property="controlledBy" />
+                                <PropertyValueFactory property="controlledBy" />
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn prefWidth="66.0" text="Color">
@@ -66,7 +65,7 @@
         </VBox>
         <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <Label text="Session Information" textFill="#12213a">
+                <Label styleClass="subtitle" text="Session Information" textFill="#12213a">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
@@ -97,23 +96,22 @@
                               <RowConstraints prefHeight="25.0" />
                           </rowConstraints>
                           <children>
-                           <Label text="Winner">
+                           <Label styleClass="label-text" text="Winner">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <Label fx:id="winner" GridPane.columnIndex="1">
+                        <Label fx:id="winner" styleClass="label-text" GridPane.columnIndex="1">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <Label text="Turns" GridPane.rowIndex="1">
+                        <Label styleClass="label-text" text="Turns" GridPane.rowIndex="1">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <Label fx:id="rounds" GridPane.columnIndex="1"
-                            GridPane.rowIndex="1">
+                        <Label fx:id="rounds" styleClass="label-text" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -129,7 +127,7 @@
         </VBox>
         <VBox prefHeight="254.0" prefWidth="380.0" GridPane.rowIndex="1">
             <children>
-                  <Label prefHeight="23.0" prefWidth="373.0" text="File Information" textFill="#12213a">
+                  <Label prefHeight="23.0" prefWidth="373.0" styleClass="subtitle" text="File Information" textFill="#12213a">
                       <font>
                           <Font name="System Bold" size="18.0" />
                       </font>
@@ -158,34 +156,32 @@
                                 <RowConstraints maxHeight="38.0" minHeight="-Infinity" prefHeight="32.0" />
                             </rowConstraints>
                             <children>
-                           <Label text="Creation date" GridPane.rowIndex="1">
+                           <Label styleClass="label-text" text="Creation date" GridPane.rowIndex="1">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <Label text="File format version" GridPane.rowIndex="2">
+                                <Label styleClass="label-text" text="File format version" GridPane.rowIndex="2">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="creationDate" text="Label"
-                                    GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label fx:id="creationDate" styleClass="label-text" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="fileFormatVersion" text="Label"
-                                    GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <Label fx:id="fileFormatVersion" styleClass="label-text" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <Label text="GameId">
+                                <Label styleClass="label-text" text="GameId">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="game" text="Label" GridPane.columnIndex="1">
+                                <Label fx:id="game" styleClass="label-text" text="Label" GridPane.columnIndex="1">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -205,7 +201,7 @@
             <Insets left="20.0" top="20.0" />
          </padding>
         </VBox>
-      <Label prefHeight="34.0" prefWidth="565.0" text="Settlers Meta View">
+      <Label prefHeight="34.0" prefWidth="565.0" styleClass="title" text="Settlers Meta View">
          <font>
             <Font size="28.0" />
          </font>

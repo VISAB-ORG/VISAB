@@ -18,8 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="1600.0" prefWidth="1100.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsView">
+<AnchorPane prefHeight="1600.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsView">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -38,7 +37,7 @@
                         <HBox fx:id="planUsageHBox" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                             <children>
-                                <Label text="Comparison Statistics">
+                                <Label styleClass="subtitle" text="Comparison Statistics">
                                     <font>
                                         <Font name="System Bold" size="18.0" />
                                     </font>
@@ -61,10 +60,10 @@
                                 <Button fx:id="chartButton" onAction="#handleChartButtonAction" text="Show in chart" />
                             </children>
                         </VBox>
-                        <CheckBox fx:id="isLiveViewActive" text="LiveView still active" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="isLiveViewActive" styleClass="label-text-color" text="LiveView still active" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <Label text="Comparison Graph">
+                                <Label styleClass="subtitle" text="Comparison Graph">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
@@ -76,7 +75,7 @@
                                 <Button fx:id="showDetailsButton" onAction="#handleShowDetailsButtonAction" text="Show Resource Details" visible="false" />
                                 <LineChart fx:id="playerStats" prefHeight="502.0" prefWidth="530.0">
                                     <xAxis>
-                                        <NumberAxis label="Round" side="bottom" />
+                                        <NumberAxis label="Round" side="bottom" styleClass="label-text-color" />
                                     </xAxis>
                                     <yAxis>
                                         <NumberAxis label="" side="left" />
@@ -91,7 +90,7 @@
                 </GridPane>
             </center>
             <top>
-                <Label prefHeight="34.0" prefWidth="1081.0" text="Settlers Statistics View" BorderPane.alignment="CENTER">
+                <Label prefHeight="34.0" prefWidth="1081.0" styleClass="title" text="Settlers Statistics View" BorderPane.alignment="CENTER">
                     <font>
                         <Font size="28.0" />
                     </font>
