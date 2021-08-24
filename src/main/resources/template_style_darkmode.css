@@ -136,6 +136,7 @@
 	-fx-background-color: transparent;
 }
 
+
 /* List view format */
 .list-cell:odd { 
 	-fx-background-color: #484848; /* 1 */
