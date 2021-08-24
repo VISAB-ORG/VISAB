@@ -21,11 +21,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="997.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersReplayView">
-    <children>
-      <ScrollPane prefHeight="997.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersReplayView">
          <content>
-            <BorderPane prefHeight="904.0" prefWidth="1100.0">
+            <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                <top>
                     <Label prefHeight="34.0" prefWidth="1170.0" styleClass="title" text="Settlers Replay View" BorderPane.alignment="CENTER">
                      <font>
@@ -301,8 +299,3 @@
             <Insets bottom="20.0" left="20.0" />
          </padding>
       </ScrollPane>
-    </children>
-   <padding>
-      <Insets bottom="5.0" right="5.0" />
-   </padding>
-</AnchorPane>

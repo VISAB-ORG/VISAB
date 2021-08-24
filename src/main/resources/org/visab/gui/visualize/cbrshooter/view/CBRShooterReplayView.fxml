@@ -12,7 +12,6 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -22,11 +21,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="997.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
-	<children>
-      <ScrollPane prefHeight="997.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
+<ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
          <content>
-            <BorderPane prefHeight="904.0" prefWidth="1100.0">
+            <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                <top>
             		<Label prefHeight="34.0" prefWidth="1170.0" styleClass="title" text="CBR Shooter Replay View" BorderPane.alignment="CENTER">
                      <font>
@@ -148,7 +145,8 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -157,7 +155,8 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -166,7 +165,8 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="3">
@@ -175,7 +175,8 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="4">
@@ -184,7 +185,8 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" styleClass="label-text" GridPane.columnIndex="2" GridPane.rowIndex="5">
@@ -193,11 +195,12 @@
                                                    <styleClass>
                                                       <String fx:value="boldLabel" />
                                                       <String fx:value="label-text" />
-                                                   </styleClass></Label>
+                                                   </styleClass>
+                                                </Label>
                                              </children>
                                           </HBox>
                               
-                                          <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3">
+                                                <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3">
                                              <children>
                                                 <Label styleClass="label-text" text="Milliseconds">
                                                 </Label>
@@ -407,13 +410,5 @@
                   <Insets />
                </opaqueInsets>
             </BorderPane>
-         </content>
-         <padding>
-            <Insets bottom="20.0" left="20.0" />
-         </padding>
-      </ScrollPane>
-	</children>
-   <padding>
-      <Insets bottom="5.0" right="5.0" />
-   </padding>
-</AnchorPane>
+       </content>
+  </ScrollPane>
