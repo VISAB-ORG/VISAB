@@ -2,6 +2,7 @@ package org.visab.gui.visualize.settlers.viewmodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -267,7 +268,7 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
             var occurance = planOccuranceHelperMap.get(player.getName());
             occurance.incrementOccurance(player.getPlanActions());
 
-            for (String plan : player.getPlanActions()) {
+            for (String plan : new HashSet<String>(player.getPlanActions())) {
                 // If a plan was just added
                 if (occurance.getTotalOccurances(plan) == 1) {
                     var data = new Data(plan, 0);
