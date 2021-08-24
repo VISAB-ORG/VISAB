@@ -19,11 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsView">
-    <children>
-      <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsView">
          <content>
-              <BorderPane>
+              <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                   <center>
                       <GridPane>
                           <columnConstraints>
@@ -102,5 +100,3 @@
               </BorderPane>
          </content>
       </ScrollPane>
-    </children>
-</AnchorPane>

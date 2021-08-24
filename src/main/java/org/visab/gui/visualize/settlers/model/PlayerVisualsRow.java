@@ -1,5 +1,7 @@
 package org.visab.gui.visualize.settlers.model;
 
+import org.visab.workspace.Workspace;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -29,7 +31,11 @@ public class PlayerVisualsRow {
 
         // Contents for each row
         Label playerNameLabel = new Label(playerName);
-        playerNameLabel.setStyle("-fx-background-color: transparent; -fx-text-fill: black;");
+        var color = "black";
+        if (Workspace.getInstance().getConfigManager().isDarkModeOn()) {
+            color = "white";
+        }
+        playerNameLabel.setStyle("-fx-background-color: transparent; -fx-text-fill: " + color + ";");
         CheckBox showPlayer = new CheckBox();
         CheckBox showPlayerRoad = new CheckBox();
         CheckBox showPlayerVillages = new CheckBox();

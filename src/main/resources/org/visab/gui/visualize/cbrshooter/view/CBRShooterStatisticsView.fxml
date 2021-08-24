@@ -22,7 +22,7 @@
 
       <ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterStatisticsView">
          <content>
-              <BorderPane prefHeight="1600.0" prefWidth="1100.0">
+              <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                   <center>
                       <GridPane prefHeight="1476.0" prefWidth="1060.0" BorderPane.alignment="CENTER">
                           <columnConstraints>

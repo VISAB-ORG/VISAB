@@ -18,7 +18,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterMetaView">
    <content>
-      <GridPane prefHeight="1600.0" prefWidth="1100.0">
+      <GridPane prefHeight="600.0" prefWidth="1100.0">
           <columnConstraints>
               <ColumnConstraints halignment="CENTER" percentWidth="45.0" />
               <ColumnConstraints halignment="CENTER" percentWidth="55.0" />
