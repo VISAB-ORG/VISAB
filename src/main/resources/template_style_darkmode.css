@@ -35,7 +35,12 @@
 .boldLabel {
 	-fx-font-weight: bold;
 }
-
+.visabHomeLabel {
+    -fx-text-fill: #ff5c33;
+}
+.visabHomeLabelSub {
+    -fx-text-fill: white;
+}
 
 /* Menu Bar format */
 .menu-bar {

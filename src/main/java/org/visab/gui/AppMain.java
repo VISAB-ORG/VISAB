@@ -1,16 +1,12 @@
 package org.visab.gui;
 
-import java.util.Arrays;
-
 import org.visab.api.WebAPI;
-import org.visab.gui.about.view.AboutView;
 import org.visab.gui.main.view.HomeView;
 import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FluentViewLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -29,11 +25,11 @@ public class AppMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-    	// TODO: Change this call with usage per DialogHelper to make use of scopes
+        // TODO: Change this call with usage per DialogHelper to make use of scopes
         primaryStage = stage;
         stage.setTitle("VISAB");
-        
-        var viewConfig = new ShowViewConfiguration(HomeView.class, "VISAB", true);
+
+        var viewConfig = new ShowViewConfiguration(HomeView.class, "VISAB", true, 400, 900);
         var viewStep = FluentViewLoader.fxmlView(viewConfig.getViewClass());
 
         stage.setTitle(viewConfig.getStageTitle());

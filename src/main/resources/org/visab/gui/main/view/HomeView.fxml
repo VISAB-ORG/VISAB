@@ -17,11 +17,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import org.visab.gui.control.FileExplorer?> 
+<?import org.visab.gui.control.FileExplorer?>
 
-<AnchorPane minHeight="400.0" minWidth="800.0" prefHeight="400.0" prefWidth="800.0" styleClass="body" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.main.view.HomeView">
+<AnchorPane minHeight="400.0" minWidth="900.0" prefHeight="400.0" prefWidth="900.0" styleClass="body" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.main.view.HomeView">
     <children>
-        <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane layoutX="125.0" layoutY="81.0" prefHeight="400.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
                 <MenuBar id="menuBar" fx:id="menuBar" styleClass="menu-item" BorderPane.alignment="CENTER">
                     <menus>
@@ -161,17 +161,23 @@
                                 </HBox>
                                 <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                     <children>
-                                        <Label prefHeight="0.0" prefWidth="266.0" text="Your tool to visualize agent behavior from different games." textFill="#2a5394">
+                                        <Label alignment="CENTER" prefHeight="0.0" prefWidth="350.0" text="Your tool to visualize agent behavior from different games.">
+                                            <styleClass>
+                                                <String fx:value="visabHomeLabel" />
+                                            </styleClass>
                                             <font>
-                                                <Font name="System Bold" size="11.0" />
+                                                <Font name="System Bold" size="12.0" />
                                             </font>
                                             <VBox.margin>
                                                 <Insets top="10.0" />
                                             </VBox.margin>
                                         </Label>
-                                        <Label text="We currently support FBS Shooter and Settlers of Catan, but more to come.">
+                                        <Label alignment="CENTER" text="We currently support FBS Shooter and Settlers of Catan, but more to come.">
+                                            <styleClass>
+                                                <String fx:value="visabHomeLabelSub" />
+                                            </styleClass>
                                             <font>
-                                                <Font size="9.0" />
+                                                <Font size="10.0" />
                                             </font>
                                             <VBox.margin>
                                                 <Insets top="3.0" />
