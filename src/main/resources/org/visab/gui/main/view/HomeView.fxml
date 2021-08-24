@@ -90,7 +90,7 @@
                                 </ImageView>
                             </graphic>
                         </Menu>
-                        <Menu fx:id="aboutMenu" onAction="#openNewAbout" mnemonicParsing="false">
+                        <Menu fx:id="aboutMenu" mnemonicParsing="false">
                             <graphic>
                                 <ImageView fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
