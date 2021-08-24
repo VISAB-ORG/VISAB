@@ -191,7 +191,7 @@
                   <useStandardDocletOptions>false</useStandardDocletOptions>
                   <additionalOptions>-outputpath ${project.basedir}/doc/yml-files</additionalOptions>
                   <packages>org.visab.gui:org.visab.gui.visualize:org.visab.gui.control</packages>
-                  <excludePackageNames>org.visab.gui.about*:org.visab.gui.help*:org.visab.gui.main*:org.visab.gui.sessionoverview*:org.visab.gui.settings*:org.visab.gui.visualize.*:org.visab.globalmodel.*:org.visab.processing.*</excludePackageNames>
+                  <excludePackageNames>org.visab.gui.about.*:org.visab.gui.help.*:org.visab.gui.main.*:org.visab.gui.sessionoverview.*:org.visab.gui.settings.*:org.visab.gui.settings.*:org.visab.gui.settings:org.visab.gui.visualize.*:org.visab.globalmodel.*:org.visab.processing.*</excludePackageNames>
                 </configuration>
               </plugin>
         </plugins>
