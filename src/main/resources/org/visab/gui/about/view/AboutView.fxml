@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.about.view.AboutView">
    <children>
             <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
@@ -55,14 +55,15 @@
                                              <children>
                                                       <VBox alignment="TOP_CENTER" prefHeight="686.0" prefWidth="800.0">
                                                          <children>
-                                                            <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="74.0" prefWidth="713.0" styleClass="subtitle" text="Further development of the visualization tool as part of the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS">
-                                                               <font>
-                                                                  <Font name="System Bold" size="24.0" />
-                                                               </font>
-                                                               <VBox.margin>
-                                                                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
-                                                               </VBox.margin>
-                                                            </Label>
+                                                <VBox VBox.vgrow="ALWAYS">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+                                                   </VBox.margin>
+                                                   <children>
+                                                                  <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" styleClass="subtitle" text="Further development of the visualization tool as part of" textAlignment="CENTER" textFill="#1f3761" wrapText="true" />
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" styleClass="subtitle" text="the IT study project at the University of Hildesheim" textAlignment="CENTER" textFill="#1f3761" wrapText="true" />
+                                                   </children>
+                                                </VBox>
                                                             <HBox alignment="CENTER" prefHeight="283.0" prefWidth="800.0" style="-fx-background-color: white;" styleClass="shadow">
                                                                <children>
                                                                   <ImageView fitHeight="263.0" fitWidth="316.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">

@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.cbrshooter.view.CBRShooterReplayView">
          <content>
             <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                <top>
