@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.visab.gui.visualize.settlers.viewmodel.SettlersStatisticsViewModel;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -34,14 +35,8 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
         resourceChart.setData(viewModel.getPlayerDetailedStatisticsSeries());
         resourceChart.getYAxis().labelProperty().bind(viewModel.yLabelDetailProperty());
         resourceChart.getStylesheets().addAll("template_style.css");
-
-        // resourceChart.dataProperty().get().addListener(new ListChangeListener<StackedBarChart.Series<String, Number>>(){
-        //     @Override
-        //     public void onChanged(Change<? extends Series<String, Number>> c) {
-        //         resourceChart.setStyle("template_style.css");
-        //     }
-        // });
-
+      
+        // var darkModeOn = Workspace.getInstance().getConfigManager().isDarkModeOn();
 
         sliderLabel.textProperty().bind(viewModel.sliderTextProperty());
         

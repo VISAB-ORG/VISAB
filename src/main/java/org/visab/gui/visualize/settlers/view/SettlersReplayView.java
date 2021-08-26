@@ -13,6 +13,7 @@ import org.visab.gui.visualize.CoordinateHelper;
 import org.visab.gui.visualize.settlers.model.Player;
 import org.visab.gui.visualize.settlers.model.PlayerVisualsRow;
 import org.visab.gui.visualize.settlers.viewmodel.SettlersReplayViewModel;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -48,6 +49,15 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
     private Pane drawPane;
     @FXML
     private CheckBox showInBlackAndWhiteCheckBox;
+
+    @FXML
+    private ImageView diceImage;
+
+    @FXML
+    private ImageView clockImage;
+
+    @FXML
+    private ImageView turnImage;
 
     @FXML
     private ToggleButton playPauseButton;
@@ -116,6 +126,12 @@ public class SettlersReplayView implements FxmlView<SettlersReplayViewModel>, In
         coordinateHelper = new CoordinateHelper(viewModel.getMapRectangle(), drawPane.getMinHeight(),
                 drawPane.getMinWidth(), STANDARD_ICON_VECTOR, OFFSET_VECTOR);
         initializePlayersVisuals();
+
+        if (Workspace.getInstance().getConfigManager().isDarkModeOn()) {
+            diceImage.setImage(UiHelper.recolorImage(diceImage.getImage(), Color.WHITE));
+            turnImage.setImage(UiHelper.recolorImage(turnImage.getImage(), Color.WHITE));
+            clockImage.setImage(UiHelper.recolorImage(clockImage.getImage(), Color.WHITE));
+        }
 
         playerDataTable.setItems(FXCollections.observableArrayList(players));
         playerVisualsTable.setItems(playerVisualsRows);

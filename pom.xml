@@ -17,6 +17,19 @@
 	</repositories>
 
     <dependencies>
+    	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+    	<!-- SLF4J Dependencies only added to avoid unwanted log errors of other maven dependencies using it -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+		    <version>1.7.30</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.30</version>
+		</dependency>
+    
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

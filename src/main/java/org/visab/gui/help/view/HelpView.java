@@ -36,6 +36,6 @@ public class HelpView implements FxmlView<HelpViewModel>, Initializable {
         displayerAsPane.setPrefWidth(960);
         displayerAsPane.setPrefHeight(630);
         showPDF.getChildren().add(displayerAsPane);
-        showVideo.getEngine().load("https://www.youtube.com/embed/6e2lnCxA60s");
+        showVideo.getEngine().load("https://www.youtube.com/embed/znG2ZtcAfqA");
     }
 }

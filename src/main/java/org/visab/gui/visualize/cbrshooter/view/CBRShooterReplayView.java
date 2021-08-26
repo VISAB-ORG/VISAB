@@ -14,6 +14,7 @@ import org.visab.gui.visualize.cbrshooter.model.DataUpdatedPayload;
 import org.visab.gui.visualize.cbrshooter.model.Player;
 import org.visab.gui.visualize.cbrshooter.model.PlayerVisualsRow;
 import org.visab.gui.visualize.cbrshooter.viewmodel.CBRShooterReplayViewModel;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -35,6 +36,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
 /**
@@ -95,6 +97,15 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
 
     @FXML
     private Label ammuCoordsValueLabel;
+
+    @FXML
+    private ImageView clockImageTotal;
+
+    @FXML
+    private ImageView clockImageRound;
+
+    @FXML
+    private ImageView roundImage;
 
     @FXML
     private TableView<org.visab.gui.visualize.cbrshooter.model.Player> playerDataTable;
@@ -167,6 +178,12 @@ public class CBRShooterReplayView implements FxmlView<CBRShooterReplayViewModel>
         initializePlayersVisuals();
         initializeMapElements();
         drawPane.getChildren().setAll(mapElements.values());
+
+        if (Workspace.getInstance().getConfigManager().isDarkModeOn()) {
+            clockImageTotal.setImage(UiHelper.recolorImage(clockImageTotal.getImage(), Color.WHITE));
+            clockImageRound.setImage(UiHelper.recolorImage(clockImageRound.getImage(), Color.WHITE));
+            roundImage.setImage(UiHelper.recolorImage(roundImage.getImage(), Color.WHITE));
+        }
 
         playerDataTable.setItems(FXCollections.observableArrayList(players));
         playerVisualsTable.setItems(playerVisualsRows);
