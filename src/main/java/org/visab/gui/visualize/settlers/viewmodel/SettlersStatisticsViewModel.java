@@ -168,7 +168,7 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
             var serieses = getStackedBarChartData();
             for (var series : serieses) {
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "")
-                        .replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
+                        .replace(" - Player 2", "")) >= SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
                 series.getData().removeIf(x -> Integer.parseInt(
                         x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
@@ -201,11 +201,11 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
         yLabelDetail.set("Values");
 
         List<Series<String, Number>> serieses = getStackedBarChartData();
-        sliderMax.set((serieses.get(0).getData().size() / AMOUNT_PLAYERS_DISPLAYED) - SHOWN_GRAPHS_PER_PLAYER);
+        sliderMax.set((serieses.get(0).getData().size() / AMOUNT_PLAYERS_DISPLAYED) - SHOWN_GRAPHS_PER_PLAYER + 1);
 
         for (var series : serieses) {
             series.getData().removeIf(x -> Integer.parseInt(
-                    x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER);
+                    x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) >= SHOWN_GRAPHS_PER_PLAYER);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }

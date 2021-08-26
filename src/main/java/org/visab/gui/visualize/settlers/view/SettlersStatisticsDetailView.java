@@ -41,6 +41,12 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
         sliderLabel.textProperty().bind(viewModel.sliderTextProperty());
         
         roundSlider.maxProperty().bindBidirectional(viewModel.sliderMaxProperty());
+        roundSlider.setMin(1);
+        roundSlider.setBlockIncrement(10);
+        roundSlider.setMajorTickUnit(10);
+        roundSlider.setMinorTickCount(0);
+        roundSlider.setShowTickLabels(true);
+        roundSlider.setSnapToTicks(true);
         roundSlider.setOnMouseReleased( event -> {
             viewModel.sliderValueProperty().setValue((int)roundSlider.getValue());
             viewModel.updateStackedBarChartCommand().execute();
