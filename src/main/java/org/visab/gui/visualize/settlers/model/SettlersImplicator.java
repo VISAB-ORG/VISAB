@@ -206,25 +206,25 @@ public final class SettlersImplicator {
             var resourcesPlayer2 = player2Data.get(i).getValue();
 
             woodSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWood()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 1", resourcesPlayer1.getWood()));
             woodSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWood()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 2", resourcesPlayer2.getWood()));
             sheepSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getSheep()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 1", resourcesPlayer1.getSheep()));
             sheepSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getSheep()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 2", resourcesPlayer2.getSheep()));
             stoneSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getStone()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 1", resourcesPlayer1.getStone()));
             stoneSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getStone()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 2", resourcesPlayer2.getStone()));
             wheatSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getWheat()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 1", resourcesPlayer1.getWheat()));
             wheatSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getWheat()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 2", resourcesPlayer2.getWheat()));
             brickSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 1", resourcesPlayer1.getBrick()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 1", resourcesPlayer1.getBrick()));
             brickSeries.getData().add(
-                    new XYChart.Data<String, Number>(String.valueOf(i) + " - Player 2", resourcesPlayer2.getBrick()));
+                    new XYChart.Data<String, Number>(String.valueOf(i + 1) + " - Player 2", resourcesPlayer2.getBrick()));
         }
 
         return Arrays.asList(woodSeries, sheepSeries, stoneSeries, wheatSeries, brickSeries);
