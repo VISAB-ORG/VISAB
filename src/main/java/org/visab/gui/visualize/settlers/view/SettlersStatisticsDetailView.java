@@ -31,23 +31,20 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
     public void initialize(URL location, ResourceBundle resources) {
         resourceChart.setData(viewModel.getPlayerDetailedStatisticsSeries());
         resourceChart.getYAxis().labelProperty().bind(viewModel.yLabelDetailProperty());
-        resourceChart.getStylesheets().addAll("template_style.css");
-      
-        // var darkModeOn = Workspace.getInstance().getConfigManager().isDarkModeOn();
 
         sliderLabel.textProperty().bind(viewModel.sliderTextProperty());
-        
+
         roundSlider.maxProperty().bindBidirectional(viewModel.sliderMaxProperty());
         roundSlider.setMin(1);
         roundSlider.setBlockIncrement(10);
         roundSlider.setMajorTickUnit(10);
         roundSlider.setMinorTickCount(0);
         roundSlider.setSnapToTicks(true);
-        roundSlider.setOnMouseReleased( event -> {
-            viewModel.sliderValueProperty().setValue((int)roundSlider.getValue());
+        roundSlider.setOnMouseReleased(event -> {
+            viewModel.sliderValueProperty().setValue((int) roundSlider.getValue());
             viewModel.updateStackedBarChartCommand().execute();
         });
-        
+
     }
 
 }
