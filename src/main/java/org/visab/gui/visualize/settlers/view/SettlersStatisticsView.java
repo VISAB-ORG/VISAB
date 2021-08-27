@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.visab.gui.DialogHelper;
 import org.visab.gui.control.CustomLabelPieChart;
 import org.visab.gui.visualize.ComparisonRowBase;
 import org.visab.gui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
@@ -43,6 +45,9 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
 
     @FXML
     private void handleShowDetailsButtonAction() {
+        DialogHelper.showMessageDialog(AlertType.INFORMATION,
+                "The detailed view is usable, but please be aware that JavaFX causes some strange issues when the turn slider is moved and a refill for the chart data is triggered.",
+                "JavaFX stacked bar chart behaviour.");
         viewModel.showDetailsCommand().execute();
     }
 
