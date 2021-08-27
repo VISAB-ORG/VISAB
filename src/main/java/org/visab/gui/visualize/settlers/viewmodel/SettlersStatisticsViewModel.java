@@ -201,7 +201,8 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
         yLabelDetail.set("Values");
 
         List<Series<String, Number>> serieses = getStackedBarChartData();
-        sliderMax.set(serieses.get(0).getData().size() / AMOUNT_PLAYERS_DISPLAYED);
+        int maxSliderSize = serieses.get(0).getData().size() / AMOUNT_PLAYERS_DISPLAYED;
+        sliderMax.set(maxSliderSize - (maxSliderSize % 10) + 1);
 
         for (var series : serieses) {
             series.getData().removeIf(x -> Integer.parseInt(
