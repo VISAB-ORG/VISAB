@@ -362,4 +362,10 @@
 	-fx-background-color: transparent,rgb(96,96,96),rgb(96,96,96);
 }
 
-
+.innerGrid {
+	-fx-background-color: white; 
+	-fx-border-color:#12213a; 
+	-fx-border-width: 2; 
+	-fx-border-radius: 7;
+	-fx-background-radius: 10;
+}
