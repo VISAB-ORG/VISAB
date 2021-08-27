@@ -16,20 +16,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
+<ScrollPane prefWidth="1122.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
    <content>
-      <BorderPane styleClass="body">
+      <BorderPane prefHeight="1127.0" prefWidth="1120.0" styleClass="body">
          <center>
-            <GridPane prefHeight="1100" prefWidth="1100.0" BorderPane.alignment="CENTER">
+            <GridPane prefHeight="815.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" />
                 </columnConstraints>
                 <rowConstraints>
                     <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints vgrow="ALWAYS" />
-                    <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="234.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="567.0" minHeight="10.0" prefHeight="78.0" vgrow="ALWAYS" />
+                    <RowConstraints maxHeight="933.0" minHeight="449.0" prefHeight="748.0" vgrow="ALWAYS" />
                 </rowConstraints>
                 <children>
                   <Label styleClass="title" text="Detail View: Resources" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
@@ -37,14 +36,14 @@
                         <Insets bottom="10.0" left="15.0" right="10.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <VBox GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                  <VBox prefHeight="652.0" prefWidth="1100.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                      <children>
-                          <StackedBarChart fx:id="resourceChart">
+                          <StackedBarChart fx:id="resourceChart" prefWidth="978.0">
                               <xAxis>
-                                  <CategoryAxis label="Round" prefHeight="32.0" prefWidth="547.0" styleClass="label-text-color">
+                                  <CategoryAxis prefHeight="32.0" prefWidth="547.0" styleClass="label-text-color">
                                  <padding>
                                     <Insets top="40.0" />
                                  </padding>
@@ -59,14 +58,14 @@
                           </StackedBarChart>
                      </children>
                   </VBox>
-                  <VBox prefHeight="50.0" prefWidth="605.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                  <VBox prefHeight="50.0" prefWidth="605.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                      <children>
-                          <Slider fx:id="roundSlider" prefHeight="25.0" prefWidth="500.0">
+                          <Slider fx:id="roundSlider" majorTickUnit="10.0" min="0.0" showTickLabels="true" showTickMarks="true" prefHeight="25.0" prefWidth="500.0">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
                         </Slider>
-                        <Label fx:id="sliderLabel" alignment="CENTER" prefHeight="17.0" prefWidth="599.0" styleClass="label-text" text="Label">
+                        <Label fx:id="sliderLabel" alignment="CENTER" prefHeight="17.0" prefWidth="1038.0" styleClass="label-text" text="Label">
                            <VBox.margin>
                               <Insets left="20.0" />
                            </VBox.margin>

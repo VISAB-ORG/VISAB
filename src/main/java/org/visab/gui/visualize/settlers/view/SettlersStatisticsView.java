@@ -46,7 +46,9 @@ public class SettlersStatisticsView implements FxmlView<SettlersStatisticsViewMo
     @FXML
     private void handleShowDetailsButtonAction() {
         DialogHelper.showMessageDialog(AlertType.INFORMATION,
-                "The detailed view is usable, but please be aware that JavaFX causes some strange issues when the turn slider is moved and a refill for the chart data is triggered.",
+                "The detailed view is usable, but please be aware that JavaFX causes some strange issues "
+                        + " when the turn slider is moved and a refill for the chart data is triggered.\n"
+                        + "Furthermore the color assignments are randomly generated.",
                 "JavaFX stacked bar chart behaviour.");
         viewModel.showDetailsCommand().execute();
     }

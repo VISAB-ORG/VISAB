@@ -9,6 +9,7 @@ import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -31,7 +32,7 @@ public class SettlersStatisticsDetailView implements FxmlView<SettlersStatistics
     public void initialize(URL location, ResourceBundle resources) {
         resourceChart.setData(viewModel.getPlayerDetailedStatisticsSeries());
         resourceChart.getYAxis().labelProperty().bind(viewModel.yLabelDetailProperty());
-
+        resourceChart.setLegendSide(Side.LEFT);
         sliderLabel.textProperty().bind(viewModel.sliderTextProperty());
 
         roundSlider.maxProperty().bindBidirectional(viewModel.sliderMaxProperty());
