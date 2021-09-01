@@ -194,7 +194,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <docletPath>${project.basedir}/doc/docfx-doclet-1.0-SNAPSHOT-jar-with-dependencies.jar</docletPath>
+                    <docletPath>${project.basedir}/docfx-doclet-1.0-SNAPSHOT-jar-with-dependencies.jar</docletPath>
                   <doclet>com.microsoft.doclet.DocFxDoclet</doclet>
                   <!-- <docletArtifact>
                     <groupId>${project.groupId}</groupId>
@@ -202,7 +202,7 @@
                     <version>${project.version}</version>
                   </docletArtifact> -->
                   <useStandardDocletOptions>false</useStandardDocletOptions>
-                  <additionalOptions>-outputpath ${project.basedir}/doc/yml-files</additionalOptions>
+                  <additionalOptions>-outputpath ${project.basedir}/yml-files</additionalOptions>
                   <packages>org.visab.gui:org.visab.gui.visualize:org.visab.gui.control</packages>
                   <excludePackageNames>org.visab.gui.about.*:org.visab.gui.help.*:org.visab.gui.main.*:org.visab.gui.sessionoverview.*:org.visab.gui.settings.*:org.visab.gui.settings.*:org.visab.gui.settings:org.visab.gui.visualize.*:org.visab.globalmodel.*:org.visab.processing.*</excludePackageNames>
                 </configuration>
