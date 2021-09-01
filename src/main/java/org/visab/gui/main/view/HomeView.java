@@ -3,10 +3,14 @@ package org.visab.gui.main.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.visab.gui.ResourceHelper;
 import org.visab.gui.control.ExplorerFile;
 import org.visab.gui.control.FileExplorer;
 import org.visab.gui.control.RecursiveTreeItem;
 import org.visab.gui.main.viewmodel.HomeViewModel;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
+import org.visab.gui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
+import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -16,6 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class HomeView implements FxmlView<HomeViewModel>, Initializable {
 
@@ -34,6 +41,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     private MenuItem settingsMenuItem;
     @FXML
+    private ToggleButton darkModeOn;
+    @FXML
     private Menu aboutMenu;
     @FXML
     private MenuItem aboutMenuItem;
@@ -49,6 +58,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     private Button visualizeButton;
     @FXML
     private Button refreshButton;
+    @FXML
+    private ImageView visabLogo;
 
     @InjectViewModel
     private HomeViewModel viewModel;
@@ -123,7 +134,32 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         viewModel.subscribe("FILE_ADDED", (e, o) -> refreshFileExplorer());
-
+        darkModeOn.selectedProperty().bindBidirectional(viewModel.darkModeOnProperty());
+        if (darkModeOn.isSelected()) {
+        	darkModeOn.setText("on");
+        } else {
+        	darkModeOn.setText("off");
+        }
+        darkModeOn.selectedProperty().addListener(e -> {
+            if (darkModeOn.isSelected()) {
+            	// Put dark mode CSS
+            	darkModeOn.setText("on");
+            	viewModel.changeColorScheme(true);
+            	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+            } else {
+            	// Put Light Mode CSS
+            	darkModeOn.setText("off");
+            	viewModel.changeColorScheme(false);
+            	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+            }
+        });
+        
+        if (darkModeOn.isSelected()) {
+        	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+        } else {
+        	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+        }
+        
         refreshFileExplorer();
 
         fileExplorer.addFileAddedHandler(f -> viewModel.addFile(f));

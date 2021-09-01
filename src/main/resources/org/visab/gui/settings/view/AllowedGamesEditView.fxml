@@ -14,10 +14,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane prefHeight="200.0" prefWidth="500.0" stylesheets="@../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.settings.view.AllowedGamesEditView">
+<AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.settings.view.AllowedGamesEditView">
    <children>
-      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Pane styleClass="menu-bar" BorderPane.alignment="CENTER">
                <children>
@@ -49,8 +48,8 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <Label text="Add Allowed Game" />
-                  <Label text="Remove Alllowed Game" GridPane.rowIndex="1" />
+                  <Label styleClass="label-text" text="Add Allowed Game" />
+                  <Label styleClass="label-text" text="Remove Alllowed Game" GridPane.rowIndex="1" />
                   <Button fx:id="addGameButton" mnemonicParsing="false" onAction="#handleAddGameButtonAction" prefHeight="26.0" prefWidth="105.0" text="Add Game" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="20.0" />

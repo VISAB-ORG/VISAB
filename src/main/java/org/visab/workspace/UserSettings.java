@@ -13,6 +13,8 @@ import java.util.HashMap;
 public class UserSettings {
 
     private int webApiPort;
+    
+    private boolean darkMode;
 
     private ArrayList<String> allowedGames;
 
@@ -35,8 +37,27 @@ public class UserSettings {
     public void setWebApiPort(int port) {
         this.webApiPort = port;
     }
+    
+    
+    /**
+     * Gets the dark mode value.
+     * 
+     * @return the dark mode boolean value.
+     */
+    public boolean isDarkMode() {
+		return darkMode;
+	}
 
     /**
+     * Sets the dark mode value
+     * 
+     * @param darkMode the value denoting if dark mode shall be on.
+     */
+	public void setDarkMode(boolean darkMode) {
+		this.darkMode = darkMode;
+	}
+
+	/**
      * Gets the allowed games.
      * 
      * @return The list of allowed games

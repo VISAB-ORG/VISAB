@@ -21,13 +21,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="997.0" prefWidth="1100.0" stylesheets="@../../../../../../template_style.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersReplayView">
-    <children>
-      <ScrollPane prefHeight="997.0" prefWidth="1091.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersReplayView">
          <content>
-            <BorderPane prefHeight="904.0" prefWidth="1100.0">
+            <BorderPane prefHeight="1100.0" prefWidth="1100.0">
                <top>
-                    <Label prefHeight="34.0" prefWidth="1170.0" text="Settlers Replay View" BorderPane.alignment="CENTER">
+                    <Label prefHeight="34.0" prefWidth="1170.0" styleClass="title" text="Settlers Replay View" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -39,7 +37,7 @@
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                     	<CheckBox fx:id="showInBlackAndWhiteCheckBox" mnemonicParsing="false" text="Show in black and white" />
+                     	<CheckBox fx:id="showInBlackAndWhiteCheckBox" mnemonicParsing="false" styleClass="label-text-color" text="Show in black and white" />
                         <GridPane prefHeight="655.0" prefWidth="1065.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="591.0" />
@@ -71,7 +69,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="139.0">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="turnImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/turn.png" />
                                                    </image>
@@ -79,12 +77,12 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Turns" />
+                                                <Label styleClass="label-text" text="Turns" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="1">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="clockImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/clock.png" />
                                                    </image>
@@ -92,12 +90,12 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Latest Turn Time Stamp" />
+                                                <Label styleClass="label-text" text="Latest Turn Time Stamp" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.rowIndex="2">
                                              <children>
-                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="diceImage" fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../../../../../img/dice.png" />
                                                    </image>
@@ -105,45 +103,45 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </ImageView>
-                                                <Label text="Turns Dice Roll" />
+                                                <Label styleClass="label-text" text="Turns Dice Roll" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
                                              <children>
-                                                <Label fx:id="turnValueLabel" styleClass="boldLabel">
+                                                <Label fx:id="turnValueLabel" styleClass="label-text">
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
-                                                <Label fx:id="turnTimeStampValueLabel" styleClass="boldLabel" />
+                                                <Label fx:id="turnTimeStampValueLabel" styleClass="label-text" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <children>
-                                                <Label fx:id="diceRollsValueLabel" styleClass="boldLabel">
+                                                <Label fx:id="diceRollsValueLabel" styleClass="label-text">
                                                 </Label>
                                              </children>
                                           </HBox>
                               
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Count">
+                                                <Label styleClass="label-text" text="Count">
                                                 </Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <children>
-                                                <Label styleClass="italicLabel" text="Count" />
+                                                <Label styleClass="label-text" text="Count" />
                                              </children>
                                           </HBox>
-                                          <Label styleClass="italicLabel" text="Clock Time" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Label styleClass="label-text" text="Clock Time" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                        </children>
                                        <VBox.margin>
                                           <Insets left="20.0" right="20.0" top="10.0" />
                                        </VBox.margin>
                                     </GridPane>
-                                    <Label fx:id="turnLabel" prefHeight="27.0" prefWidth="118.0" text="Selected Turn" visible="true">
+                                    <Label fx:id="turnLabel" prefHeight="27.0" prefWidth="118.0" styleClass="label-text-color" text="Selected Turn" visible="true">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -156,7 +154,7 @@
                                           <Insets left="20.0" right="20.0" top="20.0" />
                                        </VBox.margin>
                                     </Slider>
-                                    <Label fx:id="veloLabel" text="Velocity" visible="true">
+                                    <Label fx:id="veloLabel" styleClass="label-text-color" text="Velocity" visible="true">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
@@ -183,63 +181,63 @@
                         </GridPane>
                         <HBox prefHeight="175.0" prefWidth="1050.0">
                            <children>
-                              <TableView fx:id="playerDataTable" prefHeight="180.0" prefWidth="728.0">
+                              <TableView fx:id="playerDataTable" prefHeight="131.0" prefWidth="738.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Name">
+                                  <TableColumn prefWidth="71.0" text="Name">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="name">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="48.0" text="Victory Points">
+                                  <TableColumn prefWidth="83.0" text="Victory Points">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="victoryPoints">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="97.0" text="Villages">
+                                  <TableColumn prefWidth="50.0" text="Villages">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="villageCount">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="56.0" text="Cities">
+                                  <TableColumn prefWidth="46.0" text="Cities">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="cityCount">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn text="Streets">
+                                  <TableColumn prefWidth="46.0" text="Streets">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="streetCount">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn text="Longest Road">
+                                  <TableColumn prefWidth="85.0" text="Longest Road">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="longestRoad">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="65.0" text="Total Resources">
+                                  <TableColumn prefWidth="100.0" text="Total Resources">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="resources">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="107.419189453125" text="Resources Gained">
+                                  <TableColumn prefWidth="112.0" text="Resources Gained">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="resourcesGained">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="42.0" text="Plan Actions">
+                                  <TableColumn prefWidth="84.0" text="Plan Actions">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="planActions">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="55.0" text="Has Turn">
+                                  <TableColumn prefWidth="57.0" text="Has Turn">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="isMyTurn">
                                         </PropertyValueFactory>
@@ -250,7 +248,7 @@
                                     <Insets bottom="20.0" right="20.0" />
                                  </HBox.margin>
                               </TableView>
-                              <TableView fx:id="playerVisualsTable" prefWidth="311.0" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="playerVisualsTable" prefHeight="131.0" prefWidth="276.0" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn prefWidth="80.0" text="Player">
                                     <cellValueFactory>
@@ -258,19 +256,19 @@
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="36.0" text="Road">
+                                  <TableColumn prefWidth="66.0" text="Road">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="playerRoadHBox">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="34.0" text="Villages">
+                                  <TableColumn prefWidth="67.0" text="Villages">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="playerVillagesHBox">
                                         </PropertyValueFactory>
                                     </cellValueFactory>
                                   </TableColumn>
-                                  <TableColumn prefWidth="82.0" text="Cities">
+                                  <TableColumn prefWidth="67.0" text="Cities">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="playerCitiesHBox">
                                         </PropertyValueFactory>
@@ -301,8 +299,3 @@
             <Insets bottom="20.0" left="20.0" />
          </padding>
       </ScrollPane>
-    </children>
-   <padding>
-      <Insets bottom="5.0" right="5.0" />
-   </padding>
-</AnchorPane>

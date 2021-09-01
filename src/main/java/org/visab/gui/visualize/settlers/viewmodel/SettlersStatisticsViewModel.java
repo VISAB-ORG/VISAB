@@ -21,8 +21,10 @@ import org.visab.gui.visualize.settlers.model.comparison.VictoryPointsComparison
 import org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView;
 
 import de.saxsys.mvvmfx.utils.commands.Command;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -72,7 +74,15 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
 
     private StringProperty sliderText = new SimpleStringProperty();
 
+    private DoubleProperty sliderMax = new SimpleDoubleProperty();
+
     private static final int SHOWN_GRAPHS_PER_PLAYER = 10;
+
+    private static final int AMOUNT_PLAYERS_DISPLAYED = 2;
+
+    public DoubleProperty sliderMaxProperty() {
+        return sliderMax;
+    }
 
     public StringProperty sliderTextProperty() {
         return sliderText;
@@ -158,7 +168,7 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
             var serieses = getStackedBarChartData();
             for (var series : serieses) {
                 series.getData().removeIf(x -> Integer.parseInt(x.getXValue().replace(" - Player 1", "")
-                        .replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
+                        .replace(" - Player 2", "")) >= SHOWN_GRAPHS_PER_PLAYER + sliderValue.get());
                 series.getData().removeIf(x -> Integer.parseInt(
                         x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) < sliderValue.get());
             }
@@ -191,9 +201,17 @@ public class SettlersStatisticsViewModel extends LiveVisualizeViewModelBase<Sett
         yLabelDetail.set("Values");
 
         List<Series<String, Number>> serieses = getStackedBarChartData();
+        int maxSliderSize = serieses.get(0).getData().size() / AMOUNT_PLAYERS_DISPLAYED;
+        
+        if(maxSliderSize % 10 == 0) {
+            sliderMax.set(maxSliderSize - (maxSliderSize % 10) + 1 -10);
+        } else {
+            sliderMax.set(maxSliderSize - (maxSliderSize % 10) + 1);
+        }
+
         for (var series : serieses) {
             series.getData().removeIf(x -> Integer.parseInt(
-                    x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) > SHOWN_GRAPHS_PER_PLAYER);
+                    x.getXValue().replace(" - Player 1", "").replace(" - Player 2", "")) >= SHOWN_GRAPHS_PER_PLAYER);
         }
         playerDetailedStatisticsSeries.addAll(serieses);
     }
