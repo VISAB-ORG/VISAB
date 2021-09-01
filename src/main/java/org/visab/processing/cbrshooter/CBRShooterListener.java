@@ -1,5 +1,7 @@
 package org.visab.processing.cbrshooter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +13,8 @@ import org.visab.globalmodel.cbrshooter.CBRShooterFile;
 import org.visab.globalmodel.cbrshooter.CBRShooterImages;
 import org.visab.globalmodel.cbrshooter.CBRShooterMetaInformation;
 import org.visab.globalmodel.cbrshooter.CBRShooterStatistics;
-import org.visab.newgui.UiHelper;
-import org.visab.newgui.visualize.ILiveViewModel;
+import org.visab.gui.UiHelper;
+import org.visab.gui.visualize.ILiveViewModel;
 import org.visab.processing.ILiveViewable;
 import org.visab.processing.ReplaySessionListenerBase;
 import org.visab.util.NiceString;
@@ -44,9 +46,8 @@ public class CBRShooterListener
     }
 
     @Override
-    public List<CBRShooterStatistics> getStatisticsCopy() {
-        // Return a copy to avoid concurrent modification
-        return new ArrayList<CBRShooterStatistics>(file.getStatistics());
+    public List<CBRShooterStatistics> getStatistics() {
+        return file.getStatistics();
     }
 
     @Override
@@ -60,11 +61,11 @@ public class CBRShooterListener
     @Override
     public void notifyStatisticsAdded(CBRShooterStatistics addedStatistics) {
         for (var viewModel : viewModels)
-            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics, getStatisticsCopy()));
+            UiHelper.inovkeOnUiThread(() -> viewModel.onStatisticsAdded(addedStatistics));
     }
 
     @Override
-    public void onSessionClosed() {
+    public synchronized void onSessionClosed() {
         if (file.getStatistics().size() > 0) {
             var lastStatistics = file.getStatistics().get(file.getStatistics().size() - 1);
 
@@ -79,7 +80,8 @@ public class CBRShooterListener
             file.setWinner(playerName);
         }
 
-        manager.saveFile(file, sessionId.toString(), sessionId);
+        manager.saveFile(file, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")),
+                sessionId);
 
         notifySessionClosed();
     }
@@ -96,13 +98,13 @@ public class CBRShooterListener
     }
 
     @Override
-    public void processImage(CBRShooterImages mapImage) {
+    public synchronized void processImage(CBRShooterImages mapImage) {
         writeLog(Level.DEBUG, "Received images");
         file.setImages(mapImage);
     }
 
     @Override
-    public void processStatistics(CBRShooterStatistics statistics) {
+    public synchronized void processStatistics(CBRShooterStatistics statistics) {
         file.getStatistics().add(statistics);
 
         writeLog(Level.DEBUG, NiceString.make("has {0} entries now", file.getStatistics().size()));

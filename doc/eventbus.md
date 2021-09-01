@@ -40,7 +40,7 @@ In our case, the `WebApiViewModel` suscribes the `IApiEvent` and therefore is no
 
 #### Optional
 
-1. `newgui.webapi.WebApiViewModel`
+1. `gui.webapi.WebApiViewModel`
     * `eventbus.IApiEvent`
 
 

@@ -6,7 +6,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.visab.api.WebAPI;
-import org.visab.newgui.AppMain;
+import org.visab.gui.AppMain;
 
 import javafx.application.Application;
 

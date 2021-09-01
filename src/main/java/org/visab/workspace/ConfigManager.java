@@ -8,7 +8,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.visab.api.WebAPI;
-import org.visab.newgui.ResourceHelper;
+import org.visab.gui.ResourceHelper;
 import org.visab.util.JSONConvert;
 import org.visab.util.StreamUtil;
 import org.visab.util.VISABUtil;
@@ -25,7 +25,8 @@ public class ConfigManager {
 
     public static final String CONFIG_PATH_SUFFIX = "config";
     private static final String CONFIG_PATH = VISABUtil.combinePath(Workspace.WORKSPACE_PATH, CONFIG_PATH_SUFFIX);
-
+    private static final String LIGHT_MODE_CSS = ConfigManager.class.getResource("/template_style.css").toExternalForm();
+    private static final String DARK_MODE_CSS = ConfigManager.class.getResource("/template_style_darkmode.css").toExternalForm();
     private static final String SETTINGS_PATH = "settings.json";
     private static final String MAPPING_PATH = "classMapping.json";
     private static final String DEFAULT_SETTINGS_PATH = "/configs/defaultSettings.json";
@@ -39,6 +40,14 @@ public class ConfigManager {
     public ConfigManager() {
         loadSettings();
         loadMappings();
+    }
+    
+    public String getCssPath() {
+    	if (this.settings.isDarkMode()) {
+    		return DARK_MODE_CSS;
+    	} else {
+    		return LIGHT_MODE_CSS;
+    	}
     }
 
     public List<Mapping> getMappings() {
@@ -151,6 +160,15 @@ public class ConfigManager {
     public int getWebApiPort() {
         return this.settings.getWebApiPort();
     }
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object.
+     * 
+     * @return the dark mode on value.
+     */
+    public boolean isDarkModeOn() {
+        return this.settings.isDarkMode();
+    }
 
     /**
      * Syntactic sugar to wrap the access on the settings object.
@@ -186,6 +204,16 @@ public class ConfigManager {
         }
 
         this.settings.setWebApiPort(port);
+    }
+    
+    /**
+     * Syntactic sugar to wrap the access on the settings object that also provides
+     * detailed logging information according to the changes made.
+     * 
+     * @param darkModeOn the value denoting if dark mode shall be on.
+     */
+    public void updateDarkMode(boolean darkModeOn) {
+        this.settings.setDarkMode(darkModeOn);
     }
 
     /**

@@ -1,5 +1,6 @@
 {
 	"webApiPort": 2673,
+	"darkMode": false,
 	"allowedGames": ["CBRShooter", "Settlers"],
 	"sessionTimeout": {
 			"CBRShooter": 2,

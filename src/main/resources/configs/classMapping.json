@@ -6,7 +6,7 @@
         "statistics": "org.visab.globalmodel.cbrshooter.CBRShooterStatistics",
         "file": "org.visab.globalmodel.cbrshooter.CBRShooterFile",
         "image": "org.visab.globalmodel.cbrshooter.CBRShooterImages",
-        "visualizer": "org.visab.newgui.visualize.cbrshooter.view.CBRShooterMainView"
+        "visualizer": "org.visab.gui.visualize.cbrshooter.view.CBRShooterMainView"
     },
     {
         "game": "Settlers",
@@ -15,6 +15,6 @@
         "statistics": "org.visab.globalmodel.settlers.SettlersStatistics",
         "file": "org.visab.globalmodel.settlers.SettlersFile",
         "image": "org.visab.globalmodel.settlers.SettlersImages",
-        "visualizer": "org.visab.newgui.visualize.settlers.view.SettlersMainView"
+        "visualizer": "org.visab.gui.visualize.settlers.view.SettlersMainView"
     }
 ]
