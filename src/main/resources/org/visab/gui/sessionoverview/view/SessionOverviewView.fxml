@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.sessionoverview.view.SessionOverviewView">
+<AnchorPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.sessionoverview.view.SessionOverviewView">
    <children>
             <BorderPane styleClass="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
@@ -51,7 +51,7 @@
                                       </Label>
                                     <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="218.0">
                                        <children>
-                                          <Label prefHeight="10.0" prefWidth="93.0" styleClass="label-text" text="Web API Adress:">
+                                          <Label prefHeight="17.0" prefWidth="121.0" styleClass="label-text" text="Web API Adress:" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin>
