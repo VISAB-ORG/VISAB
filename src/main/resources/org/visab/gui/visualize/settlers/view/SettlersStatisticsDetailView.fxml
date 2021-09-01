@@ -15,8 +15,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane prefWidth="1122.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
+<ScrollPane prefWidth="1122.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.visab.gui.visualize.settlers.view.SettlersStatisticsDetailView">
    <content>
       <BorderPane prefHeight="1127.0" prefWidth="1120.0" styleClass="body">
          <center>
@@ -60,15 +61,18 @@
                   </VBox>
                   <VBox prefHeight="50.0" prefWidth="605.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                      <children>
-                          <Slider fx:id="roundSlider" majorTickUnit="10.0" min="0.0" showTickLabels="true" showTickMarks="true" prefHeight="25.0" prefWidth="500.0">
+                          <Slider fx:id="roundSlider" majorTickUnit="10.0" min="0.0" prefHeight="25.0" prefWidth="500.0" showTickLabels="true" showTickMarks="true">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
                         </Slider>
                         <Label fx:id="sliderLabel" alignment="CENTER" prefHeight="17.0" prefWidth="1038.0" styleClass="label-text" text="Label">
                            <VBox.margin>
-                              <Insets left="20.0" />
+                              <Insets left="20.0" top="10.0" />
                            </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
                         </Label>
                      </children>
                      <GridPane.margin>
