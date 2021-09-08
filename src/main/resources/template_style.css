@@ -78,7 +78,7 @@
 }
 
  
-/* Tab Pane format 
+/* Tab Pane format */
 .tab-pane{
     -fx-background-color: radial-gradient(focus-distance -45%, center 50% 50% , radius 80% , #eeeeee, #9e9b9b);
 }
@@ -97,7 +97,7 @@
 .tab-pane .tab:selected {
 	-fx-background-color: #ff5c33;
 }
-*/
+
 
 /* Choice Box format 
 .choice-box {

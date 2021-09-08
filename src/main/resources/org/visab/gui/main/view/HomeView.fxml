@@ -110,7 +110,7 @@
                                 </MenuItem>
                             </items>
                         </Menu>
-                        <Menu fx:id="helpMenu" onAction="#openNewHelp" mnemonicParsing="false">
+                        <Menu fx:id="helpMenu" mnemonicParsing="false">
                             <graphic>
                                 <ImageView fitHeight="19.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -119,11 +119,20 @@
                                 </ImageView>
                             </graphic>
                             <items>
-                                <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="Help">
+                                <MenuItem fx:id="helpMenuItem" onAction="#openNewHelp" mnemonicParsing="false" text="Help">
                                     <graphic>
                                         <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../../../../img/help_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem fx:id="onlineDocuItem" onAction="#openOnlineDoc" mnemonicParsing="false" text="Visit Online Doc!">
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../../img/world.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>

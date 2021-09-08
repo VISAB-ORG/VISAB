@@ -226,11 +226,11 @@ public class SettlersReplayViewModel extends LiveVisualizeViewModelBase<Settlers
     public HashMap<String, Pair<Image, String>> getAnnotatedIconsForPlayer(String playerName) {
         Color playerColor = UiHelper.translateHexToRgbColor(file.getPlayerColors().get(playerName));
         HashMap<String, Pair<Image, String>> iconMap = new HashMap<String, Pair<Image, String>>();
-        Image playerRoad = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
+        Image playerRoad = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "settlersGenericVisual.png"),
                 playerColor);
-        Image playerVillage = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
+        Image playerVillage = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "settlersGenericVisual.png"),
                 playerColor);
-        Image playerCity = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/settlersGenericVisual.png"),
+        Image playerCity = UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "settlersGenericVisual.png"),
                 playerColor);
         // Don't use because they scale very badly and are hard to distinguish from each
         // other
