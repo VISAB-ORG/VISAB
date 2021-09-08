@@ -11,6 +11,10 @@ VISAB can be used in two modes:
   <li><b>GUI Mode</b>: This mode starts VISABs HTTP-API such that data can be received and opens a window using which game data files can be visualized.</li>
   <li><b>Headless Mode</b>: This mode starts only VISABs HTTP-API.</li>
 </ol>
+
+### Known issues
+Nanohttpd is incapable of removing temporary files on windows and throws exception.
+This does not impact the functional reliability of VISAB, but the exception message will be seen in the console output.
  
 ### Extending VISAB for a new game
 1. Create SessionListener by inheriting either `SessionListenerBase` or `ReplaySessionListenerBase` (if you also want a ReplayView)
