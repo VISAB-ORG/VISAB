@@ -161,19 +161,19 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
                 // Put dark mode CSS
                 darkModeOn.setText("on");
                 viewModel.changeColorScheme(true);
-                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "VISAB_Logo_white.png"));
             } else {
                 // Put Light Mode CSS
                 darkModeOn.setText("off");
                 viewModel.changeColorScheme(false);
-                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "visabLogo.png"));
             }
         });
 
         if (darkModeOn.isSelected()) {
-            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "VISAB_Logo_white.png"));
         } else {
-            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "visabLogo.png"));
         }
 
         refreshFileExplorer();

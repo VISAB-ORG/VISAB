@@ -282,9 +282,9 @@ public class CBRShooterReplayViewModel extends LiveVisualizeViewModelBase<CBRSho
         HashMap<String, Image> iconMap = new HashMap<String, Image>();
         iconMap.put("playerIcon", UiHelper.recolorImage(getPlayerIcon(), playerColor));
         iconMap.put("playerPlanChange",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerPlanChange.png"), playerColor));
+                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "playerPlanChange.png"), playerColor));
         iconMap.put("playerDeath",
-                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "/playerDeath.png"), playerColor));
+                UiHelper.recolorImage(new Image(ResourceHelper.IMAGE_PATH + "playerDeath.png"), playerColor));
         return iconMap;
     }
 
