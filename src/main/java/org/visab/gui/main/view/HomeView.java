@@ -92,10 +92,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         try {
             Desktop.getDesktop().browse(new URI("https://visab-org.github.io/index.html"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
