@@ -1,5 +1,9 @@
 package org.visab.gui.main.view;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -8,9 +12,6 @@ import org.visab.gui.control.ExplorerFile;
 import org.visab.gui.control.FileExplorer;
 import org.visab.gui.control.RecursiveTreeItem;
 import org.visab.gui.main.viewmodel.HomeViewModel;
-import org.visab.gui.visualize.settlers.model.comparison.ResourcesGainedByDiceComparisonRow;
-import org.visab.gui.visualize.settlers.model.comparison.ResourcesSpentComparisonRow;
-import org.visab.workspace.Workspace;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -51,6 +52,8 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     @FXML
     private MenuItem helpMenuItem;
     @FXML
+    private MenuItem onlineDocuItem;
+    @FXML
     private Button uploadButton;
     @FXML
     private Button deleteButton;
@@ -73,15 +76,28 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
     public void openSettings() {
         viewModel.openSettings().execute();
     }
-    
+
     @FXML
     public void openNewAbout() {
         viewModel.openNewAbout().execute();
     }
-    
+
     @FXML
     public void openNewHelp() {
         viewModel.openNewHelp().execute();
+    }
+
+    @FXML
+    public void openOnlineDoc() {
+        try {
+            Desktop.getDesktop().browse(new URI("https://visab-org.github.io/index.html"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -136,30 +152,30 @@ public class HomeView implements FxmlView<HomeViewModel>, Initializable {
         viewModel.subscribe("FILE_ADDED", (e, o) -> refreshFileExplorer());
         darkModeOn.selectedProperty().bindBidirectional(viewModel.darkModeOnProperty());
         if (darkModeOn.isSelected()) {
-        	darkModeOn.setText("on");
+            darkModeOn.setText("on");
         } else {
-        	darkModeOn.setText("off");
+            darkModeOn.setText("off");
         }
         darkModeOn.selectedProperty().addListener(e -> {
             if (darkModeOn.isSelected()) {
-            	// Put dark mode CSS
-            	darkModeOn.setText("on");
-            	viewModel.changeColorScheme(true);
-            	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+                // Put dark mode CSS
+                darkModeOn.setText("on");
+                viewModel.changeColorScheme(true);
+                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
             } else {
-            	// Put Light Mode CSS
-            	darkModeOn.setText("off");
-            	viewModel.changeColorScheme(false);
-            	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+                // Put Light Mode CSS
+                darkModeOn.setText("off");
+                viewModel.changeColorScheme(false);
+                visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
             }
         });
-        
+
         if (darkModeOn.isSelected()) {
-        	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
+            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/VISAB_Logo_white.png"));
         } else {
-        	visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
+            visabLogo.setImage(new Image(ResourceHelper.IMAGE_PATH + "/visabLogo.png"));
         }
-        
+
         refreshFileExplorer();
 
         fileExplorer.addFileAddedHandler(f -> viewModel.addFile(f));
